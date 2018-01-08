@@ -1,4 +1,4 @@
-package minpakke;
+package services;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

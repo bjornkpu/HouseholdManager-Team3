@@ -1,4 +1,4 @@
-package minpakke;
+package services;
 
 class Kunde{
     private String id;
