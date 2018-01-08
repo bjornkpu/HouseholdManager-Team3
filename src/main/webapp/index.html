@@ -1,0 +1,104 @@
+    <!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css">
+        <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="http://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+        <title>Kunder</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script>
+            $(document).ready(function(){
+                // Bind opp tabellen mot rest-ressursen '/kunder'
+                $('#myTable').DataTable( {
+                    ajax: {
+                        url: 'rest/kunder',
+                        dataSrc: ''
+                    },
+                    columns: [
+                        { data: 'id' },
+                        { data: 'navn' }
+                    ]
+                });
+
+                // oppdater ny rest-ressursen under '/kunder/'
+                $("#update").click(function () {
+                    $.ajax({
+                        url: 'rest/kunder/  '+ $("#updateId").val(),
+                        type: 'PUT',
+                        data: JSON.stringify({
+                            id: $("#updateId").val(),
+                            navn: $("#updateName").val(),
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function(result) {
+                            $('#myTable').DataTable().ajax.reload();
+                        },
+                        statusCode: {
+                            404: function () {
+                                alert("Kunde not found")
+
+                            }
+                        }
+                    });
+                });
+
+                // Slett rest-ressursen '/kunder/kundeId'
+                $("#delete").click(function () {
+                    $.ajax({
+                        url: 'rest/kunder/' + $("#deleteId").val(),
+                        type: 'DELETE',
+                        data: JSON.stringify({
+                            id: $("#deleteId").val(),
+                            navn: $("#deleteName").val(),
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success:function(result) {
+                            $('#myTable').DataTable().ajax.reload();
+                        }
+                    });
+                });
+
+                // Lag ny rest-ressursen under '/kunder/'
+                $("#create").click(function () {
+                    $.ajax({
+                        url: 'rest/kunder',
+                        type: 'POST',
+                        data: JSON.stringify({
+                            id: $("#newId").val(),
+                            navn: $("#newName").val(),
+                        }),
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        success: function(result) {
+                            $('#myTable').DataTable().ajax.reload();
+                        }
+                    });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Kunder</h1>
+        <table id="myTable" class="display compact">
+            <thead>
+                <tr><th>ID</th><th>Navn</th></tr>
+            </thead>
+        </table>
+
+        <input id="updateId" type="text" value="updateId">
+        <input id="updateName" type="text" value="updateName">
+        <button id="update">Update</button><br>
+
+        <input id="deleteId" type="text" value="deleteId">
+        <button id="delete">Delete</button>
+        <br>
+
+        <input id="newId" type="text" value="newId">
+        <input id="newName" type="text" value="newName">
+        <button id="create">Create New</button><br>
+    </body>
+</html>
