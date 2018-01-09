@@ -10,4 +10,4 @@ notifications:
 script: "mvn cobertura:cobertura"
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) -t ce6c8225-9b63-43d1-b59a-161d61f0e067
