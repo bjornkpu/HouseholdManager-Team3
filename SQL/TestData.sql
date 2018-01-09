@@ -23,7 +23,7 @@
 # INSERT INTO athlete_location(user_id, loc_lat, loc_long, from_date, to_date) VALUES (3, 100.0, 100.0, "20070201", "20070220");
 
 /*IMPLEMENTERE FUNKSJON TESTDATA*/
-# INSERT INTO bloodreading(reading_time, hgblevel, user_id) VALUES ()
+-- # INSERT INTO bloodreading(reading_time, hgblevel, user_id) VALUES ()
 
 
 /*FREMFØRING TESTDATA*/
