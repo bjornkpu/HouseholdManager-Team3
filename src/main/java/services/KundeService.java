@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Path("/kunder/")
 public class KundeService {
-    private static Map<String,Kunde> kunder = new HashMap<>();
+    private static Map<String,Kunde> kunder = new HashMap<String,Kunde>();
     @GET
     @Path("/{kundeId}")
     @Produces(MediaType.APPLICATION_JSON)
