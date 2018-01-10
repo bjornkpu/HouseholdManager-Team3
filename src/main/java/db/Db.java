@@ -24,7 +24,7 @@ public class Db {
             cpds.setPassword(DB_PW);
 
             // the settings below are optional -- c3p0 can work with defaults
-            cpds.setMinPoolSize(5);
+            cpds.setMinPoolSize(0);
             cpds.setAcquireIncrement(5);
             cpds.setMaxPoolSize(20);
             cpds.setMaxStatements(180);
