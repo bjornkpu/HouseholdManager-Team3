@@ -1,0 +1,193 @@
+-- Utgave tilpasset MySQL
+
+-- Sletter tabeller
+
+DROP TABLE IF EXISTS item_shoppinglist;
+DROP TABLE IF EXISTS wallpost;
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS chore;
+DROP TABLE IF EXISTS shoppinglist;
+DROP TABLE IF EXISTS user_party;
+DROP TABLE IF EXISTS party;
+DROP TABLE IF EXISTS user;
+
+
+-- Oppretter tabeller med entitetsintegritet (primærnøkkel)
+
+CREATE TABLE user(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(100)NOT NULL,
+  phone integer(15),
+  CONSTRAINT user_pk PRIMARY KEY(id));
+
+CREATE TABLE party(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  name VARCHAR(30) NOT NULL,
+  admin INTEGER,
+  CONSTRAINT party_pk PRIMARY KEY(id));
+
+CREATE TABLE wallpost(
+  time DATETIME,
+  message VARCHAR (255),
+  party_id INTEGER (10),
+  user_id INTEGER (10),
+  CONSTRAINT wallpost_pk PRIMARY KEY(time,user_id,party_id));
+
+CREATE TABLE user_party(
+  user_id INTEGER NOT NULL,
+  party_id INTEGER NOT NULL,
+  balance DOUBLE NOT NULL,
+  CONSTRAINT user_party_pk PRIMARY KEY(user_id,party_id));
+
+CREATE TABLE chore(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  description VARCHAR(90),
+  regularity INTEGER (4),
+  deadline DATE,
+  completed BIT,
+  party_id INTEGER,
+  user_id INTEGER,
+  CONSTRAINT chore_pk PRIMARY KEY(id));
+
+CREATE TABLE item (
+  name VARCHAR(30) NOT NULL ,
+  price DOUBLE NOT NULL ,
+  CONSTRAINT item_pk PRIMARY KEY (name,price));
+
+CREATE TABLE shoppinglist(
+  id INTEGER NOT NULL AUTO_INCREMENT,
+  party_id INTEGER NOT NULL,
+  CONSTRAINT shippinglist_pk PRIMARY KEY (id));
+
+CREATE TABLE item_shoppinglist(
+  item_name VARCHAR(255),
+  item_price DOUBLE,
+  shoppinglist_id INTEGER,
+  quantity INTEGER(3) NOT NULL,
+  note VARCHAR(255),
+  user_id INTEGER,
+  CONSTRAINT item_shopinglist_pk PRIMARY KEY (item_name,item_price,shoppinglist_id));
+
+
+-- Legger på referanseintegritet (fremmednøkler)
+
+ALTER TABLE party
+  ADD CONSTRAINT party_fk FOREIGN KEY(admin)REFERENCES user(id);
+
+ALTER TABLE wallpost
+  ADD CONSTRAINT wallpost_fk1 FOREIGN KEY(party_id)REFERENCES party(id);
+
+ALTER TABLE wallpost
+  ADD CONSTRAINT wallpost_fk2 FOREIGN KEY(user_id)REFERENCES user(id);
+
+ALTER TABLE user_party
+  ADD CONSTRAINT user_party_fk1 FOREIGN KEY(user_id)REFERENCES user(id);
+
+ALTER TABLE user_party
+  ADD CONSTRAINT user_party_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
+
+ALTER TABLE chore
+  ADD CONSTRAINT chore_fk1 FOREIGN KEY(user_id)REFERENCES user(id);
+
+ALTER TABLE chore
+  ADD CONSTRAINT chore_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
+
+ALTER TABLE shoppinglist
+  ADD CONSTRAINT shoppinglist_fk FOREIGN KEY(party_id)REFERENCES party(id);
+
+ALTER TABLE item_shoppinglist
+  ADD CONSTRAINT item_shoppinglist_fk1 FOREIGN KEY(user_id)REFERENCES user(id);
+
+ALTER TABLE item_shoppinglist
+  ADD CONSTRAINT item_shoppinglist_fk2 FOREIGN KEY(shoppinglist_id)REFERENCES shoppinglist(id);
+
+ALTER TABLE item_shoppinglist
+  ADD CONSTRAINT item_shoppinglist_fk13 FOREIGN KEY(item_name)REFERENCES item(name);
+
+ALTER TABLE item_shoppinglist
+  ADD CONSTRAINT item_shoppinglist_fk4 FOREIGN KEY(item_price)REFERENCES item(price);
+
+
+
+/*
+-- Legger inn data i tabellene
+
+INSERT INTO forlag VALUES(DEFAULT,'Tapir','Trondheim', '73590000');
+INSERT INTO forlag VALUES(DEFAULT,'Gyldendal','Oslo', '22220000');
+INSERT INTO forlag VALUES(DEFAULT,'Cappelen','Oslo', '22200000');
+INSERT INTO forlag VALUES(DEFAULT,'Universitetsforlaget','Oslo', '23230000');
+INSERT INTO forlag VALUES(DEFAULT,'Achehaug','Oslo', '22000000');
+INSERT INTO forlag VALUES(DEFAULT,'Oktober','Oslo', '22002200');
+INSERT INTO forlag VALUES(DEFAULT,'Tiden','Oslo', '22232223');
+INSERT INTO forlag VALUES(DEFAULT,'Harper Collins','USA',NULL);
+
+INSERT INTO bok VALUES(DEFAULT,'Tåpenes',1995,7);
+INSERT INTO bok VALUES(DEFAULT,'Rebecca',1981,3);
+INSERT INTO bok VALUES(DEFAULT,'Gutter er gutter',1995,5);
+INSERT INTO bok VALUES(DEFAULT,'Microserfs',1991,8);
+INSERT INTO bok VALUES(DEFAULT,'Generation X',1995,8);
+INSERT INTO bok VALUES(DEFAULT,'Klosterkrønike',1982,3);
+INSERT INTO bok VALUES(DEFAULT,'Universet',1988,3);
+INSERT INTO bok VALUES(DEFAULT,'Nålen',1978,3);
+INSERT INTO bok VALUES(DEFAULT,'Markens grøde',1917,2);
+INSERT INTO bok VALUES(DEFAULT,'Victoria',1898,2);
+INSERT INTO bok VALUES(DEFAULT,'Sult',1890,2);
+INSERT INTO bok VALUES(DEFAULT,'Benoni',1908,2);
+INSERT INTO bok VALUES(DEFAULT,'Rosa',1908,2);
+INSERT INTO bok VALUES(DEFAULT,'Et skritt',1997,2);
+INSERT INTO bok VALUES(DEFAULT,'Den femte',1996,2);
+INSERT INTO bok VALUES(DEFAULT,'Villspor',1995,2);
+INSERT INTO bok VALUES(DEFAULT,'Silkeridderen',1994,2);
+INSERT INTO bok VALUES(DEFAULT,'Den hvite hingsten',1992,2);
+INSERT INTO bok VALUES(DEFAULT,'Hunder',1992,2);
+INSERT INTO bok VALUES(DEFAULT,'Bridget Jones',1995,5);
+INSERT INTO bok VALUES(DEFAULT,'Se terapeuten',1998,3);
+INSERT INTO bok VALUES(DEFAULT,'Sa mor',1996,3);
+INSERT INTO bok VALUES(DEFAULT,'Jubel',1995,3);
+INSERT INTO bok VALUES(DEFAULT,'Tatt av kvinnen',1993,3);
+INSERT INTO bok VALUES(DEFAULT,'Supernaiv',1996,3);
+
+INSERT INTO forfatter VALUES(DEFAULT,'John','Tool',1937, 1969, 'USA');
+INSERT INTO forfatter VALUES(DEFAULT,'Ken','Follet',NULL, NULL, 'Britisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Stephen','Hawking',NULL, NULL, 'Britisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Jose','Saramago',1942, NULL, 'Portugisisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Douglas','Coupland',1961, NULL, 'Canadisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Nick','Hornby',1857, NULL, 'Britisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Knut','Hamsun',1859, 1952, 'Norsk');
+INSERT INTO forfatter VALUES(DEFAULT,'Henning','Mankell',1948, NULL, 'Svensk');
+INSERT INTO forfatter VALUES(DEFAULT,'Helen','Fielding',NULL, NULL, 'Britisk');
+INSERT INTO forfatter VALUES(DEFAULT,'Hal','Sirowitz',NULL, NULL, 'USA');
+INSERT INTO forfatter VALUES(DEFAULT,'Lars S.','Christensen',NULL, NULL, 'Norsk');
+INSERT INTO forfatter VALUES(DEFAULT,'Erlend','Loe',NULL, NULL, 'Norsk');
+
+INSERT INTO bok_forfatter VALUES(1, 1);
+INSERT INTO bok_forfatter VALUES(2, 2);
+INSERT INTO bok_forfatter VALUES(3, 6);
+INSERT INTO bok_forfatter VALUES(4, 5);
+INSERT INTO bok_forfatter VALUES(5, 5);
+INSERT INTO bok_forfatter VALUES(6, 4);
+INSERT INTO bok_forfatter VALUES(7, 3);
+INSERT INTO bok_forfatter VALUES(8, 2);
+INSERT INTO bok_forfatter VALUES(9, 7);
+INSERT INTO bok_forfatter VALUES(10, 7);
+INSERT INTO bok_forfatter VALUES(11, 7);
+INSERT INTO bok_forfatter VALUES(12, 1);
+INSERT INTO bok_forfatter VALUES(13, 1);
+INSERT INTO bok_forfatter VALUES(14, 8);
+INSERT INTO bok_forfatter VALUES(15, 8);
+INSERT INTO bok_forfatter VALUES(16, 8);
+INSERT INTO bok_forfatter VALUES(17, 8);
+INSERT INTO bok_forfatter VALUES(18, 8);
+INSERT INTO bok_forfatter VALUES(19, 8);
+INSERT INTO bok_forfatter VALUES(20, 9);
+INSERT INTO bok_forfatter VALUES(21, 10);
+INSERT INTO bok_forfatter VALUES(22, 10);
+INSERT INTO bok_forfatter VALUES(23, 11);
+INSERT INTO bok_forfatter VALUES(24, 12);
+INSERT INTO bok_forfatter VALUES(25, 12);
+
+INSERT INTO konsulent VALUES(DEFAULT, 'Anne', 'Hansen', 'anne.hansen@xxx.com');
+INSERT INTO konsulent VALUES(DEFAULT, 'Bjørn', 'Jensen', 'bjornj@yyy.com');
+INSERT INTO konsulent VALUES(DEFAULT, 'Anne', 'Ås', 'anne.as@zzz.com');
