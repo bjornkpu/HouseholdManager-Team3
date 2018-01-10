@@ -1,10 +1,9 @@
 package db;
 
 import data.User;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
+
 import util.Logger;
 
 /**
@@ -17,21 +16,22 @@ public class UserDao {
     public User getUser(String email) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM user WHERE email='" + email + "'");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
+            ps.setString(1,email);
+            ResultSet rs = ps.executeQuery();
             User user = null;
             if(rs.next()) {
                 log.info("Found user " + email);
                 user = new User();
                 user.setEmail(rs.getString("email"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
                 user.setPassword(rs.getString("password"));
+                user.setPhone(rs.getString("phone"));
+                user.setName(rs.getString("name"));
             } else {
                 log.info("Could not find user " + email);
             }
             rs.close();
-            statement.close();
+            ps.close();
             return user;
         } finally {
             connection.close();

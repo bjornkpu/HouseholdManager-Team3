@@ -4,7 +4,6 @@ package data;
  * Class for the User-object
  */
 public class User {
-    private int id;
     private String email;
     private String name;
     private String phone;
@@ -14,17 +13,12 @@ public class User {
 
     }
 
-    public User(int id, String email, String name, String phone, String password) {
-        this.id = id;
+    public User(String email, String name, String phone, String password) {
         this.email = email;
         this.name = name;
         this.phone = phone;
         this.password = password;
     }
-
-    public int getId() { return id; }
-
-    public void setId(int id) { this.id = id; }
 
     public String getEmail() {
         return email;

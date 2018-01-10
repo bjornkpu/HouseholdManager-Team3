@@ -16,8 +16,8 @@ public class Logger {
 
     static {
         try {
-            logger = java.util.logging.Logger.getLogger("bank");
-            FileHandler fileHandler = new FileHandler("./bank.log");
+            logger = java.util.logging.Logger.getLogger("HouseholdManager3");
+            FileHandler fileHandler = new FileHandler("./HM3.log");
             SimpleFormatter simple = new SimpleFormatter();
             fileHandler.setFormatter(simple);
             logger.addHandler(fileHandler);
