@@ -11,7 +11,7 @@ public class Db {
     private static Db datasource;
     private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
-    private static final String DB_URL = "mysql.stud.iie.ntnu.no";
+    private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306";
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
 
