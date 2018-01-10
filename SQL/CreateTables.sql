@@ -1,11 +1,14 @@
 -- Sletter tabeller
 
 DROP TABLE IF EXISTS item_shoppinglist;
+DROP TABLE IF EXISTS user_disbursements;
 DROP TABLE IF EXISTS wallpost;
 DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS chore;
 DROP TABLE IF EXISTS shoppinglist;
 DROP TABLE IF EXISTS user_party;
+DROP TABLE IF EXISTS disbursements;
+DROP TABLE IF EXISTS disbursement;
 DROP TABLE IF EXISTS party;
 DROP TABLE IF EXISTS user;
 
@@ -16,7 +19,8 @@ CREATE TABLE user(
   name VARCHAR(30) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(100)NOT NULL,
-  phone integer(15),
+  salt VARCHAR(20),
+  phone VARCHAR (15),
   CONSTRAINT user_pk PRIMARY KEY(email));
 
 CREATE TABLE party(
@@ -50,9 +54,12 @@ CREATE TABLE chore(
   CONSTRAINT chore_pk PRIMARY KEY(id));
 
 CREATE TABLE item (
+  id INTEGER(10) AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL ,
-  price DOUBLE NOT NULL ,
-  CONSTRAINT item_pk PRIMARY KEY (name,price));
+  status INTEGER(1) NOT NULL,
+  shoppinglist_id INTEGER(10),
+  dips_id INTEGER(10),
+  CONSTRAINT item_pk PRIMARY KEY (id));
 
 CREATE TABLE shoppinglist(
   id INTEGER NOT NULL AUTO_INCREMENT,
@@ -60,14 +67,20 @@ CREATE TABLE shoppinglist(
   party_id INTEGER NOT NULL,
   CONSTRAINT shippinglist_pk PRIMARY KEY (id));
 
-CREATE TABLE item_shoppinglist(
-  item_name VARCHAR(255),
-  item_price DOUBLE,
-  shoppinglist_id INTEGER,
-  quantity INTEGER(3) NOT NULL,
-  note VARCHAR(255),
+CREATE TABLE user_disbursements(
   user_id VARCHAR(255) NOT NULL,
-  CONSTRAINT item_shopinglist_pk PRIMARY KEY (item_name,item_price,shoppinglist_id));
+  disp_id INTEGER(10) NOT NULL,
+  CONSTRAINT user_disbursements_pk PRIMARY KEY (user_id,disp_id));
+
+CREATE TABLE disbursements(
+  id INTEGER(10) AUTO_INCREMENT,
+  price DOUBLE,
+  description VARCHAR(255),
+  date DATE,
+  payer_id VARCHAR(255) NOT NULL,
+  party_id INTEGER(10) NOT NULL,
+  CONSTRAINT disbursements_pk PRIMARY KEY(id));
+
 
 
 -- Legger på referanseintegritet (fremmednøkler)
@@ -96,14 +109,20 @@ ALTER TABLE chore
 ALTER TABLE shoppinglist
   ADD CONSTRAINT shoppinglist_fk FOREIGN KEY(party_id)REFERENCES party(id);
 
-ALTER TABLE item_shoppinglist
-  ADD CONSTRAINT item_shoppinglist_fk1 FOREIGN KEY(user_id)REFERENCES user(email);
+ALTER TABLE disbursements
+  ADD CONSTRAINT disbursements_fk1 FOREIGN KEY(payer_id)REFERENCES user(email);
 
-ALTER TABLE item_shoppinglist
-  ADD CONSTRAINT item_shoppinglist_fk2 FOREIGN KEY(shoppinglist_id)REFERENCES shoppinglist(id);
+ALTER TABLE disbursements
+  ADD CONSTRAINT disbursements_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
 
-ALTER TABLE item_shoppinglist
-  ADD CONSTRAINT item_shoppinglist_fk13 FOREIGN KEY(item_name)REFERENCES item(name);
+ALTER TABLE user_disbursements
+  ADD CONSTRAINT user_disbursements_fk1 FOREIGN KEY(user_id)REFERENCES user(email);
 
-ALTER TABLE item_shoppinglist
-  ADD CONSTRAINT item_shoppinglist_fk4 FOREIGN KEY(item_price)REFERENCES item(price);
+ALTER TABLE user_disbursements
+  ADD CONSTRAINT user_disbursements_fk2 FOREIGN KEY(disp_id)REFERENCES disbursements(id);
+
+ALTER TABLE item
+    ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursements(id);
+
+ALTER TABLE item
+    ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
