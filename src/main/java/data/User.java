@@ -8,6 +8,7 @@ public class User {
     private String name;
     private String phone;
     private String password;
+    private String salt;
 
     public User() {
 
@@ -43,4 +44,12 @@ public class User {
     public String getPhone() { return phone; }
 
     public void setPhone(String phone) { this.phone = phone; }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 }

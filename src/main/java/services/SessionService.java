@@ -20,6 +20,8 @@ import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import static util.Hashing.correctPassword;
+
 /**
  * Service to handle logon and logout using the web-session
  */
@@ -40,18 +42,18 @@ public class SessionService {
         log.info("Trying to logon or register new user");
         try {
             User user = userDao.getUser(data.getEmail());
-            if(user == null && data.getEmail() != null && data.getPassword() != null) {
-                // Register new user
-                userDao.addUser(new User());
-                log.info("Registered new user");
+            if(user == null && data.getEmail() != null) {
+                // TODO: No user exists with said email
+                log.info("Failed login. Username does not exist: " + data.getEmail());
+                throw new NotAuthorizedException("Wrong username or password");
             } else {
                 // Existing user. Check that password is correct.
-                if(!data.getPassword().equals(user.getPassword())) {
-                    throw new NotAuthorizedException("Feil brukernavn eller passord");
+                if(!correctPassword(data,user)) {
+                    throw new NotAuthorizedException("Wrong username or password");
                 }
             }
         } catch(SQLException e) {
-            log.error("Failed to check or register user", e);
+            log.error("Failed to check user", e);
             throw new ServerErrorException("DB error", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
         Session session = new Session();
