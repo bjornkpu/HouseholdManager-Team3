@@ -11,7 +11,7 @@ public class Db {
     private static Db datasource;
     private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
-    private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306";
+    private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
 
@@ -19,7 +19,7 @@ public class Db {
         try {
             cpds = new ComboPooledDataSource();
             cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver
-            cpds.setJdbcUrl(DB_URL);
+            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
             cpds.setUser(DB_USER_NAME);
             cpds.setPassword(DB_PW);
 
