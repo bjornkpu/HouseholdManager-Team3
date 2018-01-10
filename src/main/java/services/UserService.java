@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * @author Martin Wangen
+ */
 @Path("/users/")
 public class UserService {
 
