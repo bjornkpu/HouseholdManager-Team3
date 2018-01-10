@@ -6,27 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>HouseHold Manager</title>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/logo.css">
+    <Link rel="stylesheet" type="text/css" href="../css/logo.css">
 </head>
 <body>
+<!-- Grid for logo-->
+<div class="container">
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <img src="../images/hhm_logo.png" alt="Household Manager Logo" class="hhm_logo">
+        </div>
+        <div class="col">
+        </div>
+    </div>
 
-<h1>Household Manager</h1>
-
-<br>
-<br>
-<br>
-<!-- Grid layout-->
+<!-- Grid layout login-->
 <div class="container">
     <div class="row">
         <div class="col">
            <h2>Log in with email</h2>
             <table>
                 <tr>
-                    <td>Email: </td>
+                    <td id="email">Email: </td>
+                    <td > <input id="emailField" type="text" name="emailField"></td>
+                </tr>
+                <tr>
+                    <td id="password">Password: </td>
+                    <td > <input id="passwordField" type="text" name="passwordField"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> <button class = "button" id = "loginButton"> Login</button></td>
                 </tr>
             </table>
         </div>
         <div class="col">
             <h2>Log in with facebook</h2>
+            <table>
+                <tr>
+                    <div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11&appId=179985056083093';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>-->
+
+                            <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+
+                            <div id="status"></div>
+
+                        </div>
+                    </div>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
@@ -35,6 +75,7 @@
 <script src="../js/jquery-3.2.1.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../js/LogIn.js"></script>
+
 
 </body>
 </html>
