@@ -6,7 +6,7 @@ import data.User;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 
-public class Hashing {
+public class LoginCheck {
 
 
     /**
@@ -16,7 +16,12 @@ public class Hashing {
      * @param user The (@code User) object from the database.
      * @return Returns true if the password matches.
      */
-    public static boolean correctPassword(LoginData data, User user){
+    public static boolean correctLogin(LoginData data, User user){
+        if(user == null && data.getEmail() != null) {
+            return false;
+        }else if(!user.getEmail().equals(data.getEmail())){
+            return false;
+        }
         //Get users salt
         String salt = user.getSalt();
         //Concatenate the login password and the users salt, then hash it.
@@ -28,14 +33,14 @@ public class Hashing {
 
     /** Encrypts a password.
      *
-     * @param password The password String to be encrypted.
+     * @param saltedPassword The password String to be encrypted.
      * @return Returns the encrypted password as a String.
      */
     //Hashes a password
-    public static String getHash(String password) {
-        String algorithm = "SHA-1";
+    public static String getHash(String saltedPassword) {
+        String algorithm = "SHA-256";
         String hashValue = "";
-        byte[] inputBytes = password.getBytes();
+        byte[] inputBytes = saltedPassword.getBytes();
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             messageDigest.update(inputBytes);

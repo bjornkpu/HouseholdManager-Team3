@@ -15,8 +15,8 @@ public class LoginTest {
         // Set up mock
         mockedUserDao = mock(UserDao.class);
 
-//        when(mockedUserDao.getUser("bk@asd.no"))
-//                .thenReturn(new User("bk@asd.no","bk","123","pass123"));
+        when(mockedUserDao.getUser("bk@asd.no"))
+                .thenReturn(new User("bk@asd.no","bk","123","pass123"));
     }
 
     @Test
