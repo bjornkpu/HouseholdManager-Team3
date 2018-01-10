@@ -13,7 +13,7 @@ public class UserDao {
 
     private static final Logger log = Logger.getLogger();
 
-    public User getUser(String email) throws SQLException {
+    public static User getUser(String email) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
@@ -38,7 +38,7 @@ public class UserDao {
         }
     }
 
-    public boolean addUser(User user) throws SQLException {
+    public static boolean addUser(User user) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
