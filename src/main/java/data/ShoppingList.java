@@ -75,12 +75,20 @@ public class ShoppingList {
         itemList.remove(i);
     }
 
+    public void removeItem(int itemId){
+        itemList.remove(itemId);
+    }
+
     public void addUser(User u){
         userList.add(u);
     }
 
     public void removeUser(User u){
         userList.remove(u);
+    }
+
+    public void removeUser(int userId){
+        userList.remove(userId);
     }
 
     public double getSumOfItems(){
