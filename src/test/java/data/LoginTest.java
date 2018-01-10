@@ -1,13 +1,14 @@
 package data;
-package search;
 
 import db.UserDao;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 
+import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,21 +17,19 @@ public class LoginTest {
     private static UserDao mockedUserDao;
 
     @BeforeClass
-    public static void setUp() {
+    public static void setUp() throws SQLException {
         // Set up mock
         mockedUserDao = mock(UserDao.class);
 
-        when(mockedUserDao.readPage("url1")).thenReturn(new String[]{"hasdasdadsadsei", "ho", "bi", "bo"});
+        when(mockedUserDao.getUser("bk@asd.no"))
+                .thenReturn(new User("bk@asd.no","bk","123","pass123"));
     }
 
     @Test
-    public void teste_funksjonaliteten_i_SearchEngine_java() {
-        // Test
-        mockedSearchEngine.indexPage("url1");
+    public void teste_user() throws SQLException {
 
-        List<String> url2forst = List.of("url2", "url1");
-
-        assertEquals(url2forst , mockedSearchEngine.search("hei"));
+        assertEquals(new User("bk@asd.no","bk","123","pass123")
+                , mockedUserDao.getUser("bk@asd.no"));
 
     }
 }
