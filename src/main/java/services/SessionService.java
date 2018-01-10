@@ -42,14 +42,9 @@ public class SessionService {
         log.info("Trying to logon or register new user");
         try {
             User user = userDao.getUser(data.getEmail());
-            if(user == null && data.getEmail() != null) {
-                log.info("Failed login. Username does not exist: " + data.getEmail());
+            if(!correctLogin(data,user)) {
+                log.info("Failed login. Username: "+ data.getEmail());
                 throw new NotAuthorizedException("Wrong username or password");
-            } else {
-                // Existing user. Check that password is correct.
-                if(!correctLogin(data,user)) {
-                    throw new NotAuthorizedException("Wrong username or password");
-                }
             }
         } catch(SQLException e) {
             log.error("Failed to check user", e);
