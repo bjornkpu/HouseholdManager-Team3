@@ -23,21 +23,14 @@ INSERT INTO chore(description, regularity, deadline, completed, party_id, user_i
 INSERT INTO chore(description, regularity, deadline, completed, party_id, user_id) VALUES ('Male vinduet',0,'12-03-18', 0, 1, NULL);
 INSERT INTO chore(description, regularity, deadline, completed, party_id, user_id) VALUES ('Tømme badekaret',0,'29-08-18', 0, 1, NULL);
 
-INSERT INTO item(name, price) VALUES ('Kjøttdeig', 20.40);
-INSERT INTO item(name, price) VALUES ('Tacokrydder', 10.62);
-INSERT INTO item(name, price) VALUES ('Lefser', 15.43);
-INSERT INTO item(name, price) VALUES ('Mais', 5.0);
-INSERT INTO item(name, price) VALUES ('Saus', 10.50);
-INSERT INTO item(name, price) VALUES ('Rømme', 20.0);
-INSERT INTO item(name, price) VALUES ('Fredrikstadpilsner', 34.40);
-INSERT INTO item(name, price) VALUES ('Cola', 34.30);
-
 INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
+INSERT INTO disbursement(price,description,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
 
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Lefser', 15.43, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Mais', 5.0, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Saus', 10.50, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Rømme', 20.00, 1, 1, 'Kjøp på REMA', 'to@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Fredrikstadpilsner', 34.40, 1, 6, 'Kjøp på Bunnpris', 'en@h.no');
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Kjøttdeig', 1, 1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Tacokrydder', 1,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Lefser', 0,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Mais', 0,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Saus', 1,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Rømme', 1,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Fredrikstadpilsner', 2,1,1);
+INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Cola', 2,1,1);
