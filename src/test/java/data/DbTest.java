@@ -1,27 +1,38 @@
 package data;
-
 import db.Db;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.sql.Connection;
 import java.sql.SQLException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class DbTest {
-    private static Db mockedDb;
+    private static Connection connection;
 
-    @BeforeClass
-    public static void setUp() {
-        mockedDb = mock(Db.class);
+    @Before
+    public void open_connection() {
+        try {
+            connection = Db.instance().getConnection();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
-    public void test_connection() throws SQLException {
-        assertNotNull(mockedDb.getConnection());
+    public void test_connection() {
+        assertNotNull(connection);
+    }
+
+    @After
+    public void close_connection() {
+        try {
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

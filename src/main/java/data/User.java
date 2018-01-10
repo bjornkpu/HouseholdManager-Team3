@@ -11,7 +11,6 @@ public class User {
     private String salt;
 
     public User() {
-
     }
 
     public User(String email, String name, String phone, String password) {
