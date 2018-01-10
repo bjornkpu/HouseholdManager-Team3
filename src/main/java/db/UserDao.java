@@ -13,12 +13,17 @@ public class UserDao {
 
     private static final Logger log = Logger.getLogger();
 
+    private static Connection connection;
+    private static PreparedStatement ps;
+    private static ResultSet rs;
+
     public static User getUser(String email) throws SQLException {
-        Connection connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
+            ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1,email);
-            ResultSet rs = ps.executeQuery();
+            rs = ps.executeQuery();
+
             User user = null;
             if(rs.next()) {
                 log.info("Found user " + email);
@@ -39,9 +44,9 @@ public class UserDao {
     }
 
     public static boolean addUser(User user) throws SQLException {
-        Connection connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
             ps.setString(1,user.getEmail());
             ps.setString(2,user.getName());
             ps.setString(3,user.getPhone());
@@ -56,9 +61,9 @@ public class UserDao {
     }
 
     public static boolean updateUser(User user) throws SQLException {
-        Connection connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
+            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
             ps.setString(1,user.getName());
             ps.setString(2,user.getPhone());
             ps.setString(3,user.getPassword());
