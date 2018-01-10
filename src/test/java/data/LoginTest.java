@@ -8,34 +8,67 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class LoginTest {
-    private static UserDao mockedUserDao;
+    private static UserDao u;
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        // Set up mock
-        mockedUserDao = mock(UserDao.class);
-
-//        when(mockedUserDao.getUser("bk@asd.no"))
-//                .thenReturn(new User("bk@asd.no","bk","123","pass123"));
+        u = new UserDao();
     }
 
     @Test
-    public void teste_user() throws SQLException {
-
-        assertEquals(new User("bk@asd.no","bk","123","pass123")
-                , mockedUserDao.getUser("bk@asd.no"));
-
-    }
-
-    @Test
-    public void hent_user(){
-        UserDao u = new UserDao();
-        String s;
+    public void get_user(){
+        User uu = new User();
         try{
-            s = u.getUser("tre@h.no").toString();
-            System.out.println(s);
+            uu = u.getUser("tre@h.no");
         }catch(SQLException e){
             e.printStackTrace();
         }
+
+        assertEquals("Knat Waag", uu.getName());
+    }
+
+    @Test
+    public void insert_user(){
+        User user1 = new User("user1@gmail.com", "User1", "90706060", "123");
+        User user2 = new User();
+
+        try {
+            u.addUser(user1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            user2 = u.getUser("user1@gmail.com");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(user2.getEmail() + " " + user2.getName() + " " + user2.getPhone() + " ");
+
+        assertEquals(user1.getEmail(), user2.getEmail());
+    }
+
+    @Test
+    public void update_user(){
+        User user1 = new User("user1@gmail.com", "UserA", "292929", "1321");
+
+        try {
+            u.updateUser(user1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        User test = new User();
+
+        try {
+            test = u.getUser("user1@gmail.com");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals("UserA", test.getName());
+        assertEquals("292929", test.getPhone());
+        assertEquals("1321", test.getPassword());
     }
 }
