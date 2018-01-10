@@ -1,5 +1,6 @@
 package data;
 import db.UserDao;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.sql.SQLException;
@@ -70,5 +71,12 @@ public class LoginTest {
         assertEquals("UserA", test.getName());
         assertEquals("292929", test.getPhone());
         assertEquals("1321", test.getPassword());
+    }
+    /**
+     * Deleting the user made in insert_user to prevent the sql error the next time we run the insert_user-test
+     */
+    @AfterClass
+    public void delete_user() throws SQLException {
+        u.delUser("user1@gmail.com");
     }
 }
