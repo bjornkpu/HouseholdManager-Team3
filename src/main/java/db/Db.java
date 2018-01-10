@@ -1,50 +1,52 @@
 package db;
 
-import util.MethodTimer;
-
-import java.sql.Statement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
 import util.Logger;
 
-/**
- * Singleton for DB creation and connection creation
- * @author nilstes
- */
-//Connection driver etc.
+import java.sql.Connection;
+import java.sql.SQLException;
+
 public class Db {
 
+    private static Db datasource;
+    private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
-    private static final String DB_NAME = "g_tdat2003_t3";
-    private static Db instance = new Db();
+    private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
+    private static final String DB_USER_NAME = "g_tdat2003_t3";
+    private static final String DB_PW = "Xq6ksy8X";
 
     private Db() {
         try {
-            Class.forName("org.h2.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:h2:~/" + DB_NAME, DB_NAME, "Xq6ksy8X");
-            try {
-                Statement statement = connection.createStatement();
-                statement.close();
-            } finally {
-                connection.close();
-            }
+            cpds = new ComboPooledDataSource();
+            cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver
+            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
+            cpds.setUser(DB_USER_NAME);
+            cpds.setPassword(DB_PW);
+
+            // the settings below are optional -- c3p0 can work with defaults
+            cpds.setMinPoolSize(0);
+            cpds.setAcquireIncrement(5);
+            cpds.setMaxPoolSize(20);
+            cpds.setMaxStatements(180);
+
             log.info("DB initialized!");
+
         } catch (Exception exception) {
             log.error("Failed to start DB", exception);
         }
     }
 
     public static Db instance() {
-        return instance;
-    }
-
-    Connection getConnection() throws SQLException {
-        // todo FIXME This is not a good way to get connections
-        // Use a pool instead
-        try (MethodTimer timer = new MethodTimer(Db.class, "getConnection")) {
-            return DriverManager.getConnection("jdbc:h2:~/" + DB_NAME, DB_NAME, "Xq6ksy8X");
+        if (datasource == null) {
+            datasource = new Db();
+            return datasource;
+        } else {
+            return datasource;
         }
     }
-}
 
+    public Connection getConnection() throws SQLException {
+        return this.cpds.getConnection();
+    }
+
+}

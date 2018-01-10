@@ -5,8 +5,8 @@ public class Admin extends User{
 
     }
 
-    public Admin(int id, String email, String name, String phone, String password){
-        super(id, email, name, phone, password);
+    public Admin(String email, String name, String phone, String password){
+        super(email, name, phone, password);
     }
 
     public boolean addUserToGroup(int userId){
