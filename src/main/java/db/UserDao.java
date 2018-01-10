@@ -55,7 +55,7 @@ public class UserDao {
         }
     }
 
-    public boolean updateUser(User user) throws SQLException {
+    public static boolean updateUser(User user) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");

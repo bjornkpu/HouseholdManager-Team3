@@ -24,33 +24,19 @@ public class UserService {
         }
     }
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Collection<User> getUsers() {
-        return users.values();
-    }
-
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public void addUser(User user) throws SQLException {
         UserDao.addUser(user);
     }
 
-    @DELETE
-    @Path("/{userId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public void deleteUser(@PathParam("userId") String userId){
-        users.remove(userId);
-    }
-
     @PUT
     @Path("/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public void updateUser(User user){
-        if(users.get(user.getId())!=null){
-            users.put(user.getId(),user);
-        }else {
+    public void updateUser(User user) throws SQLException {
+        if((user.getEmail())!=null){
+            UserDao.updateUser(user);
+                    }else {
             throw new javax.ws.rs.NotFoundException();
 
         }
