@@ -20,7 +20,7 @@ public class LoginTest {
         // Set up mock
         mockedUserDao = mock(UserDao.class);
 
-        when(mockedUserDao.readPage("url1")).thenReturn(new String[]{"hasdadsei", "ho", "bi", "bo"});
+        when(mockedUserDao.readPage("url1")).thenReturn(new String[]{"hasdasdadsadsei", "ho", "bi", "bo"});
     }
 
     @Test
