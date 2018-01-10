@@ -10,7 +10,7 @@ public class Group {
     private int groupId;
     private String groupName;
     private String description;
-    private User admin;
+    private int admin;
     private ArrayList<User> userList;
     private ArrayList<ShoppingList> shoppingListList;
     private ArrayList<Todo> todoList;
@@ -19,7 +19,7 @@ public class Group {
     public Group(){
     }
 
-    public Group(int groupId, String groupName, String description, User admin) {
+    public Group(int groupId, String groupName, String description, int admin) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -50,11 +50,11 @@ public class Group {
         this.description = description;
     }
 
-    public User getAdmin() {
+    public int getAdmin() {
         return admin;
     }
 
-    public void setAdmin(User admin) {
+    public void setAdmin(int admin) {
         this.admin = admin;
     }
 
@@ -156,7 +156,7 @@ public class Group {
         wallPostList.remove(wallPostId);
     }
 
-    public void changeAdmin(User u){
+    public void changeAdmin(int u){
         //TODO method to safely switch admin rights between users
         admin = u;
     }
