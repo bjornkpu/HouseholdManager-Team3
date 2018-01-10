@@ -6,10 +6,10 @@ import java.util.ArrayList;
  * Class for the ShoppingList-object
  */
 public class ShoppingList {
-    int shoppingListId;
-    String shoppingListName;
-    ArrayList<Item> itemList;
-    ArrayList<User> userList;
+    private int shoppingListId;
+    private String shoppingListName;
+    private ArrayList<Item> itemList;
+    private ArrayList<User> userList;
 
     public ShoppingList() {
     }

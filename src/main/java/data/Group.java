@@ -1,19 +1,20 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Class for the Group-object
  */
 public class Group {
-    int groupId;
-    String groupName;
-    String description;
-    User admin;
-    ArrayList<User> userList;
-    ArrayList<ShoppingList> shoppingListList;
-    ArrayList<Todo> todoList;
-    ArrayList<WallPost> wallPostList;
+    private int groupId;
+    private String groupName;
+    private String description;
+    private User admin;
+    private ArrayList<User> userList;
+    private ArrayList<ShoppingList> shoppingListList;
+    private ArrayList<Todo> todoList;
+    private ArrayList<WallPost> wallPostList;
 
     public Group(){
     }
@@ -73,12 +74,22 @@ public class Group {
         userList.remove(u);
     }
 
+    public void removeUser(int userId){
+        userList.remove(userId);
+    }
+
     public ArrayList<ShoppingList> getShoppingListList() {
         return shoppingListList;
     }
 
     public ShoppingList getShoppingListFromList(int shoppingListId){
         return shoppingListList.get(shoppingListId);
+    }
+
+    public void createShoppingList(int id, String name, User u){ //create a ShoppingList object and add it to the list
+        ShoppingList sh = new ShoppingList(id, name);
+        sh.getUserList().add(u); //add the creator of the list as a user in the created object
+        shoppingListList.add(sh);
     }
 
     public void addShoppingList(ShoppingList sl){
@@ -89,12 +100,24 @@ public class Group {
         shoppingListList.remove(sl);
     }
 
+    public void removeShoppingList(int shoppingListId){
+        shoppingListList.remove(shoppingListId);
+    }
+
     public ArrayList<Todo> getTodoList() {
         return todoList;
     }
 
     public Todo getTodoFromList(int todoId){
         return todoList.get(todoId);
+    }
+
+    public void createTodo(int id, String desc){
+        todoList.add(new Todo(id, desc));
+    }
+
+    public void createTodo(int id, String desc, Date refreshDate){
+        todoList.add(new RepeatedTodo(id, desc, refreshDate));
     }
 
     public void addTodo(Todo t){
@@ -105,12 +128,20 @@ public class Group {
         todoList.remove(t);
     }
 
+    public void removeTodo(int todoId){
+        todoList.remove(todoId);
+    }
+
     public ArrayList<WallPost> getWallPostList() {
         return wallPostList;
     }
 
     public WallPost getWallPostFromList(int wallPostId){
         return wallPostList.get(wallPostId);
+    }
+
+    public void createWallPost(int id, String desc, Date d){
+        wallPostList.add(new WallPost(id, desc, d));
     }
 
     public void addWallpost(WallPost wp){
@@ -121,7 +152,12 @@ public class Group {
         wallPostList.remove(wp);
     }
 
+    public void removeWallPost(int wallPostId){
+        wallPostList.remove(wallPostId);
+    }
+
     public void changeAdmin(User u){
+        //TODO method to safely switch admin rights between users
         admin = u;
     }
 
