@@ -39,7 +39,7 @@ public class Db {
         return instance;
     }
 
-    Connection getConnection() throws SQLException {
+    public Connection getConnection() throws SQLException {
         // todo FIXME This is not a good way to get connections
         // Use a pool instead
         try (MethodTimer timer = new MethodTimer(Db.class, "getConnection")) {
