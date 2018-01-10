@@ -10,6 +10,10 @@
     <Link rel="stylesheet" type="text/css" href="../css/logo.css">
 </head>
 <body>
+<!-- div for alert on login, hidden on load-->
+<div id="loginResult" style="display:none;">
+</div>
+
 <!-- Grid for logo-->
 <div class="container">
     <div class="row">
@@ -22,8 +26,7 @@
         </div>
     </div>
 
-<!-- Grid layout login-->
-<div class="container">
+<!-- Grid layout for login with email and facebook, splitscreen-->
     <div class="row">
         <div class="col">
            <h2>Log in with email</h2>
@@ -40,7 +43,9 @@
                     <td></td>
                     <td> <button class = "button" id = "loginButton"> Login</button></td>
                 </tr>
-
+                <div class="alert alert-danger hide" id="wrongPasswordAlert">
+                    <strong>Wrong email or password!</strong>
+                </div>
                 <tr>
                 <td id="name_of_user">Name </td>
                 <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
@@ -60,7 +65,6 @@
             </table>
         </div>
 
-        <!--gridlayout login with facebook -->
         <div class="col">
             <h2>Log in with facebook</h2>
             <table>
@@ -81,7 +85,6 @@
                             <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
 
                             <div id="status"></div>
-
                         </div>
                     </div>
                 </tr>
@@ -90,11 +93,9 @@
     </div>
 </div>
 
-
 <script src="../js/jquery-3.2.1.min.js"></script>
 <script src="../bootstrap/js/bootstrap.min.js"></script>
 <script src="../js/LogIn.js"></script>
-
 
 </body>
 </html>
