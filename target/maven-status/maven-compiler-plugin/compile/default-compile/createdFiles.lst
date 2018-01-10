@@ -1,0 +1,17 @@
+db\ShoppingListDao.class
+data\LoginData.class
+db\Db.class
+services\UserService.class
+services\KundeService.class
+data\Group.class
+services\Kunde.class
+util\Logger.class
+services\ShoppingListService.class
+data\Element.class
+db\UserDao.class
+services\SessionService.class
+data\ShoppingList.class
+data\Session.class
+db\GroupDao.class
+data\User.class
+services\GroupService.class
