@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +21,7 @@ public class DbTest {
     }
 
     @Test
-    public void teste_onnection() throws SQLException {
-        assertNotEquals(null , mockedDb.getConnection());
+    public void test_connection() throws SQLException {
+        assertNotNull(mockedDb.getConnection());
     }
 }
