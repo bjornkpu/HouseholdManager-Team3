@@ -118,7 +118,7 @@ public class GroupDao {
 
     }
     public static boolean deleteGroup(int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection(); // heu
         try{
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,groupId);
