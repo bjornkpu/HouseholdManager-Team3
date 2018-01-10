@@ -1,17 +1,11 @@
 package data;
-
 import db.UserDao;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-
 import java.sql.SQLException;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 public class LoginTest {
     private static UserDao mockedUserDao;
