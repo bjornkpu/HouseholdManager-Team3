@@ -1,12 +1,17 @@
 package data;
 
 public class Todo {
-    int todoId;
-    String description;
-    int[] completedBy;
-    boolean finished;
+    private int todoId;
+    private String description;
+    private int[] completedBy;
+    private boolean finished;
 
     public Todo() {
+    }
+
+    public Todo(int todoId, String description) {
+        this.todoId = todoId;
+        this.description = description;
     }
 
     public Todo(int todoId, String description, int[] completedBy, boolean finished) {

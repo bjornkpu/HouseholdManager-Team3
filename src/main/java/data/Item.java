@@ -1,16 +1,15 @@
 package data;
 
 /**
- * Class for the Element-object
+ * Class for the Item-object
  */
 public class Item {
-    int itemId;
-    String description;
-    double price;
-    int userId;
+    private int itemId;
+    private String description;
+    private double price;
+    private int userId;
 
     public Item(){
-
     }
 
     public Item (int elementId, String description, double price, int userId) {
