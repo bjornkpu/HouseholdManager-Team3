@@ -4,33 +4,33 @@ package data;
  * Class for the Item-object
  */
 public class Item {
-    private int id;
-    private String description;
+    private int itemId;
+    private String name;
     private int status;
 
     public Item(){
     }
 
-    public Item (int id, String description, int status) {
-        this.id = id;
-        this.description = description;
+    public Item (int itemId, String name, int status) {
+        this.itemId = itemId;
+        this.name = name;
         this.status = status;
     }
 
-    public int getId() {
-        return id;
+    public int getItemId() {
+        return itemId;
     }
 
-    public void setId(int elementId) {
-        this.id = elementId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getStatus() {
