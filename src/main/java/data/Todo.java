@@ -1,12 +1,14 @@
 package data;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Todo {
     private int todoId;
     private String description;
     private ArrayList<String> completedBy;
     private String assignedTo;
+    private Date deadline;
 
     public Todo() {
     }
@@ -16,11 +18,12 @@ public class Todo {
         this.description = description;
     }
 
-    public Todo(int todoId, String description, ArrayList<String> completedBy, String assignedTo) {
+    public Todo(int todoId, String description, ArrayList<String> completedBy, String assignedTo, Date deadline) {
         this.todoId = todoId;
         this.description = description;
         this.completedBy = completedBy;
         this.assignedTo = assignedTo;
+        this.deadline = deadline;
     }
 
     public int getTodoId() {
@@ -53,6 +56,14 @@ public class Todo {
 
     public String getAssignedTo(){
         return assignedTo;
+    }
+
+    public Date getDeadline(){
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline){
+        this.deadline=deadline;
     }
 
 

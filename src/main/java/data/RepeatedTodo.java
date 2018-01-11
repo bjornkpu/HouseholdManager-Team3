@@ -18,8 +18,8 @@ public class RepeatedTodo extends Todo {
         this.regularity = regularity;
     }
 
-    public RepeatedTodo(int todoId, String description, ArrayList<String> completedBy, String assignedTo, int regularity) {
-        super(todoId, description, completedBy, assignedTo);
+    public RepeatedTodo(int todoId, String description, ArrayList<String> completedBy, String assignedTo, Date deadline, int regularity) {
+        super(todoId, description, completedBy, assignedTo, deadline);
         this.regularity = regularity;
     }
 

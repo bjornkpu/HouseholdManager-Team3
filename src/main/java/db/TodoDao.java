@@ -4,10 +4,7 @@ import data.RepeatedTodo;
 import util.Logger;
 import data.Todo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class TodoDao {
@@ -59,6 +56,7 @@ public class TodoDao {
                 ArrayList<String> completedBy = findCompletedBy(todoId);
                 todo.setCompletedBy(completedBy);
                 todo.setAssignedTo(rs.getString("assignedTo"));
+                todo.setDeadline(rs.getDate("deadline"));
             }
             else{
                 log.info("Could not find Todo");
@@ -66,6 +64,24 @@ public class TodoDao {
             rs.close();
             ps.close();
             return todo;
+        }
+        finally {
+            connection.close();
+        }
+    }
+
+    public static boolean addTodo(Todo todo, int partyId) throws SQLException{
+        connection = Db.instance().getConnection();
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(description, regularity, deadline, party_id, user_id) VALUES (?,?,?,?,?,?)");
+            ps.setString(1, todo.getDescription());
+            ps.setInt(2, 0);
+            ps.setDate(3, (Date) todo.getDeadline());
+            ps.setInt(4, partyId);
+            ps.setString(5, todo.getAssignedTo());
+            int result = ps.executeUpdate();
+            ps.close();
+            return result == 1;
         }
         finally {
             connection.close();
