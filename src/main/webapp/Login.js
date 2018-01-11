@@ -72,30 +72,34 @@ function testAPI() {
     });
 }
 
-// Log in
-$("#loginButton").submit(function(event) {
-    event.preventDefault();
-    $.ajax({
-        url: 'rest/users',
-        type: 'POST',
-        data: JSON.stringify({
-            email: $("#emailField").val(),
-            password: $("#passwordField").val()
-        }),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        complete: function (jqXHR, textStatus) {
-            switch (jqXHR.status) {
-                case 200:
-                    document.cookie = "testcookie=sensitive data";
-                    window.location.href = "Dashboard.html";
-                    break;
-                case 401:
-                    $("#wrongPasswordAlert").removeClass("hide");
-                    break;
+
+$(document).ready(function(){
+    // Log in
+    $("#loginButton").click(function() {
+        $.ajax({
+            url: 'rest/session',
+            type: 'POST',
+            data: JSON.stringify({
+                email: $("#emailField").val(),
+                password: $("#passwordField").val()
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            complete: function (jqXHR, textStatus) {
+                switch (jqXHR.status) {
+                    case 200:
+                        document.cookie = "testcookie=sensitive data";
+                        window.location.href = "Dashboard.html";
+                        break;
+                    case 401:
+                        $("#wrongPasswordAlert").removeClass("hide");
+                        break;
+                }
             }
-        }
+        });
     });
-}
+});
+
+
 
 
