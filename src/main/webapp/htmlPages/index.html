@@ -6,45 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Household Manager</title>
     <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-        }
-        .row {
-            margin: auto;
-            width: 50%;
-            border: 3px solid green;
-            padding: 10px;
-        }
-    </style>
 </head>
 <body> <!-- BODY-------------------------------------------------------------------------------- -->
 
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11&appId=179985056083093';
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-</script>
 
-<div class="container-fluid">
-    <div class="row">
-        <img src="../images/hhm_logo.png" alt="Household Manager Logo" class="hhm_logo">
+<div>
 
-        <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>-->
+    <a href="../htmlPages/Dashboard.html">Dashboard</a><br>
+    <a href="../htmlPages/GroupDashboard.html">Group Dashboard</a><br>
+    <a href="../htmlPages/LogIn.html">Log in</a><br>
+    <a href="../htmlPages/Profile.html">Profile</a><br>
+    <a href="../htmlPages/ProfileSettings.html">Profile settings</a><br>
+    <a href="../htmlPages/Statistic.html">Statistics</a><br>
+    <a href="../htmlPages/Shoppinglist.html">Shopping list</a><br>
 
-        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
-
-        <div id="status"></div>
-
-    </div>
 </div>
-
-<script src="../js/jquery-3.2.1.min.js"></script>
-<script src="../bootstrap/js/bootstrap.min.js"></script>
-<script src="../js/index.js"></script>
 
 </body> <!-- BODY--------------------------------------------------------------------- -->
 </html>
