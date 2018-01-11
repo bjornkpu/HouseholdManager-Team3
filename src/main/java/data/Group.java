@@ -116,8 +116,8 @@ public class Group {
         todoList.add(new Todo(id, desc));
     }
 
-    public void createTodo(int id, String desc, Date refreshDate){
-        todoList.add(new RepeatedTodo(id, desc, refreshDate));
+    public void createTodo(int id, String desc, int regularity){
+        todoList.add(new RepeatedTodo(id, desc, regularity));
     }
 
     public void addTodo(Todo t){

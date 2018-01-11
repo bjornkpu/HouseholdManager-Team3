@@ -1,10 +1,12 @@
 package data;
 
+import java.util.ArrayList;
+
 public class Todo {
     private int todoId;
     private String description;
-    private int[] completedBy;
-    private boolean finished;
+    private ArrayList<String> completedBy;
+    private String assignedTo;
 
     public Todo() {
     }
@@ -14,11 +16,11 @@ public class Todo {
         this.description = description;
     }
 
-    public Todo(int todoId, String description, int[] completedBy, boolean finished) {
+    public Todo(int todoId, String description, ArrayList<String> completedBy, String assignedTo) {
         this.todoId = todoId;
         this.description = description;
         this.completedBy = completedBy;
-        this.finished = finished;
+        this.assignedTo = assignedTo;
     }
 
     public int getTodoId() {
@@ -37,20 +39,20 @@ public class Todo {
         this.description = description;
     }
 
-    public int[] getCompletedBy() {
+    public ArrayList<String> getCompletedBy() {
         return completedBy;
     }
 
-    public void setCompletedBy(int[] completedBy) {
+    public void setCompletedBy(ArrayList<String> completedBy) {
         this.completedBy = completedBy;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public void setAssignedTo(String assignedTo){
+        this.assignedTo=assignedTo;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    public String getAssignedTo(){
+        return assignedTo;
     }
 
 

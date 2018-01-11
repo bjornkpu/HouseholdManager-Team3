@@ -1,29 +1,34 @@
 package data;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class RepeatedTodo extends Todo {
-    private Date refreshDate;
+    private int regularity;
 
     public RepeatedTodo() {
     }
 
-    public RepeatedTodo(int todoId, String description, Date refreshDate) {
+    public RepeatedTodo(int regularity){
+        this.regularity=regularity;
+    }
+
+    public RepeatedTodo(int todoId, String description, int regularity) {
         super(todoId, description);
-        this.refreshDate = refreshDate;
+        this.regularity = regularity;
     }
 
-    public RepeatedTodo(int todoId, String description, int[] completedBy, boolean finished, Date refreshDate) {
-        super(todoId, description, completedBy, finished);
-        this.refreshDate = refreshDate;
+    public RepeatedTodo(int todoId, String description, ArrayList<String> completedBy, String assignedTo, int regularity) {
+        super(todoId, description, completedBy, assignedTo);
+        this.regularity = regularity;
     }
 
-    public Date getRefreshDate() {
+    public int getRegularity() {
 
-        return refreshDate;
+        return regularity;
     }
 
-    public void setRefreshDate(Date refreshDate) {
-        this.refreshDate = refreshDate;
+    public void setRegularity(int regularity) {
+        this.regularity = regularity;
     }
 }
