@@ -1,7 +1,6 @@
 package db;
 
 import data.RepeatedChore;
-import data.RepeatedTodo;
 import util.Logger;
 import data.Chore;
 
@@ -89,7 +88,7 @@ public class ChoreDao {
         }
     }
 
-    public static boolean assignTodo(String email, int id) throws SQLException{
+    public static boolean assignChore(String email, int id) throws SQLException{
         connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("UPDATE chore set user_email=? where id=?");
