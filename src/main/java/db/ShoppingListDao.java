@@ -16,11 +16,11 @@ public class ShoppingListDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    public static ShoppingList getShoppingList(String id) throws SQLException {
+    public static ShoppingList getShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE id=?");
-            ps.setString(1,id);
+            ps.setInt(1,id);
             rs = ps.executeQuery();
 
             ShoppingList sl = null;
@@ -29,8 +29,8 @@ public class ShoppingListDao {
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
-                sl.setItemList();
-                sl.setUserList();
+                sl.setItemList(ItemDao.getItemList(id));
+//                sl.setUserList(UserDao.getUserList(id));
 
             } else {
                 log.info("Could not find user " + id);

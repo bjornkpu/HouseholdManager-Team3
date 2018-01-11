@@ -41,7 +41,7 @@ public class ItemDao {
         }
     }
 
-    public static ArrayList<Item> getItemList(Integer id) throws SQLException {
+    public static ArrayList<Item> getItemList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
