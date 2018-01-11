@@ -27,8 +27,8 @@ public class ShoppingListDao {
             if(rs.next()) {
                 log.info("Found shoppinglist " + id);
                 sl = new ShoppingList();
-                sl.setShoppingListId(rs.getInt("id"));
-                sl.setShoppingListName(rs.getString("id"));
+                //sl.setShoppingListId(rs.getInt("id"));
+                //sl.setShoppingListName(rs.getString("id"));
 //                sl.setItemList(rs.getArray("id"));
 //                sl.setUserList(rs.getString("id"));
 
