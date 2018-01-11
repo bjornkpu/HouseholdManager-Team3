@@ -42,5 +42,4 @@ public class ShoppingListDao {
             connection.close();
         }
     }
-
 }
