@@ -7,16 +7,14 @@ public class Item {
     private int id;
     private String description;
     private int status;
-    private int userId;
 
     public Item(){
     }
 
-    public Item (int id, String description, int status, int userId) {
+    public Item (int id, String description, int status) {
         this.id = id;
         this.description = description;
         this.status = status;
-        this.userId = userId;
     }
 
     public int getId() {
