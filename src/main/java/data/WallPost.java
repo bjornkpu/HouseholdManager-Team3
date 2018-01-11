@@ -3,33 +3,23 @@ package data;
 import java.util.Date;
 
 public class WallPost {
-    int wallPostId;
-    String description;
-    Date datePosted;
+    private Date datePosted; //id
+    private String message;
 
     public WallPost() {
     }
 
-    public WallPost(int wallPostId, String description, Date datePosted) {
-        this.wallPostId = wallPostId;
-        this.description = description;
+    public WallPost(String message, Date datePosted) {
+        this.message = message;
         this.datePosted = datePosted;
     }
 
-    public int getWallPostId() {
-        return wallPostId;
-    }
-
-    public void setWallPostId(int wallPostId) {
-        this.wallPostId = wallPostId;
-    }
-
     public String getDescription() {
-        return description;
+        return message;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.message = description;
     }
 
     public Date getDatePosted() {

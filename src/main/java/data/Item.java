@@ -4,27 +4,27 @@ package data;
  * Class for the Item-object
  */
 public class Item {
-    private int itemId;
+    private int id;
     private String description;
-    private double price;
+    private int status;
     private int userId;
 
     public Item(){
     }
 
-    public Item (int elementId, String description, double price, int userId) {
-        this.itemId = elementId;
+    public Item (int id, String description, int status, int userId) {
+        this.id = id;
         this.description = description;
-        this.price = price;
+        this.status = status;
         this.userId = userId;
     }
 
-    public int getElementId() {
-        return itemId;
+    public int getId() {
+        return id;
     }
 
-    public void setElementId(int elementId) {
-        this.itemId = elementId;
+    public void setId(int elementId) {
+        this.id = elementId;
     }
 
     public String getDescription() {
@@ -35,19 +35,11 @@ public class Item {
         this.description = description;
     }
 
-    public double getPrice() {
-        return price;
+    public int getStatus() {
+        return status;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

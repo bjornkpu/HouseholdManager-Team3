@@ -1,32 +1,32 @@
 package data;
 
-public class Todo {
-    private int todoId;
+public class Chore {
+    private int id;
     private String description;
     private int[] completedBy;
     private boolean finished;
 
-    public Todo() {
+    public Chore() {
     }
 
-    public Todo(int todoId, String description) {
-        this.todoId = todoId;
+    public Chore(int id, String description) {
+        this.id = id;
         this.description = description;
     }
 
-    public Todo(int todoId, String description, int[] completedBy, boolean finished) {
-        this.todoId = todoId;
+    public Chore(int id, String description, int[] completedBy, boolean finished) {
+        this.id = id;
         this.description = description;
         this.completedBy = completedBy;
         this.finished = finished;
     }
 
-    public int getTodoId() {
-        return todoId;
+    public int getId() {
+        return id;
     }
 
-    public void setTodoId(int todoId) {
-        this.todoId = todoId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {

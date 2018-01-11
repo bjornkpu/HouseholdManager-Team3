@@ -6,41 +6,41 @@ import java.util.ArrayList;
  * Class for the ShoppingList-object
  */
 public class ShoppingList {
-    private int shoppingListId;
-    private String shoppingListName;
+    private int id;
+    private String name;
     private ArrayList<Item> itemList;
     private ArrayList<User> userList;
 
     public ShoppingList() {
     }
 
-    public ShoppingList(int shoppingListId, String shoppingListName){
-        this.shoppingListId = shoppingListId;
-        this.shoppingListName = shoppingListName;
+    public ShoppingList(int id, String name){
+        this.id = id;
+        this.name = name;
     }
 
-    public ShoppingList(int shoppingListId, String shoppingListName, ArrayList<Item> itemList, ArrayList<User> userList) {
+    public ShoppingList(int id, String name, ArrayList<Item> itemList, ArrayList<User> userList) {
 
-        this.shoppingListId = shoppingListId;
-        this.shoppingListName = shoppingListName;
+        this.id = id;
+        this.name = name;
         this.itemList = itemList;
         this.userList = userList;
     }
 
-    public int getShoppingListId() {
-        return shoppingListId;
+    public int getId() {
+        return id;
     }
 
-    public void setShoppingListId(int shoppingListId) {
-        this.shoppingListId = shoppingListId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getShoppingListName() {
-        return shoppingListName;
+    public String getName() {
+        return name;
     }
 
-    public void setShoppingListName(String shoppingListName) {
-        this.shoppingListName = shoppingListName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ArrayList<Item> getItemList() {
@@ -67,8 +67,8 @@ public class ShoppingList {
         itemList.add(i);
     }
 
-    public void addItem(int itemId, String desc, double price, int userId){
-        itemList.add(new Item(itemId, desc, price, userId));
+    public void addItem(int itemId, String desc, int status, int userId){
+        itemList.add(new Item(itemId, desc, status, userId));
     }
 
     public void removeItem(Item i){

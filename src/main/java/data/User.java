@@ -4,7 +4,7 @@ package data;
  * Class for the User-object
  */
 public class User {
-    private String email;
+    private String email; //id
     private String name;
     private String phone;
     private String password;

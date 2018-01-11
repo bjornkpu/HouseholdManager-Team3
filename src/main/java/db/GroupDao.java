@@ -38,7 +38,7 @@ public class GroupDao {
                 log.info("Found party " + groupId);
                 group = new Group();
                 group.setGroupId(groupId);
-                group.setGroupName(rs.getString("name"));
+                group.setName(rs.getString("name"));
                 group.setAdmin(rs.getInt("admin_id"));
             } else {
                 log.info("Could not find party " + groupId);
@@ -66,7 +66,7 @@ public class GroupDao {
             while(rs.next()){
                 Group group = new Group();
                 group.setGroupId(rs.getInt("id"));
-                group.setGroupName(rs.getString("name"));
+                group.setName(rs.getString("name"));
                 group.setAdmin(rs.getInt("admin_id"));
                 groups.add(group);
             }
@@ -90,7 +90,7 @@ public class GroupDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO party (name,admin_id) VALUES(?,?)");
-            ps.setString(1,group.getGroupName());
+            ps.setString(1,group.getName());
             ps.setInt(2,group.getAdmin());
             int result = ps.executeUpdate();
             ps.close();
@@ -148,7 +148,7 @@ public class GroupDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE party set name=?,admin_id=? WHERE group_id = ?");
-            ps.setString(1,group.getGroupName());
+            ps.setString(1,group.getName());
             ps.setInt(2,group.getAdmin());
             ps.setInt(3,group.getGroupId());
             int result = ps.executeUpdate();

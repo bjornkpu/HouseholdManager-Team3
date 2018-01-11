@@ -8,20 +8,20 @@ import java.util.Date;
  */
 public class Group {
     private int groupId;
-    private String groupName;
+    private String name;
     private String description;
     private int admin;
     private ArrayList<User> userList;
     private ArrayList<ShoppingList> shoppingListList;
-    private ArrayList<Todo> todoList;
+    private ArrayList<Chore> choreList;
     private ArrayList<WallPost> wallPostList;
 
     public Group(){
     }
 
-    public Group(int groupId, String groupName, String description, int admin) {
+    public Group(int groupId, String name, String description, int admin) {
         this.groupId = groupId;
-        this.groupName = groupName;
+        this.name = name;
         this.description = description;
         this.admin = admin;
     }
@@ -34,12 +34,12 @@ public class Group {
         this.groupId = groupId;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -104,32 +104,32 @@ public class Group {
         shoppingListList.remove(shoppingListId);
     }
 
-    public ArrayList<Todo> getTodoList() {
-        return todoList;
+    public ArrayList<Chore> getChoreList() {
+        return choreList;
     }
 
-    public Todo getTodoFromList(int todoId){
-        return todoList.get(todoId);
+    public Chore getTodoFromList(int todoId){
+        return choreList.get(todoId);
     }
 
     public void createTodo(int id, String desc){
-        todoList.add(new Todo(id, desc));
+        choreList.add(new Chore(id, desc));
     }
 
-    public void createTodo(int id, String desc, Date refreshDate){
-        todoList.add(new RepeatedTodo(id, desc, refreshDate));
+    public void createTodo(int id, String desc, int regularity){
+        choreList.add(new RepeatedChore(id, desc, regularity));
     }
 
-    public void addTodo(Todo t){
-        todoList.add(t);
+    public void addTodo(Chore t){
+        choreList.add(t);
     }
 
-    public void removeTodo(Todo t){
-        todoList.remove(t);
+    public void removeTodo(Chore t){
+        choreList.remove(t);
     }
 
     public void removeTodo(int todoId){
-        todoList.remove(todoId);
+        choreList.remove(todoId);
     }
 
     public ArrayList<WallPost> getWallPostList() {
@@ -140,8 +140,8 @@ public class Group {
         return wallPostList.get(wallPostId);
     }
 
-    public void createWallPost(int id, String desc, Date d){
-        wallPostList.add(new WallPost(id, desc, d));
+    public void createWallPost(String desc, Date d){
+        wallPostList.add(new WallPost(desc, d));
     }
 
     public void addWallpost(WallPost wp){
