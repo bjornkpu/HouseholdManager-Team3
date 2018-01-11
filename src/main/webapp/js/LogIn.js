@@ -73,7 +73,7 @@ function testAPI() {
 }
 
 // Log in
-$("#loginForm").submit(function(event) {
+$("#loginButton").submit(function(event) {
     event.preventDefault();
     $.ajax({
         url: 'rest/users',
