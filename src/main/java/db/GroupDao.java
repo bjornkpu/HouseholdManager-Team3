@@ -100,6 +100,7 @@ public class GroupDao {
             connection.close();
         }
 
+
     }
 
     public static boolean addParty(String partyName,int adminId) throws SQLException {
