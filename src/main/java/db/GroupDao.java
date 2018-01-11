@@ -117,7 +117,7 @@ public class GroupDao {
         }
 
     }
-    public static boolean deleteGroup(int groupId) throws SQLException {
+    public static boolean deleteParty(int groupId) throws SQLException {
         connection = Db.instance().getConnection(); // heu
         try{
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
@@ -130,7 +130,7 @@ public class GroupDao {
             connection.close();
         }
     }
-    public static boolean deleteGroup(Group group) throws SQLException {
+    public static boolean deleteParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
@@ -144,9 +144,47 @@ public class GroupDao {
         }
     }
 
-    public void updateGroup(int groupId) throws SQLException {
-
-
-
+    public static boolean updateParty(Group group) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("UPDATE party set name=?,admin_id=? WHERE group_id = ?");
+            ps.setString(1,group.getGroupName());
+            ps.setInt(2,group.getAdmin());
+            ps.setInt(3,group.getGroupId());
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Update party, result: " + (result == 1? "ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+    public static boolean updateParty(int partyid,int newAdmin) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("UPDATE party set admin_id=? WHERE group_id = ?");
+            ps.setInt(1,newAdmin);
+            ps.setInt(2,partyid);
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Update party, result: " + (result == 1? "ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+    public static boolean updatePart(int partyid,String newName) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("UPDATE party set name=? WHERE group_id = ?");
+            ps.setString(1,newName);
+            ps.setInt(2,partyid);
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Update party, result: " + (result == 1? "ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
     }
 }
