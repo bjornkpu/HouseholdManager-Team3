@@ -1,6 +1,7 @@
-
-
 $(document).ready(function() {
+
+    var disbursementList = [];
+    var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
 
     $('.dropdown-menu').click(function () {
 
@@ -94,6 +95,59 @@ $(document).ready(function() {
         createShoppinglistButton.style.display = "none";
 
     });
+
+    //function which lists out the different disbursements
+    function renderDisbursementsList(data) {
+        var list = data == null ? [] : (data instanceof Array ? data : [data]);
+        disbursementList = [];
+        $.each(list, function(index, Shoppinglist) {
+            disbursementList.push({
+                //SHOPPINGLIST ER BARE ET EKS, SKAL BYTTES MED DEN JAVAKLASSEN FOR DISBURSEMENT
+                "description": Shoppinglist.description,
+                "participants": Shoppinglist.users,
+                "cost": Shoppinglist.price,
+                "added": Shoppinglist.date,
+            });
+        });
+
+
+        console.log(bordliste);
+        var scopeNr = 1; //disbursementNr
+        $.each(disbursementList, function (index, Shoppinglist) {
+            $('#tableDisbursements').append('<tr>' +
+                '<th scope="row">' + scopeNr + ' </th>' +
+                '<td>' + Shoppinglist.description + '</td>' +
+                '<td >' + Shoppinglist.users + '</td>' +
+                '<td >' + Shoppinglist.price  + '</td>' +
+                '<td >' + Shoppinglist.date + '</td>' +
+                '</tr>');
+
+            console.log("koden kom til bunnen av RenderList");
+            scopeNr ++; //disbursementNr increment on each new list
+        });
+    }
+
+    //function which lists out the different shoppinglist
+    function renderShoppingList(data) {
+        var list = data == null ? [] : (data instanceof Array ? data : [data]);
+        shoppingListArray = [];
+        $.each(list, function(index, Shoppinglist) {
+            shoppingListArray.push({
+                "name": Shoppinglist.name,
+            });
+        });
+
+
+        console.log(shoppingListArray);
+        $.each(disbursementList, function (index, Shoppinglist) {
+            $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
+                shoppingList.name + '</a></li>'
+            );
+
+            console.log("koden kom til bunnen av RenderList");
+
+        });
+    }
 });
 
 
