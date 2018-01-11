@@ -76,7 +76,7 @@ public class LoginTest {
      * Deleting the user made in insert_user to prevent the sql error the next time we run the insert_user-test
      */
     @AfterClass
-    public void delete_user() throws SQLException {
+    public static void delete_user() throws SQLException {
         u.delUser("user1@gmail.com");
     }
 }

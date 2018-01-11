@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ItemDao {
     private static final Logger log = Logger.getLogger();
@@ -35,6 +36,36 @@ public class ItemDao {
             rs.close();
             ps.close();
             return item;
+        } finally {
+            connection.close();
+        }
+    }
+
+    public static ArrayList<Item> getItemList(Integer id) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+
+            Item item = null;
+            ArrayList<Item> itemList = null;
+
+            if(!rs.next()) {
+                log.info("could not find item " + id);
+            }
+
+            while(rs.next()) {
+                log.info("Found item " + id);
+                item = new Item();
+                item.setItemId(rs.getInt("id"));
+                item.setName(rs.getString("name"));
+                item.setStatus(rs.getInt("status"));
+                itemList.add(item);
+            }
+            rs.close();
+            ps.close();
+            return itemList;
         } finally {
             connection.close();
         }
@@ -76,7 +107,7 @@ public class ItemDao {
     public static Boolean delItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("DELETE item where id=?");
+            ps = connection.prepareStatement("DELETE FROM item where id=?");
             ps.setString(1,""+item.getItemId());
             int result = ps.executeUpdate();
             ps.close();
