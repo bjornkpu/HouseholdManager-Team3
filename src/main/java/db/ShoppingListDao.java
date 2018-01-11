@@ -45,6 +45,49 @@ public class ShoppingListDao {
         }
     }
 
+    public static boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("INSERT INTO user () VALUES(?,?,?,?)");
+            // TODO: Insert code here.
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Add shoppinglist " + (result == 1?"ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+
+    public static boolean updateShoppingList(ShoppingList shoppingList) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
+            // TODO: Insert code here.
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Update shoppinglist " + (result == 1?"ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+
+//TODO: delete the items in the list, not just the list itself
+    public static boolean delShoppingList(int id) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
+            ps.setInt(1,id);
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Delete shoppinglist " + (result == 1?"ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+
     private static ArrayList<Item> getItemList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {

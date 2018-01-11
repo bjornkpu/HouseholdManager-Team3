@@ -29,13 +29,6 @@ public class ShoppingList {
         this.userList = userList;
     }
 
-    public ShoppingList(int id, String name, ArrayList<Item> itemList, ArrayList<User> userList) {
-        this.id = id;
-        this.name = name;
-        this.itemList = itemList;
-        this.userList = userList;
-    }
-
     public int getId() {
         return id;
     }
@@ -106,10 +99,5 @@ public class ShoppingList {
 
     public void removeUser(int userId){
         userList.remove(userId);
-    }
-
-    public double getSumOfItems(){
-        //TODO calculate sum price of items
-        return 0;
     }
 }
