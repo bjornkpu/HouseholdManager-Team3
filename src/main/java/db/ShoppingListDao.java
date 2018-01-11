@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ShoppingListDao {
 
@@ -29,8 +30,8 @@ public class ShoppingListDao {
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
-                sl.setItemList(ItemDao.getItemList(id));
-//                sl.setUserList(UserDao.getUserList(id));
+                sl.setItemList(getItemList(id));
+                sl.setUserList(getUserList(id));
 
             } else {
                 log.info("Could not find user " + id);
@@ -38,6 +39,69 @@ public class ShoppingListDao {
             rs.close();
             ps.close();
             return sl;
+        } finally {
+            connection.close();
+        }
+    }
+
+    private static ArrayList<Item> getItemList(int id) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+
+
+            if(!rs.next()) {
+                log.info("could not find item " + id);
+            }
+
+            Item item = null;
+            ArrayList<Item> itemList = null;
+            while(rs.next()) {
+                log.info("Found item " + id);
+                item = new Item();
+                item.setItemId(rs.getInt("id"));
+                item.setName(rs.getString("name"));
+                item.setStatus(rs.getInt("status"));
+                itemList.add(item);
+            }
+            rs.close();
+            ps.close();
+            return itemList;
+        } finally {
+            connection.close();
+        }
+    }
+
+    private static ArrayList<User> getUserList(int id) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("" +
+                    "SELECT u.email, u.name, u.phone, u.password, u.salt " +
+                    "FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
+                    "WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+
+            if(!rs.next()) {
+                log.info("could not find item " + id);
+            }
+
+            User user = null;
+            ArrayList<User> userList = null;
+            while(rs.next()) {
+                log.info("Found user(s) in shoppinglist " + id);
+                user = new User();
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setPhone(rs.getString("phone"));
+                user.setName(rs.getString("name"));
+                userList.add(user);
+            }
+            rs.close();
+            ps.close();
+            return userList;
         } finally {
             connection.close();
         }
