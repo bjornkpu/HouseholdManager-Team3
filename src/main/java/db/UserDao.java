@@ -80,7 +80,7 @@ public class UserDao {
     public static boolean delUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("DELETE * FROM user WHERE email=?");
+            ps = connection.prepareStatement("DELETE FROM user where email=?");
             ps.setString(1,email);
             int result = ps.executeUpdate();
             ps.close();
