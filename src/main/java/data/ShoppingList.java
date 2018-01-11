@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class ShoppingList {
     private int id;
     private String name;
+    private int groupId;
     private ArrayList<Item> itemList;
     private ArrayList<User> userList;
 
@@ -17,6 +18,15 @@ public class ShoppingList {
     public ShoppingList(int id, String name){
         this.id = id;
         this.name = name;
+    }
+
+    public ShoppingList(int id, String name, int groupId,
+                        ArrayList<Item> itemList, ArrayList<User> userList) {
+        this.id = id;
+        this.name = name;
+        this.groupId = groupId;
+        this.itemList = itemList;
+        this.userList = userList;
     }
 
     public ShoppingList(int id, String name, ArrayList<Item> itemList, ArrayList<User> userList) {
@@ -40,6 +50,14 @@ public class ShoppingList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public ArrayList<Item> getItemList() {

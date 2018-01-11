@@ -30,6 +30,7 @@ public class ShoppingListDao {
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
+                sl.setGroupId(rs.getInt("party_id"));
                 sl.setItemList(getItemList(id));
                 sl.setUserList(getUserList(id));
 
