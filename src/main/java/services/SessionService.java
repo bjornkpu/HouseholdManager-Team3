@@ -20,6 +20,8 @@ import javax.ws.rs.ServerErrorException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
+import static util.LoginCheck.correctLogin;
+
 /**
  * Service to handle logon and logout using the web-session
  */
@@ -37,21 +39,15 @@ public class SessionService {
     @Consumes("application/json")
     @Produces("application/json")
     public Session create(LoginData data) {
-        log.info("Trying to logon or register new user");
+        log.info("Trying to logon");
         try {
             User user = userDao.getUser(data.getEmail());
-            if(user == null && data.getEmail() != null && data.getPassword() != null) {
-                // Register new user
-                userDao.addUser(new User());
-                log.info("Registered new user");
-            } else {
-                // Existing user. Check that password is correct.
-                if(!data.getPassword().equals(user.getPassword())) {
-                    throw new NotAuthorizedException("Feil brukernavn eller passord");
-                }
+            if(!correctLogin(data,user)) {
+                log.info("Failed login. Username: "+ data.getEmail());
+                throw new NotAuthorizedException("Wrong username or password");
             }
         } catch(SQLException e) {
-            log.error("Failed to check or register user", e);
+            log.error("Failed to check user", e);
             throw new ServerErrorException("DB error", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
         Session session = new Session();

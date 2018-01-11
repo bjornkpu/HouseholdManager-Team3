@@ -7,23 +7,18 @@ import java.sql.*;
 import util.Logger;
 
 /**
- * @author jmska
+ * @author Martin Wangen
  */
-public class UserDao {
+public class PartyDao {
 
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
-
     public static User getUser(String email) throws SQLException {
-        connection = Db.instance().getConnection();
+        Connection connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1,email);
-            rs = ps.executeQuery();
-
+            ResultSet rs = ps.executeQuery();
             User user = null;
             if(rs.next()) {
                 log.info("Found user " + email);
@@ -32,7 +27,6 @@ public class UserDao {
                 user.setPassword(rs.getString("password"));
                 user.setPhone(rs.getString("phone"));
                 user.setName(rs.getString("name"));
-                user.setSalt(rs.getString("salt"));
             } else {
                 log.info("Could not find user " + email);
             }
@@ -45,9 +39,9 @@ public class UserDao {
     }
 
     public static boolean addUser(User user) throws SQLException {
-        connection = Db.instance().getConnection();
+        Connection connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
             ps.setString(1,user.getEmail());
             ps.setString(2,user.getName());
             ps.setString(3,user.getPhone());
@@ -62,9 +56,9 @@ public class UserDao {
     }
 
     public static boolean updateUser(User user) throws SQLException {
-        connection = Db.instance().getConnection();
+        Connection connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
             ps.setString(1,user.getName());
             ps.setString(2,user.getPhone());
             ps.setString(3,user.getPassword());
@@ -77,28 +71,4 @@ public class UserDao {
             connection.close();
         }
     }
-
-    public static boolean delUser(String email) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("DELETE FROM user where email=?");
-            ps.setString(1,email);
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Delete user " + (result == 1?"ok":"failed"));
-            return result == 1;
-        } finally {
-            connection.close();
-        }
-    }
-
-    public static void startTest() throws SQLException {
-        connection.setAutoCommit(false);
-    }
-
-    public static void endTest() throws SQLException{
-        connection.rollback();
-        connection.setAutoCommit(true);
-    }
-
 }
