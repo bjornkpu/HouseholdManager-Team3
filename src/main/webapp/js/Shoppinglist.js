@@ -127,8 +127,8 @@ $(document).ready(function() {
         });
     }
 
-    //function which lists out the different shoppinglist
-    function renderShoppingList(data) {
+    //function which lists out the different shoppinglist in the dropdown menu
+    function renderShoppingListDropdownMenu(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);
         shoppingListArray = [];
         $.each(list, function(index, Shoppinglist) {
@@ -139,13 +139,44 @@ $(document).ready(function() {
 
 
         console.log(shoppingListArray);
-        $.each(disbursementList, function (index, Shoppinglist) {
+        $.each(shoppingListArray, function (index, Shoppinglist) {
             $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
                 shoppingList.name + '</a></li>'
             );
 
             console.log("koden kom til bunnen av RenderList");
 
+        });
+    }
+
+    //function which lists out information on the choosen shoppinglist
+    function renderShoppingListInfo(data) {
+        var list = data == null ? [] : (data instanceof Array ? data : [data]);
+        shoppingListArray = [];
+        var itemArray = [];
+        $.each(list, function(index, Shoppinglist) {
+            itemArray.push({
+                "name": Item.name,
+                "status": Item.status,
+            });
+        });
+
+
+        console.log(shoppingListArray);
+        $.each(disbursementList, function (index, Shoppinglist) {
+            var scopeNr = 1; //itemNr
+            if(shoppingListArray.item.getName() == itemArray.name) { //denne må endres til å sammenligne
+                //iteme i shoppingarray og alle item
+                $('#tableShoppinglist').append(
+                    '<tr>' +
+                    '<th scope="row">' + scopeNr + ' </th>' +
+                    '<td>' + Shoppinglist.name + '</td>' +
+                    '<td >' + Shoppinglist.status + '</td>' +
+                    '</tr>');
+
+                console.log("koden kom til bunnen av RenderList");
+                scopeNr++; //disbursementNr increment on each new list
+            }
         });
     }
 });
