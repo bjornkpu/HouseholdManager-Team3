@@ -39,7 +39,7 @@ public class GroupDao {
                 group = new Group();
                 group.setId(groupId);
                 group.setName(rs.getString("name"));
-                group.setAdmin(rs.getInt("admin_id"));    // TODO: changes in admin variable?
+                group.setAdmin(rs.getString("admin"));    // TODO: changes in admin variable?
             } else {
                 log.info("Could not find party " + groupId);
             }
@@ -67,7 +67,7 @@ public class GroupDao {
                 Group g = new Group();
                 g.setId(rs.getInt("id"));
                 g.setName(rs.getString("name"));
-                g.setAdmin(rs.getInt("admin_id"));   // TODO: changes in admin variable?
+                g.setAdmin(rs.getString("admin"));   // TODO: changes in admin variable?
                 groups.add(g);
             }
             rs.close();
@@ -89,7 +89,7 @@ public class GroupDao {
                 while (rs.next()) {
                     Group group = new Group();
                     group.setId(rs.getInt("id"));
-                    group.setAdmin(rs.getInt("admin_id"));
+                    group.setAdmin(rs.getString("admin"));
                     group.setName(rs.getString("name"));
                     groups.add(group);
                 }
@@ -101,6 +101,7 @@ public class GroupDao {
                 connection.close();
             }
         }
+        return null;
     }
 
     /**
@@ -115,7 +116,7 @@ public class GroupDao {
         try {
             ps = connection.prepareStatement("INSERT INTO party (name,admin_id) VALUES(?,?)");
             ps.setString(1,group.getName());
-            ps.setInt(2,group.getAdmin());   // TODO: changes in admin variable?
+            ps.setString(2,group.getAdmin());   // TODO: changes in admin variable?
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
@@ -126,12 +127,12 @@ public class GroupDao {
 
     }
 
-    public static boolean addParty(String partyName,int adminId) throws SQLException {
+    public static boolean addParty(String partyName,String adminId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO party (name,admin_id) VALUES(?,?)");
             ps.setString(1,partyName);
-            ps.setInt(2,adminId);
+            ps.setString(2,adminId);
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
