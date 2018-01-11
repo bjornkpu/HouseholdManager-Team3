@@ -1,10 +1,13 @@
 package data;
+import java.util.ArrayList;
+import java.util.Date;
 
-public class Chore {
-    private int id;
+public class Todo {
+    private int choreId;
     private String description;
-    private int[] completedBy;
-    private boolean finished;
+    private ArrayList<String> completedBy;
+    private String assignedTo;
+    private Date deadline;
 
     public Chore() {
     }
@@ -14,19 +17,20 @@ public class Chore {
         this.description = description;
     }
 
-    public Chore(int id, String description, int[] completedBy, boolean finished) {
-        this.id = id;
+    public Chore(int choreID, String description, int[] completedBy, boolean finished) {
+        this.choreId = choreID;
         this.description = description;
         this.completedBy = completedBy;
-        this.finished = finished;
+        this.assignedTo = assignedTo;
+        this.deadline = deadline;
     }
 
-    public int getId() {
-        return id;
+    public int getChoreId() {
+        return todoId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setChoreId(int choreId) {
+        this.choreId = choreId;
     }
 
     public String getDescription() {
@@ -37,20 +41,28 @@ public class Chore {
         this.description = description;
     }
 
-    public int[] getCompletedBy() {
+    public ArrayList<String> getCompletedBy() {
         return completedBy;
     }
 
-    public void setCompletedBy(int[] completedBy) {
+    public void setCompletedBy(ArrayList<String> completedBy) {
         this.completedBy = completedBy;
     }
 
-    public boolean isFinished() {
-        return finished;
+    public void setAssignedTo(String assignedTo){
+        this.assignedTo=assignedTo;
     }
 
-    public void setFinished(boolean finished) {
-        this.finished = finished;
+    public String getAssignedTo(){
+        return assignedTo;
+    }
+
+    public Date getDeadline(){
+        return deadline;
+    }
+
+    public void setDeadline(Date deadline){
+        this.deadline=deadline;
     }
 
 
