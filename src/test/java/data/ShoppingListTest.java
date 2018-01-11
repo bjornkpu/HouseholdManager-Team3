@@ -16,8 +16,8 @@ public class ShoppingListTest {
     @BeforeClass
     public static void setUp(){
         slDao = new ShoppingListDao();
-        shoppingListTest = new ShoppingList(0, "shoppingListTest")
-        id = 0;
+        shoppingListTest = new ShoppingList(1, "shoppingListTest");
+        id = 1;
     }
 
     @Test

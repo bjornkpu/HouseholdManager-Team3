@@ -34,7 +34,7 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(id));
 
             } else {
-                log.info("Could not find user " + id);
+                log.info("Could not find shoppinglist " + id);
             }
             rs.close();
             ps.close();
@@ -51,10 +51,10 @@ public class ShoppingListDao {
             ps.setInt(1,id);
             rs = ps.executeQuery();
 
-
-            if(!rs.next()) {
-                log.info("could not find item " + id);
-            }
+//            TODO kan ikke teste her, hvordan
+//            if(!rs.next()) {
+//                log.info("could not find item " + id);
+//            }
 
             Item item = null;
             ArrayList<Item> itemList = null;
@@ -84,12 +84,14 @@ public class ShoppingListDao {
             ps.setInt(1,id);
             rs = ps.executeQuery();
 
-            if(!rs.next()) {
-                log.info("could not find item " + id);
-            }
+//            TODO kan ikke teste her, hvordan
+//            if(!rs.next()) {
+//                log.info("could not find item " + id);
+//            }
 
-            User user = null;
-            ArrayList<User> userList = null;
+            User user = new User();
+            ArrayList<User> userList = new ArrayList<User>();
+
             while(rs.next()) {
                 log.info("Found user(s) in shoppinglist " + id);
                 user = new User();
@@ -99,6 +101,7 @@ public class ShoppingListDao {
                 user.setName(rs.getString("name"));
                 userList.add(user);
             }
+
             rs.close();
             ps.close();
             return userList;
