@@ -32,6 +32,7 @@ public class UserDao {
                 user.setPassword(rs.getString("password"));
                 user.setPhone(rs.getString("phone"));
                 user.setName(rs.getString("name"));
+                user.setSalt(rs.getString("salt"));
             } else {
                 log.info("Could not find user " + email);
             }

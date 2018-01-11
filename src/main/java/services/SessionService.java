@@ -39,7 +39,7 @@ public class SessionService {
     @Consumes("application/json")
     @Produces("application/json")
     public Session create(LoginData data) {
-        log.info("Trying to logon or register new user");
+        log.info("Trying to logon");
         try {
             User user = userDao.getUser(data.getEmail());
             if(!correctLogin(data,user)) {
