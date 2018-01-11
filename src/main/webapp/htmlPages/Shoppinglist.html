@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <Link rel="stylesheet" type="text/css" href="../css/shoppinglist.css">
+    <script src="../js/Shoppinglist.js"></script>
     <meta charset="UTF-8">
     <title>"Gruppens tittel"</title>
 </head>
@@ -58,23 +59,29 @@
 <div class="container">
     <div class="row">
 <!--dropdown shoppinglist -->
-<div class="container" id="dropdownShoppinglist">
+<div class="container" id="dropdownShoppinglist" style ="display:block;">
     <div class="dropdown">
         <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">ShoppingList
             <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Tacokveld</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Felleskostnader</a></li>
-            <li role="presentation"><a role="menuitem" tabindex="-1" href="#">vors</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >oppussing</a></li>
+            <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >party</a></li>
         </ul>
     </div>
 </div>
     </div>
 </div>
 <!--end of dropdown shoppinglist -->
+<br>
 
+<!-- List of Disbursements-->
+<div class="container" id="listOfDisbursements">
+    <div class = "row">
+        <h2>List of disbursements</h2>
+    </div>
+    <div class="row">
 
-<!--table for reciets -->
 <table class="table table-hover">
     <thead>
     <tr>
@@ -109,8 +116,134 @@
     </tr>
     </tbody>
 </table>
+    </div>
+</div>
+    <!-- End of List of disbursements-->
 
-<button class = "button" id="addItem"> Add item</button>
+<!-- Shoppinglist-->
+<div class="container" id="shoppinglist" style="display:none;">
+    <div class = "row">
+        <h2>Shoppinglist "name" </h2>
+    </div>
+    <div class="row">
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>item</th>
+                <th>status</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Dopapir</td>
+                <td>unassigned</td>
+
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>søppelposer</td>
+                <td>assigned to Eirik</td>
+
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Zalo</td>
+                <td>Purchased by Eirik</td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- End of shoppinglist-->
+
+    <!-- Buttons for shoppinglist-->
+    <div class="row">
+        <div class="col-sm">
+            <button class = "button" id="addItem" style = "display:none;"> Add item</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="deleteItem" style="display:none;"> Delete item</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="configureList" style="display:none;"> Configure list</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="closeList" style="display:none;"> Close list</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="back" style="display:none;"
+                    onclick="window.location.href='Shoppinglist.html'"> Back</button>
+        </div>
+    </div>
+<!--end of buttons for shoppinglist -->
+
+<!-- div for creating a disbursement-->
+<div>
+    <button class = "button" id="createDisbursementButton" style="display: block;"> Create Disbursement</button>
+    <h1 id="headerDisbursement" style="display: none;">Creating Disbursement</h1>
+    <table id="createDisbursement" style="display: none;">
+    <tr>
+        <td>Name of disbursement</td>
+        <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
+    </tr>
+    <tr>
+        <td>Participants</td>
+        <td><select id="participantsDisbursement">
+            <option value="None"></option>
+            <option value="participants1">ppl1</option>
+            <option value="participants2">ppl2</option>
+            <option value="participants3">ppl3</option>
+            <option value="participants4">ppl4</option>
+            <option value="participants5">ppl5</option>
+        </select></td>
+    </tr>
+    <tr>
+        <td>Total amount</td>
+        <td > <input id="totalAmount" type="text" name="totalAmount"></td>
+    </tr>
+    <tr>
+        <td>Confirm</td>
+        <td > <button class="button" id ="confirmDisbursement"
+                      onclick="window.location.href='Shoppinglist.html'"> Confirm</button> </td>
+    </tr>
+</table>
+</div>
+<!-- end of creating a disbursement-->
+
+<!-- div for creating a shoppinglist-->
+<div>
+    <button class = "button" id="createShoppinglistButton" style="display: block;"> Create Shoppinglist</button>
+    <h1 id="headerShoppinglist" style="display: none;">Creating Shoppinglist</h1>
+
+    <table id="createShoppinglist" style="display: none;">
+        <tr>
+            <td>Name of Shoppinglist</td>
+            <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
+        </tr>
+        <tr>
+            <td>Participants</td>
+            <td><select id="participantsShoppinglist">
+                <option value="None"></option>
+                <option value="participants1">ppl1</option>
+                <option value="participants2">ppl2</option>
+                <option value="participants3">ppl3</option>
+                <option value="participants4">ppl4</option>
+                <option value="participants5">ppl5</option>
+            </select></td>
+        </tr>
+        <tr>
+            <td>Confirm</td>
+            <td > <button class="button" id ="confirmShoppinglist"
+                          onclick="window.location.href='Shoppinglist.html'"> Confirm</button> </td>
+        </tr>
+    </table>
+</div>
+<!-- end of creating a shoppinglist-->
 
 </body>
 </html>
