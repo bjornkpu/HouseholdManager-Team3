@@ -6,56 +6,42 @@ import org.junit.Test;
 import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class LoginTest {
-    private static UserDao u;
+    private static UserDao userDao;
+    private static User user;
+    private static final String email="LoginTestEmailATemailDOTcom";
+
 
     @BeforeClass
     public static void setUp() throws SQLException {
-        u = new UserDao();
+        userDao = new UserDao();
+        user = new User(email, "User1", "90706060", "123");
+        userDao.addUser(user);
+
     }
 
     @Test
     public void get_user(){
         User uu = new User();
         try{
-            uu = u.getUser("tre@h.no");
+            uu = userDao.getUser(email);
         }catch(SQLException e){
             e.printStackTrace();
         }
 
-        assertEquals("Knat Waag", uu.getName());
+        assertEquals("User1", uu.getName());
     }
 
-    @Test
-    public void insert_user(){
-        User user1 = new User("user1@gmail.com", "User1", "90706060", "123");
-        User user2 = new User();
-
-        try {
-            u.addUser(user1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            user2 = u.getUser("user1@gmail.com");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println(user2.getEmail() + " " + user2.getName() + " " + user2.getPhone() + " ");
-
-        assertEquals(user1.getEmail(), user2.getEmail());
-    }
 
     @Test
     public void update_user(){
-        User user1 = new User("user1@gmail.com", "UserA", "292929", "1321");
+        user.setPhone("newphone");
+//        user.setName("newname");
+        user.setPassword("newpw");
 
         try {
-            u.updateUser(user1);
+            userDao.updateUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -63,20 +49,20 @@ public class LoginTest {
         User test = new User();
 
         try {
-            test = u.getUser("user1@gmail.com");
+            test = userDao.getUser(email);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        assertEquals("UserA", test.getName());
-        assertEquals("292929", test.getPhone());
-        assertEquals("1321", test.getPassword());
+//        assertEquals("newname", test.getName());
+        assertEquals("newphone", test.getPhone());
+        assertEquals("newpw", test.getPassword());
     }
     /**
      * Deleting the user made in insert_user to prevent the sql error the next time we run the insert_user-test
      */
     @AfterClass
     public static void delete_user() throws SQLException {
-        u.delUser("user1@gmail.com");
+        userDao.delUser(email);
     }
 }

@@ -90,4 +90,14 @@ public class UserDao {
             connection.close();
         }
     }
+
+    public static void startTest() throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    public static void endTest() throws SQLException{
+        connection.rollback();
+        connection.setAutoCommit(true);
+    }
+
 }
