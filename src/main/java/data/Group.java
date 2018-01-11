@@ -26,11 +26,11 @@ public class Group {
         this.admin = admin;
     }
 
-    public int getGroupId() {
+    public int getId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setId(int groupId) {
         this.groupId = groupId;
     }
 
