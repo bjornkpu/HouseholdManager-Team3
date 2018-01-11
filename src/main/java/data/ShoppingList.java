@@ -20,7 +20,6 @@ public class ShoppingList {
     }
 
     public ShoppingList(int id, String name, ArrayList<Item> itemList, ArrayList<User> userList) {
-
         this.id = id;
         this.name = name;
         this.itemList = itemList;
