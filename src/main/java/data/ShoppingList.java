@@ -67,8 +67,8 @@ public class ShoppingList {
         itemList.add(i);
     }
 
-    public void addItem(int itemId, String desc, int status, int userId){
-        itemList.add(new Item(itemId, desc, status, userId));
+    public void addItem(int itemId, String desc, int status){
+        itemList.add(new Item(itemId, desc, status));
     }
 
     public void removeItem(Item i){
