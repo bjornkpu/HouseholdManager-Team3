@@ -5,49 +5,39 @@ package data;
  */
 public class Item {
     private int itemId;
-    private String description;
-    private double price;
-    private int userId;
+    private String name;
+    private int status;
 
     public Item(){
     }
 
-    public Item (int elementId, String description, double price, int userId) {
-        this.itemId = elementId;
-        this.description = description;
-        this.price = price;
-        this.userId = userId;
+    public Item (int itemId, String name, int status) {
+        this.itemId = itemId;
+        this.name = name;
+        this.status = status;
     }
 
-    public int getElementId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setElementId(int elementId) {
-        this.itemId = elementId;
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public int getStatus() {
+        return status;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

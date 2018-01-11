@@ -45,7 +45,7 @@ CREATE TABLE user_party(
 
 CREATE TABLE chore(
   id INTEGER NOT NULL AUTO_INCREMENT,
-  description VARCHAR(90),
+  name VARCHAR(90),
   regularity INTEGER (4),
   deadline DATE,
   completed BIT,
@@ -75,7 +75,7 @@ CREATE TABLE user_disbursements(
 CREATE TABLE disbursements(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
-  description VARCHAR(255),
+  name VARCHAR(255),
   date DATE,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,

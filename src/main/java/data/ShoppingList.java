@@ -68,7 +68,7 @@ public class ShoppingList {
     }
 
     public void addItem(int itemId, String desc, double price, int userId){
-        itemList.add(new Item(itemId, desc, price, userId));
+//        itemList.add(new Item(itemId, desc, price, userId));
     }
 
     public void removeItem(Item i){
