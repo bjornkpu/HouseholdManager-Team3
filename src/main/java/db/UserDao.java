@@ -80,7 +80,7 @@ public class UserDao {
     public static boolean delUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("DELETE user where email=?");
+            ps = connection.prepareStatement("DELETE FROM user where email=?");
             ps.setString(1,email);
             int result = ps.executeUpdate();
             ps.close();
@@ -90,4 +90,14 @@ public class UserDao {
             connection.close();
         }
     }
+
+    public static void startTest() throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    public static void endTest() throws SQLException{
+        connection.rollback();
+        connection.setAutoCommit(true);
+    }
+
 }
