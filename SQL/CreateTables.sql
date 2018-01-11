@@ -4,7 +4,9 @@ DROP TABLE IF EXISTS item_shoppinglist;
 DROP TABLE IF EXISTS user_disbursements;
 DROP TABLE IF EXISTS wallpost;
 DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS chore_log;
 DROP TABLE IF EXISTS chore;
+DROP TABLE IF EXISTS shoppinglist_user;
 DROP TABLE IF EXISTS shoppinglist;
 DROP TABLE IF EXISTS user_party;
 DROP TABLE IF EXISTS disbursements;
@@ -34,24 +36,31 @@ CREATE TABLE wallpost(
   time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   message VARCHAR (255),
   party_id INTEGER (10) NOT NULL ,
-  user_id VARCHAR(255) NOT NULL ,
+  user_email VARCHAR(255) NOT NULL ,
   CONSTRAINT wallpost_pk PRIMARY KEY(id));
 
 CREATE TABLE user_party(
-  user_id VARCHAR(255) NOT NULL,
+  user_email VARCHAR(255) NOT NULL,
   party_id INTEGER NOT NULL,
   balance DOUBLE NOT NULL,
-  CONSTRAINT user_party_pk PRIMARY KEY(user_id,party_id));
+  status INTEGER(1),
+  CONSTRAINT user_party_pk PRIMARY KEY(user_email,party_id));
 
 CREATE TABLE chore(
   id INTEGER NOT NULL AUTO_INCREMENT,
   description VARCHAR(90),
   regularity INTEGER (4),
   deadline DATE,
-  completed BIT,
   party_id INTEGER NOT NULL,
-  user_id VARCHAR(255),
+  user_email VARCHAR(255),
   CONSTRAINT chore_pk PRIMARY KEY(id));
+
+CREATE TABLE chore_log(
+  user_email VARCHAR(80),
+  chore_id INTEGER(10),
+  done TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT chore_log_pk PRIMARY KEY (user_email,chore_id)
+);
 
 CREATE TABLE item (
   id INTEGER(10) AUTO_INCREMENT,
@@ -67,10 +76,17 @@ CREATE TABLE shoppinglist(
   party_id INTEGER NOT NULL,
   CONSTRAINT shippinglist_pk PRIMARY KEY (id));
 
+CREATE TABLE shoppinglist_user (
+  shoppinglist_id INTEGER(10),
+  user_email      VARCHAR(80),
+  CONSTRAINT shoppinglst_user_pk PRIMARY KEY (shoppinglist_id, user_email)
+);
+
+
 CREATE TABLE user_disbursements(
-  user_id VARCHAR(255) NOT NULL,
+  user_email VARCHAR(255) NOT NULL,
   disp_id INTEGER(10) NOT NULL,
-  CONSTRAINT user_disbursements_pk PRIMARY KEY (user_id,disp_id));
+  CONSTRAINT user_disbursements_pk PRIMARY KEY (user_email,disp_id));
 
 CREATE TABLE disbursements(
   id INTEGER(10) AUTO_INCREMENT,
@@ -92,16 +108,16 @@ ALTER TABLE wallpost
   ADD CONSTRAINT wallpost_fk1 FOREIGN KEY(party_id)REFERENCES party(id);
 
 ALTER TABLE wallpost
-  ADD CONSTRAINT wallpost_fk2 FOREIGN KEY(user_id)REFERENCES user(email);
+  ADD CONSTRAINT wallpost_fk2 FOREIGN KEY(user_email)REFERENCES user(email);
 
 ALTER TABLE user_party
-  ADD CONSTRAINT user_party_fk1 FOREIGN KEY(user_id)REFERENCES user(email);
+  ADD CONSTRAINT user_party_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
 
 ALTER TABLE user_party
   ADD CONSTRAINT user_party_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
 
 ALTER TABLE chore
-  ADD CONSTRAINT chore_fk1 FOREIGN KEY(user_id)REFERENCES user(email);
+  ADD CONSTRAINT chore_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
 
 ALTER TABLE chore
   ADD CONSTRAINT chore_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
@@ -116,13 +132,25 @@ ALTER TABLE disbursements
   ADD CONSTRAINT disbursements_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
 
 ALTER TABLE user_disbursements
-  ADD CONSTRAINT user_disbursements_fk1 FOREIGN KEY(user_id)REFERENCES user(email);
+  ADD CONSTRAINT user_disbursements_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
 
 ALTER TABLE user_disbursements
   ADD CONSTRAINT user_disbursements_fk2 FOREIGN KEY(disp_id)REFERENCES disbursements(id);
 
 ALTER TABLE item
-    ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursements(id);
+  ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursements(id);
 
 ALTER TABLE item
-    ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
+  ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
+
+ALTER TABLE shoppinglist_user
+  ADD CONSTRAINT shoppinglist_user_fk1 FOREIGN KEY (shoppinglist_id) REFERENCES shoppinglist(id);
+
+ALTER TABLE shoppinglist_user
+  ADD CONSTRAINT shoppinglist_user_fk2 FOREIGN KEY (user_email) REFERENCES user(email);
+
+ALTER TABLE chore_log
+  ADD CONSTRAINT chore_log_fk1 FOREIGN KEY (user_email) REFERENCES user(email);
+
+ALTER TABLE chore_log
+    ADD CONSTRAINT chore_log_fk2 FOREIGN KEY (chore_id) REFERENCES chore(id);

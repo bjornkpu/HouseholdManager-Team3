@@ -10,16 +10,16 @@ public class Group {
     private int groupId;
     private String groupName;
     private String description;
-    private int admin;
-    private ArrayList<User> userList;
-    private ArrayList<ShoppingList> shoppingListList;
-    private ArrayList<Todo> todoList;
-    private ArrayList<WallPost> wallPostList;
+    private String admin;
+    private ArrayList<User> userList = new ArrayList<>();
+    private ArrayList<ShoppingList> shoppingListList = new ArrayList<>();
+    private ArrayList<Todo> todoList = new ArrayList<>();
+    private ArrayList<WallPost> wallPostList = new ArrayList<>();
 
     public Group(){
     }
 
-    public Group(int groupId, String groupName, String description, int admin) {
+    public Group(int groupId, String groupName, String description, String admin) {
         this.groupId = groupId;
         this.groupName = groupName;
         this.description = description;
@@ -50,11 +50,11 @@ public class Group {
         this.description = description;
     }
 
-    public int getAdmin() {
+    public String getAdmin() {
         return admin;
     }
 
-    public void setAdmin(int admin) {
+    public void setAdmin(String admin) {
         this.admin = admin;
     }
 
@@ -62,20 +62,12 @@ public class Group {
         return userList;
     }
 
-    public User getUserFromList(int userId){
-        return userList.get(userId);
-    }
-
     public void addUser(User u){
         userList.add(u);
     }
 
-    public void removeUser(User u){
-        userList.remove(u);
-    }
-
-    public void removeUser(int userId){
-        userList.remove(userId);
+    public void removeUser(String email){
+        userList.remove(email);
     }
 
     public ArrayList<ShoppingList> getShoppingListList() {
@@ -156,7 +148,7 @@ public class Group {
         wallPostList.remove(wallPostId);
     }
 
-    public void changeAdmin(int u){
+    public void changeAdmin(String u){
         //TODO method to safely switch admin rights between users
         admin = u;
     }
