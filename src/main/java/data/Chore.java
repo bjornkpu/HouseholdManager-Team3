@@ -2,7 +2,7 @@ package data;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Todo {
+public class Chore {
     private int choreId;
     private String description;
     private ArrayList<String> completedBy;
@@ -12,12 +12,12 @@ public class Todo {
     public Chore() {
     }
 
-    public Chore(int id, String description) {
-        this.id = id;
+    public Chore(int choreId, String description) {
+        this.choreId = choreId;
         this.description = description;
     }
 
-    public Chore(int choreID, String description, int[] completedBy, boolean finished) {
+    public Chore(int choreID, String description, ArrayList<String> completedBy, boolean finished) {
         this.choreId = choreID;
         this.description = description;
         this.completedBy = completedBy;
@@ -26,7 +26,7 @@ public class Todo {
     }
 
     public int getChoreId() {
-        return todoId;
+        return choreId;
     }
 
     public void setChoreId(int choreId) {
