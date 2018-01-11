@@ -73,7 +73,7 @@ public class TodoDao {
     public static boolean addTodo(Todo todo, int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(description, regularity, deadline, party_id, user_id) VALUES (?,?,?,?,?,?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(description, regularity, deadline, party_id, user_email) VALUES (?,?,?,?,?,?)");
             ps.setString(1, todo.getDescription());
             ps.setInt(2, 0);
             ps.setDate(3, (Date) todo.getDeadline());
@@ -87,4 +87,23 @@ public class TodoDao {
             connection.close();
         }
     }
+
+    public static boolean assignTodo(String email, int id) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            ps = connection.prepareStatement("UPDATE chore set user_email=? where id=?");
+            ps.setString(1,email);
+            ps.setInt(2,id);
+            int result = ps.executeUpdate();
+            ps.close();
+            return result==1;
+        }
+        finally{
+            connection.close();
+        }
+    }
+
+
+
+
 }
