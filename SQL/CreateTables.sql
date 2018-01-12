@@ -28,7 +28,6 @@ CREATE TABLE user(
 CREATE TABLE party(
   id INTEGER NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL,
-  admin VARCHAR(255) NOT NULL,
   CONSTRAINT party_pk PRIMARY KEY(id));
 
 CREATE TABLE wallpost(
@@ -101,8 +100,6 @@ CREATE TABLE disbursements(
 
 -- Legger på referanseintegritet (fremmednøkler)
 
-ALTER TABLE party
-  ADD CONSTRAINT party_fk FOREIGN KEY(admin)REFERENCES user(email);
 
 ALTER TABLE wallpost
   ADD CONSTRAINT wallpost_fk1 FOREIGN KEY(party_id)REFERENCES party(id);
