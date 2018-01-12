@@ -45,15 +45,57 @@ public class ShoppingListDao {
         }
     }
 
+    public static ArrayList<ShoppingList> getShoppingListByGroupid(int groupId) throws SQLException{
+        connection = Db.instance().getConnection();
+        try {
+
+            if(!groupCheck(groupId)){ //checks if the party-object exists
+                log.info("Could not find party " + groupId);
+                //TODO should this return null
+                return null;
+            }
+
+            ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE party_id = ?");
+            ps.setInt(1,groupId);
+            rs = ps.executeQuery();
+
+//            TODO kan ikke teste her, hvordan
+//            if(!rs.next()) {
+//                log.info("could not find item " + id);
+//            }
+
+            ShoppingList sl = new ShoppingList();
+            ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+
+            while(rs.next()) {
+                log.info("Found ShoppingList in group " + groupId);
+                sl = new ShoppingList();
+                sl.setId(rs.getInt("id"));
+                sl.setName(rs.getString("name"));
+                sl.setGroupId(rs.getInt("party_id"));
+                sl.setItemList(getItemList(sl.getId()));
+                sl.setUserList(getUserList(sl.getId()));
+                shoppinglistList.add(sl);
+            }
+
+            rs.close();
+            ps.close();
+            return shoppinglistList;
+        } finally {
+            connection.close();
+        }
+    }
+
     public static boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
         connection = Db.instance().getConnection();
         try {
 
-            if(!groupCheck(shoppingList)){
+            if(!groupCheck(shoppingList.getGroupId())){ //checks if the party-object exists
                 log.info("Could not find party " + shoppingList.getGroupId());
                 return false;
             }
 
+            //creates new shoppinglist object in shoppinglist table
             ps = connection.prepareStatement("INSERT INTO " +
                     "shoppinglist(id, name, party_id) VALUES (?,?,?)");
             ps.setInt(1, shoppingList.getId());
@@ -61,8 +103,9 @@ public class ShoppingListDao {
             ps.setInt(3, shoppingList.getGroupId());
             int result = ps.executeUpdate();
             log.info("Create shoppinglist " + (result == 1?"ok":"failed"));
-            ps.close();
+//            ps.close();
 
+            //creates new connection between created shoppinglist and creator (User)
             ps = connection.prepareStatement("INSERT INTO " +
                     "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
             ps.setInt(1, shoppingList.getId());
@@ -76,15 +119,17 @@ public class ShoppingListDao {
         }
     }
 
-    private static boolean groupCheck(ShoppingList sl) throws SQLException{
-        return GroupDao.getGroup(sl.getGroupId()) != null;
+    private static boolean groupCheck(int i) throws SQLException{ //tests if a party exists with specified id
+        return GroupDao.getGroup(i) != null;
     }
 
     public static boolean updateShoppingList(ShoppingList shoppingList) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
-            // TODO: Insert update-code here.
+            ps = connection.prepareStatement("UPDATE shoppinglist set name=?, party_id=? where id=?");
+            ps.setString(1, shoppingList.getName());
+            ps.setInt(2, shoppingList.getGroupId());
+            ps.setInt(3, shoppingList.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update shoppinglist " + (result == 1?"ok":"failed"));
@@ -94,7 +139,7 @@ public class ShoppingListDao {
         }
     }
 
-//TODO: delete the items in the list, not just the list itself
+//    TODO: delete the items in the list, not just the list itself
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -131,11 +176,13 @@ public class ShoppingListDao {
                 item.setStatus(rs.getInt("status"));
                 itemList.add(item);
             }
-            rs.close();
-            ps.close();
+
+//            TODO clean this up
+//            rs.close();
+//            ps.close();
             return itemList;
         } finally {
-            connection.close();
+//            connection.close();
         }
     }
 
@@ -165,12 +212,12 @@ public class ShoppingListDao {
                 user.setName(rs.getString("name"));
                 userList.add(user);
             }
-
-            rs.close();
-            ps.close();
+//        TODO clean this up
+//            rs.close();
+//            ps.close();
             return userList;
         } finally {
-            connection.close();
+//            connection.close();
         }
     }
 }

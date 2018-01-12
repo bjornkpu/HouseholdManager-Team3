@@ -29,7 +29,7 @@ public class GroupDao {
     public static Group getGroup(int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM party WHERE party_id = ?");
+            ps = connection.prepareStatement("SELECT * FROM party WHERE id = ?");
             ps.setString(1,groupId + "");
             rs = ps.executeQuery();
 
