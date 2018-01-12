@@ -142,7 +142,7 @@ public class Group {
 
     /*
     public void createWallPost(String desc, Date d){
-        wallPostList.add(new WallPost(desc, d));
+//        wallPostList.add(new WallPost(desc, d));
     }
     */
 
