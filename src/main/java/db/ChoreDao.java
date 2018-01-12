@@ -1,12 +1,15 @@
 package db;
-
 import data.RepeatedChore;
 import util.Logger;
 import data.Chore;
 
 import java.sql.*;
 import java.util.ArrayList;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class ChoreDao {
 
     private static final Logger log = Logger.getLogger();

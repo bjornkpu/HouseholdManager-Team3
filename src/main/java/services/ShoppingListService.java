@@ -1,5 +1,4 @@
 package services;
-
 import data.ShoppingList;
 import db.ShoppingListDao;
 import util.Logger;
@@ -10,10 +9,11 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 /**
- * Service that handles reading and updating bank user information
+ * Service that handles reading, making, updating and deleting shopping list information.
+ *
  * @author BK
  */
-@Path("shoppigList")
+@Path("shoppingList")
 public class ShoppingListService {
     private static final Logger log = Logger.getLogger();
 

@@ -1,5 +1,4 @@
 package services;
-
 import data.User;
 import db.UserDao;
 import java.sql.SQLException;
@@ -8,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
 /**
- * Service that handles reading and updating bank user information
+ * Service that handles reading, making, updating and deleting user information.
+ *
  * @author BK
  */
 @Path("user")

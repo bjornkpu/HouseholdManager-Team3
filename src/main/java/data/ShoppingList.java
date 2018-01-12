@@ -1,9 +1,9 @@
 package data;
-
 import java.util.ArrayList;
-
 /**
  * Class for the ShoppingList-object
+ *
+ * @author
  */
 public class ShoppingList {
     private int id;

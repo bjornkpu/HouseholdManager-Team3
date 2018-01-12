@@ -1,6 +1,9 @@
 package data;
-
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 class Member extends User{
     private double balance;
     private int status;

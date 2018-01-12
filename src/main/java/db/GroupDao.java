@@ -1,5 +1,4 @@
 package db;
-
 import data.Group;
 import util.Logger;
 
@@ -9,7 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class GroupDao {
 
     private static final Logger log = Logger.getLogger();

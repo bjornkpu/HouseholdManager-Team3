@@ -1,9 +1,9 @@
 package data;
-
-import javax.jws.soap.SOAPBinding;
-
 /**
  * Class for the User-object
+ *
+ * @author BK
+ * @author jmska
  */
 public class User {
     private String email; //id

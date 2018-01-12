@@ -9,7 +9,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class DbTest {
     private static Connection connection;
 

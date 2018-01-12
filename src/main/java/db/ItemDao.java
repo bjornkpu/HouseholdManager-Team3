@@ -1,5 +1,4 @@
 package db;
-
 import data.Item;
 import util.Logger;
 
@@ -8,7 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * -Description of the class-
+ *
+ * @author BK
+ * @author jmska
+ */
 public class ItemDao {
     private static final Logger log = Logger.getLogger();
 

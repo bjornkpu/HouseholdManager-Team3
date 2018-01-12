@@ -1,7 +1,10 @@
 package data;
-
 import java.util.ArrayList;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class RepeatedChore extends Chore {
     private int regularity;
 

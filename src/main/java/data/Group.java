@@ -1,10 +1,10 @@
 package data;
-
 import java.util.ArrayList;
 import java.util.Date;
-
 /**
  * Class for the Group-object
+ *
+ * @author
  */
 public class Group {
     private int groupId;

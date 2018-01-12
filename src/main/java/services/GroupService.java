@@ -1,5 +1,3 @@
-
-
 package services;
 import data.Group;
 import data.User;
@@ -9,9 +7,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.SQLException;
 import java.util.*;
-
-
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 @Path("/groups/")
     public class GroupService {
 

@@ -1,5 +1,4 @@
 package db;
-
 import data.Group;
 import data.User;
 import org.junit.*;
@@ -13,7 +12,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 @FixMethodOrder(MethodSorters.DEFAULT)
 public class GroupDaoTest {
     private static GroupDao gr;

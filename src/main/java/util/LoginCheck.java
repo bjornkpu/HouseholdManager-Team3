@@ -1,11 +1,14 @@
 package util;
-
 import data.LoginData;
 import data.User;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class LoginCheck {
 
 
