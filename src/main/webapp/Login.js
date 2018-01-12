@@ -92,7 +92,10 @@ $(document).ready(function(){
                         window.location.href = "Dashboard.html";
                         break;
                     case 401:
-
+                        $("#wrongPasswordAlert").removeClass("hide");
+                        break;
+                    default:
+                        window.location.href="error.html";
                         break;
                 }
             }

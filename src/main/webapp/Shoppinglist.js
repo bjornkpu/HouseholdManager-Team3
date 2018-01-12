@@ -96,6 +96,19 @@ $(document).ready(function() {
 
     });
 
+
+    //finds all disbursements
+    function findAllDisbursements() {
+        console.log('findDisbursements');
+        $.ajax({
+            type: 'GET',
+            url: '/scrum/Disbursement',
+            dataType: "json",
+            success: renderDisbursementsList(),
+
+        });
+    }
+
     //function which lists out the different disbursements
     function renderDisbursementsList(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);
@@ -122,12 +135,23 @@ $(document).ready(function() {
                 '<td >' + Shoppinglist.date + '</td>' +
                 '</tr>');
 
-            console.log("koden kom til bunnen av RenderList");
+            console.log("koden kom til bunnen av renderDisbursements");
             scopeNr ++; //disbursementNr increment on each new list
         });
     }
 
-    //function which lists out the different shoppinglist in the dropdown menu
+    //finds all shoppinglists
+    function findAllShoppinglist() {
+        console.log('findAll i liveOpsett');
+        $.ajax({
+            type: 'GET',
+            url: '/scrum/Shoppinglist',
+            dataType: "json",
+            success: renderShoppingListDropdownMenu(),
+
+        });
+    }
+    //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);
         shoppingListArray = [];
@@ -144,7 +168,7 @@ $(document).ready(function() {
                 shoppingList.name + '</a></li>'
             );
 
-            console.log("koden kom til bunnen av RenderList");
+            console.log("koden kom til bunnen av renderShoppinglist");
 
         });
     }
@@ -174,7 +198,7 @@ $(document).ready(function() {
                     '<td >' + Shoppinglist.status + '</td>' +
                     '</tr>');
 
-                console.log("koden kom til bunnen av RenderList");
+                console.log("koden kom til bunnen av render info about each shoppinglist");
                 scopeNr++; //disbursementNr increment on each new list
             }
         });
@@ -182,4 +206,20 @@ $(document).ready(function() {
 });
 
 
+/**
+ METODENE VI TRENGER I SERVICE KLASSEN
+
+ @GET
+ @Produces({ MediaType.APPLICATION_JSON})
+ public List<ShoppingList> findAllShoppinglist() {
+
+      return ShoppingList.findAllShoppinglist();
+    }
+
+ @GET
+ @Produces({ MediaType.APPLICATION_JSON})
+ public List<Disbursement> findAllDisbursements() {
+        return ShoppingList.findAllDisbursements();
+    }
+ */
 
