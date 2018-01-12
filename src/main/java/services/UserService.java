@@ -36,7 +36,7 @@ public class UserService {
     }
 
     @POST
-    @Path("/{email}")
+    @Path("/{user}")
     @Consumes("application/json")
     public void add(User user) {
         try {
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     @PUT
-    @Path("/{email}")
+    @Path("/{user}")
     @Consumes("application/json")
     public void update(User user) {
         try {
@@ -61,18 +61,18 @@ public class UserService {
         }
     }
 
-    /*@PUT
+    @PUT
     @Path("/{email}")
     @Consumes("application/json")
-    public void update(User user) {
+    public void delete(String email) {
         try {
-            userDao.updateUser(user);
-            log.info("Updated user!");
+            userDao.delUser(email);
+            log.info("Deleted user!");
         } catch(SQLException e) {
-            log.error("Failed to update user", e);
-            throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
+            log.error("Failed to Delete user", e);
+            throw new ServerErrorException("Failed to Delete user", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
-    }*/
+    }
 
 
 }
