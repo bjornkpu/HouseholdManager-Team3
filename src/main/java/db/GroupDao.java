@@ -50,25 +50,24 @@ public class GroupDao {
             connection.close();
         }
     }
-    public static Group getGroupByName(String name) throws SQLException {
+    public static List<Group> getGroupByName(String name) throws SQLException {
         connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT * FROM party WHERE name = ?");
             ps.setString(1,name);
             rs = ps.executeQuery();
-            Group group = null;
-            if (rs.next()){
+            List<Group> g = new ArrayList<Group>();
+            while (rs.next()){
                 log.info("Found party with name: " + name);
-                group = new Group();
+                Group group = new Group();
                 group.setId(rs.getInt("id"));
                 group.setName(name);
                 group.setAdmin(rs.getString("admin"));
-            } else {
-                log.info("Could not find party " + name);
+                g.add(group);
             }
             rs.close();
             ps.close();
-            return group;
+            return g.size() == 0 ? null : g;
         } finally {
             connection.close();
         }
@@ -76,7 +75,7 @@ public class GroupDao {
 
     /**
      * Retrieves all the parties from database.
-     * @return Returns a List of parties.
+     * @return Returns a List of parties if found. Null if empty.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
 
@@ -96,7 +95,7 @@ public class GroupDao {
             rs.close();
             ps.close();
             log.info("Found " + groups.size() + " parties from database");
-            return groups;
+            return groups.size() == 0 ? null : groups;
         } finally {
             connection.close();
         }
@@ -119,7 +118,7 @@ public class GroupDao {
                 rs.close();
                 ps.close();
                 log.info("Retrieving " + amountOfGroups + " groups from database. Amount retrieved: " + groups.size());
-                return groups;
+                return groups.size() == 0 ? null:groups;
             } finally {
                 connection.close();
             }
