@@ -74,10 +74,14 @@ function testAPI() {
 
 
 $(document).ready(function(){
-    var loggedOnUser;
-    getLoggedOnUser(function(user){
-        loggedOnUser=user.email;
-    })
+    $.ajax({
+        url: 'rest/session',
+        type: 'GET',
+        dataType: 'json',
+        success: function(session){
+            window.location.href="Dashboard.html";
+        }
+    });
 
     // Log in
     $("#loginButton").click(function() {
@@ -93,7 +97,7 @@ $(document).ready(function(){
             complete: function (jqXHR, textStatus) {
                 switch (jqXHR.status) {
                     case 200:
-                        document.cookie = "testcookie=sensitive data";
+                        document.cookie = "testcookie=this is a test";
                         window.location.href = "Dashboard.html";
                         break;
                     case 401:

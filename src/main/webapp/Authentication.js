@@ -5,7 +5,7 @@ function getLoggedOnUser(success) {
         dataType: 'json',
         success: function(session) {
             $.ajax({
-                url: 'webresources/user/' + session.email,
+                url: 'rest/user/' + session.email,
                 type: 'GET',
                 dataType: 'json',
                 success: function(user) {
