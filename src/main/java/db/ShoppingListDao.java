@@ -48,15 +48,36 @@ public class ShoppingListDao {
     public static boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user () VALUES(?,?,?,?)");
-            // TODO: Insert add-code here.
+
+            if(!groupCheck(shoppingList)){
+                log.info("Could not find party " + shoppingList.getGroupId());
+                return false;
+            }
+
+            ps = connection.prepareStatement("INSERT INTO " +
+                    "shoppinglist(id, name, party_id) VALUES (?,?,?)");
+            ps.setInt(1, shoppingList.getId());
+            ps.setString(2, shoppingList.getName());
+            ps.setInt(3, shoppingList.getGroupId());
             int result = ps.executeUpdate();
+            log.info("Create shoppinglist " + (result == 1?"ok":"failed"));
             ps.close();
-            log.info("Add shoppinglist " + (result == 1?"ok":"failed"));
+
+            ps = connection.prepareStatement("INSERT INTO " +
+                    "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
+            ps.setInt(1, shoppingList.getId());
+            ps.setString(2, shoppingList.getUserList().get(0).getEmail());
+            ps.close();
+            log.info("Add shoppinglist_user dependancy " + (result == 1?"ok":"failed"));
             return result == 1;
+
         } finally {
             connection.close();
         }
+    }
+
+    private static boolean groupCheck(ShoppingList sl) throws SQLException{
+        return GroupDao.getGroup(sl.getGroupId()) != null;
     }
 
     public static boolean updateShoppingList(ShoppingList shoppingList) throws SQLException {
@@ -100,7 +121,7 @@ public class ShoppingListDao {
 //                log.info("could not find item " + id);
 //            }
 
-            Item item = null;
+            Item item = new Item();
             ArrayList<Item> itemList = null;
             while(rs.next()) {
                 log.info("Found item " + id);
@@ -121,8 +142,7 @@ public class ShoppingListDao {
     private static ArrayList<User> getUserList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("" +
-                    "SELECT u.email, u.name, u.phone, u.password, u.salt " +
+            ps = connection.prepareStatement("SELECT u.email, u.name, u.phone, u.password, u.salt " +
                     "FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
                     "WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
             ps.setInt(1,id);
