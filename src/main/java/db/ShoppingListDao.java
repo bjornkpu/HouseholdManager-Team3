@@ -74,6 +74,43 @@ public class ShoppingListDao {
         }
     }
 
+    public static ArrayList<ShoppingList> getShoppingListByUser(User u) throws SQLException{
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement(
+                    "SELECT *" +
+                    "FROM shoppinglist " +
+                    "WHERE shoppinglist.id " +
+                    "IN (" +
+                    "SELECT shoppinglist_user.shoppinglist_id " +
+                    "   FROM shoppinglist_user " +
+                    "   WHERE shoppinglist_user.user_email = ?" +
+                    "   )");
+            ps.setString(1,u.getEmail());
+            rs = ps.executeQuery();
+
+            ShoppingList sl = new ShoppingList();
+            ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+
+            while(rs.next()) {
+                log.info("Found shoppinglist(s) for user " + u.getEmail());
+                sl = new ShoppingList();
+                sl.setId(rs.getInt("id"));
+                sl.setName(rs.getString("name"));
+                sl.setGroupId(rs.getInt("party_id"));
+                sl.setItemList(getItemList(sl.getId()));
+                sl.setUserList(getUserList(sl.getId()));
+                shoppinglistList.add(sl);
+            }
+
+            rs.close();
+            ps.close();
+            return shoppinglistList;
+        } finally {
+            connection.close();
+        }
+    }
+
     public static ArrayList<ShoppingList> getShoppingListByGroupid(int groupId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -130,18 +167,21 @@ public class ShoppingListDao {
             ps.setInt(1, shoppingList.getId());
             ps.setString(2, shoppingList.getName());
             ps.setInt(3, shoppingList.getGroupId());
-            int result = ps.executeUpdate();
-            log.info("Create shoppinglist " + (result == 1?"ok":"failed"));
-//            ps.close();
+            int createShoppingListResult = ps.executeUpdate();
+            log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
+            ps.close();
 
             //creates new connection between created shoppinglist and creator (User)
             ps = connection.prepareStatement("INSERT INTO " +
                     "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
             ps.setInt(1, shoppingList.getId());
             ps.setString(2, shoppingList.getUserList().get(0).getEmail());
+            int createDependancyResult = ps.executeUpdate();
+            log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
             ps.close();
-            log.info("Add shoppinglist_user dependancy " + (result == 1?"ok":"failed"));
-            return result == 1;
+
+//            TODO clean up
+            return createShoppingListResult == 1 && createDependancyResult == 1;
 
         } finally {
             connection.close();
@@ -171,13 +211,21 @@ public class ShoppingListDao {
 //    TODO: delete the items in the list, not just the list itself
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
+
         try {
+            ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
+            ps.setInt(1,id);
+            int deleteDependancyResult = ps.executeUpdate();
+            ps.close();
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
-            int result = ps.executeUpdate();
+            int deleteShoppingListResult = ps.executeUpdate();
             ps.close();
-            log.info("Delete shoppinglist " + (result == 1?"ok":"failed"));
-            return result == 1;
+
+//            TODO clean up
+            log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
+            return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
+
         } finally {
             connection.close();
         }
