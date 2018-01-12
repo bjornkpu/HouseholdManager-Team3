@@ -7,7 +7,7 @@ import java.sql.*;
 import util.Logger;
 
 /**
- * @author Martin Wangen
+ * @author
  */
 public class PartyDao {
 

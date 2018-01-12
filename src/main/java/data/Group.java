@@ -62,20 +62,12 @@ public class Group {
         return userList;
     }
 
-    public User getUserFromList(int userId){
-        return userList.get(userId);
-    }
-
     public void addUser(User u){
         userList.add(u);
     }
 
-    public void removeUser(User u){
-        userList.remove(u);
-    }
-
-    public void removeUser(int userId){
-        userList.remove(userId);
+    public void removeUser(String email){
+        userList.remove(email);
     }
 
     public ArrayList<ShoppingList> getShoppingListList() {

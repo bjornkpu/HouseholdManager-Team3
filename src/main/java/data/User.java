@@ -1,5 +1,7 @@
 package data;
 
+import javax.jws.soap.SOAPBinding;
+
 /**
  * Class for the User-object
  */
