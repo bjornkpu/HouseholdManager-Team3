@@ -45,6 +45,35 @@ public class ShoppingListDao {
         }
     }
 
+    public static ArrayList<ShoppingList> getShoppingListByName(String name) throws SQLException{
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE name=?");
+            ps.setString(1,name);
+            rs = ps.executeQuery();
+
+            ShoppingList sl = null;
+            ArrayList<ShoppingList> shoppinglistList = null;
+
+            while(rs.next()) {
+                log.info("Found shoppinglist(s) " + name);
+                sl = new ShoppingList();
+                sl.setId(rs.getInt("id"));
+                sl.setName(rs.getString("name"));
+                sl.setGroupId(rs.getInt("party_id"));
+                sl.setItemList(getItemList(sl.getId()));
+                sl.setUserList(getUserList(sl.getId()));
+                shoppinglistList.add(sl);
+            }
+
+            rs.close();
+            ps.close();
+            return shoppinglistList;
+        } finally {
+            connection.close();
+        }
+    }
+
     public static ArrayList<ShoppingList> getShoppingListByGroupid(int groupId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
