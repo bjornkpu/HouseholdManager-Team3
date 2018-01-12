@@ -101,6 +101,39 @@ $(document).ready(function(){
             }
         });
     });
+
+    $('#registerButton').click(function () {
+        var nameOfUser = document.getElementById("name_of_user");
+        var emailReg = document.getElementById("emailReg");
+        var passwordReg = document.getElementById("passwordReg");
+        var regNewUserButton = document.getElementById("registerButton");
+        var tableLogin = document.getElementById("div_for_login");
+        var confirmUser = document.getElementById("confirmReg");
+        var registerDiv = document.getElementById("div_reg");
+
+
+
+
+
+        tableLogin.style.display ="none";
+        registerDiv.style.display ="block";
+    })
+
+    $('#confirmReg').click(function () {
+        var nameOfUser = document.getElementById("name_of_user");
+        var emailReg = document.getElementById("emailReg");
+        var passwordReg = document.getElementById("passwordReg");
+        var regNewUserButton = document.getElementById("registerButton");
+        var tableLogin = document.getElementById("div_for_login");
+        var confirmUser = document.getElementById("confirmReg");
+        var registerDiv = document.getElementById("div_reg");
+
+
+
+        tableLogin.style.display ="block";
+        registerDiv.style.display ="none";
+    })
+
 });
 
 
