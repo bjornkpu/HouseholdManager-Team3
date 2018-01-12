@@ -8,7 +8,6 @@ import org.junit.Test;
 import java.sql.Connection;
 import java.sql.SQLException;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
 
 public class DbTest {
     private static Connection connection;
