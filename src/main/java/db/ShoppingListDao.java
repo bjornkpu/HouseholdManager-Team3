@@ -49,7 +49,7 @@ public class ShoppingListDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO user () VALUES(?,?,?,?)");
-            // TODO: Insert code here.
+            // TODO: Insert add-code here.
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add shoppinglist " + (result == 1?"ok":"failed"));
@@ -63,7 +63,7 @@ public class ShoppingListDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
-            // TODO: Insert code here.
+            // TODO: Insert update-code here.
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update shoppinglist " + (result == 1?"ok":"failed"));
