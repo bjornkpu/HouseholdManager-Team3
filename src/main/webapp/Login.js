@@ -90,7 +90,7 @@ $(document).ready(function(){
             type: 'POST',
             data: JSON.stringify({
                 email: $("#emailField").val(),
-                password: $("#passwordField").val()
+                password: sha256($("#passwordField").val())
             }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
@@ -131,11 +131,25 @@ $(document).ready(function(){
     $('#confirmReg').click(function () {
         var nameOfUser = document.getElementById("name_of_user");
         var emailReg = document.getElementById("emailReg");
-        var passwordReg = document.getElementById("passwordReg");
         var regNewUserButton = document.getElementById("registerButton");
         var tableLogin = document.getElementById("div_for_login");
         var confirmUser = document.getElementById("confirmReg");
         var registerDiv = document.getElementById("div_reg");
+
+        $.ajax({
+            url: 'rest/user',
+            type: 'POST',
+            data: JSON.stringify({
+                email: emailReg,
+                password: sha256($("#passwordReg").val()),
+                name: nameOfUser
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            complete: function(data){
+
+            }
+        })
 
 
 
