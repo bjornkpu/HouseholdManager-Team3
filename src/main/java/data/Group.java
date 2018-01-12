@@ -11,7 +11,7 @@ public class Group {
     private String name;
     private String description;
     private String admin;
-    private ArrayList<User> userList;
+    private ArrayList<Member> memberList;
     private ArrayList<ShoppingList> shoppingListList;
     private ArrayList<Chore> choreList;
     private ArrayList<WallPost> wallPostList;
@@ -58,16 +58,16 @@ public class Group {
         this.admin = admin;
     }
 
-    public ArrayList<User> getUserList() {
-        return userList;
+    public ArrayList<Member> getMemberList() {
+        return memberList;
     }
 
-    public void addUser(User u){
-        userList.add(u);
+    public void addMember(Member u){
+        memberList.add(u);
     }
 
-    public void removeUser(String email){
-        userList.remove(email);
+    public void removeMember(String email){
+        memberList.remove(email);
     }
 
     public ArrayList<ShoppingList> getShoppingListList() {
@@ -78,9 +78,9 @@ public class Group {
         return shoppingListList.get(shoppingListId);
     }
 
-    public void createShoppingList(int id, String name, User u){ //create a ShoppingList object and add it to the list
+    public void createShoppingList(int id, String name, Member u){ //create a ShoppingList object and add it to the list
         ShoppingList sh = new ShoppingList(id, name);
-        sh.getUserList().add(u); //add the creator of the list as a user in the created object
+        sh.getUserList().add(u); //add the creator of the list as a member in the created object
         shoppingListList.add(sh);
     }
 
@@ -151,7 +151,7 @@ public class Group {
     }
 
     public void changeAdmin(String u){
-        //TODO method to safely switch admin rights between users
+        //TODO method to safely switch admin rights between members
         admin = u;
     }
 
