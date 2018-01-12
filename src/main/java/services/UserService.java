@@ -3,6 +3,8 @@ import data.User;
 import db.UserDao;
 import java.sql.SQLException;
 import util.Logger;
+import util.LoginCheck;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.Response;
  * Service that handles reading, making, updating and deleting user information.
  *
  * @author BK
+ * @author johanmsk
  */
 @Path("user")
 public class UserService {
@@ -35,9 +38,11 @@ public class UserService {
     }
 
     @POST
-    @Path("/{user}")
     @Consumes("application/json")
     public void add(User user) {
+        String salt = LoginCheck.getSalt();
+        user.setSalt(salt);
+        user.setPassword(LoginCheck.getHash(user.getPassword()+salt));
         try {
             userDao.addUser(user);
             log.info("Added user!");

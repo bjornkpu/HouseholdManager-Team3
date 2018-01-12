@@ -8,7 +8,7 @@ import util.Logger;
  * -Description of the class-
  *
  * @author BK
- * @author jmska
+ * @author johanmsk
  */
 public class UserDao {
 
