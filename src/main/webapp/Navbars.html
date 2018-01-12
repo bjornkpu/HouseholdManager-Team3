@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/navbars.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 
     <title>Dashboard</title>
@@ -54,7 +54,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="material-icons">account_circle</i>
+                    <i class="material-icons md-24">account_circle</i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="profile.html">Profile</a>
@@ -67,38 +67,42 @@
     </div>
 </nav>
 <!--End of navBar -->
-<!--Sidebar template-->
+
 <!-- Sidebar Links -->
 <div class="wrapper">
-    <nav id="sidebar">
+    <nav id="sidebar" >
+        <ul class="list-unstyled sidebar-list">
+            <li>
+                <a href="#" class="sidebar-list-items" >
+                    <i class="material-icons md-36">insert_comment</i>
+                    <p>Feed</p>
+                </a>
+            </li>
+            <li>
+                <a href="Shoppinglist.html" class="sidebar-list-items">
+                    <i class="material-icons md-36">attach_money</i><br>
+                    <p>Shopping</p>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-list-items">
+                    <i class="material-icons md-36">work</i><br>
+                    <p>Tasks</p>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="sidebar-list-items">
+                    <i class="material-icons md-36">pie_chart</i><br>
+                    <p>Statistics</p>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
-<ul class="list-unstyled">
-    <li>
-        <a href="#" style="color:lightslategray">
-            <i class="material-icons md-36">insert_comment</i>
-            <p>Feed</p>
-        </a>
-    </li>
-    <li>
-        <a href="#" style="color:lightslategray";>
-            <i class="material-icons md-36">attach_money</i><br>
-            <p>Shopping</p>
-        </a>
-    </li>
-    <li>
-        <a href="#" style="color:lightslategray">
-            <i class="material-icons md-36">work</i><br>
-            <p>Tasks</p>
-        </a>
-    </li>
-    <li>
-        <a href="#" style="color:lightslategray">
-            <i class="material-icons md-36">pie_chart</i><br>
-            <p>Statistics</p>
-        </a>
-    </li>
-</ul>
-</nav>
+<div class="page-content">
+    <p>Text test <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br> Scroll</p>
 </div>
 
 
@@ -106,7 +110,6 @@
 <!-- jQuery CDN -->
 <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
 <!-- Bootstrap Js CDN -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
