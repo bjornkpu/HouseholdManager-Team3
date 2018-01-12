@@ -13,11 +13,23 @@ body {
 
 #sidebar {
     background-color: gainsboro;
-    min-width: 80px;
-    max-width: 80px;
+    min-width: 85px;
+    max-width: 85px;
     height: 100vh;
     position: fixed;
 }
+
+.sidebar-list{
+    padding: 10px;
+    text-align: center;
+}
+.page-content{
+    margin-left: 90px;
+    margin-right: 100px;
+    background-color: lightgreen;
+}
+
+
 .caret.caret-up {
     border-top-width: 0;
     border-bottom: 4px solid #fff;
