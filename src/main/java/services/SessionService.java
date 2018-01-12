@@ -63,6 +63,7 @@ public class SessionService {
     @Produces("application/json")
     public Session get() {
         Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
         if(session == null) {
             log.info("Session not found");
             throw new NotFoundException();

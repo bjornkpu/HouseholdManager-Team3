@@ -74,6 +74,11 @@ function testAPI() {
 
 
 $(document).ready(function(){
+    var loggedOnUser;
+    getLoggedOnUser(function(user){
+        loggedOnUser=user.email;
+    })
+
     // Log in
     $("#loginButton").click(function() {
         $.ajax({

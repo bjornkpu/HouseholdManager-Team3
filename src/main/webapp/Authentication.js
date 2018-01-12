@@ -1,6 +1,6 @@
 function getLoggedOnUser(success) {
     $.ajax({
-        url: 'webresources/session',
+        url: 'rest/session',
         type: 'GET',
         dataType: 'json',
         success: function(session) {
@@ -21,3 +21,10 @@ function getLoggedOnUser(success) {
         }
     });
 };
+
+function logOut(){
+    $.ajax({
+        url: 'rest/session',
+        type: 'DELETE'
+    });
+}
