@@ -1,9 +1,10 @@
 
 
-INSERT INTO user(name, email, password, phone) VALUES( 'Muts Duvudsun', 'en@h.no', 'passord',123456);
-INSERT INTO user(name, email, password, phone) VALUES( 'Murtin Wungun', 'to@h.no', 'passord',12345623);
-INSERT INTO user(name, email, password, phone) VALUES( 'Knat Waag', 'tre@h.no', 'passord',12343524);
-INSERT INTO user(name, email, password, salt ,phone) VALUES( 'Naihan Skravahau', 'abcqwe', '18138372fad4b94533cd4881f03dc6c69296dd897234e0cee83f727e2e6b1f63','123',12343524);
+# All passwords are 'qwe', hashed with sha256, salted with '123' and hashed again
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'Muts Duvudsun', 'en@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',123456);
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'Murtin Wungun', 'to@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'Knat Waag', 'tre@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt ,phone) VALUES( 'PW: qwe', 'abcqwe', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 
 INSERT INTO party(name, admin) VALUES ('Frex', 'en@h.no');
 INSERT INTO party(name, admin) VALUES ('Brummun', 'tre@h.no');

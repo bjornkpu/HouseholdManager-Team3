@@ -20,7 +20,7 @@ DROP TABLE IF EXISTS user;
 CREATE TABLE user(
   name VARCHAR(30) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  password VARCHAR(100)NOT NULL,
+  password CHAR(64)NOT NULL,
   salt VARCHAR(20),
   phone VARCHAR (15),
   CONSTRAINT user_pk PRIMARY KEY(email));
