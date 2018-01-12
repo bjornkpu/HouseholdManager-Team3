@@ -27,7 +27,7 @@
     </div>
 
 <!-- Grid layout for login with email and facebook, splitscreen-->
-    <div class="row">
+    <div class="row" id="div_for_login">
         <div class="col">
            <h2>Log in with email</h2>
             <table>
@@ -47,20 +47,8 @@
                     <strong>Wrong email or password!</strong>
                 </div>
                 <tr>
-                <td id="name_of_user">Name </td>
-                <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
-                </tr>
-                <tr>
-                    <td id="emailReg">Email </td>
-                    <td > <input id="emailRegField" type="text" name="emailRegField"></td>
-                </tr>
-                <tr>
-                    <td id="passwordReg">Password: </td>
-                    <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
-                </tr>
-                <tr>
                     <td></td>
-                    <td><button class = "button" id = "registerButton"> Register new user</button></td></td>
+                    <td id = "registerButton"><button class = "button"> Register new user</button></td></td>
                 </tr>
             </table>
         </div>
@@ -91,6 +79,28 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Table for register new users -->
+<div id="div_reg" style="display: none;">
+    <h1>Register new user</h1>
+    <table id="table_reg">
+        <tr id="name_of_user">
+            <td>Name </td>
+            <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
+        </tr>
+        <tr id="emailReg">
+            <td>Email </td>
+            <td > <input id="emailRegField" type="text" name="emailRegField"></td>
+        </tr>
+        <tr id="passwordReg">
+            <td>Password: </td>
+            <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
+        </tr>
+        <tr>
+            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
+        </tr>
+    </table>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
