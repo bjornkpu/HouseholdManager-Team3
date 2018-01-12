@@ -1,3 +1,5 @@
+/*
+
 package services;
 import data.Group;
 import data.User;
@@ -6,8 +8,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.*;
 
+
+
 @Path("/groups/")
     public class GroupService {
+
         @GET
         @Path("/{groupid}")
         @Produces(MediaType.APPLICATION_JSON)
@@ -50,4 +55,6 @@ import java.util.*;
             }
         }
     }
+
 }
+*/
