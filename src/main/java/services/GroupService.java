@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.*;
 /**
+ *
  * Service class for class Group. Retrieves information from database and posts to rest.
  * Javadoc for put,post and delete has curl commands for testing.
  *
@@ -30,6 +31,7 @@ public class GroupService {
     private HttpServletRequest request;
 
     /**
+     * Retrieves one group given an ID from database.
      *
      * @param groupid The groupId of the group requested.
      * @return A Group object containing the requested group.
@@ -49,6 +51,7 @@ public class GroupService {
     }
 
     /**
+     * Returns all groups in the database.
      *
      * @return Returns the full list of groups from database.
      */
@@ -67,8 +70,9 @@ public class GroupService {
     }
 
     /**
-     *curl -H "Content-Type: application/json" -X POST -d '{"name":"BILL","description":null,"admin":null,
-     * "memberList":null,"shoppingListList":null,"choreList":null,"wallPostList":null}' http://localhost:8080/scrum/rest/groups
+     * Adds a group to database.
+     *
+     curl -H "Content-Type: application/json" -X POST -d '{"name":"BILL","description":null,"admin":null}' http://localhost:8080/scrum/rest/groups
      *
      * @param group The new group to be added.
      */
@@ -86,6 +90,8 @@ public class GroupService {
     }
 
     /**
+     * Deletes a group from database.
+     *
      * Change the "X" to the id of group you wish to delete.
      * curl -v -X DELETE http://localhost:8080/scrum/rest/groups/X
      * @param groupId Id of the group to be deleted from database.
@@ -106,9 +112,10 @@ public class GroupService {
 
     /**
      *
+     * Updates a group in the database.
+     *
      * Change the "name" variable before testing the curl command.
-     *curl -v -H "Content-Type:application/json" -X PUT http://localhost:8080/scrum/rest/groups/2 -d
-     * '{"name":"BILL","description":null,"admin":null,"memberList":null,"shoppingListList":null,"choreList":null,"wallPostList":null}'
+     *curl -v -H "Content-Type:application/json" -X PUT http://localhost:8080/scrum/rest/groups/2 -d'{"name":"BILL","description":null,"admin":null}'
      *
      * @param group The group to be updated.
      */
