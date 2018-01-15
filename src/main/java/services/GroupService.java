@@ -1,8 +1,5 @@
-
-
 package services;
 import data.Group;
-import data.User;
 import db.GroupDao;
 import util.Logger;
 
@@ -12,7 +9,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
 /**
  *
  * Service class for class Group. Retrieves information from database and posts to rest.
@@ -57,7 +54,7 @@ public class GroupService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Group> getGroup() {
+    public List<Group> getGroups() {
         List<Group> groups = null;
         try {
             log.info("Retrieving all groups");

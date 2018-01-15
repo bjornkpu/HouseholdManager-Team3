@@ -37,7 +37,7 @@ public class ShoppingListDao {
 
             ShoppingList sl = null;
             if(rs.next()) {
-                log.info("Found shoppinglist " + id);
+                log.info("Found shopping list " + id);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -46,7 +46,7 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(id));
 
             } else {
-                log.info("Could not find shoppinglist " + id);
+                log.info("Could not find shopping list " + id);
             }
             rs.close();
             ps.close();
@@ -72,7 +72,7 @@ public class ShoppingListDao {
             ArrayList<ShoppingList> shoppinglistList = null;
 
             while(rs.next()) {
-                log.info("Found shoppinglist(s) " + name);
+                log.info("Found shopping list(s) " + name);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -114,7 +114,7 @@ public class ShoppingListDao {
             ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
 
             while(rs.next()) {
-                log.info("Found shoppinglist(s) for user " + u.getEmail());
+                log.info("Found shopping list(s) for user " + u.getEmail());
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -226,7 +226,7 @@ public class ShoppingListDao {
         return GroupDao.getGroup(i) != null;
     }
 
-	/** Method that updates a shopping list.
+	/** Method that updates the name and/or party_id of a shopping list. NOT the item/user-array.
 	 * @param shoppingList The shopping list you are updating to.
 	 * @throws SQLException when failing to update shopping list.
 	 */
@@ -239,7 +239,7 @@ public class ShoppingListDao {
             ps.setInt(3, shoppingList.getId());
             int result = ps.executeUpdate();
             ps.close();
-            log.info("Update shoppinglist " + (result == 1?"ok":"failed"));
+            log.info("Update shopping list " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
             connection.close();
