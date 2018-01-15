@@ -58,7 +58,7 @@ import java.util.*;
         /*
         @GET
         @Produces(MediaType.APPLICATION_JSON)
-        public List<User> getUserlist(int groupId) {
+        public List<User> getMemberlist(int groupId) {
             return kunder.values();
         }
 
