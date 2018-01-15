@@ -4,13 +4,10 @@ import util.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-/**
- * This is a class to establish a connection pool
- *
+/** This is a class to establish a connection pool
  * @author BK
  */
 public class Db {
-
     private static Db datasource;
     private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
@@ -18,6 +15,9 @@ public class Db {
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
 
+	/** constructor that sets up the connection pool.
+	 * logs an exception error if it fails to initialize the connection pool to the database.
+	 */
     private Db() {
         try {
             cpds = new ComboPooledDataSource();
@@ -39,6 +39,9 @@ public class Db {
         }
     }
 
+	/** Method to instance the datasource. If a connection is already established it will return the connection.
+	 * This will prevent need to establish a new connection every time you need to make a query.
+	 */
     public static Db instance() {
         if (datasource == null) {
             datasource = new Db();
@@ -48,8 +51,10 @@ public class Db {
         }
     }
 
+	/** Method to get a connection from the connection pool.
+	 * @return a connection ready for use.
+	 */
     public Connection getConnection() throws SQLException {
         return this.cpds.getConnection();
     }
-
 }

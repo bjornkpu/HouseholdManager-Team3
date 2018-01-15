@@ -89,12 +89,6 @@
             <artifactId>mchange-commons-java</artifactId>
             <version>0.2.11</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.mchange</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.5.2</version>
-        </dependency>
     </dependencies>
 	
 	<build>
