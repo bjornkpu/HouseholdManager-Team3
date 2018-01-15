@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * -Description of the class-
  *
  * @author
+ * matseda
  */
 public class ChoreDao {
 
