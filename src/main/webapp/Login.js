@@ -85,29 +85,33 @@ $(document).ready(function(){
 
     // Log in
     $("#loginButton").click(function() {
-        $.ajax({
-            url: 'rest/session',
-            type: 'POST',
-            data: JSON.stringify({
-                email: $("#emailField").val(),
-                password: sha256($("#passwordField").val())
-            }),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            complete: function (jqXHR, textStatus) {
-                switch (jqXHR.status) {
-                    case 200:
-                        document.cookie = "testcookie=this is a test";
-                        window.location.href = "Dashboard.html";
-                        break;
-                    case 401:
-                        $("#wrongPasswordAlert").removeClass("hide");
-                        break;
-                    default:
-                        window.location.href="error.html";
-                        break;
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
+            // console.log(pass);
+            $.ajax({
+                url: 'rest/session',
+                type: 'POST',
+                data: JSON.stringify({
+                    email: $("#emailField").val(),
+                    password: pass
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                complete: function (jqXHR, textStatus) {
+                    switch (jqXHR.status) {
+                        case 200:
+                            document.cookie = "testcookie=this is a test";
+                            window.location.href = "Dashboard.html";
+                            break;
+                        case 401:
+                            $("#wrongPasswordAlert").removeClass("hide");
+                            break;
+                        default:
+                            // window.location.href="error.html";
+                            break;
+                    }
                 }
-            }
+            });
         });
     });
 

@@ -29,11 +29,12 @@ function logOut(){
 }
 
 
-
+//Returns a Promise that returns the hash on success.
 function sha256(str) {
     // We transform the string into an arraybuffer.
     var buffer = new TextEncoder("utf-8").encode(str);
     return crypto.subtle.digest("SHA-256", buffer).then(function (hash) {
+        // console.log(hex(hash))
         return hex(hash);
     });
 }
