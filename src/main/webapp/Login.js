@@ -51,9 +51,9 @@ $(document).ready(function(){
             url: 'rest/user',
             type: 'POST',
             data: JSON.stringify({
-                email: $("#emailReg"),
+                email: $("#emailReg").val(),
                 password: sha256($("#passwordReg").val()),
-                name: $("#name_of_user")
+                name: $("#name_of_user").val()
             }),
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
