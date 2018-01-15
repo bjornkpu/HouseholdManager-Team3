@@ -25,6 +25,19 @@ import java.util.*;
     @Context
     private HttpServletRequest request;
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Group> getGroup() {
+        List<Group> groups = null;
+        try {
+            log.info("Retrieving all groups");
+            return groupDao.getAllGroups();
+        } catch (SQLException e) {
+            log.info("Unable to get all groups");
+            throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
         @GET
         @Path("/{groupid}")
         @Produces(MediaType.APPLICATION_JSON)
@@ -38,18 +51,7 @@ import java.util.*;
                 throw new ServerErrorException("Failed to get group", Response.Status.INTERNAL_SERVER_ERROR,e);
             }
         }
-        @GET
-        @Produces(MediaType.APPLICATION_JSON)
-        public List<Group> getGroup() {
-            List<Group> groups = null;
-            try {
-                log.info("Retrieving all groups");
-                return groupDao.getAllGroups();
-            } catch (SQLException e) {
-                log.info("Unable to get all groups");
-                throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
-            }
-        }
+
 
         /*
         @GET
