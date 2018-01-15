@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HouseHold Manager</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/logo.css">
+    <Link rel="stylesheet" type="text/css" href="css/logo.css">
+</head>
+<body>
+<!-- div for alert on login, hidden on load-->
+<div id="loginResult" style="display:none;">
+</div>
+
+<!-- Grid for logo-->
+<div class="container">
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-6">
+            <img src="images/hhm_logo.png" alt="Household Manager Logo" class="hhm_logo">
+        </div>
+        <div class="col">
+        </div>
+    </div>
+
+<!-- Grid layout for login with email and facebook, splitscreen-->
+    <div class="row" id="div_for_login">
+        <div class="col">
+           <h2>Log in with email</h2>
+            <table>
+                <tr>
+                    <td id="email">Email: </td>
+                    <td > <input id="emailField" type="text" name="emailField"></td>
+                </tr>
+                <tr>
+                    <td id="password">Password: </td>
+                    <td > <input id="passwordField" type="password" name="passwordField"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td> <button class = "button" id = "loginButton"> Login</button></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td id = "registerButton"><button class = "button"> Register new user</button></td></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col">
+            <h2>Log in with facebook</h2>
+            <table>
+                <tr>
+                    <div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                        var js, fjs = d.getElementsByTagName(s)[0];
+                        if (d.getElementById(id)) return;
+                        js = d.createElement(s); js.id = id;
+                        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.11&appId=179985056083093';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>-->
+
+                            <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+
+                            <div id="status"></div>
+                        </div>
+                    </div>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Table for register new users -->
+<div id="div_reg" style="display: none;">
+    <h1>Register new user</h1>
+    <table id="table_reg">
+        <tr id="name_of_user">
+            <td>Name </td>
+            <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
+        </tr>
+        <tr id="emailReg">
+            <td>Email </td>
+            <td > <input id="emailRegField" type="text" name="emailRegField"></td>
+        </tr>
+        <tr id="passwordReg">
+            <td>Password: </td>
+            <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
+        </tr>
+        <tr>
+            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
+        </tr>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+<script src="Authentication.js"></script>
+<script src="Login.js"></script>
+
+</body>
+</html>

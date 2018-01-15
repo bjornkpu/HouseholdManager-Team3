@@ -1,12 +1,15 @@
 package data;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static util.LoginCheck.correctLogin;
 import static util.LoginCheck.getHash;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class LoginCheckTest {
     private final static String email= "abcATemailDOTcom";
     private final static String pw= "qwe";

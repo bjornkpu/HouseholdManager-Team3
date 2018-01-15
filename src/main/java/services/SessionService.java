@@ -1,5 +1,4 @@
 package services;
-
 import data.LoginData;
 import data.Session;
 import data.User;
@@ -21,9 +20,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import static util.LoginCheck.correctLogin;
-
 /**
  * Service to handle logon and logout using the web-session
+ *
+ * @author
  */
 @Path("session")
 public class SessionService {
@@ -39,7 +39,7 @@ public class SessionService {
     @Consumes("application/json")
     @Produces("application/json")
     public Session create(LoginData data) {
-        log.info("Trying to logon or register new user");
+        log.info("Trying to logon");
         try {
             User user = userDao.getUser(data.getEmail());
             if(!correctLogin(data,user)) {
@@ -63,6 +63,7 @@ public class SessionService {
     @Produces("application/json")
     public Session get() {
         Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
         if(session == null) {
             log.info("Session not found");
             throw new NotFoundException();

@@ -1,6 +1,9 @@
 package data;
-
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class LoginData {
     private String email;
     private String password;

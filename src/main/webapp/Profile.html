@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/profile.css">
+    <script src="Profile.js"></script>
+    <meta charset="UTF-8">
+    <title>My Profile</title>
+</head>
+<body>
+
+<h1>My Profile</h1>
+<br>
+<br>
+
+<!-- NavBar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="Navbars.html">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="Profile.html">Profile</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<!--End of navBar -->
+
+<h2>User profile</h2>
+<div class="container">
+    <div class="row">
+        <div class="col" id="leftSide">
+            <table id="tableUserInfoReadOnly" style="display: block;">
+                <tr>
+                    <td id="nameProfile">Name: </td>
+                    <td > <input type="text" id="nameReadOnly" value="Mats davido" readonly><br></td>
+                </tr>
+                <tr>
+                    <td id="email">Email: </td>
+                    <td > <input type="text" id="emailReadOnly" value="davido@kuk.no" readonly><br></td>
+                </tr>
+                <tr>
+                    <td id="phone">Phonenumber: </td>
+                    <td > <input type="text" id="phoneReadOnly" value="666" readonly><br></td>
+                </tr>
+                <tr>
+                    <td > <button class = "button" id = "editUser"> Edit information</button></td>
+                </tr>
+            </table>
+            <table id="tableUserInfo" style="display: none;">
+                <tr>
+                    <td id="nameProfile1">Name: </td>
+                    <td> <input id="nameProfileField1" type="text" name="nameProfileField"></td>
+                </tr>
+                <tr>
+                    <td id="email1">Email: </td>
+                    <td > <input id="emailField1" type="text" name="emailField"></td>
+                </tr>
+                <tr>
+                    <td id="phone1">Phonenumber: </td>
+                    <td > <input id="phoneField1" type="text" name="phoneField"></td>
+                </tr>
+                <tr>
+                    <td> <button class = "button" id = "Confirm"> Confirm</button></td>
+
+                </tr>
+            </table>
+
+        </div>
+        <div class="col" id="rightSide">
+            <table>
+                <tr>
+                    <td id="currentPassword">Current password: </td>
+                    <td > <input id="passwordField" type="password" name="passwordField"></td>
+                </tr>
+                <tr>
+                    <td id="newPassword">New password: </td>
+                    <td > <input id="newPasswordField" type="password" name="newPasswordField"></td>
+                </tr>
+                <tr>
+                    <td id="confirmPassword">Current password: </td>
+                    <td > <input id="confirmPasswordField" type="password" name="confirmPasswordField"></td>
+                </tr>
+                <tr>
+                    <td> <button class = "button" id = "changePassword"> Change Password</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</body>
+</html>

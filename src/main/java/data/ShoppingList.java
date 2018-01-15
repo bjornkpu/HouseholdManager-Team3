@@ -1,13 +1,14 @@
 package data;
-
 import java.util.ArrayList;
-
 /**
  * Class for the ShoppingList-object
+ *
+ * @author
  */
 public class ShoppingList {
     private int id;
     private String name;
+    private int groupId;
     private ArrayList<Item> itemList;
     private ArrayList<User> userList;
 
@@ -19,9 +20,11 @@ public class ShoppingList {
         this.name = name;
     }
 
-    public ShoppingList(int id, String name, ArrayList<Item> itemList, ArrayList<User> userList) {
+    public ShoppingList(int id, String name, int groupId,
+                        ArrayList<Item> itemList, ArrayList<User> userList) {
         this.id = id;
         this.name = name;
+        this.groupId = groupId;
         this.itemList = itemList;
         this.userList = userList;
     }
@@ -40,6 +43,14 @@ public class ShoppingList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
     }
 
     public ArrayList<Item> getItemList() {
@@ -88,10 +99,5 @@ public class ShoppingList {
 
     public void removeUser(int userId){
         userList.remove(userId);
-    }
-
-    public double getSumOfItems(){
-        //TODO calculate sum price of items
-        return 0;
     }
 }
