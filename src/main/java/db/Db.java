@@ -1,11 +1,14 @@
 package db;
-
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import util.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-
+/**
+ * This is a class to establish a connection pool
+ *
+ * @author BK
+ */
 public class Db {
 
     private static Db datasource;

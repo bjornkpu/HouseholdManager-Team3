@@ -1,7 +1,11 @@
 package data;
 import java.util.ArrayList;
 import java.util.Date;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class Chore {
     private int choreId;
     private String description;

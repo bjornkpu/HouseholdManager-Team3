@@ -1,7 +1,9 @@
 package data;
-
 /**
  * Class for the Item-object
+ *
+ * @author BK
+ * @author jmska
  */
 public class Item {
     private int itemId;

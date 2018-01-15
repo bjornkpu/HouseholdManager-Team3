@@ -1,10 +1,13 @@
 package data;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class LoginDataTest {
 
 

@@ -1,13 +1,14 @@
 package db;
-
 import data.User;
 
 import java.sql.*;
 
 import util.Logger;
-
 /**
- * @author jmska
+ * -Description of the class-
+ *
+ * @author BK
+ * @author johanmsk
  */
 public class UserDao {
 

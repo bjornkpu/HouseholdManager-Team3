@@ -1,5 +1,9 @@
 package data;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class Admin extends User{
     public Admin(){
 

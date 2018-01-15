@@ -1,11 +1,17 @@
 package util;
-
 import data.LoginData;
 import data.User;
 
 import javax.xml.bind.DatatypeConverter;
+import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 
+/**
+ * -Description of the class-
+ *
+ * @author johanmsk
+ */
 public class LoginCheck {
 
 
@@ -50,5 +56,11 @@ public class LoginCheck {
             System.out.println("Password hashing failed");
         }
         return hashValue;
+    }
+
+    public static String getSalt(){
+        SecureRandom random = new SecureRandom();
+        String salt = new BigInteger(20, random).toString(32);
+        return salt;
     }
 }
