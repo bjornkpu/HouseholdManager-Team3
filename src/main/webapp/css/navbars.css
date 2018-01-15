@@ -38,7 +38,7 @@
         color: darkslategrey;
     }
 
-    .container{
+    .navbarcontainer{
         width: 100%;
     }
     .username{
@@ -106,7 +106,7 @@
     .navbar-brand.logo{
         font-size: 0;
     }
-    .container{
+    .navbarcontainer{
         width: 100%;
     }
     .username{
