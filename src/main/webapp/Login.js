@@ -105,6 +105,7 @@ $(document).ready(function(){
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");
+                            alert("Wrong email or password");
                             break;
                         default:
                             // window.location.href="error.html";

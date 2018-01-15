@@ -2,26 +2,146 @@
  * Base structure
  */
 
-/* Move down content because we have a fixed navbar that is 50px tall */
-body {
-    padding-top: 60px;
-}
-.wrapper {
-    display: flex;
-    position: sticky;
+@media screen and (orientation: landscape) {
+    /* Move down content because we have a fixed navbar that is 50px tall */
+    body {
+        padding-top: 60px;
+    }
+
+    .wrapper {
+        display: flex;
+        position: fixed;
+    }
+
+    .page-content {
+        margin-left: 85px;
+        background-color: lightgreen;
+    }
+
+    #sidebar {
+        background-color: gainsboro;
+        min-width: 85px;
+        max-width: 85px;
+        height: 100vh;
+    }
+
+    .sidebar-list {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .sidebar-list-items {
+        color: lightslategray;
+    }
+
+    .sidebar-list-items:hover {
+        color: darkslategrey;
+    }
+
+    .container{
+        width: 100%;
+    }
+    .username{
+        ;
+    }
+
+
+
+
+/*
+ * Google icons
+ */
+    /* Rules for sizing the icon. */
+    .material-icons.md-18 { font-size: 18px; }
+    .material-icons.md-24 { font-size: 24px; }
+    .material-icons.md-36 { font-size: 36px; }
+    .material-icons.md-48 { font-size: 48px; }
+
+    /* Rules for using icons as black on a light background. */
+    .material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+    .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+    /* Rules for using icons as white on a dark background. */
+    .material-icons.md-light { color: rgba(255, 255, 255, 1); }
+    .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 }
 
-#sidebar {
-    background-color: gainsboro;
-    min-width: 80px;
-    max-width: 80px;
-    height: 100vh;
-    position: fixed;
+@media screen and (orientation: portrait) {
+    .wrapper {
+        display: flex;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+    }
+
+    #sidebar {
+        background-color: gainsboro;
+        height: 75px;
+        width: 100%;
+    }
+
+    .sidebar-list {
+        padding: 10px;
+        text-align: center;
+
+    }
+
+    .sidebar-list-items {
+        float: left;
+        margin-left: 10%;
+        display: inline-block;
+        position: relative;
+        color: lightslategray;
+    }
+
+    .sidebar-list-items:hover {
+        color: darkslategrey;
+    }
+
+    .page-content {
+        background-color: lightgreen;
+        margin-top: 60px;
+        margin-bottom: 75px;
+    }
+    .navbar-brand.logo{
+        font-size: 0;
+    }
+    .container{
+        width: 100%;
+    }
+    .username{
+        font-size: 0;
+    }
+
+
+    /*
+ * Google icons
+ */
+    /* Rules for sizing the icon. */
+    .material-icons.md-18 { font-size: 18px; }
+    .material-icons.md-24 { font-size: 24px; }
+    .material-icons.md-36 { font-size: 24px; }
+    .material-icons.md-48 { font-size: 48px; }
+
+    /* Rules for using icons as black on a light background. */
+    .material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+    .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+    /* Rules for using icons as white on a dark background. */
+    .material-icons.md-light { color: rgba(255, 255, 255, 1); }
+    .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 }
+
+
+
+/*
+ * Top navbar stuff
+ */
 .caret.caret-up {
     border-top-width: 0;
     border-bottom: 4px solid #fff;
 }
+
 .scrollable-menu {
     height: auto;
     max-height: 200px;
@@ -36,25 +156,3 @@ body {
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
 }
-
-/*
- * Top navigation
- * Hide default border to remove 1px line.
- */
-.navbar-fixed-top {
-    border: 0;
-}
-
-/* Rules for sizing the icon. */
-.material-icons.md-18 { font-size: 18px; }
-.material-icons.md-24 { font-size: 24px; }
-.material-icons.md-36 { font-size: 36px; }
-.material-icons.md-48 { font-size: 48px; }
-
-/* Rules for using icons as black on a light background. */
-.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
-
-/* Rules for using icons as white on a dark background. */
-.material-icons.md-light { color: rgba(255, 255, 255, 1); }
-.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }

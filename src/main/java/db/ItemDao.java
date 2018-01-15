@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ItemDao {
     private static final Logger log = Logger.getLogger();
@@ -76,7 +77,7 @@ public class ItemDao {
     public static Boolean delItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("DELETE item where id=?");
+            ps = connection.prepareStatement("DELETE FROM item where id=?");
             ps.setString(1,""+item.getItemId());
             int result = ps.executeUpdate();
             ps.close();
