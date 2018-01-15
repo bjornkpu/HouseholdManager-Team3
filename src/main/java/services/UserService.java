@@ -65,7 +65,7 @@ public class UserService {
         }
     }
 
-    @PUT
+    @DELETE
     @Path("/{email}")
     @Consumes("application/json")
     public void delete(String email) {

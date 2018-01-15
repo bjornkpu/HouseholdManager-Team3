@@ -38,10 +38,10 @@ INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Fredrikstadpil
 INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Cola', 2,1,1);
 
 
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Lefser', 15.43, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Mais', 5.0, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Saus', 10.50, 1, 1, 'Kjøp på REMA', 'en@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Rømme', 20.00, 1, 1, 'Kjøp på REMA', 'to@h.no');
-INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Fredrikstadpilsner', 34.40, 1, 6, 'Kjøp på Bunnpris', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Lefser', 15.43, 1, 1, 'Kjøp på REMA', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Mais', 5.0, 1, 1, 'Kjøp på REMA', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Saus', 10.50, 1, 1, 'Kjøp på REMA', 'en@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Rømme', 20.00, 1, 1, 'Kjøp på REMA', 'to@h.no');
+# INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Fredrikstadpilsner', 34.40, 1, 6, 'Kjøp på Bunnpris', 'en@h.no');

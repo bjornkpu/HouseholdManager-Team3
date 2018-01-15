@@ -60,7 +60,7 @@ public class ShoppingListService {
         }
     }
 
-    @PUT
+    @DELETE
     @Path("/{email}")
     @Consumes("application/json")
     public void delete(int shoppingListId) {
