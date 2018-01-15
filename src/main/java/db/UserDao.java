@@ -48,11 +48,12 @@ public class UserDao {
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password,salt) VALUES(?,?,?,?,?)");
             ps.setString(1,user.getEmail());
             ps.setString(2,user.getName());
             ps.setString(3,user.getPhone());
             ps.setString(4,user.getPassword());
+            ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add user " + (result == 1?"ok":"failed"));

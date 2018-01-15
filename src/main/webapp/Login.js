@@ -47,23 +47,27 @@ $(document).ready(function(){
     })
 
     $('#confirmReg').click(function () {
-        $.ajax({
-            url: 'rest/user',
-            type: 'POST',
-            data: JSON.stringify({
-                email: $("#emailReg").val(),
-                password: sha256($("#passwordReg").val()),
-                name: $("#name_of_user").val()
-            }),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            complete: function(data){
-
-            }
-        });
-
-        $("#div_reg").hide();
-        $("#div_for_login").show();
+        if($("#passwordRegField").val()==$("#passwordConfirmField").val()){
+            sha256($("#passwordRegField").val()).then(function (value) {
+                $.ajax({
+                    url: 'rest/user',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        email: $("#emailRegField").val(),
+                        password: value,
+                        name: $("#name_of_user_field").val()
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    success: function(data){
+                        $("#div_reg").hide();
+                        $("#div_for_login").show();
+                    }
+                });
+            });
+        }else{
+            alert("Passwords must match >:)))))");
+        }
     })
 });
 
