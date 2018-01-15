@@ -15,7 +15,7 @@ public class ChoreDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    public static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
         connection = Db.instance().getConnection();
         try{
             ps= connection.prepareStatement("SELECT user_id FROM chore_log WHERE chore_id=?");
