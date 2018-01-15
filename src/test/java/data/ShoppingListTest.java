@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ShoppingListTest {
     private static int slId;
@@ -61,6 +62,7 @@ public class ShoppingListTest {
         }
 
         assertNotNull(slList);
+        assertEquals(slList.get(0).getId(), shoppingListTest.getId());
     }
 
     @Test
@@ -74,6 +76,7 @@ public class ShoppingListTest {
         }
 
         assertNotNull(slList);
+        assertEquals(slList.get(0).getId(), shoppingListTest.getId());
     }
 
     @Test
@@ -94,10 +97,12 @@ public class ShoppingListTest {
         }
 
         assertEquals(updateTest.getId(), updatedSl.getId());
+        assertEquals(updateTest.getName(), updatedSl.getName());
+
     }
 
     @AfterClass
-    public static void delete_shoppingList() throws SQLException{
+    public static void tearDown() throws SQLException{
         ShoppingListDao.delShoppingList(slId);
         UserDao.delUser(u.getEmail());
     }
