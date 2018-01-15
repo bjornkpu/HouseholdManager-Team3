@@ -13,9 +13,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.*;
-
-
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 @Path("/groups/")
     public class GroupService {
 
