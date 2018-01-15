@@ -31,9 +31,11 @@ public class ItemDao {
             if(rs.next()) {
                 log.info("Found item " + id);
                 item = new Item();
-                item.setItemId(rs.getInt("id"));
+                item.setId(rs.getInt("id"));
                 item.setName(rs.getString("name"));
                 item.setStatus(rs.getInt("status"));
+                item.setShoppingListId(rs.getInt("shoppinglist_id"));
+                item.setDispId(rs.getInt("dips_id"));
             } else {
                 log.info("could not find item " + id);
             }
@@ -45,13 +47,50 @@ public class ItemDao {
         }
     }
 
+    public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
+            ps.setInt(1,id);
+            rs = ps.executeQuery();
+
+//            TODO kan ikke teste her, hvordan
+//            if(!rs.next()) {
+//                log.info("could not find item " + id);
+//            }
+
+            Item item = new Item();
+            ArrayList<Item> itemList = new ArrayList<Item>();
+            while(rs.next()) {
+                log.info("Found item " + id);
+                item = new Item();
+                item.setId(rs.getInt("id"));
+                item.setName(rs.getString("name"));
+                item.setStatus(rs.getInt("status"));
+                item.setShoppingListId(rs.getInt("shoppinglist_id"));
+                item.setDispId(rs.getInt("dips_id"));
+                itemList.add(item);
+            }
+
+//            TODO clean this up
+//            rs.close();
+//            ps.close();
+            return itemList;
+        } finally {
+//            connection.close();
+        }
+    }
+
     public static Boolean addItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO item (id,name,status) VALUES(?,?,?)");
-            ps.setInt(1,item.getItemId());
+            ps = connection.prepareStatement("INSERT INTO `item`(`id`, `name`, `status`, `shoppinglist_id`, `dips_id`) " +
+                    "VALUES (?,?,?,?,?)");
+            ps.setInt(1,item.getId());
             ps.setString(2,item.getName());
             ps.setInt(3,item.getStatus());
+            ps.setInt(4,item.getShoppingListId());
+            ps.setInt(5,item.getDispId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add item " + (result == 1?"ok":"failed"));
@@ -64,11 +103,13 @@ public class ItemDao {
     public static Boolean updateItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=? where id=?");
-            ps.setInt(1,item.getItemId());
+            ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, dips_id=? where id=?");
+            ps.setInt(1,item.getId());
             ps.setString(2,item.getName());
             ps.setInt(3,item.getStatus());
-            ps.setInt(4,item.getItemId());
+            ps.setInt(4,item.getStatus());
+            ps.setInt(5,item.getStatus());
+            ps.setInt(6,item.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update item " + (result == 1?"ok":"failed"));
@@ -82,7 +123,7 @@ public class ItemDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM item where id=?");
-            ps.setString(1,""+item.getItemId());
+            ps.setString(1,""+item.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Delete item " + (result == 1?"ok":"failed"));
