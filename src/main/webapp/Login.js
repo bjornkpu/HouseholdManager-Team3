@@ -1,3 +1,76 @@
+$(document).ready(function(){
+    $.ajax({
+        url: 'rest/session',
+        type: 'GET',
+        dataType: 'json',
+        success: function(session){
+            window.location.href="Dashboard.html";
+        }
+    });
+
+    // Log in
+    $("#loginButton").click(function() {
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
+            // console.log(pass);
+            $.ajax({
+                url: 'rest/session',
+                type: 'POST',
+                data: JSON.stringify({
+                    email: $("#emailField").val(),
+                    password: pass
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                complete: function (jqXHR, textStatus) {
+                    switch (jqXHR.status) {
+                        case 200:
+                            document.cookie = "testcookie=this is a test";
+                            window.location.href = "Dashboard.html";
+                            break;
+                        case 401:
+                            $("#wrongPasswordAlert").removeClass("hide");
+                            alert("Wrong email or password");
+                            break;
+                        default:
+                            // window.location.href="error.html";
+                            break;
+                    }
+                }
+            });
+        });
+    });
+
+    $('#registerButton').click(function () {
+        $("#div_for_login").hide();
+        $("#div_reg").show();
+    })
+
+    $('#confirmReg').click(function () {
+        $.ajax({
+            url: 'rest/user',
+            type: 'POST',
+            data: JSON.stringify({
+                email: $("#emailReg").val(),
+                password: sha256($("#passwordReg").val()),
+                name: $("#name_of_user").val()
+            }),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            complete: function(data){
+
+            }
+        });
+
+        $("#div_reg").hide();
+        $("#div_for_login").show();
+    })
+});
+
+
+//FB Login
+//vvvvvvvvvvvvvvvvvvvvvvv
+
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -71,38 +144,4 @@ function testAPI() {
             'Thanks for logging in, ' + response.name + '!';
     });
 }
-
-
-$(document).ready(function(){
-    // Log in
-    $("#loginButton").click(function() {
-        $.ajax({
-            url: 'rest/session',
-            type: 'POST',
-            data: JSON.stringify({
-                email: $("#emailField").val(),
-                password: $("#passwordField").val()
-            }),
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            complete: function (jqXHR, textStatus) {
-                switch (jqXHR.status) {
-                    case 200:
-                        document.cookie = "testcookie=sensitive data";
-                        window.location.href = "Dashboard.html";
-                        break;
-                    case 401:
-                        $("#wrongPasswordAlert").removeClass("hide");
-                        break;
-                    default:
-                        window.location.href="error.html";
-                        break;
-                }
-            }
-        });
-    });
-});
-
-
-
 

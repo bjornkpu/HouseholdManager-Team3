@@ -213,7 +213,8 @@ $(document).ready(function() {
  @Produces({ MediaType.APPLICATION_JSON})
  public List<ShoppingList> findAllShoppinglist() {
 
-      return ShoppingList.findAllShoppinglist();
+
+     return ShoppingList.findAllShoppinglist();
     }
 
  @GET

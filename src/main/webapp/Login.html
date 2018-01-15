@@ -27,7 +27,7 @@
     </div>
 
 <!-- Grid layout for login with email and facebook, splitscreen-->
-    <div class="row">
+    <div class="row" id="div_for_login">
         <div class="col">
            <h2>Log in with email</h2>
             <table>
@@ -43,24 +43,9 @@
                     <td></td>
                     <td> <button class = "button" id = "loginButton"> Login</button></td>
                 </tr>
-                <div class="alert alert-danger hide" id="wrongPasswordAlert">
-                    <strong>Wrong email or password!</strong>
-                </div>
-                <tr>
-                <td id="name_of_user">Name </td>
-                <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
-                </tr>
-                <tr>
-                    <td id="emailReg">Email </td>
-                    <td > <input id="emailRegField" type="text" name="emailRegField"></td>
-                </tr>
-                <tr>
-                    <td id="passwordReg">Password: </td>
-                    <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
-                </tr>
                 <tr>
                     <td></td>
-                    <td><button class = "button" id = "registerButton"> Register new user</button></td></td>
+                    <td id = "registerButton"><button class = "button"> Register new user</button></td></td>
                 </tr>
             </table>
         </div>
@@ -93,9 +78,32 @@
     </div>
 </div>
 
+<!-- Table for register new users -->
+<div id="div_reg" style="display: none;">
+    <h1>Register new user</h1>
+    <table id="table_reg">
+        <tr id="name_of_user">
+            <td>Name </td>
+            <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
+        </tr>
+        <tr id="emailReg">
+            <td>Email </td>
+            <td > <input id="emailRegField" type="text" name="emailRegField"></td>
+        </tr>
+        <tr id="passwordReg">
+            <td>Password: </td>
+            <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
+        </tr>
+        <tr>
+            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
+        </tr>
+    </table>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+<script src="Authentication.js"></script>
 <script src="Login.js"></script>
 
 </body>
