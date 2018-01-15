@@ -1,4 +1,5 @@
 package services;
+import data.Session;
 import data.ShoppingList;
 import db.ShoppingListDao;
 import util.Logger;
@@ -10,6 +11,7 @@ import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 /** Service that handles reading, making, updating and deleting shopping list information.
  * @author BK
+ * @author johanmsk
  */
 @Path("group/shoppingList")
 public class ShoppingListService {
@@ -20,7 +22,7 @@ public class ShoppingListService {
     @Context
     private HttpServletRequest request;
 
-	/** Method that gets a shopping list given the shopping list id.
+	/** Method that gets a shopping list given the shopping list.
 	 * @param shoppingListId The ID of the shopping list you are trying to get.
 	 * @return Returns the shopping list that corresponds to the id given.
 	 * @throws ServerErrorException when failing to get shopping list.
@@ -29,8 +31,9 @@ public class ShoppingListService {
     @Path("/{id}")
     @Produces("application/json")
     public ShoppingList get(@PathParam("id") int shoppingListId) {
+        Session session = (Session)request.getSession();
         try {
-            return shoppingListDao.getShoppingList(shoppingListId);
+            return shoppingListDao.getShoppingList(shoppingListId,session.getEmail());
         } catch(SQLException e) {
             log.error("Failed to get shopping list", e);
             throw new ServerErrorException("Failed to get shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);

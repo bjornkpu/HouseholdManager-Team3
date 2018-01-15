@@ -21,16 +21,18 @@ public class ShoppingListDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    /** Method that gets a shopping list given the shopping list id.
+    /** Method that gets a shopping list given the shopping list id, if the user has permission.
      * @param id The ID of the shopping list you are trying to get.
+     * @param email The email of the requesting user.
      * @return Returns the shopping list that corresponds to the id given.
      * @throws SQLException when failing to get shopping list.
      */
-    public static ShoppingList getShoppingList(int id) throws SQLException {
+    public static ShoppingList getShoppingList(int id, String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE id=?");
-            ps.setInt(1,id);
+            ps = connection.prepareStatement("SELECT * FROM shoppinglist JOIN user_party ON party_id WHERE email=? AND id=?");
+            ps.setString(1,email);
+            ps.setInt(2,id);
             rs = ps.executeQuery();
 
             ShoppingList sl = null;
