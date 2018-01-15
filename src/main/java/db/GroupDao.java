@@ -42,7 +42,6 @@ public class GroupDao {
                 group = new Group();
                 group.setId(groupId);
                 group.setName(rs.getString("name"));
-                group.setAdmin(rs.getString("admin"));
             } else {
                 log.info("Could not find party " + groupId);
             }
@@ -53,25 +52,23 @@ public class GroupDao {
             connection.close();
         }
     }
-    public static Group getGroupByName(String name) throws SQLException {
+    public static List<Group> getGroupByName(String name) throws SQLException {
         connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT * FROM party WHERE name = ?");
             ps.setString(1,name);
             rs = ps.executeQuery();
-            Group group = null;
-            if (rs.next()){
+            List<Group> g = new ArrayList<Group>();
+            while (rs.next()){
                 log.info("Found party with name: " + name);
-                group = new Group();
+                Group group = new Group();
                 group.setId(rs.getInt("id"));
                 group.setName(name);
-                group.setAdmin(rs.getString("admin"));
-            } else {
-                log.info("Could not find party " + name);
+                g.add(group);
             }
             rs.close();
             ps.close();
-            return group;
+            return g.size() == 0 ? null : g;
         } finally {
             connection.close();
         }
@@ -79,7 +76,7 @@ public class GroupDao {
 
     /**
      * Retrieves all the parties from database.
-     * @return Returns a List of parties.
+     * @return Returns a List of parties if found. Null if empty.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
 
@@ -93,13 +90,12 @@ public class GroupDao {
                 Group g = new Group();
                 g.setId(rs.getInt("id"));
                 g.setName(rs.getString("name"));
-                g.setAdmin(rs.getString("admin"));
                 groups.add(g);
             }
             rs.close();
             ps.close();
             log.info("Found " + groups.size() + " parties from database");
-            return groups;
+            return groups.size() == 0 ? null : groups;
         } finally {
             connection.close();
         }
@@ -115,14 +111,13 @@ public class GroupDao {
                 while (rs.next()) {
                     Group group = new Group();
                     group.setId(rs.getInt("id"));
-                    group.setAdmin(rs.getString("admin"));
                     group.setName(rs.getString("name"));
                     groups.add(group);
                 }
                 rs.close();
                 ps.close();
                 log.info("Retrieving " + amountOfGroups + " groups from database. Amount retrieved: " + groups.size());
-                return groups;
+                return groups.size() == 0 ? null:groups;
             } finally {
                 connection.close();
             }
@@ -140,9 +135,8 @@ public class GroupDao {
     public static boolean addParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO party (name,admin) VALUES(?,?)");
+            ps = connection.prepareStatement("INSERT INTO party (name) VALUES(?)");
             ps.setString(1,group.getName());
-            ps.setString(2,group.getAdmin());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
@@ -153,21 +147,6 @@ public class GroupDao {
 
     }
 
-    public static boolean addParty(String partyName,String adminId) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("INSERT INTO party (name,admin) VALUES(?,?)");
-            ps.setString(1,partyName);
-            ps.setString(2,adminId);
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Add party result:" + (result == 1 ? "ok": "failed"));
-            return result == 1;
-        } finally {
-            connection.close();
-        }
-
-    }
     public static boolean deleteParty(int groupId) throws SQLException {
         connection = Db.instance().getConnection(); // heu
         try{
@@ -219,10 +198,9 @@ public class GroupDao {
     public static boolean updateParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE party set name=?,admin=? WHERE id = ?");
+            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
             ps.setString(1,group.getName());
-            ps.setString(2,group.getAdmin());
-            ps.setInt(3,group.getId());
+            ps.setInt(2,group.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update party, result: " + (result == 1? "ok":"failed"));
@@ -231,20 +209,7 @@ public class GroupDao {
             connection.close();
         }
     }
-    public static boolean updateAdmin(int partyid,String newAdmin) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("UPDATE party set admin=? WHERE id = ?");
-            ps.setString(1,newAdmin);
-            ps.setInt(2,partyid);
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Update party, result: " + (result == 1? "ok":"failed"));
-            return result == 1;
-        } finally {
-            connection.close();
-        }
-    }
+
     public static boolean updateName(int partyid,String newName) throws SQLException {
         connection = Db.instance().getConnection();
         try {
