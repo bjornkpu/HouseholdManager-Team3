@@ -35,7 +35,7 @@ public class GroupDaoTest {
     @Test
     public void addGroupUsingObjectTest() throws SQLException {
         Group newGroup = new Group();
-        String n = "HUs!";
+        String n = "fheu32hhjfhjfhjshdfjghhjrt";
         boolean ok = false;
         newGroup.setAdmin(adminnavn);
         newGroup.setName(n);
@@ -47,7 +47,7 @@ public class GroupDaoTest {
         assertTrue(ok);
 
         try {
-            int s = gr.getGroupByName(n).getId();
+            int s = gr.getGroupByName(n).get(0).getId();
             gr.deleteParty(s);
         } catch (SQLException e){
             e.printStackTrace();
@@ -55,7 +55,7 @@ public class GroupDaoTest {
     }
     @Test
     public void addGroupUsingNameAndAdminIdTest() throws SQLException {
-        String d = "Husveien";
+        String d = "igu3hu3hguighhuhfhuiefhg";
         boolean ok = false;
         try {
             ok = gr.addParty(d,adminnavn);
@@ -64,7 +64,7 @@ public class GroupDaoTest {
         }
         assertTrue(ok);
         try {
-            int s = gr.getGroupByName(d).getId();
+            int s = gr.getGroupByName(d).get(0).getId();
             gr.deleteParty(s);
         } catch (SQLException e){
             e.printStackTrace();
@@ -74,7 +74,7 @@ public class GroupDaoTest {
 
     @Test
     public void getGroupByNameTest() throws SQLException {
-        String nam = "BilJohan";
+        String nam = "grejighruhu42hru4hho4grg";
         try{
             gr.addParty(nam,adminnavn);
         } catch (SQLException e){
@@ -83,14 +83,14 @@ public class GroupDaoTest {
         boolean ok = false;
         Group gr1 = new Group();
         try{
-            gr1 = gr.getGroupByName(nam);
+            gr1 = gr.getGroupByName(nam).get(0);
         } catch (SQLException e){
             e.printStackTrace();
         }
         assertEquals(gr1.getName(),nam);
         assertEquals(gr1.getAdmin(),adminnavn);
         try {
-            int s = gr.getGroupByName(nam).getId();
+            int s = gr.getGroupByName(nam).get(0).getId();
             gr.deleteParty(s);
         } catch (SQLException e){
             e.printStackTrace();
@@ -123,12 +123,12 @@ public class GroupDaoTest {
     }
     @Test
     public void updateGroupWithGroupIdAndNewName() throws SQLException {
-        String nam = "BilJohan";
-        String newName = "ArnT";
+        String nam = "fgjirjeigjreoigjiogeoir";
+        String newName = "Arjeijgoireogjroehglsq";
         int s = 0;
         try{
             gr.addParty(nam,adminnavn);
-            s = gr.getGroupByName(nam).getId();
+            s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -148,11 +148,11 @@ public class GroupDaoTest {
     }
     @Test
     public void updateGroupWithGroupIdAndNewAdmin() throws SQLException {
-        String nam = "BilJohan";
+        String nam = "Bfgfew3fefdf";
         int s = 0;
         try{
             gr.addParty(nam,adminnavn);
-            s = gr.getGroupByName(nam).getId();
+            s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -173,11 +173,11 @@ public class GroupDaoTest {
     }
     @Test
     public void updateGroupWithObject() throws SQLException {
-        String nam = "KOllek";
+        String nam = "Kgfgrei3ir";
         int s = 0;
         try{
             gr.addParty(nam,adminnavn);
-            s = gr.getGroupByName(nam).getId();
+            s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -207,15 +207,15 @@ public class GroupDaoTest {
         } catch (SQLException e){
             e.printStackTrace();
         }
-        assertEquals(groups.size(),amount);
+        assertTrue(groups.size() <= amount);
     }
     @Test
     public void deleteGroupWithObjectTest() throws SQLException {
-        String nam = "KOllek10v";
+        String nam = "KOfgeg32trigjij34";
         int s = 0;
         try{
             gr.addParty(nam,adminnavn);
-            s = gr.getGroupByName(nam).getId();
+            s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -234,11 +234,11 @@ public class GroupDaoTest {
 
     @Test
     public void deletePartyWithGroupIdTest() throws SQLException {
-        String nam = "KOllek101v";
+        String nam = "Krnighu92hrhugroebgouero";
         int s = 0;
         try{
             gr.addParty(nam,adminnavn);
-            s = gr.getGroupByName(nam).getId();
+            s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
