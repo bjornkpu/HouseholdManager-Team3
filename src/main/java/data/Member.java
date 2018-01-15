@@ -4,7 +4,7 @@ package data;
  *
  * @author
  */
-class Member extends User{
+public class Member extends User{
     private double balance;
     private int status;
 
