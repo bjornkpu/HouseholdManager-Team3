@@ -31,7 +31,7 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(getItemList(id));
+                sl.setItemList(ItemDao.getItemsInShoppingList(id));
                 sl.setUserList(getUserList(id));
 
             } else {
@@ -61,7 +61,7 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(getItemList(sl.getId()));
+                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
@@ -98,7 +98,7 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(getItemList(sl.getId()));
+                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
@@ -117,7 +117,7 @@ public class ShoppingListDao {
 
             if(!groupCheck(groupId)){ //checks if the party-object exists
                 log.info("Could not find party " + groupId);
-                //TODO should this return null
+//              TODO should this return null
                 return null;
             }
 
@@ -139,7 +139,7 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(getItemList(sl.getId()));
+                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
@@ -161,7 +161,7 @@ public class ShoppingListDao {
                 return false;
             }
 
-            //creates new shoppinglist object in shoppinglist table
+//          creates new shoppinglist object in shoppinglist table
             ps = connection.prepareStatement("INSERT INTO " +
                     "shoppinglist(id, name, party_id) VALUES (?,?,?)");
             ps.setInt(1, shoppingList.getId());
@@ -228,38 +228,6 @@ public class ShoppingListDao {
 
         } finally {
             connection.close();
-        }
-    }
-
-    private static ArrayList<Item> getItemList(int id) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
-            ps.setInt(1,id);
-            rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
-
-            Item item = new Item();
-            ArrayList<Item> itemList = null;
-            while(rs.next()) {
-                log.info("Found item " + id);
-                item = new Item();
-                item.setItemId(rs.getInt("id"));
-                item.setName(rs.getString("name"));
-                item.setStatus(rs.getInt("status"));
-                itemList.add(item);
-            }
-
-//            TODO clean this up
-//            rs.close();
-//            ps.close();
-            return itemList;
-        } finally {
-//            connection.close();
         }
     }
 
