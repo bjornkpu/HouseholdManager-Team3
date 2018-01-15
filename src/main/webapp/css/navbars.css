@@ -15,7 +15,6 @@
 
     .page-content {
         margin-left: 85px;
-        margin-right: 200px;
         background-color: lightgreen;
     }
 
@@ -38,6 +37,16 @@
     .sidebar-list-items:hover {
         color: darkslategrey;
     }
+
+    .container{
+        width: 100%;
+    }
+    .username{
+        ;
+    }
+
+
+
 
 /*
  * Google icons
@@ -93,6 +102,15 @@
         background-color: lightgreen;
         margin-top: 60px;
         margin-bottom: 75px;
+    }
+    .navbar-brand.logo{
+        font-size: 0;
+    }
+    .container{
+        width: 100%;
+    }
+    .username{
+        font-size: 0;
     }
 
 
