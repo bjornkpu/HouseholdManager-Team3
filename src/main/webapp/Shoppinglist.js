@@ -100,7 +100,7 @@ $(document).ready(function() {
         console.log('findAll i liveOpsett');
         $.ajax({
             type: 'GET',
-            url: '/scrum/Shoppinglist',
+            url: '/scrum/Group/'+grpid+'/Shoppinglist/',
             dataType: "json",
             success: renderShoppingListDropdownMenu(),
 

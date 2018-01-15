@@ -66,11 +66,12 @@ public class UserDao {
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
+            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=?, salt=? where email=?");
             ps.setString(1,user.getName());
             ps.setString(2,user.getPhone());
             ps.setString(3,user.getPassword());
             ps.setString(4,user.getEmail());
+            ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update user " + (result == 1?"ok":"failed"));
@@ -93,14 +94,4 @@ public class UserDao {
             connection.close();
         }
     }
-
-    public static void startTest() throws SQLException {
-        connection.setAutoCommit(false);
-    }
-
-    public static void endTest() throws SQLException{
-        connection.rollback();
-        connection.setAutoCommit(true);
-    }
-
 }
