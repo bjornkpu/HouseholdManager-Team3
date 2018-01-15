@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <Link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
-    <script src="Shoppinglist.js"></script>
     <meta charset="UTF-8">
     <title>"Gruppens tittel"</title>
 </head>
@@ -36,7 +30,7 @@
 <br>
 
 <!-- List of Disbursements-->
-<div class="container" id="listOfDisbursements">
+<div class="container" id="listOfDisbursements" style="display:none;">
     <div class = "row">
         <h2>List of disbursements</h2>
     </div>
@@ -76,12 +70,13 @@
     </tr>
     </tbody>
 </table>
+        <button class="backToShoppinglist"> back</button>
     </div>
 </div>
     <!-- End of List of disbursements-->
 
 <!-- Shoppinglist-->
-<div class="container" id="shoppinglist" style="display:none;">
+<div class="container" id="shoppinglist" style="display:block;">
     <div class = "row">
         <h2>Shoppinglist "name" </h2>
     </div>
@@ -118,35 +113,34 @@
             </tbody>
         </table>
     </div>
-</div>
-<!-- End of shoppinglist-->
 
     <!-- Buttons for shoppinglist-->
     <div class="row">
         <div class="col-sm">
-            <button class = "button" id="addItem" style = "display:none;"> Add item</button>
+            <button class = "button" id="addItem"> Add item</button>
         </div>
         <div class="col-sm">
-            <button class = "button" id="deleteItem" style="display:none;"> Delete item</button>
+            <button class = "button" id="deleteItem"> Delete item</button>
         </div>
         <div class="col-sm">
-            <button class = "button" id="configureList" style="display:none;"> Configure list</button>
+            <button class = "button" id="createDisbursementButton" style="display: block;"> Create Disbursement</button>
         </div>
         <div class="col-sm">
-            <button class = "button" id="closeList" style="display:none;"> Close list</button>
+            <button class = "button" id="createShoppinglistButton" style="display: block;"> Create Shoppinglist</button>
         </div>
         <div class="col-sm">
-            <button class = "button" id="back" style="display:none;"
-                    onclick="window.location.href='Shoppinglist.html'"> Back</button>
+            <button class = "button" id="goToDisbursements"> Go to disbursements</button>
         </div>
+
     </div>
-<!--end of buttons for shoppinglist -->
+    <!--end of buttons for shoppinglist -->
+</div>
+<!-- End of shoppinglist-->
 
 <!-- div for creating a disbursement-->
-<div>
-    <button class = "button" id="createDisbursementButton" style="display: block;"> Create Disbursement</button>
-    <h1 id="headerDisbursement" style="display: none;">Creating Disbursement</h1>
-    <table id="createDisbursement" style="display: none;">
+<div id="creatingDisbursement" style="display: none;">
+    <h1>Creating Disbursement</h1>
+    <table>
     <tr>
         <td>Name of disbursement</td>
         <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
@@ -176,11 +170,10 @@
 <!-- end of creating a disbursement-->
 
 <!-- div for creating a shoppinglist-->
-<div>
-    <button class = "button" id="createShoppinglistButton" style="display: block;"> Create Shoppinglist</button>
-    <h1 id="headerShoppinglist" style="display: none;">Creating Shoppinglist</h1>
+<div id="creatingShoppinglist" style="display: none;">
+    <h1>Creating Shoppinglist</h1>
 
-    <table id="createShoppinglist" style="display: none;">
+    <table>
         <tr>
             <td>Name of Shoppinglist</td>
             <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
@@ -204,7 +197,9 @@
     </table>
 </div>
 <!-- end of creating a shoppinglist-->
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="Shoppinglist.js"></script>
 </body>
 </html>
