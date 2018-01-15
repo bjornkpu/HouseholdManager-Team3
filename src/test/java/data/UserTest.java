@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 /**
- * -Description of the class-
+ * Tests for UserDao
  *
  * @author enoseber
  */

@@ -12,6 +12,7 @@ import java.util.ArrayList;
  *
  * @author BK
  * @author jmska
+ * @author enoseber
  */
 public class ShoppingListDao {
 
@@ -30,7 +31,9 @@ public class ShoppingListDao {
     public static ShoppingList getShoppingList(int id, String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM shoppinglist JOIN user_party ON party_id WHERE email=? AND id=?");
+            ps = connection.prepareStatement("" +
+                    "SELECT shoppinglist.id, shoppinglist.name, shoppinglist.party_id FROM shoppinglist JOIN user_party " +
+                    "ON user_party.party_id = shoppinglist.party_id AND user_email = ? AND id = ?");
             ps.setString(1,email);
             ps.setInt(2,id);
             rs = ps.executeQuery();
@@ -201,14 +204,19 @@ public class ShoppingListDao {
             log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
             ps.close();
 
-            //creates new connection between created shoppinglist and creator (User)
-            ps = connection.prepareStatement("INSERT INTO " +
-                    "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
-            ps.setInt(1, shoppingList.getId());
-            ps.setString(2, shoppingList.getUserList().get(0).getEmail());
-            int createDependancyResult = ps.executeUpdate();
-            log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
-            ps.close();
+            int createDependancyResult = 0;
+
+//          creates new connection between created shoppinglist and creator (User)
+//          TODO clean up
+            for(int i = 0; i < shoppingList.getUserList().size(); i++){
+                ps = connection.prepareStatement("INSERT INTO " +
+                        "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
+                ps.setInt(1, shoppingList.getId());
+                ps.setString(2, shoppingList.getUserList().get(i).getEmail());
+                createDependancyResult = ps.executeUpdate();
+                log.info("Add shoppinglist_user dependancy " + i + " " + (createDependancyResult == 1?"ok":"failed"));
+                ps.close();
+            }
 
 //            TODO clean up
             return createShoppingListResult == 1 && createDependancyResult == 1;
@@ -254,23 +262,48 @@ public class ShoppingListDao {
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
 
+        if(ItemDao.getItemsInShoppingList(id).size() != 0){
+            log.info("Cannot delete: item dependency still exists");
+            return false;
+        }
+
         try {
+//          deletes shoppinglist_user dependency
             ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
             ps.setInt(1,id);
             int deleteDependancyResult = ps.executeUpdate();
             ps.close();
+
+//          deletes shoppinglist in table
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
             ps.close();
 
-//            TODO clean up
+//          TODO clean up
             log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
             return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
 
         } finally {
             connection.close();
         }
+    }
+
+    private static boolean checkSession(int id, String email) throws SQLException{
+        try {
+            ps = connection.prepareStatement("SELECT user_email FROM user_party JOIN shoppinglist " +
+                    "ON user_party.party_id = shoppinglist.party_id AND shoppinglist.id = ? AND user_email = ?");
+            ps.setInt(1, id);
+            ps.setString(2, email);
+            int result = ps.executeUpdate();
+            ps.close();
+
+            log.info("Found user in group with shoppinglist " + (result == 1 ? "ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+
     }
 
 	/** Method that gets an ArrayList given the shopping list id.
