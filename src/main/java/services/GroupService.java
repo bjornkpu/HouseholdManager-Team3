@@ -16,9 +16,10 @@ import java.util.*;
 /**
  * -Description of the class-
  *
- * @author
+ * @author nybakk1
+ * @version 0.1
  */
-@Path("/groups/")
+@Path("groups")
     public class GroupService {
 
     private static final Logger log = Logger.getLogger();
@@ -46,7 +47,8 @@ import java.util.*;
             List<Group> groups = null;
             try {
                 log.info("Retrieving all groups");
-                return groupDao.getAllGroups();
+                groups = groupDao.getAllGroups();
+                return groups;
             } catch (SQLException e) {
                 log.info("Unable to get all groups");
                 throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
