@@ -1,5 +1,4 @@
 package data;
-
 import db.ShoppingListDao;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -7,7 +6,11 @@ import org.junit.Test;
 import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class ShoppingListTest {
     private static ShoppingListDao slDao;
     private static ShoppingList shoppingListTest;

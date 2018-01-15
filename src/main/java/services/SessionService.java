@@ -1,5 +1,4 @@
 package services;
-
 import data.LoginData;
 import data.Session;
 import data.User;
@@ -21,9 +20,10 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import static util.LoginCheck.correctLogin;
-
 /**
  * Service to handle logon and logout using the web-session
+ *
+ * @author
  */
 @Path("session")
 public class SessionService {

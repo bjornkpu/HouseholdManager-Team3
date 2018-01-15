@@ -1,13 +1,13 @@
 package db;
-
 import data.User;
 
 import java.sql.*;
 
 import util.Logger;
-
 /**
- * @author Martin Wangen
+ * -Description of the class-
+ *
+ * @author
  */
 public class PartyDao {
 

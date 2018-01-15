@@ -1,7 +1,10 @@
 package data;
-
 import java.util.Date;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class WallPost {
     private Date datePosted; //id
     private String message;

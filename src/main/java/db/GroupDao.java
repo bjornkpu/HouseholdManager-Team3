@@ -1,5 +1,4 @@
 package db;
-
 import data.Group;
 import util.Logger;
 
@@ -9,7 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * -Description of the class-
+ *
+ * @author
+ */
 public class GroupDao {
 
     private static final Logger log = Logger.getLogger();
@@ -29,7 +32,7 @@ public class GroupDao {
     public static Group getGroup(int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM party WHERE party_id = ?");
+            ps = connection.prepareStatement("SELECT * FROM party WHERE id = ?");
             ps.setString(1,groupId + "");
             rs = ps.executeQuery();
 
@@ -39,7 +42,6 @@ public class GroupDao {
                 group = new Group();
                 group.setId(groupId);
                 group.setName(rs.getString("name"));
-                group.setAdmin(rs.getString("admin"));    // TODO: changes in admin variable?
             } else {
                 log.info("Could not find party " + groupId);
             }
@@ -50,10 +52,31 @@ public class GroupDao {
             connection.close();
         }
     }
+    public static List<Group> getGroupByName(String name) throws SQLException {
+        connection = Db.instance().getConnection();
+        try{
+            ps = connection.prepareStatement("SELECT * FROM party WHERE name = ?");
+            ps.setString(1,name);
+            rs = ps.executeQuery();
+            List<Group> g = new ArrayList<Group>();
+            while (rs.next()){
+                log.info("Found party with name: " + name);
+                Group group = new Group();
+                group.setId(rs.getInt("id"));
+                group.setName(name);
+                g.add(group);
+            }
+            rs.close();
+            ps.close();
+            return g.size() == 0 ? null : g;
+        } finally {
+            connection.close();
+        }
+    }
 
     /**
      * Retrieves all the parties from database.
-     * @return Returns a List of parties.
+     * @return Returns a List of parties if found. Null if empty.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
 
@@ -67,13 +90,12 @@ public class GroupDao {
                 Group g = new Group();
                 g.setId(rs.getInt("id"));
                 g.setName(rs.getString("name"));
-                g.setAdmin(rs.getString("admin"));   // TODO: changes in admin variable?
                 groups.add(g);
             }
             rs.close();
             ps.close();
             log.info("Found " + groups.size() + " parties from database");
-            return groups;
+            return groups.size() == 0 ? null : groups;
         } finally {
             connection.close();
         }
@@ -89,14 +111,13 @@ public class GroupDao {
                 while (rs.next()) {
                     Group group = new Group();
                     group.setId(rs.getInt("id"));
-                    group.setAdmin(rs.getString("admin"));
                     group.setName(rs.getString("name"));
                     groups.add(group);
                 }
                 rs.close();
                 ps.close();
                 log.info("Retrieving " + amountOfGroups + " groups from database. Amount retrieved: " + groups.size());
-                return groups;
+                return groups.size() == 0 ? null:groups;
             } finally {
                 connection.close();
             }
@@ -114,9 +135,8 @@ public class GroupDao {
     public static boolean addParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO party (name,admin_id) VALUES(?,?)");
+            ps = connection.prepareStatement("INSERT INTO party (name) VALUES(?)");
             ps.setString(1,group.getName());
-            ps.setString(2,group.getAdmin());   // TODO: changes in admin variable?
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
@@ -127,21 +147,6 @@ public class GroupDao {
 
     }
 
-    public static boolean addParty(String partyName,String adminId) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("INSERT INTO party (name,admin_id) VALUES(?,?)");
-            ps.setString(1,partyName);
-            ps.setString(2,adminId);
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Add party result:" + (result == 1 ? "ok": "failed"));
-            return result == 1;
-        } finally {
-            connection.close();
-        }
-
-    }
     public static boolean deleteParty(int groupId) throws SQLException {
         connection = Db.instance().getConnection(); // heu
         try{
@@ -155,6 +160,8 @@ public class GroupDao {
             connection.close();
         }
     }
+
+
     public static boolean deleteParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try{
@@ -169,13 +176,31 @@ public class GroupDao {
         }
     }
 
+
+    /*
+    Should not be used. Groups could have same names.
+     */
+    @Deprecated
+    public static boolean deleteParty(String name) throws SQLException {
+        connection = Db.instance().getConnection();
+        try{
+            ps = connection.prepareStatement("DELETE FROM party WHERE name=?");
+            ps.setString(1,name);
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Delete party, result: " + (result == 1 ? "ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+    }
+
     public static boolean updateParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE party set name=?,admin_id=? WHERE group_id = ?");
+            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
             ps.setString(1,group.getName());
-            ps.setString(2,group.getAdmin());  // TODO: changes in admin variable?
-            ps.setInt(3,group.getId());
+            ps.setInt(2,group.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update party, result: " + (result == 1? "ok":"failed"));
@@ -184,24 +209,11 @@ public class GroupDao {
             connection.close();
         }
     }
-    public static boolean updateAdmin(int partyid,String newAdmin) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("UPDATE party set admin_id=? WHERE group_id = ?");
-            ps.setString(1,newAdmin);   // TODO: changes in admin variable?
-            ps.setInt(2,partyid);
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Update party, result: " + (result == 1? "ok":"failed"));
-            return result == 1;
-        } finally {
-            connection.close();
-        }
-    }
+
     public static boolean updateName(int partyid,String newName) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE party set name=? WHERE group_id = ?");
+            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
             ps.setString(1,newName);
             ps.setInt(2,partyid);
             int result = ps.executeUpdate();

@@ -1,17 +1,19 @@
 package services;
-
 import data.User;
 import db.UserDao;
 import java.sql.SQLException;
 import util.Logger;
+import util.LoginCheck;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-
 /**
- * Service that handles reading and updating bank user information
+ * Service that handles reading, making, updating and deleting user information.
+ *
  * @author BK
+ * @author johanmsk
  */
 @Path("user")
 public class UserService {
@@ -36,9 +38,11 @@ public class UserService {
     }
 
     @POST
-    @Path("/{email}")
     @Consumes("application/json")
     public void add(User user) {
+        String salt = LoginCheck.getSalt();
+        user.setSalt(salt);
+        user.setPassword(LoginCheck.getHash(user.getPassword()+salt));
         try {
             userDao.addUser(user);
             log.info("Added user!");
@@ -49,7 +53,7 @@ public class UserService {
     }
 
     @PUT
-    @Path("/{email}")
+    @Path("/{user}")
     @Consumes("application/json")
     public void update(User user) {
         try {
@@ -61,18 +65,18 @@ public class UserService {
         }
     }
 
-    /*@PUT
+    @DELETE
     @Path("/{email}")
     @Consumes("application/json")
-    public void update(User user) {
+    public void delete(String email) {
         try {
-            userDao.updateUser(user);
-            log.info("Updated user!");
+            userDao.delUser(email);
+            log.info("Deleted user!");
         } catch(SQLException e) {
-            log.error("Failed to update user", e);
-            throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
+            log.error("Failed to Delete user", e);
+            throw new ServerErrorException("Failed to Delete user", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
-    }*/
+    }
 
 
 }

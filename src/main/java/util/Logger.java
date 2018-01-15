@@ -1,13 +1,12 @@
 package util;
-
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.SimpleFormatter;
-
-
 /**
+ * -Description of the class-
  * Taken from https://github.com/nilstes/NotSoSecureBank/blob/master/src/main/java/util/Logger.java
  *
+ * @author nilstes
  */
 public class Logger {
 

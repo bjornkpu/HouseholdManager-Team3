@@ -1,9 +1,9 @@
 package data;
-
 import java.util.Date;
-
 /**
+ * -Description of the class-
  *
+ * @author
  */
 public class Session {
     private String email;
