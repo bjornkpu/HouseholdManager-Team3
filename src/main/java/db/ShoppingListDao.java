@@ -21,6 +21,11 @@ public class ShoppingListDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** Method that gets a shopping list given the shopping list id.
+     * @param id The ID of the shopping list you are trying to get.
+     * @return Returns the shopping list that corresponds to the id given.
+     * @throws SQLException when failing to get shopping list.
+     */
     public static ShoppingList getShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -49,6 +54,11 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that gets an ArrayList of shopping lists given the shopping list name.
+	 * @param name The name of the shopping list you are trying to get.
+	 * @return an ArrayList of shopping lists with the given name
+	 * @throws SQLException when failing to get shopping lists.
+	 */
     public static ArrayList<ShoppingList> getShoppingListByName(String name) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -78,6 +88,11 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that gets an ArrayList of shopping lists given a user.
+	 * @param u The user you are trying to get all shopping lists on.
+	 * @return an ArrayList of shopping lists on the given user
+	 * @throws SQLException when failing to get shopping lists.
+	 */
     public static ArrayList<ShoppingList> getShoppingListByUser(User u) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -115,6 +130,11 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that gets an ArrayList of shopping lists given a group ID.
+	 * @param groupId The ID you are trying to get all shopping lists on.
+	 * @return an ArrayList of shopping lists on the given group.
+	 * @throws SQLException when failing to get shopping lists.
+	 */
     public static ArrayList<ShoppingList> getShoppingListByGroupid(int groupId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -156,6 +176,10 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that adds a shopping list.
+	 * @param shoppingList The shopping list you are adding.
+	 * @throws SQLException when failing to add shopping list.
+	 */
     public static boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -192,10 +216,18 @@ public class ShoppingListDao {
         }
     }
 
-    private static boolean groupCheck(int i) throws SQLException{ //tests if a party exists with specified id
+	/** Checks if a party exists with specified id
+	 * @param i the groupId.
+	 * @throws SQLException when failing the SQL-query.
+	 */
+    private static boolean groupCheck(int i) throws SQLException{
         return GroupDao.getGroup(i) != null;
     }
 
+	/** Method that updates a shopping list.
+	 * @param shoppingList The shopping list you are updating to.
+	 * @throws SQLException when failing to update shopping list.
+	 */
     public static boolean updateShoppingList(ShoppingList shoppingList) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -212,6 +244,10 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that deletes a shopping list given the shopping list id.
+	 * @param id The ID of the shopping list you are trying to delete.
+	 * @throws SQLException when failing to delete shopping list.
+	 */
 //    TODO: delete the items in the list, not just the list itself
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
@@ -235,6 +271,11 @@ public class ShoppingListDao {
         }
     }
 
+	/** Method that gets an ArrayList given the shopping list id.
+	 * @param id The ID of the shopping list you are trying to get the users for.
+	 * @return Returns an ArrayList containing the users in a given shopping list that corresponds to the id given.
+	 * @throws SQLException when failing to get the list of users.
+	 */
     private static ArrayList<User> getUserList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
