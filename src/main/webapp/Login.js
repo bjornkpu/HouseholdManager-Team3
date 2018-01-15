@@ -4,7 +4,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(session){
-            window.location.href="Dashboard.html";
+            window.location.href="Navbars.html";
         }
     });
 
@@ -26,7 +26,7 @@ $(document).ready(function(){
                     switch (jqXHR.status) {
                         case 200:
                             document.cookie = "testcookie=this is a test";
-                            window.location.href = "Dashboard.html";
+                            window.location.href = "Navbars.html";
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");
