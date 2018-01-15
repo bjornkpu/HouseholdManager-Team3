@@ -117,13 +117,12 @@ public class ItemDao {
     public static Boolean addItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO `item`(`id`, `name`, `status`, `shoppinglist_id`, `dips_id`) " +
-                    "VALUES (?,?,?,?,?)");
-            ps.setInt(1,item.getId());
-            ps.setString(2,item.getName());
-            ps.setInt(3,item.getStatus());
-            ps.setInt(4,item.getShoppingListId());
-            ps.setInt(5,item.getDispId());
+            ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `dips_id`) " +
+                    "VALUES (?,?,?,?)");
+            ps.setString(1,item.getName());
+            ps.setInt(2,item.getStatus());
+            ps.setInt(3,item.getShoppingListId());
+            ps.setInt(4,item.getDispId());
             int result = ps.executeUpdate();
 
             ps.close();
@@ -154,11 +153,11 @@ public class ItemDao {
         }
     }
 
-    public static Boolean delItem(Item item) throws SQLException {
+    public static boolean delItem(int itemId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM item where id=?");
-            ps.setString(1,""+item.getId());
+            ps.setInt(1, itemId);
             int result = ps.executeUpdate();
 
             ps.close();
