@@ -1,7 +1,7 @@
 -- Sletter tabeller
 
 DROP TABLE IF EXISTS item_shoppinglist;
-DROP TABLE IF EXISTS user_disbursements;
+DROP TABLE IF EXISTS user_disbursement;
 DROP TABLE IF EXISTS wallpost;
 DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS chore_log;
@@ -9,7 +9,6 @@ DROP TABLE IF EXISTS chore;
 DROP TABLE IF EXISTS shoppinglist_user;
 DROP TABLE IF EXISTS shoppinglist;
 DROP TABLE IF EXISTS user_party;
-DROP TABLE IF EXISTS disbursements;
 DROP TABLE IF EXISTS disbursement;
 DROP TABLE IF EXISTS party;
 DROP TABLE IF EXISTS user;
@@ -82,19 +81,19 @@ CREATE TABLE shoppinglist_user (
 );
 
 
-CREATE TABLE user_disbursements(
+CREATE TABLE user_disbursement(
   user_email VARCHAR(255) NOT NULL,
   disp_id INTEGER(10) NOT NULL,
-  CONSTRAINT user_disbursements_pk PRIMARY KEY (user_email,disp_id));
+  CONSTRAINT user_disbursement_pk PRIMARY KEY (user_email,disp_id));
 
-CREATE TABLE disbursements(
+CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
   date DATE,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
-  CONSTRAINT disbursements_pk PRIMARY KEY(id));
+  CONSTRAINT disbursement_pk PRIMARY KEY(id));
 
 
 
@@ -122,20 +121,20 @@ ALTER TABLE chore
 ALTER TABLE shoppinglist
   ADD CONSTRAINT shoppinglist_fk FOREIGN KEY(party_id)REFERENCES party(id);
 
-ALTER TABLE disbursements
-  ADD CONSTRAINT disbursements_fk1 FOREIGN KEY(payer_id)REFERENCES user(email);
+ALTER TABLE disbursement
+  ADD CONSTRAINT disbursement_fk1 FOREIGN KEY(payer_id)REFERENCES user(email);
 
-ALTER TABLE disbursements
-  ADD CONSTRAINT disbursements_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
+ALTER TABLE disbursement
+  ADD CONSTRAINT disbursement_fk2 FOREIGN KEY(party_id)REFERENCES party(id);
 
-ALTER TABLE user_disbursements
-  ADD CONSTRAINT user_disbursements_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
+ALTER TABLE user_disbursement
+  ADD CONSTRAINT user_disbursement_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
 
-ALTER TABLE user_disbursements
-  ADD CONSTRAINT user_disbursements_fk2 FOREIGN KEY(disp_id)REFERENCES disbursements(id);
+ALTER TABLE user_disbursement
+  ADD CONSTRAINT user_disbursement_fk2 FOREIGN KEY(disp_id)REFERENCES disbursement(id);
 
 ALTER TABLE item
-  ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursements(id);
+  ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursement(id);
 
 ALTER TABLE item
   ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
