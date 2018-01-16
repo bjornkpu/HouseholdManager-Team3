@@ -1,4 +1,4 @@
-package data;
+package db;
 import db.Db;
 import org.junit.After;
 import org.junit.Before;

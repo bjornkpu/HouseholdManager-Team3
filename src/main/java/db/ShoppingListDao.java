@@ -312,18 +312,18 @@ public class ShoppingListDao {
     }
 
 	/** adds a user to a shoppingList
-	 * @param userId the id of the user you want to add
+	 * @param email the id of the user you want to add
 	 * @param shoppingListId the id of the shoppingList you want to add the user to
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
 //  TODO teste
-    public static boolean addUserToShoppingList(String userId, int shoppingListId) throws SQLException {
+    public static boolean addUserToShoppingList(String email, int shoppingListId) throws SQLException {
 	    try {
 		    ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
                     "VALUES (?, ?)");
 		    ps.setInt(1, shoppingListId);
-		    ps.setString(2, userId);
+		    ps.setString(2, email);
 		    int result = ps.executeUpdate();
 		    ps.close();
 
@@ -335,18 +335,18 @@ public class ShoppingListDao {
     }
 
 	/** remove a user from a givenshoppinglist
-	 * @param userId the user id you want to remove from the shopping list
+	 * @param email the user id you want to remove from the shopping list
 	 * @param shoppingListId the id of the shopping list you want to remove the user from
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
 //  TODO teste
-	public static boolean removeUserFromShoppingList(String userId, int shoppingListId) throws SQLException {
+	public static boolean removeUserFromShoppingList(String email, int shoppingListId) throws SQLException {
 		try {
 			ps = connection.prepareStatement("DELETE FROM shoppinglist_user " +
                     "WHERE shoppinglist_id = ? AND user_email = ?");
             ps.setInt(1, shoppingListId);
-            ps.setString(2, userId);
+            ps.setString(2, email);
 			int result = ps.executeUpdate();
 			ps.close();
 
