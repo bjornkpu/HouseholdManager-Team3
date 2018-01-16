@@ -65,7 +65,7 @@ CREATE TABLE item (
   name VARCHAR(30) NOT NULL ,
   status INTEGER(1) NOT NULL,
   shoppinglist_id INTEGER(10),
-  dips_id INTEGER(10),
+  disbursement_id INTEGER(10),
   CONSTRAINT item_pk PRIMARY KEY (id));
 
 CREATE TABLE shoppinglist(
@@ -134,7 +134,7 @@ ALTER TABLE user_disbursement
   ADD CONSTRAINT user_disbursement_fk2 FOREIGN KEY(disp_id)REFERENCES disbursement(id);
 
 ALTER TABLE item
-  ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursement(id);
+  ADD CONSTRAINT item_fk1 FOREIGN KEY(disbursement_id) REFERENCES  disbursement(id);
 
 ALTER TABLE item
   ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
@@ -150,3 +150,4 @@ ALTER TABLE chore_log
 
 ALTER TABLE chore_log
     ADD CONSTRAINT chore_log_fk2 FOREIGN KEY (chore_id) REFERENCES chore(id);
+

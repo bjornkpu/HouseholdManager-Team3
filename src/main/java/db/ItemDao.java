@@ -1,11 +1,9 @@
 package db;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type;
 import data.Item;
 import util.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 /**
  * -Description of the class-
@@ -40,7 +38,7 @@ public class ItemDao {
                 item.setName(rs.getString("name"));
                 item.setStatus(rs.getInt("status"));
                 item.setShoppingListId(rs.getInt("shoppinglist_id"));
-                item.setDispId(rs.getInt("dips_id"));
+                item.setDisbursementId(rs.getInt("disbursement_id"));
             } else {
                 log.info("could not find item " + id);
             }
@@ -93,7 +91,7 @@ public class ItemDao {
 			    item.setName(rs.getString("name"));
 			    item.setStatus(rs.getInt("status"));
 			    item.setShoppingListId(rs.getInt("shoppinglist_id"));
-			    item.setDispId(rs.getInt("dips_id"));
+			    item.setDisbursementId(rs.getInt("disbursement_id"));
 			    itemList.add(item);
 			    i++;
 		    }
@@ -112,7 +110,7 @@ public class ItemDao {
     public static ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM item WHERE dips_id=?");
+            ps = connection.prepareStatement("SELECT * FROM item WHERE disbursement_id=?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
 
@@ -130,7 +128,7 @@ public class ItemDao {
                 item.setName(rs.getString("name"));
                 item.setStatus(rs.getInt("status"));
                 item.setShoppingListId(rs.getInt("shoppinglist_id"));
-                item.setDispId(rs.getInt("dips_id"));
+                item.setDisbursementId(rs.getInt("disbursement_id"));
                 itemList.add(item);
             }
             return itemList;
@@ -148,12 +146,24 @@ public class ItemDao {
     public static Boolean addItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `dips_id`) " +
-                    "VALUES (?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `disbursement_id`,id) " +
+                    "VALUES (?,?,?,?,?)");
             ps.setString(1,item.getName());
             ps.setInt(2,item.getStatus());
-            ps.setInt(3,item.getShoppingListId());
-            ps.setInt(4,item.getDispId());
+            if(item.getShoppingListId()==-1){
+                ps.setNull(3, Types.INTEGER);
+            }else {
+                ps.setInt(3,item.getShoppingListId());
+            }if (item.getDisbursementId()==-1){
+                ps.setNull(4, Types.INTEGER);
+            }else {
+                ps.setInt(4,item.getDisbursementId());
+            }if (item.getId()==0){
+                ps.setNull(5, Types.INTEGER);
+            }else {
+                ps.setInt(5,item.getId());
+            }
+
             int result = ps.executeUpdate();
             log.info("Add item " + (result == 1?"ok":"failed"));
             return result == 1;
@@ -171,12 +181,19 @@ public class ItemDao {
     public static Boolean updateItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, dips_id=? where id=?");
+            ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, disbursement_id=? where id=?");
             ps.setInt(1,item.getId());
             ps.setString(2,item.getName());
             ps.setInt(3,item.getStatus());
-            ps.setInt(4,item.getStatus());
-            ps.setInt(5,item.getStatus());
+            if(item.getShoppingListId()==-1){
+                ps.setNull(4, Types.INTEGER);
+            }else {
+                ps.setInt(4,item.getShoppingListId());
+            }if (item.getDisbursementId()==-1){
+                ps.setNull(5, Types.INTEGER);
+            }else {
+                ps.setInt(5,item.getDisbursementId());
+            }
             ps.setInt(6,item.getId());
             int result = ps.executeUpdate();
             log.info("Update item " + (result == 1?"ok":"failed"));

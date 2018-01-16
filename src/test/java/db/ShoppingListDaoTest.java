@@ -50,6 +50,13 @@ public class ShoppingListDaoTest {
     }
 
     @Test
+    public void addShoppingList() throws SQLException{
+        ShoppingList sl = new ShoppingList();
+        sl.setId(slId);
+        ShoppingListDao.addShoppingList(sl);
+    }
+
+    @Test
     public void testGetShoppingList(){
         ShoppingList sl = new ShoppingList();
 
