@@ -3,10 +3,7 @@ package db;
 import data.Group;
 import data.ShoppingList;
 import data.User;
-import db.GroupDao;
-import db.PartyDao;
-import db.ShoppingListDao;
-import db.UserDao;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
