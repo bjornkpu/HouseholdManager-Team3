@@ -46,6 +46,7 @@ public class MemberDao {
             Db.close(connection);
         }
     }
+
     public static ArrayList<Group> getGroupsByMember(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -70,7 +71,6 @@ public class MemberDao {
         }
     }
 
-
     public static ArrayList<Group> getGroupInvites(String email) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -94,7 +94,6 @@ public class MemberDao {
             Db.close(connection);
         }
     }
-
 
     public static boolean inviteUser(String email, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
@@ -133,6 +132,7 @@ public class MemberDao {
             Db.close(connection);;
         }
     }
+
     public static boolean deleteMember(String email, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {

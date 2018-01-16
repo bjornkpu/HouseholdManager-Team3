@@ -19,30 +19,6 @@ public class ChoreDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    /** Find what user completed the chore
-     * @param choreID id of the chore you want to check
-     * @return the email of teh user who is on the chore
-     * @throws SQLException if the query fails
-     */
-    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
-        connection = Db.instance().getConnection();
-        try{
-            ps= connection.prepareStatement("SELECT user_id FROM chore_log WHERE chore_id=?");
-            ps.setInt(1,choreID);
-            rs = ps.executeQuery();
-            ArrayList<String> result = new ArrayList<>();
-            while(rs.next()){
-                result.add(rs.getString("user_id"));
-            }
-            return result;
-        }
-        finally {
-            Db.close(rs);
-            Db.close(ps);
-            Db.close(connection);
-        }
-    }
-
     /** gets the chore by id
      * @param choreId the chore you want to get
      * @return the chore
@@ -101,6 +77,30 @@ public class ChoreDao {
             ps.setString(5, chore.getAssignedTo());
             int result = ps.executeUpdate();
             return result == 1;
+        }
+        finally {
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
+
+    /** Find what user completed the chore
+     * @param choreID id of the chore you want to check
+     * @return the email of teh user who is on the chore
+     * @throws SQLException if the query fails
+     */
+    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            ps= connection.prepareStatement("SELECT user_id FROM chore_log WHERE chore_id=?");
+            ps.setInt(1,choreID);
+            rs = ps.executeQuery();
+            ArrayList<String> result = new ArrayList<>();
+            while(rs.next()){
+                result.add(rs.getString("user_id"));
+            }
+            return result;
         }
         finally {
             Db.close(rs);
