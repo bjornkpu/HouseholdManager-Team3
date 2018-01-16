@@ -2,21 +2,67 @@ package db;
 
 import data.Group;
 import data.Member;
-import util.Logger;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class MemberDao {
-    private static final Logger log = Logger.getLogger();
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
+import static db.MemberDao.getMembers;
 
+public class MemberDaoTest {
+    private static MemberDao md;
+    private static String name1 = "Vennegjengen";
+    private static String name2 = "Kollektivet";
+    private static String adminnavn = "admin";
+    private static String email1 = "en@test2.no";
+    private static String email2 = "to@test2.no";
+    private static String email3 = "tre@test2.no";
+    private static String email4 = "fire@test2.no";
+    private static int groupId1 = 1001;
+    private static int groupId2 = 1002;
+    private static ArrayList<Member> groupmembers = new ArrayList<>();
+
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        Group group1 = new Group();
+        group1.setId(groupId1);
+        group1.setName(name1);
+
+        Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.PENDING_STATUS);
+        Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        Member mem3 = new Member(email3, "User1", "90706060", "123",0,Member.ADMIN_STATUS);
+        Member mem4 = new Member(email4, "User1", "90706060", "123",0,Member.BLOCKED_STATUS);
+
+        groupmembers.add(mem1);
+        groupmembers.add(mem2);
+        groupmembers.add(mem3);
+        groupmembers.add(mem4);
+
+        for(Member member :groupmembers) {
+            UserDao.addUser(member);
+            MemberDao.inviteUser(member.getEmail(),groupId1);
+            MemberDao.updateUser(member, groupId1);
+        }
+
+
+    }
+
+    @Test
+    public void getMembersTest() throws SQLException {
+        ArrayList<Member> members = getMembers(groupId1);
+        String gMember1 = members.get(0).getEmail();
+        String gMember2 = members.get(0).getEmail();
+        assertTrue(gMember1.equalsIgnoreCase(email3)&&gMember2.equalsIgnoreCase(email2)||
+                gMember1.equalsIgnoreCase(email2)&&gMember2.equalsIgnoreCase(email3));
+    }
+
+    /*
     public static ArrayList<Member> getMembers(int groupId) throws SQLException {
         String partyId = ""+groupId;
         connection = Db.instance().getConnection();
@@ -93,7 +139,7 @@ public class MemberDao {
     public static boolean updateUser(Member member, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where user_email=? AND party_id = ?");
+            ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where email=? AND party_id = ?");
             ps.setString(1,String.valueOf(member.getBalance()));
             ps.setString(2,String.valueOf(member.getStatus()));
             ps.setString(3,member.getEmail());
@@ -106,17 +152,14 @@ public class MemberDao {
             connection.close();
         }
     }
-    public static boolean deleteMember(String email, int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("DELETE FROM user_party where user_email=? AND party_id = ?");
-            ps.setString(1,email);
-            ps.setString(2,String.valueOf(groupId));
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Delete user " + (result == 1?"ok":"failed"));
-            return result == 1;
-        } finally {
-            connection.close();
+}
+*/
+    @AfterClass
+    public static void tearDown() throws SQLException{
+        for (Member member : groupmembers){
+            MemberDao.deleteMember(member.getEmail(),groupId1);
+            UserDao.delUser(member.getEmail());
+
         }
-}}
+    }
+}
