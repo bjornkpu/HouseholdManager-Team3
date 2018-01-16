@@ -63,7 +63,17 @@ $(document).ready(function() {
     });
     });
 
+    //finds all shoppinglists
+    function getShoppingListByGroupId() {
+        var groupId=this.id;
+        $.ajax({
+            type: 'GET',
+            url: '/scrum/groups/'+1+'/ShoppingLists/',
+            dataType: "json",
+            success: renderShoppingListDropdownMenu(data)
 
+        });
+    }
     //finds all disbursements
     function findAllDisbursements() {
         console.log('findDisbursements');
@@ -109,41 +119,39 @@ $(document).ready(function() {
 
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        shoppingListArray = [];
+        // var list = data == null ? [] : (data instanceof Array ? data : [data]);
+        // shoppingListArray = [];
         //adding the names for all shoppinglist into the array shoppingListArray
-        $.each(list, function (index, Shoppinglist) {
-            shoppingListArray.push({
-                "name": Shoppinglist.name,
-            });
-        });
+        // $.each(list, function (data) {
+        var obj = JSON.parse(data);
+        console.log(obj);
+            $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
+                obj.name + '</a></li>'
+            );
+        // });
     }
 
-        //finds all shoppinglists
-        function getShoppingListByGroupId() {
-            var groupId=this.id;
-            $.ajax({
-                type: 'GET',
-                url: '/scrum/groups/'+1+'/ShoppingLists/',
-                dataType: "json",
-                success: renderShoppingListDropdownMenu(data)
-
-            });
-        }
-
-
-        $('.dropdown-menu').click(function () {
-            var url='/scrum/groups/'+1+'/ShoppingLists/';
-            $.get(url, renderShoppingListDropdownMenu(data)
-        )});
-
-
-        $.each(shoppingListArray, function (index, Shoppinglist) {
-            $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-                shoppingList.name + '</a></li>'
-            );
-            console.log("koden kom til bunnen av renderShoppinglist");
+    $('#menu1').click(function () {
+        console.log("menu1 pressed")
+        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
+        $.getJSON(url, function(data, status){
+            renderShoppingListDropdownMenu(data)
+            if(status == "success"){
+                console.log("External content loaded successfully!");
+            }
+            if(status == "error"){
+                console.log("Error in loading content");
+            }
         });
+    });
+
+
+    $.each(shoppingListArray, function (index, Shoppinglist) {
+        $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
+            shoppingList.name + '</a></li>'
+        );
+        console.log("koden kom til bunnen av renderShoppinglist");
+    });
 
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {

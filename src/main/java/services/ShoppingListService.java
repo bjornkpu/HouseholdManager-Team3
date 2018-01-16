@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * @author BK
  * @author johanmsk
  */
-@Path("groups/{groupId}/shoppingLists")
+@Path("/groups/{groupId}/shoppingLists/")
 public class ShoppingListService {
     private static final Logger log = Logger.getLogger();
 
@@ -39,7 +39,7 @@ public class ShoppingListService {
 	@GET
 	@Produces("application/json")
 	public ArrayList<ShoppingList> getShoppingListByGroupId(@PathParam("groupId") int groupId) {
-		Session session = (Session)request.getSession();
+//		Session session = (Session)request.getSession();
 		try {
 			return shoppingListDao.getShoppingListByGroupid(groupId);
 		} catch(SQLException e) {
