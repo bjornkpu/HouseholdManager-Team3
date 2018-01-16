@@ -38,6 +38,7 @@
     <div class="row">
         <div class="col" id="leftSide">
             <table id="tableUserInfoReadOnly" style="display: block;">
+                <tr><h3>Personal settings</h3></tr>
                 <tr>
                     <td id="nameProfile">Name: </td>
                     <td > <input type="text" id="nameReadOnly" value="Mats davido" readonly><br></td>
@@ -61,7 +62,7 @@
                 </tr>
                 <tr>
                     <td id="email1">Email: </td>
-                    <td > <input id="emailField1" type="text" name="emailField"></td>
+                    <td > <input id="emailField1" type="text" name="emailField" readonly placeholder="Can not change email"></td>
                 </tr>
                 <tr>
                     <td id="phone1">Phonenumber: </td>
@@ -73,9 +74,23 @@
                 </tr>
             </table>
 
+            <br><br>
+            <h3>Group Settings </h3>
+            <h5>Create a new Group dette skal gjøres om til en popup</h5>
+            <button class="button" id="createGroup">Create group</button>
+            <table id="createGroupTable">
+                <tr>
+                    <td>Name: </td>
+                    <td> <input id="nameGroup" type="text" name="nameGroup"></td>
+                    <td><button class = "button" id = "createGroupButton" onclick=window.location.href="Navbars.html"> Create</button></td>
+                </tr>
+            </table>
+
+
         </div>
         <div class="col" id="rightSide">
             <table>
+                <tr><h3>Password settings</h3></tr>
                 <tr>
                     <td id="currentPassword">Current password: </td>
                     <td > <input id="passwordField" type="password" name="passwordField"></td>
@@ -90,6 +105,20 @@
                 </tr>
                 <tr>
                     <td> <button class = "button" id = "changePassword"> Change Password</button></td>
+                </tr>
+            </table>
+
+            <br><br>
+            <h3>Group Settings </h3>
+            <h5>My invitations</h5>
+            <table>
+                <tr>
+                    <td>Klæbuveien55</td>
+                    <td><button type="button"  class="joinGroup" title="joinGroup">Join</button></td>
+                </tr>
+                <tr>
+                    <td>knullegutta</td>
+                    <td><button type="button"  class="joinGroup" title="joinGroup">Join</button></td>
                 </tr>
             </table>
         </div>
