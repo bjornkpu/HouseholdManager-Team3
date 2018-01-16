@@ -23,7 +23,7 @@ import static util.LoginCheck.correctLogin;
 /**
  * Service to handle logon and logout using the web-session
  *
- * @author
+ * @author johanmsk
  */
 @Path("session")
 public class SessionService {

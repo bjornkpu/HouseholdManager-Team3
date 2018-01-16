@@ -1,9 +1,14 @@
 package db;
+
 import data.User;
-
-import java.sql.*;
-
 import util.Logger;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 /**
  * -Description of the class-
  *
@@ -48,12 +53,11 @@ public class UserDao {
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password,salt) VALUES(?,?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
             ps.setString(1,user.getEmail());
             ps.setString(2,user.getName());
             ps.setString(3,user.getPhone());
             ps.setString(4,user.getPassword());
-            ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Add user " + (result == 1?"ok":"failed"));
@@ -66,12 +70,11 @@ public class UserDao {
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=?, salt=? where email=?");
+            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
             ps.setString(1,user.getName());
             ps.setString(2,user.getPhone());
             ps.setString(3,user.getPassword());
             ps.setString(4,user.getEmail());
-            ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Update user " + (result == 1?"ok":"failed"));
@@ -94,4 +97,53 @@ public class UserDao {
             connection.close();
         }
     }
+
+    public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
+	    connection = Db.instance().getConnection();
+	    try {
+	    	//TODO: fix this query...this is NOT correct!!!!!
+		    ps = connection.prepareStatement("SELECT * FROM user WHERE shoppinglist_id=?");
+		    ps.setInt(1,shoppingListId);
+		    rs = ps.executeQuery();
+
+//            TODO kan ikke teste her, hvordan
+//            if(!rs.next()) {
+//                log.info("could not find item " + id);
+//            }
+
+		    User user = new User();
+		    ArrayList<User> userList = new ArrayList<User>();
+		    while(rs.next()) {
+			    log.info("Found user in shopping list" + shoppingListId);
+			    user = new User();
+			    user.setEmail(rs.getString("email"));
+			    user.setName(rs.getString("name"));
+			    user.setPassword(rs.getString("password"));
+			    user.setPhone(rs.getString("phone"));
+			    user.setSalt(rs.getString("salt"));
+			    userList.add(user);
+		    }
+
+		    rs.close();
+		    ps.close();
+		    return userList;
+	    } finally {
+		    connection.close();
+	    }
+    }
+
+	//TODO: make this method
+    public static boolean addUserToShoppingList(User user) throws SQLException {
+    	return true; //to make it compile
+    }
+
+    public static void startTest() throws SQLException {
+        connection.setAutoCommit(false);
+    }
+
+    public static void endTest() throws SQLException{
+        connection.rollback();
+        connection.setAutoCommit(true);
+    }
+
 }
