@@ -5,7 +5,7 @@
  http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>Restful Web Application</display-name>
     <session-config>
-        <session-timeout>30</session-timeout>
+        <session-timeout>1</session-timeout>
     </session-config>
     <servlet>
         <servlet-name>jersey-serlvet</servlet-name>

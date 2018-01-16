@@ -3,7 +3,6 @@ package db;
 import data.Group;
 import data.ShoppingList;
 import data.User;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 /**
  * -Description of the class-
