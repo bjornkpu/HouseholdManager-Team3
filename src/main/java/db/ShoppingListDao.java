@@ -320,4 +320,33 @@ public class ShoppingListDao {
 //            connection.close();
         }
     }
+    public static boolean addUserToShoppingList(int userId, int shoppingListId) throws SQLException {
+	    try {
+		    ps = connection.prepareStatement("SELECT user_email FROM user_party JOIN shoppinglist " +
+				    "ON user_party.party_id = shoppinglist.party_id AND shoppinglist.id = ? AND user_email = ?");
+		    //TODO: write code
+		    int result = ps.executeUpdate();
+		    ps.close();
+
+		    log.info("Added user to shopping list " + (result == 1 ? "ok":"failed"));
+		    return result == 1;
+	    } finally {
+		    connection.close();
+	    }
+    }
+
+	public static boolean removeUserFromShoppingList(int userId, int shoppingListId) throws SQLException {
+		try {
+			ps = connection.prepareStatement("SELECT user_email FROM user_party JOIN shoppinglist " +
+					"ON user_party.party_id = shoppinglist.party_id AND shoppinglist.id = ? AND user_email = ?");
+			//TODO: write code
+			int result = ps.executeUpdate();
+			ps.close();
+
+			log.info("Removing user from shopping list " + (result == 1 ? "ok":"failed"));
+			return result == 1;
+		} finally {
+			connection.close();
+		}
+	}
 }

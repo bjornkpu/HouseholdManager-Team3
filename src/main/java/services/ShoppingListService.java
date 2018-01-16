@@ -189,7 +189,6 @@ public class ShoppingListService {
 	 */
 	@DELETE
 	@Path("/{shoppingListId}/items/{itemId}")
-	@Produces("application/json")
 	public void delItemById(@PathParam("itemId") int itemId){
 		try{
 			itemDao.delItem(itemId);
@@ -233,14 +232,39 @@ public class ShoppingListService {
 		}
 	}
 
-	//TODO: to-be-continued
-//	@GET
+	/** Add a specific user to a shopping list.
+	 *
+	 * @param shoppingListId the shopping list you want to add a user to
+	 * @param userId the id of the user ou want to add to the shopping list
+	 * @throws ServerErrorException when failing to add the user to the shopping list.
+	 */
+	@POST
+	@Path("/{shoppingListId}/users/{userId}")
+	public void addUserToShoppingList(@PathParam("shoppingListId") int shoppingListId,
+	                                  @PathParam("userId") int userId){
+		try {
+			ShoppingListDao.addUserToShoppingList(userId, shoppingListId);
+		}catch (SQLException e) {
+			log.error("Failed to add user to shopping list", e);
+			throw new ServerErrorException("Failed to add user to shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}
+	}
 
-	//TODO: to-be-continued
-//	@DELETE
-
-    /**http://groups/{groupId}/shoppinglist/{shoppinglistId}/users/{userId}
-     get: henst en user på id gitt shoppinglist
-     delete: fjern en gitt user på en gitt shoppinglist
-     */
+	/** remove a specific user from a shopping list.
+	 *
+	 * @param shoppingListId the shopping list you want to remove a user from
+	 * @param userId the id of the user ou want to remove from the shopping list
+	 * @throws ServerErrorException when failing to remove the user from the shopping list.
+	 */
+	@DELETE
+	@Path("/{shoppingListId}/users/{userId}")
+	public void removeUserFromShoppingList(@PathParam("shoppingListId") int shoppingListId,
+	                                  @PathParam("userId") int userId){
+		try {
+			ShoppingListDao.removeUserFromShoppingList(userId, shoppingListId);
+		}catch (SQLException e) {
+			log.error("Failed to remove user from shopping list", e);
+			throw new ServerErrorException("Failed to remove user from shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}
+	}
 }
