@@ -224,7 +224,8 @@ public class ShoppingListService {
 	@Consumes("application/json")
 	public void addUserToShoppingList(@PathParam("shoppingListId")int shoppingListId, User user){
 		try {
-			userDao.addUserToShoppingList(user);
+//			TODO check if works
+			shoppingListDao.addUserToShoppingList(user.getEmail(), shoppingListId);
 			log.info("User added to shopping list!");
 		} catch (SQLException e){
 			log.error("Failed to add user to shopping list", e);
