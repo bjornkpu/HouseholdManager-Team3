@@ -9,10 +9,10 @@ INSERT INTO user(name, email, password, salt ,phone) VALUES( 'PW: qwe', 'abcqwe'
 INSERT INTO party(name) VALUES ('Frex');
 INSERT INTO party(name) VALUES ('Brummun');
 
-INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,0.2,0);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,0.2,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-2000.1,0);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',1,0,0);
-INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',2,0,0);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',2,0,2);
 
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Husk å dra ned i do, Murtin',1,'en@h.no');
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Kommer ikke hjem før onsdag',1,'to@h.no');
@@ -36,6 +36,9 @@ INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Saus', 1,1,1);
 INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Rømme', 1,1,1);
 INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Fredrikstadpilsner', 2,1,1);
 INSERT INTO item(name, status, shoppinglist_id, dips_id) VALUES ('Cola', 2,1,1);
+
+INSERT INTO user_disbursement(user_email, disp_id) VALUES ('en@h.no','1');
+INSERT INTO user_disbursement(user_email, disp_id) VALUES ('to@h.no','1');
 
 
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
