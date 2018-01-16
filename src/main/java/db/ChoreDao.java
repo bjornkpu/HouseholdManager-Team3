@@ -19,6 +19,11 @@ public class ChoreDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** Find what user completed the chore
+     * @param choreID id of the chore you want to check
+     * @return the email of teh user who is on the chore
+     * @throws SQLException if the query fails
+     */
     private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -29,15 +34,20 @@ public class ChoreDao {
             while(rs.next()){
                 result.add(rs.getString("user_id"));
             }
-            rs.close();
-            ps.close();
             return result;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+    /** gets the chore by id
+     * @param choreId the chore you want to get
+     * @return the chore
+     * @throws SQLException if the query fails
+     */
     public static Chore getChore(int choreId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -65,15 +75,21 @@ public class ChoreDao {
             else{
                 log.info("Could not find Todo");
             }
-            rs.close();
-            ps.close();
             return chore;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+    /** adds a chore tot he database
+     * @param chore the chore you want to add
+     * @param partyId the id of the group you want to add the chore to
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static boolean addChore(Chore chore, int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -84,14 +100,21 @@ public class ChoreDao {
             ps.setInt(4, partyId);
             ps.setString(5, chore.getAssignedTo());
             int result = ps.executeUpdate();
-            ps.close();
             return result == 1;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+    /** assign a user to a chore
+     * @param email the id of the user
+     * @param id the id of the chore you want to add the user to
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static boolean assignChore(String email, int id) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -99,11 +122,12 @@ public class ChoreDao {
             ps.setString(1,email);
             ps.setInt(2,id);
             int result = ps.executeUpdate();
-            ps.close();
             return result==1;
         }
         finally{
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 

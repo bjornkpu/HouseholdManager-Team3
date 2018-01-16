@@ -1,17 +1,20 @@
-package data;
+package db;
+import data.User;
 import db.UserDao;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 /**
- * -Description of the class-
+ * Tests for UserDao
  *
  * @author enoseber
  */
-public class UserTest {
+public class UserDaoTest {
     private static User user;
     private static final String email="LoginTestEmailATemailDOTcom";
 
@@ -35,6 +38,18 @@ public class UserTest {
         assertEquals(user.getName(), uu.getName());
     }
 
+    @Test
+    public void testGetUsersInShoppingList(){
+        ArrayList<User> ulist = new ArrayList<User>();
+
+        try {
+            ulist = UserDao.getUsersInShoppingList(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(2, ulist.size());
+    }
 
     @Test
     public void update_user(){

@@ -23,6 +23,11 @@ public class UserDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** Method that gets a user given an email.
+     * @param email The email of the user that is to be returned.
+     * @return A User with the information relative to the email entered.
+     * @throws SQLException when failing to get User.
+     */
     public static User getUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -41,15 +46,19 @@ public class UserDao {
                 user.setSalt(rs.getString("salt"));
             } else {
                 log.info("Could not find user " + email);
-            }
-            rs.close();
-            ps.close();
-            return user;
+            } return user;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+	/** adds a user to the database
+	 * @param user the user you want to add to det database
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -59,14 +68,19 @@ public class UserDao {
             ps.setString(3,user.getPhone());
             ps.setString(4,user.getPassword());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Add user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+	/** update a user with a user object. it will see the id and overwrite the rest
+	 * @param user the user you want to update
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -76,40 +90,47 @@ public class UserDao {
             ps.setString(3,user.getPassword());
             ps.setString(4,user.getEmail());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+	/** deletes a user with the given user id
+	 * @param email the id of the user you want to delete
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
     public static boolean delUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM user where email=?");
             ps.setString(1,email);
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Delete user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+	/** gets all users in a shopping list by the shopping list id
+	 * @param shoppingListId the id of the shopping list you want to get all users of
+	 * @return an ArrayList of users that is in the shopping list with the given id
+	 * @throws SQLException if the query fails
+	 */
     public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
 	    connection = Db.instance().getConnection();
 	    try {
-	    	//TODO: fix this query...this is NOT correct!!!!!
-		    ps = connection.prepareStatement("SELECT * FROM user WHERE shoppinglist_id=?");
+		    ps = connection.prepareStatement("SELECT *" +
+                    "FROM user " +
+                    "WHERE user.email " +
+                    "IN( SELECT user_email FROM shoppinglist_user WHERE shoppinglist_user.shoppinglist_id = ?)");
 		    ps.setInt(1,shoppingListId);
 		    rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
 
 		    User user = new User();
 		    ArrayList<User> userList = new ArrayList<User>();
@@ -122,25 +143,24 @@ public class UserDao {
 			    user.setPhone(rs.getString("phone"));
 			    user.setSalt(rs.getString("salt"));
 			    userList.add(user);
-		    }
-
-		    rs.close();
-		    ps.close();
-		    return userList;
+		    } return userList;
 	    } finally {
-		    connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
 	    }
     }
 
-	//TODO: make this method
-    public static boolean addUserToShoppingList(User user) throws SQLException {
-    	return true; //to make it compile
-    }
-
+	/** idk wft dis is. spør johan, han laga den her
+	 * @throws SQLException
+	 */
     public static void startTest() throws SQLException {
         connection.setAutoCommit(false);
     }
 
+	/** idk wft dis is. spør johan, han laga den her
+	 * @throws SQLException
+	 */
     public static void endTest() throws SQLException{
         connection.rollback();
         connection.setAutoCommit(true);

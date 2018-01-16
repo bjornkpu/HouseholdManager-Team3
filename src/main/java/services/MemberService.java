@@ -19,7 +19,7 @@ import java.util.List;
  * @version 0.1
  */
 @Path("/groups/")
-public class GroupService {
+public class MemberService {
 
     private static final Logger log = Logger.getLogger();
     private static GroupDao groupDao = new GroupDao();
