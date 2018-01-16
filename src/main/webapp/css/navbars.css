@@ -8,18 +8,48 @@
         padding-top: 60px;
     }
 
-    .wrapper {
+    /*
+     * TOP NAVBAR STYLING LANDSCAPE
+     */
+    .navbar-light{
+        background-color: #3d3b3b;
+    }
+    .navbarcontainer{
+        width: 100%;
+    }
+    .navbar-brand.logo{
+        font-size: 18px;
+        color: cadetblue;
+    }
+
+    .username{
+        padding-right: 3px;
+        color: cadetblue;
+    }
+    .account:hover .username{
+        color: black;
+    }
+
+    .groupicon{
+        color: cadetblue;
+    }
+    .groupicon:hover{
+        color: black;
+    }
+
+
+
+    /*
+     * SIDEBAR STYLING LANDSCAPE
+     */
+
+    .sidebar-wrapper {
         display: flex;
         position: fixed;
     }
 
-    #page-content {
-        margin-left: 85px;
-        background-color: lightgreen;
-    }
-
     #sidebar {
-        background-color: gainsboro;
+        background-color: #3d3b3b;
         min-width: 85px;
         max-width: 85px;
         height: 100vh;
@@ -31,25 +61,28 @@
     }
 
     .sidebar-list-items {
-        color: lightslategray;
+        color: cadetblue;
     }
 
     .sidebar-list-items:hover {
-        color: darkslategrey;
+        color: black;
     }
 
-    .navbarcontainer{
-        width: 100%;
-    }
-    .username{
-        padding-right: 3px;
+    /*
+     * PAGE CONTENT STYLING LANDSCAPE
+     */
+    #page-content {
+        margin-left: 85px;
+        position: relative;
+        background-color: lightsalmon;
+        height: 100vh;
     }
 
 
 
 
 /*
- * Google icons
+ * Google icons LANDSCAPE
  */
     /* Rules for sizing the icon. */
     .material-icons.md-18 { font-size: 18px; }
@@ -67,17 +100,55 @@
 }
 
 @media screen and (orientation: portrait) {
-    .wrapper {
+
+    /*
+     * TOP BAR STYLING PORTRAIT
+     */
+    .navbar-light{
+        background-color: #3d3b3b;
+    }
+
+
+    .navbar-brand.logo{
+        font-size: 0;
+    }
+    .navbarcontainer{
+        width: 100%;
+    }
+    .username{
+        font-size: 0px;
+        padding-right: 3px;
+        color: cadetblue;
+    }
+    .account:hover .username{
+        color: black;
+    }
+
+    .groupicon{
+        color: cadetblue;
+    }
+    .groupicon:hover{
+        color: black;
+    }
+
+    /*
+     * SIDEBAR STYLING PORTRAIT
+     */
+    .sidebar-wrapper {
         display: flex;
         position: fixed;
         bottom: 0px;
+        height: 65px;
         width: 100%;
     }
 
     #sidebar {
-        background-color: gainsboro;
-        height: 75px;
+        background-color: #3d3b3b;
+        height: 65px;
         width: 100%;
+        bottom: 0;
+        overflow: hidden;
+        position: fixed;
     }
 
     .sidebar-list {
@@ -91,32 +162,29 @@
         margin-left: 10%;
         display: inline-block;
         position: relative;
-        color: lightslategray;
+        color: cadetblue;
     }
 
     .sidebar-list-items:hover {
-        color: darkslategrey;
+        color: black;
     }
-
-    #page-content {
-        background-color: lightgreen;
-        margin-top: 60px;
-        margin-bottom: 75px;
-    }
-    .navbar-brand.logo{
-        font-size: 0;
-    }
-    .navbarcontainer{
-        width: 100%;
-    }
-    .username{
-        font-size: 0;
-    }
-
 
     /*
- * Google icons
- */
+     * PAGE CONTENT STYLING PORTRAIT
+     */
+    #page-content {
+        background-color: lightsalmon;
+        position: relative;
+        bottom: 65px;
+        padding-bottom: 10px;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    /*
+     * Google icons PORTRAIT
+     */
+
     /* Rules for sizing the icon. */
     .material-icons.md-18 { font-size: 18px; }
     .material-icons.md-24 { font-size: 24px; }
