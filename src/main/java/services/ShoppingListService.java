@@ -241,7 +241,7 @@ public class ShoppingListService {
 	@POST
 	@Path("/{shoppingListId}/users/{userId}")
 	public void addUserToShoppingList(@PathParam("shoppingListId") int shoppingListId,
-	                                  @PathParam("userId") int userId){
+	                                  @PathParam("userId") String userId){
 		try {
 			ShoppingListDao.addUserToShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {
@@ -259,7 +259,7 @@ public class ShoppingListService {
 	@DELETE
 	@Path("/{shoppingListId}/users/{userId}")
 	public void removeUserFromShoppingList(@PathParam("shoppingListId") int shoppingListId,
-	                                  @PathParam("userId") int userId){
+	                                  @PathParam("userId") String userId){
 		try {
 			ShoppingListDao.removeUserFromShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {

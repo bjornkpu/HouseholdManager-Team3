@@ -23,7 +23,13 @@ public class UserDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    public static User getUser(String email) throws SQLException {
+
+	/**
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 */
+	public static User getUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
@@ -50,6 +56,11 @@ public class UserDao {
         }
     }
 
+	/**
+	 * @param user
+	 * @return
+	 * @throws SQLException
+	 */
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -67,6 +78,11 @@ public class UserDao {
         }
     }
 
+	/**
+	 * @param user
+	 * @return
+	 * @throws SQLException
+	 */
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -84,6 +100,11 @@ public class UserDao {
         }
     }
 
+	/**
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 */
     public static boolean delUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -98,6 +119,11 @@ public class UserDao {
         }
     }
 
+	/**
+	 * @param shoppingListId
+	 * @return
+	 * @throws SQLException
+	 */
     public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
 	    connection = Db.instance().getConnection();
 	    try {
@@ -134,10 +160,26 @@ public class UserDao {
 	    }
     }
 
+	/**
+	 * @param user
+	 * @return
+	 * @throws SQLException
+	 */
+	//TODO: make this method
+    public static boolean addUserToShoppingList(User user) throws SQLException {
+    	return true; //to make it compile
+    }
+
+	/**
+	 * @throws SQLException
+	 */
     public static void startTest() throws SQLException {
         connection.setAutoCommit(false);
     }
 
+	/**
+	 * @throws SQLException
+	 */
     public static void endTest() throws SQLException{
         connection.rollback();
         connection.setAutoCommit(true);
