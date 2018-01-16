@@ -20,7 +20,7 @@ public class ShoppingListDao {
 
     private static Connection connection;
     private static PreparedStatement ps;
-    private static ResultSet rs;
+    private static ResultSet rs,userRs;
 
     /** Method that gets a shopping list given the shopping list id, if the user has permission.
      * @param id The ID of the shopping list you are trying to get.
@@ -150,20 +150,18 @@ public class ShoppingListDao {
             ps.setInt(1,groupId);
             rs = ps.executeQuery();
 
-            ShoppingList sl = new ShoppingList();
-            ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+	        log.info("Result set found successfully in ShoppingList. ");
 
-            int i =0;
-
-            log.info("Length of rs: " + rs);
-
-            while(rs.next()) {
-                log.info("Found ShoppingList in group " + groupId + " index: " + i);
+	        int i =0;
+	        ShoppingList sl = new ShoppingList();
+	        ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+	        while(rs.next()) {
+                log.info("Found ShoppingList in group " + groupId + " while index: " + i);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
+                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId(), connection));
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
                 i++;
@@ -283,36 +281,44 @@ public class ShoppingListDao {
     private static ArrayList<User> getUserList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT u.email, u.name, u.phone, u.password, u.salt " +
-                    "FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
-                    "WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
-            ps.setInt(1,id);
-            rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
-
-            User user = new User();
-            ArrayList<User> userList = new ArrayList<User>();
-
-            while(rs.next()) {
-                log.info("Found user(s) in shoppinglist " + id);
-                user = new User();
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setPhone(rs.getString("phone"));
-                user.setName(rs.getString("name"));
-                userList.add(user);
-            }
-            return userList;
+            return getUserList(id, connection);
         } finally {
-            Db.close(rs);
-            Db.close(ps);
             Db.close(connection);
         }
     }
+	private static ArrayList<User> getUserList(int id, Connection connection)throws SQLException {
+		return getUserListMethod(id, connection);
+	}
+
+	private static ArrayList<User> getUserListMethod(int id, Connection connection) throws SQLException {
+		try {
+			ps = connection.prepareStatement("SELECT u.email, u.name, u.phone, u.password, u.salt " +
+					"FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
+					"WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
+			ps.setInt(1,id);
+			userRs = ps.executeQuery();
+
+			log.info("Result set found successfully in User. ");
+
+			int i = 0;
+			User user = new User();
+			ArrayList<User> userList = new ArrayList<User>();
+			while(rs.next()) {
+				log.info("Found user(s) in shoppinglist " + id + " while index: " + i);
+				user = new User();
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));
+				user.setPhone(rs.getString("phone"));
+				user.setName(rs.getString("name"));
+				userList.add(user);
+				i++;
+			}
+			return userList;
+		} finally {
+			Db.close(userRs);
+			Db.close(ps);
+		}
+	}
 
 	/** adds a user to a shoppingList
 	 * @param email the id of the user you want to add

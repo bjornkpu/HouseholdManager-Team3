@@ -148,14 +148,6 @@ $(document).ready(function() {
         });
     });
 
-
-    $.each(shoppingListArray, function (index, Shoppinglist) {
-        $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-            shoppingList.name + '</a></li>'
-        );
-        console.log("koden kom til bunnen av renderShoppinglist");
-    });
-
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);

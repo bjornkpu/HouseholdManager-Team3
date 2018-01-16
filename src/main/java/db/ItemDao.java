@@ -59,28 +59,49 @@ public class ItemDao {
      */
     public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
-            ps.setInt(1,id);
-            rs = ps.executeQuery();
-
-            Item item = new Item();
-            ArrayList<Item> itemList = new ArrayList<Item>();
-            while(rs.next()) {
-                log.info("Found item in shoppinglist" + id);
-                item = new Item();
-                item.setId(rs.getInt("id"));
-                item.setName(rs.getString("name"));
-                item.setStatus(rs.getInt("status"));
-                item.setShoppingListId(rs.getInt("shoppinglist_id"));
-                item.setDispId(rs.getInt("dips_id"));
-                itemList.add(item);
-            }return itemList;
-        } finally {
-            Db.close(rs);
-            Db.close(ps);
-            Db.close(connection);
+        try{
+	        return getItemsInShoppingListMethod(id, connection);
+        }finally {
+	        Db.close(connection);
         }
+    }
+
+    /** Method that gets any items connected to a given ShoppingList.
+     * @param id The id of the ShoppingList the items are connected to.
+     * @return An ArrayList of items connected to the given ShoppingList.
+     * @throws SQLException when failing to get Item.
+     */
+    public static ArrayList<Item> getItemsInShoppingList(int id, Connection connection) throws SQLException {
+	    return getItemsInShoppingListMethod(id, connection);
+    }
+
+    private static ArrayList<Item> getItemsInShoppingListMethod(int id, Connection connection) throws SQLException {
+	    try {
+		    ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
+		    ps.setInt(1,id);
+		    rs = ps.executeQuery();
+
+		    log.info("Result set found successfully in Item. ");
+
+		    int i =0;
+		    Item item = new Item();
+		    ArrayList<Item> itemList = new ArrayList<Item>();
+		    while(rs.next()) {
+			    log.info("Found item in shoppinglist" + id + " while index: " + i);
+			    item = new Item();
+			    item.setId(rs.getInt("id"));
+			    item.setName(rs.getString("name"));
+			    item.setStatus(rs.getInt("status"));
+			    item.setShoppingListId(rs.getInt("shoppinglist_id"));
+			    item.setDispId(rs.getInt("dips_id"));
+			    itemList.add(item);
+			    i++;
+		    }
+		    return itemList;
+	    } finally {
+		    Db.close(rs);
+		    Db.close(ps);
+	    }
     }
 
     /** Method that gets any items connected to a given Disbursement.
