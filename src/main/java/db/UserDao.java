@@ -101,8 +101,10 @@ public class UserDao {
     public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
 	    connection = Db.instance().getConnection();
 	    try {
-	    	//TODO: fix this query...this is NOT correct!!!!!
-		    ps = connection.prepareStatement("SELECT * FROM user WHERE shoppinglist_id=?");
+		    ps = connection.prepareStatement("SELECT *" +
+                    "FROM user " +
+                    "WHERE user.email " +
+                    "IN( SELECT user_email FROM shoppinglist_user WHERE shoppinglist_user.shoppinglist_id = ?)");
 		    ps.setInt(1,shoppingListId);
 		    rs = ps.executeQuery();
 

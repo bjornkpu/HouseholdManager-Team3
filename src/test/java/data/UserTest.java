@@ -4,6 +4,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import java.sql.SQLException;
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 /**
@@ -35,6 +37,18 @@ public class UserTest {
         assertEquals(user.getName(), uu.getName());
     }
 
+    @Test
+    public void testGetUsersInShoppingList(){
+        ArrayList<User> ulist = new ArrayList<User>();
+
+        try {
+            ulist = UserDao.getUsersInShoppingList(2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(2, ulist.size());
+    }
 
     @Test
     public void update_user(){
