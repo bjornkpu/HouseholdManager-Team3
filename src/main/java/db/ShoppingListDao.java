@@ -49,11 +49,11 @@ public class ShoppingListDao {
             } else {
                 log.info("Could not find shopping list " + id);
             }
-            rs.close();
-            ps.close();
             return sl;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -82,12 +82,11 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -124,12 +123,11 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -165,12 +163,11 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -204,13 +201,14 @@ public class ShoppingListDao {
             ps.setString(2, shoppingList.getUserList().get(0).getEmail());
             int createDependancyResult = ps.executeUpdate();
             log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
-            ps.close();
+
 
 //          TODO clean up
             return createShoppingListResult == 1 && createDependancyResult == 1;
 
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -234,11 +232,11 @@ public class ShoppingListDao {
             ps.setInt(2, shoppingList.getGroupId());
             ps.setInt(3, shoppingList.getId());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update shopping list " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -260,14 +258,15 @@ public class ShoppingListDao {
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
-            ps.close();
 
 //            TODO clean up
             log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
             return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
 
         } finally {
-            connection.close();
+
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -302,12 +301,11 @@ public class ShoppingListDao {
                 user.setName(rs.getString("name"));
                 userList.add(user);
             }
-//        TODO clean this up
-//            rs.close();
-//            ps.close();
             return userList;
         } finally {
-//            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -325,12 +323,12 @@ public class ShoppingListDao {
 		    ps.setInt(1, shoppingListId);
 		    ps.setString(2, email);
 		    int result = ps.executeUpdate();
-		    ps.close();
-
 		    log.info("Added user to shopping list " + (result == 1 ? "ok":"failed"));
 		    return result == 1;
 	    } finally {
-		    connection.close();
+
+            Db.close(ps);
+            Db.close(connection);
 	    }
     }
 
@@ -348,12 +346,11 @@ public class ShoppingListDao {
             ps.setInt(1, shoppingListId);
             ps.setString(2, email);
 			int result = ps.executeUpdate();
-			ps.close();
-
 			log.info("Removing user from shopping list " + (result == 1 ? "ok":"failed"));
 			return result == 1;
 		} finally {
-			connection.close();
+            Db.close(ps);
+            Db.close(connection);
 		}
 	}
 }

@@ -34,12 +34,11 @@ public class WallpostDao {
             while(rs.next()){
                 WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
-            }
-            rs.close();
-            ps.close();
-            return resultat;
+            } return resultat;
         }finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -56,11 +55,11 @@ public class WallpostDao {
             ps.setInt(2,wallPost.getPostedTo());
             ps.setString(3,wallPost.getPostedBy());
             int res = ps.executeUpdate();
-            ps.close();
             return res==1;
         }
         finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -81,13 +80,12 @@ public class WallpostDao {
             while(rs.next()){
                 WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
-            }
-            rs.close();
-            ps.close();
-            return resultat;
+            } return resultat;
         }
         finally{
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -102,11 +100,11 @@ public class WallpostDao {
             ps = connection.prepareStatement("DELETE FROM wallpost WHERE id=?");
             ps.setInt(1,id);
             int resultat = ps.executeUpdate();
-            ps.close();
             return resultat == 1;
         }
         finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 }

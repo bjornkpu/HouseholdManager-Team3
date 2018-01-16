@@ -2,8 +2,8 @@ package db;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import util.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
+
 /** This is a class to establish a connection pool
  * @author BK
  */
@@ -60,5 +60,52 @@ public class Db {
 	 */
     public Connection getConnection() throws SQLException {
         return this.cpds.getConnection();
+    }
+    /** Closes a {@linkplain Connection}.
+     *
+     * @param conn the Connection to close.
+     */
+    public static void close(Connection conn){
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
+
+    /** Closes a {@linkplain PreparedStatement}.
+     *
+     * @param ps The PreparedStatement to close.
+     */
+    public static void close(PreparedStatement ps){
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
+
+    /** Closes a {@linkplain Statement}.
+     *
+     * @param s The PreparedStatement to close.
+     */
+    public static void close(Statement s){
+        if (s != null) {
+            try {
+                s.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
+
+    /** Closes a {@linkplain ResultSet}.
+     *
+     * @param rs The ResultSet to close.
+     */
+    public static void close(ResultSet rs){
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) { /* ignored */}
+        }
     }
 }

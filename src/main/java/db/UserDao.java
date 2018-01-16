@@ -46,12 +46,11 @@ public class UserDao {
                 user.setSalt(rs.getString("salt"));
             } else {
                 log.info("Could not find user " + email);
-            }
-            rs.close();
-            ps.close();
-            return user;
+            } return user;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -69,11 +68,11 @@ public class UserDao {
             ps.setString(3,user.getPhone());
             ps.setString(4,user.getPassword());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Add user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -91,11 +90,11 @@ public class UserDao {
             ps.setString(3,user.getPassword());
             ps.setString(4,user.getEmail());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -110,11 +109,11 @@ public class UserDao {
             ps = connection.prepareStatement("DELETE FROM user where email=?");
             ps.setString(1,email);
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Delete user " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -144,13 +143,11 @@ public class UserDao {
 			    user.setPhone(rs.getString("phone"));
 			    user.setSalt(rs.getString("salt"));
 			    userList.add(user);
-		    }
-
-		    rs.close();
-		    ps.close();
-		    return userList;
+		    } return userList;
 	    } finally {
-		    connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
 	    }
     }
 
