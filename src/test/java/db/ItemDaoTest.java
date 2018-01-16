@@ -1,5 +1,8 @@
-package data;
+package db;
 
+import data.Item;
+import data.ShoppingList;
+import data.User;
 import db.ItemDao;
 import db.ShoppingListDao;
 import db.UserDao;
@@ -13,7 +16,7 @@ import java.util.ArrayList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class ItemTest {
+public class ItemDaoTest {
     private static Item itemTest;
     private static ShoppingList shoppingListTest;
     private static int itemId;
@@ -92,7 +95,7 @@ public class ItemTest {
 
     @AfterClass
     public static void tearDown() throws SQLException{
-        ItemDao.delItem(itemTest);
+        //ItemDao.delItem(itemTest);
         ShoppingListDao.delShoppingList(shoppingListTest.getId());
         UserDao.delUser(userId);
     }

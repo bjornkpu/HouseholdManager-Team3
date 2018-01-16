@@ -1,4 +1,6 @@
 package data;
+import data.LoginData;
+import data.User;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

@@ -2,15 +2,12 @@ package db;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import util.Logger;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-/**
- * This is a class to establish a connection pool
- *
+import java.sql.*;
+
+/** This is a class to establish a connection pool
  * @author BK
  */
 public class Db {
-
     private static Db datasource;
     private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
@@ -18,6 +15,11 @@ public class Db {
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
 
+
+	/**
+	 * constructor that sets up the connection pool.
+	 * logs an exception error if it fails to initialize the connection pool to the database.
+	 */
     private Db() {
         try {
             cpds = new ComboPooledDataSource();
@@ -39,6 +41,10 @@ public class Db {
         }
     }
 
+	/** Method to instance the datasource. If a connection is already established it will return the connection.
+	 * This will prevent need to establish a new connection every time you need to make a query.
+	 * @return an instance of the datasource
+	 */
     public static Db instance() {
         if (datasource == null) {
             datasource = new Db();
@@ -48,8 +54,58 @@ public class Db {
         }
     }
 
+	/** Method to get a connection from the connection pool.
+	 * @return a connection ready for use.
+	 * @throws SQLException
+	 */
     public Connection getConnection() throws SQLException {
         return this.cpds.getConnection();
     }
+    /** Closes a {@linkplain Connection}.
+     *
+     * @param conn the Connection to close.
+     */
+    public static void close(Connection conn){
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
 
+    /** Closes a {@linkplain PreparedStatement}.
+     *
+     * @param ps The PreparedStatement to close.
+     */
+    public static void close(PreparedStatement ps){
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
+
+    /** Closes a {@linkplain Statement}.
+     *
+     * @param s The PreparedStatement to close.
+     */
+    public static void close(Statement s){
+        if (s != null) {
+            try {
+                s.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
+
+    /** Closes a {@linkplain ResultSet}.
+     *
+     * @param rs The ResultSet to close.
+     */
+    public static void close(ResultSet rs){
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) { /* ignored */}
+        }
+    }
 }

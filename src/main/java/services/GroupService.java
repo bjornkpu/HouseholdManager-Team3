@@ -1,8 +1,5 @@
-
-
 package services;
 import data.Group;
-import data.User;
 import db.GroupDao;
 import util.Logger;
 
@@ -12,7 +9,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.List;
 /**
  *
  * Service class for class Group. Retrieves information from database and posts to rest.
@@ -57,7 +54,7 @@ public class GroupService {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Group> getGroup() {
+    public List<Group> getGroups() {
         List<Group> groups = null;
         try {
             log.info("Retrieving all groups");
@@ -72,7 +69,7 @@ public class GroupService {
     /**
      * Adds a group to database.
      *
-     curl -H "Content-Type: application/json" -X POST -d '{"name":"BILL","description":null,"admin":null}' http://localhost:8080/scrum/rest/groups
+     curl -H "Content-Type: application/json" -X POST -d '{"name":"KOLLEK10V","description":null,"admin":"en@h.no"}' http://localhost:8080/scrum/rest/groups
      *
      * @param group The new group to be added.
      */
@@ -82,7 +79,7 @@ public class GroupService {
     public void addGroup(Group group) {
         try {
             log.info("Group added. ID: " + group.getId());
-            groupDao.addParty(group);
+            groupDao.addGroup(group);
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -103,7 +100,7 @@ public class GroupService {
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteGroup(@PathParam("groupid") int groupId){
         try {
-            groupDao.deleteParty(groupId);
+            groupDao.deleteGroup(groupId);
         } catch (SQLException e){
             log.info("Deleting group failed. Check constraints in database");
             throw new ServerErrorException("Failed to delete group", Response.Status.INTERNAL_SERVER_ERROR,e);
@@ -115,7 +112,7 @@ public class GroupService {
      * Updates a group in the database.
      *
      * Change the "name" variable before testing the curl command.
-     *curl -v -H "Content-Type:application/json" -X PUT http://localhost:8080/scrum/rest/groups/2 -d'{"name":"BILL","description":null,"admin":null}'
+     curl -H "Content-Type: application/json" -X POST -d '{"name":"KOLLEK10V","description":null,"admin":"en@h.no"}' http://localhost:8080/scrum/rest/groups
      *
      * @param group The group to be updated.
      */
@@ -126,7 +123,7 @@ public class GroupService {
     public void updateGroup(Group group){
         try {
             log.info("Updating group. ID: " + group.getId());
-            groupDao.updateParty(group);
+            groupDao.updateGroup(group);
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
             throw new ServerErrorException("Failed to update group",Response.Status.INTERNAL_SERVER_ERROR);

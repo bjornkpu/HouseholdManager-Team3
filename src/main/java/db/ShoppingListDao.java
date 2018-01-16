@@ -12,6 +12,7 @@ import java.util.ArrayList;
  *
  * @author BK
  * @author jmska
+ * @author enoseber
  */
 public class ShoppingListDao {
 
@@ -19,23 +20,25 @@ public class ShoppingListDao {
 
     private static Connection connection;
     private static PreparedStatement ps;
-    private static ResultSet rs;
+    private static ResultSet rs,userRs;
 
-    /** Method that gets a shopping list given the shopping list id.
+    /** Method that gets a shopping list given the shopping list id, if the user has permission.
      * @param id The ID of the shopping list you are trying to get.
+     * @param email The email of the requesting user.
      * @return Returns the shopping list that corresponds to the id given.
      * @throws SQLException when failing to get shopping list.
      */
-    public static ShoppingList getShoppingList(int id) throws SQLException {
+    public static ShoppingList getShoppingList(int id, String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE id=?");
-            ps.setInt(1,id);
+            ps = connection.prepareStatement("SELECT * FROM shoppinglist JOIN user_party ON shoppinglist.party_id WHERE user_email=? AND id=?");
+            ps.setString(1,email);
+            ps.setInt(2,id);
             rs = ps.executeQuery();
 
             ShoppingList sl = null;
             if(rs.next()) {
-                log.info("Found shoppinglist " + id);
+                log.info("Found shopping list " + id);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -44,13 +47,13 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(id));
 
             } else {
-                log.info("Could not find shoppinglist " + id);
+                log.info("Could not find shopping list " + id);
             }
-            rs.close();
-            ps.close();
             return sl;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -70,7 +73,7 @@ public class ShoppingListDao {
             ArrayList<ShoppingList> shoppinglistList = null;
 
             while(rs.next()) {
-                log.info("Found shoppinglist(s) " + name);
+                log.info("Found shopping list(s) " + name);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -79,12 +82,11 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -112,7 +114,7 @@ public class ShoppingListDao {
             ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
 
             while(rs.next()) {
-                log.info("Found shoppinglist(s) for user " + u.getEmail());
+                log.info("Found shopping list(s) for user " + u.getEmail());
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
@@ -121,12 +123,11 @@ public class ShoppingListDao {
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -139,40 +140,37 @@ public class ShoppingListDao {
         connection = Db.instance().getConnection();
         try {
 
-            if(!groupCheck(groupId)){ //checks if the party-object exists
-                log.info("Could not find party " + groupId);
-//              TODO should this return null
-                return null;
-            }
+//            if(!groupCheck(groupId)){ //checks if the party-object exists
+//                log.info("Could not find party " + groupId);
+////              TODO should this return null
+//                return null;
+//            }
 
             ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE party_id = ?");
             ps.setInt(1,groupId);
             rs = ps.executeQuery();
 
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
+	        log.info("Result set found successfully in ShoppingList. ");
 
-            ShoppingList sl = new ShoppingList();
-            ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
-
-            while(rs.next()) {
-                log.info("Found ShoppingList in group " + groupId);
+	        int i =0;
+	        ShoppingList sl = new ShoppingList();
+	        ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+	        while(rs.next()) {
+                log.info("Found ShoppingList in group " + groupId + " while index: " + i);
                 sl = new ShoppingList();
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
+                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId(), connection));
                 sl.setUserList(getUserList(sl.getId()));
                 shoppinglistList.add(sl);
+                i++;
             }
-
-            rs.close();
-            ps.close();
             return shoppinglistList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -206,13 +204,14 @@ public class ShoppingListDao {
             ps.setString(2, shoppingList.getUserList().get(0).getEmail());
             int createDependancyResult = ps.executeUpdate();
             log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
-            ps.close();
 
-//            TODO clean up
+
+//          TODO clean up
             return createShoppingListResult == 1 && createDependancyResult == 1;
 
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -224,7 +223,7 @@ public class ShoppingListDao {
         return GroupDao.getGroup(i) != null;
     }
 
-	/** Method that updates a shopping list.
+	/** Method that updates the name and/or party_id of a shopping list. NOT the item/user-array.
 	 * @param shoppingList The shopping list you are updating to.
 	 * @throws SQLException when failing to update shopping list.
 	 */
@@ -236,11 +235,11 @@ public class ShoppingListDao {
             ps.setInt(2, shoppingList.getGroupId());
             ps.setInt(3, shoppingList.getId());
             int result = ps.executeUpdate();
-            ps.close();
-            log.info("Update shoppinglist " + (result == 1?"ok":"failed"));
+            log.info("Update shopping list " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -248,26 +247,29 @@ public class ShoppingListDao {
 	 * @param id The ID of the shopping list you are trying to delete.
 	 * @throws SQLException when failing to delete shopping list.
 	 */
-//    TODO: delete the items in the list, not just the list itself
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
 
         try {
+//          deletes user_shoppinglist dependency
             ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
             ps.setInt(1,id);
             int deleteDependancyResult = ps.executeUpdate();
             ps.close();
+
+//          deletes shopping list
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
-            ps.close();
 
 //            TODO clean up
             log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
             return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
 
         } finally {
-            connection.close();
+
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -279,35 +281,87 @@ public class ShoppingListDao {
     private static ArrayList<User> getUserList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT u.email, u.name, u.phone, u.password, u.salt " +
-                    "FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
-                    "WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
-            ps.setInt(1,id);
-            rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
-
-            User user = new User();
-            ArrayList<User> userList = new ArrayList<User>();
-
-            while(rs.next()) {
-                log.info("Found user(s) in shoppinglist " + id);
-                user = new User();
-                user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
-                user.setPhone(rs.getString("phone"));
-                user.setName(rs.getString("name"));
-                userList.add(user);
-            }
-//        TODO clean this up
-//            rs.close();
-//            ps.close();
-            return userList;
+            return getUserList(id, connection);
         } finally {
-//            connection.close();
+            Db.close(connection);
         }
     }
+	private static ArrayList<User> getUserList(int id, Connection connection)throws SQLException {
+		return getUserListMethod(id, connection);
+	}
+
+	private static ArrayList<User> getUserListMethod(int id, Connection connection) throws SQLException {
+		try {
+			ps = connection.prepareStatement("SELECT u.email, u.name, u.phone, u.password, u.salt " +
+					"FROM user u, shoppinglist sl, shoppinglist_user slu \n" +
+					"WHERE u.email=slu.user_email AND slu.shoppinglist_id=sl.id AND sl.id=?");
+			ps.setInt(1,id);
+			userRs = ps.executeQuery();
+
+			log.info("Result set found successfully in User. ");
+
+			int i = 0;
+			User user = new User();
+			ArrayList<User> userList = new ArrayList<User>();
+			while(rs.next()) {
+				log.info("Found user(s) in shoppinglist " + id + " while index: " + i);
+				user = new User();
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password"));
+				user.setPhone(rs.getString("phone"));
+				user.setName(rs.getString("name"));
+				userList.add(user);
+				i++;
+			}
+			return userList;
+		} finally {
+			Db.close(userRs);
+			Db.close(ps);
+		}
+	}
+
+	/** adds a user to a shoppingList
+	 * @param email the id of the user you want to add
+	 * @param shoppingListId the id of the shoppingList you want to add the user to
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
+//  TODO teste
+    public static boolean addUserToShoppingList(String email, int shoppingListId) throws SQLException {
+	    try {
+		    ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
+                    "VALUES (?, ?)");
+		    ps.setInt(1, shoppingListId);
+		    ps.setString(2, email);
+		    int result = ps.executeUpdate();
+		    log.info("Added user to shopping list " + (result == 1 ? "ok":"failed"));
+		    return result == 1;
+	    } finally {
+
+            Db.close(ps);
+            Db.close(connection);
+	    }
+    }
+
+	/** remove a user from a givenshoppinglist
+	 * @param email the user id you want to remove from the shopping list
+	 * @param shoppingListId the id of the shopping list you want to remove the user from
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
+//  TODO teste
+	public static boolean removeUserFromShoppingList(String email, int shoppingListId) throws SQLException {
+		try {
+			ps = connection.prepareStatement("DELETE FROM shoppinglist_user " +
+                    "WHERE shoppinglist_id = ? AND user_email = ?");
+            ps.setInt(1, shoppingListId);
+            ps.setString(2, email);
+			int result = ps.executeUpdate();
+			log.info("Removing user from shopping list " + (result == 1 ? "ok":"failed"));
+			return result == 1;
+		} finally {
+            Db.close(ps);
+            Db.close(connection);
+		}
+	}
 }
