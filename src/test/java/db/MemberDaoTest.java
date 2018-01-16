@@ -22,7 +22,6 @@ public class MemberDaoTest {
     private static final Logger log = Logger.getLogger();
     private static Connection connection;
     private static PreparedStatement ps;
-    private static ResultSet rs;
 
 
     private static MemberDao md;
@@ -50,6 +49,9 @@ public class MemberDaoTest {
             ps = connection.prepareStatement("INSERT INTO party(id,name) VALUES(1001,'testgroup');");
             int result = ps.executeUpdate();
             log.info("Added group " + (result == 1?"ok":"failed"));
+            ps = connection.prepareStatement("INSERT INTO party(id,name) VALUES(1002,'Kollektivet');");
+            result = ps.executeUpdate();
+            log.info("Added group " + (result == 1?"ok":"failed"));
             ps = connection.prepareStatement("INSERT INTO user(name, email, password, salt, phone) VALUES( 'Testesen', 'en@test1.no', 'pw','123',123456);");
             result = ps.executeUpdate();
             log.info("Added user " + (result == 1?"ok":"failed"));
@@ -71,12 +73,18 @@ public class MemberDaoTest {
             ps = connection.prepareStatement("INSERT INTO user_party(user_email,party_id,balance,status) VALUES( 'tre@test1.no', 1001,0,2);");
             result = ps.executeUpdate();
             log.info("Added member " + (result == 1?"ok":"failed"));
+            ps = connection.prepareStatement("INSERT INTO user_party(user_email,party_id,balance,status) VALUES( 'tre@test1.no', 1002,0,2);");
+            result = ps.executeUpdate();
+            log.info("Added member " + (result == 1?"ok":"failed"));
             ps = connection.prepareStatement("INSERT INTO user_party(user_email,party_id,balance,status) VALUES( 'fire@test1.no', 1001,0,3);");
             result = ps.executeUpdate();
-            ps.close();
+            log.info("Added member " + (result == 1?"ok":"failed"));
+            ps = connection.prepareStatement("INSERT INTO user_party(user_email,party_id,balance,status) VALUES( 'en@test1.no', 1002,0,0);");
+            result = ps.executeUpdate();
             log.info("Added member " + (result == 1?"ok":"failed"));
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
 
         Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.PENDING_STATUS);
         Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
@@ -89,14 +97,86 @@ public class MemberDaoTest {
         groupmembers.add(mem4);
         }
     }
-    //TODO finn feilen...
+
+
     @Test
     public void getMembersTest() throws SQLException {
         ArrayList<Member> members = getMembers(groupId1);
         String gMember1 = members.get(0).getEmail();
         String gMember2 = members.get(1).getEmail();
         log.info("Test run");
-        assertTrue(gMember1.equalsIgnoreCase(email3)&&gMember2.equalsIgnoreCase(email2)||gMember1.equalsIgnoreCase(email2)&&gMember2.equalsIgnoreCase(email3));
+        Boolean ok = false;
+        if(gMember1.equalsIgnoreCase(email3)&&gMember2.equalsIgnoreCase(email2)){
+            ok=true;
+        }else if(gMember1.equalsIgnoreCase(email2)&&gMember2.equalsIgnoreCase(email3)){
+            ok=true;
+        }
+
+        assertTrue(ok);
+    }
+
+    @Test
+    public void getGroupsByMember() throws SQLException{
+        ArrayList<Group> groups = MemberDao.getGroupsByMember(email3);
+        Boolean ok = false;
+        if(groups.get(0).getId()==groupId1&&groups.get(1).getId()==groupId2){
+            ok=true;
+        }else if(groups.get(1).getId()==groupId1&&groups.get(2).getId()==groupId2){
+            ok=true;
+        }
+        assertTrue(ok);
+    }
+
+    @Test
+    public void getGroupInvitesTest() throws SQLException{
+        ArrayList<Group> groups = MemberDao.getGroupInvites(email1);
+        assertTrue(groups.get(0).getId()==1001);
+    }
+
+    @Test
+    public void inviteUserTest() throws SQLException{
+        MemberDao.inviteUser(email4,groupId2);
+        ArrayList<Group> invites = MemberDao.getGroupInvites(email4);
+        assertTrue(invites.get(0).getId()==groupId2);
+    }
+
+    @Test
+    public void updateUserTest()throws SQLException{
+        Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        MemberDao.updateUser(mem1,groupId2);
+        ArrayList<Member> members = MemberDao.getMembers(groupId2);
+        Boolean ok = false;
+        for(Member memb : members){
+            if(memb.getEmail().equalsIgnoreCase(email1)){
+                ok=true;
+            }
+        }
+        assertTrue(ok);
+    }
+
+    @Test
+    public void deleteMemberTest() throws SQLException{
+        Boolean test = false;
+        Boolean test2 = false;
+        Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        MemberDao.inviteUser(email2,groupId2);
+        MemberDao.updateUser(mem2,groupId2);
+        ArrayList<Member> members = MemberDao.getMembers(groupId2);
+        for(Member memb : members){
+            if(memb.getEmail().equalsIgnoreCase(email2)){
+                test=true;
+                MemberDao.deleteMember(email2,groupId2);
+                break;
+            }
+        }
+        members = MemberDao.getMembers(groupId2);
+        for(Member memb : members){
+            if(memb.getEmail().equalsIgnoreCase(email2)){
+                test2=true;
+                break;
+            }
+        }
+        assertTrue(test&&(!test2));
     }
 
     @AfterClass
@@ -105,7 +185,10 @@ public class MemberDaoTest {
         try {
             ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id=1001;");
             int result = ps.executeUpdate();
-            log.info("Deleted member " + (result == 1 ? "ok" : "failed"));
+            log.info("Deleted members " + (result >= 1 ? "ok" : "failed"));
+            ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id=1002;");
+            result = ps.executeUpdate();
+            log.info("Deleted members " + (result >= 1 ? "ok" : "failed"));
             ps = connection.prepareStatement("DELETE FROM user WHERE email='en@test1.no';");
             result = ps.executeUpdate();
             log.info("Deleted user " + (result == 1 ? "ok" : "failed"));
@@ -120,10 +203,13 @@ public class MemberDaoTest {
             log.info("Deleted user " + (result == 1 ? "ok" : "failed"));
             ps = connection.prepareStatement("DELETE FROM party WHERE id=1001");
             result = ps.executeUpdate();
-            ps.close();
-            log.info("Deleted users " + (result == 1 ? "ok" : "failed"));
+            log.info("Deleted party " + (result == 1 ? "ok" : "failed"));
+            ps = connection.prepareStatement("DELETE FROM party WHERE id=1002");
+            result = ps.executeUpdate();
+            log.info("Deleted party " + (result == 1 ? "ok" : "failed"));
         } finally {
-            connection.close();
+            Db.close(ps);
+            Db.close(connection);
 
         }
     }
