@@ -210,7 +210,7 @@ public class ShoppingListDao {
             log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
             ps.close();
 
-//            TODO clean up
+//          TODO clean up
             return createShoppingListResult == 1 && createDependancyResult == 1;
 
         } finally {
@@ -314,6 +314,8 @@ public class ShoppingListDao {
 //            connection.close();
         }
     }
+
+//  TODO teste
     public static boolean addUserToShoppingList(String userId, int shoppingListId) throws SQLException {
 	    try {
 		    ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
@@ -330,6 +332,7 @@ public class ShoppingListDao {
 	    }
     }
 
+// TODO teste
 	public static boolean removeUserFromShoppingList(String userId, int shoppingListId) throws SQLException {
 		try {
 			ps = connection.prepareStatement("DELETE FROM shoppinglist_user " +

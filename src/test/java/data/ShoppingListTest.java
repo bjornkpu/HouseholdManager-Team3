@@ -21,14 +21,16 @@
 //    private static int slId;
 //    private static int groupId;
 //    private static User u;
+//    private static Group g;
 //    private static ShoppingList shoppingListTest;
 //    private static ArrayList<User> userList;
 //
 //    @BeforeClass
 //    public static void setUp() throws SQLException{
 //        slId = 45;
-//        groupId = 2;
+//        groupId = 73;
 //
+//        g = new Group(groupId, "shoppingListTest", "", "");
 //        u = new User("shoppinglistTest@user.no", "shoppinglistTestUser", "", "");
 //
 //        UserDao.addUser(u);

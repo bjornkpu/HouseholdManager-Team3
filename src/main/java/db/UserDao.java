@@ -134,11 +134,6 @@ public class UserDao {
 	    }
     }
 
-	//TODO: make this method
-    public static boolean addUserToShoppingList(User user) throws SQLException {
-    	return true; //to make it compile
-    }
-
     public static void startTest() throws SQLException {
         connection.setAutoCommit(false);
     }
