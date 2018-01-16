@@ -69,7 +69,7 @@ public class GroupService {
     /**
      * Adds a group to database.
      *
-     curl -H "Content-Type: application/json" -X POST -d '{"name":"BILL","description":null,"admin":null}' http://localhost:8080/scrum/rest/groups
+     curl -H "Content-Type: application/json" -X POST -d '{"name":"KOLLEK10V","description":null,"admin":"en@h.no"}' http://localhost:8080/scrum/rest/groups
      *
      * @param group The new group to be added.
      */

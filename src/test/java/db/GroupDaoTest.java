@@ -149,6 +149,7 @@ public class GroupDaoTest {
         Group newGroup = new Group();
         boolean ok = false;
         newGroup.setName(name2);
+        newGroup.setAdmin(newAdmin);
         newGroup.setId(s);
         try {
             ok = gr.updateGroup(newGroup);

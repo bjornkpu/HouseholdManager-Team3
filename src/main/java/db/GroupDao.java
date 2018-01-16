@@ -288,14 +288,27 @@ public class GroupDao {
      */
     public static boolean updateGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
+        int result = 0;
+        int upUser = 0;
         try {
-            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
-            ps.setString(1,group.getName());
-            ps.setInt(2,group.getId());
-            int result = ps.executeUpdate();
-            ps.close();
-            log.info("Update group, result: " + (result == 1? "ok":"failed"));
-            return result == 1;
+            if(group.getName() != null || !group.getName().equals("")) {
+                ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
+                ps.setString(1, group.getName());
+                ps.setInt(2, group.getId());
+                result = ps.executeUpdate();
+                ps.close();
+                log.info("Update group, result: " + (result == 1 ? "ok" : "failed"));
+            } else {result = 1;}
+            if(group.getAdmin() != null || !group.getAdmin().equals("")){
+                ps = connection.prepareStatement("UPDATE user_party set user_email=? WHERE party_id = ? AND status=?");
+                ps.setString(1,group.getAdmin());
+                ps.setInt(2,group.getId());
+                ps.setInt(3,UserStatus.ADMIN);
+                upUser = ps.executeUpdate();
+                ps.close();
+                log.info("Update user_party, result: " + (upUser == 1? "ok":"failed"));
+            } else {upUser = 1;}
+            return result == 1 && upUser == 1;
         } finally {
             connection.close();
         }
