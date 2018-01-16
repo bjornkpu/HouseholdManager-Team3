@@ -1,4 +1,5 @@
-package data;
+package db;
+import data.User;
 import db.UserDao;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.mock;
  *
  * @author enoseber
  */
-public class UserTest {
+public class UserDaoTest {
     private static User user;
     private static final String email="LoginTestEmailATemailDOTcom";
 

@@ -1,9 +1,9 @@
-package data;
+package db;
 
-import db.GroupDao;
-import db.PartyDao;
-import db.ShoppingListDao;
-import db.UserDao;
+import data.Group;
+import data.ShoppingList;
+import data.User;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNull;
  * -Description of the class-
  * @author enoseber
  */
-public class ShoppingListTest {
+public class ShoppingListDaoTest {
     private static int slId;
     private static int groupId;
     private static User u;
