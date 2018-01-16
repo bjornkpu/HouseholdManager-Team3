@@ -93,7 +93,7 @@ public class MemberDao {
     public static boolean updateUser(Member member, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where email=? AND party_id = ?");
+            ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where user_email=? AND party_id = ?");
             ps.setString(1,String.valueOf(member.getBalance()));
             ps.setString(2,String.valueOf(member.getStatus()));
             ps.setString(3,member.getEmail());
@@ -106,5 +106,17 @@ public class MemberDao {
             connection.close();
         }
     }
-
-}
+    public static boolean deleteMember(String email, int groupId) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("DELETE FROM user_party where user_email=? AND party_id = ?");
+            ps.setString(1,email);
+            ps.setString(2,String.valueOf(groupId));
+            int result = ps.executeUpdate();
+            ps.close();
+            log.info("Delete user " + (result == 1?"ok":"failed"));
+            return result == 1;
+        } finally {
+            connection.close();
+        }
+}}

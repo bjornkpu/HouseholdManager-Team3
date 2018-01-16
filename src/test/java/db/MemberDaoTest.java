@@ -2,6 +2,7 @@ package db;
 
 import data.Group;
 import data.Member;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -18,10 +19,10 @@ public class MemberDaoTest {
     private static String name1 = "Vennegjengen";
     private static String name2 = "Kollektivet";
     private static String adminnavn = "admin";
-    private static String member1 = "en@h.no";
-    private static String member2 = "to@h.no";
-    private static String member3 = "tre@h.no";
-    private static String member4 = "fire@h.no";
+    private static String email1 = "en@test2.no";
+    private static String email2 = "to@test2.no";
+    private static String email3 = "tre@test2.no";
+    private static String email4 = "fire@test2.no";
     private static int groupId1 = 1001;
     private static int groupId2 = 1002;
     private static ArrayList<Member> groupmembers = new ArrayList<>();
@@ -32,34 +33,35 @@ public class MemberDaoTest {
         Group group1 = new Group();
         group1.setId(groupId1);
         group1.setName(name1);
-        Member mem1 = new Member();
-        mem1.setEmail(member1);
-        Member mem2 = new Member();
-        mem1.setEmail(member2);
-        Member mem3 = new Member();
-        mem1.setEmail(member3);
-        Member mem4 = new Member();
-        mem1.setEmail(member4);
+
+        Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.PENDING_STATUS);
+        Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        Member mem3 = new Member(email3, "User1", "90706060", "123",0,Member.ADMIN_STATUS);
+        Member mem4 = new Member(email4, "User1", "90706060", "123",0,Member.BLOCKED_STATUS);
+
         groupmembers.add(mem1);
         groupmembers.add(mem2);
         groupmembers.add(mem3);
         groupmembers.add(mem4);
 
-
-
-
-
+        for(Member member :groupmembers) {
+            UserDao.addUser(member);
+            MemberDao.inviteUser(member.getEmail(),groupId1);
+            MemberDao.updateUser(member, groupId1);
+        }
 
 
     }
 
     @Test
-    public static void getMembersTest() throws SQLException {
+    public void getMembersTest() throws SQLException {
         ArrayList<Member> members = getMembers(groupId1);
-
-        //assertEquals();
+        String gMember1 = members.get(0).getEmail();
+        String gMember2 = members.get(0).getEmail();
+        assertTrue(gMember1.equalsIgnoreCase(email3)&&gMember2.equalsIgnoreCase(email2)||
+                gMember1.equalsIgnoreCase(email2)&&gMember2.equalsIgnoreCase(email3));
     }
-}
+
     /*
     public static ArrayList<Member> getMembers(int groupId) throws SQLException {
         String partyId = ""+groupId;
@@ -152,3 +154,12 @@ public class MemberDaoTest {
     }
 }
 */
+    @AfterClass
+    public static void tearDown() throws SQLException{
+        for (Member member : groupmembers){
+            MemberDao.deleteMember(member.getEmail(),groupId1);
+            UserDao.delUser(member.getEmail());
+
+        }
+    }
+}
