@@ -315,6 +315,12 @@ public class ShoppingListDao {
         }
     }
 
+	/** adds a user to a shoppingList
+	 * @param userId the id of the user you want to add
+	 * @param shoppingListId the id of the shoppingList you want to add the user to
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
 //  TODO teste
     public static boolean addUserToShoppingList(String userId, int shoppingListId) throws SQLException {
 	    try {
@@ -332,6 +338,12 @@ public class ShoppingListDao {
 	    }
     }
 
+	/** remove a user from a givenshoppinglist
+	 * @param userId the user id you want to remove from the shopping list
+	 * @param shoppingListId the id of the shopping list you want to remove the user from
+	 * @return true if the query succeeds
+	 * @throws SQLException if the query fails
+	 */
 // TODO teste
 	public static boolean removeUserFromShoppingList(String userId, int shoppingListId) throws SQLException {
 		try {

@@ -20,6 +20,11 @@ public class ItemDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** get an item bythe id
+     * @param id the id of the item
+     * @return the item
+     * @throws SQLException if the query fails
+     */
     public static Item getItem(Integer id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -48,6 +53,11 @@ public class ItemDao {
         }
     }
 
+    /** gets a list of items in the shopping list with the given id
+     * @param id of the shopping list
+     * @return an ArrayList of items in teh shopping list
+     * @throws SQLException if the query fails
+     */
     public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -81,6 +91,11 @@ public class ItemDao {
         }
     }
 
+    /** gets a list of items i a disbursement
+     * @param id the id of the disbursement
+     * @return an ArrayList of item in the disbursement
+     * @throws SQLException if the query fails
+     */
     public static ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -114,7 +129,12 @@ public class ItemDao {
         }
     }
 
-    public static Boolean addItem(Item item) throws SQLException {
+    /** adds an item to the database
+     * @param item the item you want to add
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
+    public static boolean addItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `dips_id`) " +
@@ -133,7 +153,12 @@ public class ItemDao {
         }
     }
 
-    public static Boolean updateItem(Item item) throws SQLException {
+    /** update an item in the database
+     * @param item the item you want to update
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
+    public static boolean updateItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, dips_id=? where id=?");
@@ -153,6 +178,11 @@ public class ItemDao {
         }
     }
 
+    /** deletes an item in the database
+     * @param itemId the id of the item you want to delete
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static boolean delItem(int itemId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
