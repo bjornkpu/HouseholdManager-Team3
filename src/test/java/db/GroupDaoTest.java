@@ -37,6 +37,7 @@ public class GroupDaoTest {
         String n = "fheu32hhjfhjfhjshdfjghhjrt";
         boolean ok = false;
         newGroup.setName(n);
+        newGroup.setAdmin(adminnavn);
         try {
             ok = addGroup(newGroup);
         } catch (SQLException e){
@@ -57,6 +58,7 @@ public class GroupDaoTest {
         String nam = "grejighruhu42hru4hho4grg";
         Group group = new Group();
         group.setName(nam);
+        group.setAdmin(adminnavn);
         try{
             addGroup(group);
         } catch (SQLException e){
@@ -108,6 +110,7 @@ public class GroupDaoTest {
         String newName = "Arjeijgoireogjroehglsq";
         Group g = new Group();
         g.setName(nam);
+        g.setAdmin(adminnavn);
         int s = 0;
         try{
             addGroup(g);
@@ -136,6 +139,7 @@ public class GroupDaoTest {
         int s = 0;
         Group g = new Group();
         g.setName(nam);
+        g.setAdmin(adminnavn);
         try{
             addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
@@ -174,6 +178,7 @@ public class GroupDaoTest {
         String nam = "KOfgeg32trigjij34";
         Group g = new Group();
         g.setName(nam);
+        g.setAdmin(adminnavn);
         int s = 0;
         try{
             addGroup(g);
@@ -199,6 +204,7 @@ public class GroupDaoTest {
         int s = 0;
         Group g = new Group();
         g.setName(nam);
+        g.setAdmin(adminnavn);
         try{
             addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();

@@ -112,7 +112,7 @@ public class GroupService {
      * Updates a group in the database.
      *
      * Change the "name" variable before testing the curl command.
-     *curl -v -H "Content-Type:application/json" -X PUT http://localhost:8080/scrum/rest/groups/2 -d'{"name":"BILL","description":null,"admin":null}'
+     curl -H "Content-Type: application/json" -X POST -d '{"name":"KOLLEK10V","description":null,"admin":"en@h.no"}' http://localhost:8080/scrum/rest/groups
      *
      * @param group The group to be updated.
      */
