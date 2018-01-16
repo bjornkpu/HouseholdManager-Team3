@@ -92,7 +92,7 @@ public class ItemTest {
 
     @AfterClass
     public static void tearDown() throws SQLException{
-        ItemDao.delItem(itemTest);
+        ItemDao.delItem(itemTest.getId());
         ShoppingListDao.delShoppingList(shoppingListTest.getId());
         UserDao.delUser(userId);
     }

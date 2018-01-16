@@ -47,7 +47,7 @@ public class ShoppingListTest {
 //        ShoppingList sl = new ShoppingList();
 //
 //        try {
-//            sl = ShoppingListDao.getShoppingList(slId, shoppingListTest.getUserList().get(0).getEmail());
+//            sl = ShoppingListDao.getShoppingList(slId);
 //        } catch(SQLException e){
 //            e.printStackTrace();
 //        }
@@ -95,13 +95,14 @@ public class ShoppingListTest {
 //        }
 //
 //        try {
-//            updateTest = ShoppingListDao.getShoppingList(slId, shoppingListTest.getUserList().get(0).getEmail());
+//            updateTest = ShoppingListDao.getShoppingList(slId);
 //        } catch (SQLException e) {
 //            e.printStackTrace();
 //        }
 //
 //        assertEquals(updateTest.getId(), updatedSl.getId());
 //        assertEquals(updateTest.getName(), updatedSl.getName());
+//
 //    }
 
     @AfterClass
