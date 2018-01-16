@@ -29,7 +29,6 @@ public class GroupDao {
      * @return Returns the group if found, else null.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static Group getGroup(int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -88,7 +87,6 @@ public class GroupDao {
      * @return Returns a List of groups if found. Null if empty.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static List<Group> getAllGroups() throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -147,7 +145,6 @@ public class GroupDao {
      * @return Returns true if adding a group was successful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static boolean addParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -169,7 +166,6 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static boolean deleteParty(int groupId) throws SQLException {
         connection = Db.instance().getConnection(); // heu
         try{
@@ -190,7 +186,6 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static boolean deleteParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try{
@@ -214,7 +209,6 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static boolean updateParty(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -238,7 +232,6 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-
     public static boolean updateName(int groupid,String newName) throws SQLException {
         connection = Db.instance().getConnection();
         try {
