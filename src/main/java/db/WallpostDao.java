@@ -32,7 +32,7 @@ public class WallpostDao {
             rs = ps.executeQuery();
             ArrayList<WallPost> resultat = new ArrayList<>();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
@@ -79,7 +79,7 @@ public class WallpostDao {
             ArrayList<WallPost> resultat = new ArrayList<>();
             rs = ps.executeQuery();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
