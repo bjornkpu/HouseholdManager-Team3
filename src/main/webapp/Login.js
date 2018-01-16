@@ -62,6 +62,7 @@ $(document).ready(function(){
                     success: function(data){
                         $("#div_reg").hide();
                         $("#div_for_login").show();
+                        alert("User is now Active")
                     }
                 });
             });

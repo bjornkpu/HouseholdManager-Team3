@@ -1,3 +1,4 @@
+/**
 package data;
 
 import db.ItemDao;
@@ -97,3 +98,4 @@ public class ItemTest {
         UserDao.delUser(userId);
     }
 }
+*/

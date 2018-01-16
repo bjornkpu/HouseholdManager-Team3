@@ -3,9 +3,7 @@ $(document).ready(function() {
     var disbursementList = [];
     var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
 
-    $('.dropdown-menu').click(function () {
 
-        });
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -22,11 +20,13 @@ $(document).ready(function() {
         var shoppinglist = document.getElementById('shoppinglist');
         var creatingShoppinglist =document.getElementById('creatingShoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+        var creatingDisbursement =document.getElementById('creatingDisbursement');
 
         listOfDisbursements.style.display ="none";
         shoppinglist.style.display="block";
         creatingShoppinglist.style.display="none";
         dropdownShoppinglist.style.display="block";
+        creatingDisbursement.style.display="none";
 
     })
 
@@ -50,6 +50,18 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
     })
 
+    $(document).on('click', 'button.removeItemButton', function () {
+        // AJAX Request
+        $.ajax({
+            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + itemId,
+            type: 'POST',
+            data: { id:id },
+            success: function(response){
+                alert("Item deleted from shoppinglist");
+                $(this).closest('tr').remove();
+            }
+    });
+    });
 
 
     //finds all disbursements
@@ -95,38 +107,43 @@ $(document).ready(function() {
         });
     }
 
-    //finds all shoppinglists
-    function findAllShoppinglist() {
-        console.log('findAll i liveOpsett');
-        $.ajax({
-            type: 'GET',
-            url: '/scrum/Group/'+grpid+'/Shoppinglist/',
-            dataType: "json",
-            success: renderShoppingListDropdownMenu(),
-
-        });
-    }
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);
         shoppingListArray = [];
-        $.each(list, function(index, Shoppinglist) {
+        //adding the names for all shoppinglist into the array shoppingListArray
+        $.each(list, function (index, Shoppinglist) {
             shoppingListArray.push({
                 "name": Shoppinglist.name,
             });
         });
+    }
+
+        //finds all shoppinglists
+        function getShoppingListByGroupId() {
+            var groupId=this.id;
+            $.ajax({
+                type: 'GET',
+                url: '/scrum/groups/'+1+'/ShoppingLists/',
+                dataType: "json",
+                success: renderShoppingListDropdownMenu(data)
+
+            });
+        }
 
 
-        console.log(shoppingListArray);
+        $('.dropdown-menu').click(function () {
+            var url='/scrum/groups/'+1+'/ShoppingLists/';
+            $.get(url, renderShoppingListDropdownMenu(data)
+        )});
+
+
         $.each(shoppingListArray, function (index, Shoppinglist) {
             $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
                 shoppingList.name + '</a></li>'
             );
-
             console.log("koden kom til bunnen av renderShoppinglist");
-
         });
-    }
 
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {
@@ -139,12 +156,10 @@ $(document).ready(function() {
                 "status": Item.status,
             });
         });
-
-
         console.log(shoppingListArray);
-        $.each(disbursementList, function (index, Shoppinglist) {
+        $.each(itemArray, function (index, Shoppinglist) {
             var scopeNr = 1; //itemNr
-            if(shoppingListArray.item.getName() == itemArray.name) { //denne må endres til å sammenligne
+
                 //iteme i shoppingarray og alle item
                 $('#tableShoppinglist').append(
                     '<tr>' +
@@ -155,27 +170,6 @@ $(document).ready(function() {
 
                 console.log("koden kom til bunnen av render info about each shoppinglist");
                 scopeNr++; //disbursementNr increment on each new list
-            }
-        });
-    }
+            });
+        }
 });
-
-
-/**
- METODENE VI TRENGER I SERVICE KLASSEN
-
- @GET
- @Produces({ MediaType.APPLICATION_JSON})
- public List<ShoppingList> findAllShoppinglist() {
-
-
-     return ShoppingList.findAllShoppinglist();
-    }
-
- @GET
- @Produces({ MediaType.APPLICATION_JSON})
- public List<Disbursement> findAllDisbursements() {
-        return ShoppingList.findAllDisbursements();
-    }
- */
-

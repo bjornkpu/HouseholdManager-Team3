@@ -8,7 +8,7 @@ $(document).ready(function(){
             type: 'DELETE',
             dataType: 'json',
             success: function(session){
-                // window.location.href="Login.html";
+                 window.location.href="Login.html";
             }
         });
     });

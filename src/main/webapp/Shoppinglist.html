@@ -88,6 +88,7 @@
                 <th>#</th>
                 <th>item</th>
                 <th>status</th>
+                <th></th>
 
             </tr>
             </thead>
@@ -96,19 +97,21 @@
                 <th scope="row">1</th>
                 <td>Dopapir</td>
                 <td>unassigned</td>
+                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
 
             </tr>
             <tr>
                 <th scope="row">2</th>
                 <td>søppelposer</td>
                 <td>assigned to Eirik</td>
+                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
 
             </tr>
             <tr>
                 <th scope="row">3</th>
                 <td>Zalo</td>
                 <td>Purchased by Eirik</td>
-
+                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
             </tr>
             </tbody>
         </table>
@@ -118,9 +121,6 @@
     <div class="row">
         <div class="col-sm">
             <button class = "button" id="addItem"> Add item</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="deleteItem"> Delete item</button>
         </div>
         <div class="col-sm">
             <button class = "button" id="createDisbursementButton" style="display: block;"> Create Disbursement</button>
@@ -162,8 +162,7 @@
     </tr>
     <tr>
         <td>Confirm</td>
-        <td > <button class="button" id ="confirmDisbursement"
-                      onclick="window.location.href='Shoppinglist.html'"> Confirm</button> </td>
+        <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td>
     </tr>
 </table>
 </div>
@@ -191,8 +190,7 @@
         </tr>
         <tr>
             <td>Confirm</td>
-            <td > <button class="button" id ="confirmShoppinglist"
-                          onclick="window.location.href='Shoppinglist.html'"> Confirm</button> </td>
+            <td > <button class="backToShoppinglist" id ="confirmShoppinglist"> Confirm</button> </td>
         </tr>
     </table>
 </div>
