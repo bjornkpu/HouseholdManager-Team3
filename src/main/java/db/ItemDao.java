@@ -20,12 +20,12 @@ public class ItemDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-    /** get an item bythe id
-     * @param id the id of the item
-     * @return the item
-     * @throws SQLException if the query fails
+    /** Method that gets an Item given an id.
+     * @param id The id of the item that is to be returned.
+     * @return An item with information relative to the id given.
+     * @throws SQLException when failing to get Item.
      */
-    public static Item getItem(Integer id) throws SQLException {
+    public static Item getItem(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM item WHERE id=?");
@@ -53,10 +53,10 @@ public class ItemDao {
         }
     }
 
-    /** gets a list of items in the shopping list with the given id
-     * @param id of the shopping list
-     * @return an ArrayList of items in teh shopping list
-     * @throws SQLException if the query fails
+    /** Method that gets any items connected to a given ShoppingList.
+     * @param id The id of the ShoppingList the items are connected to.
+     * @return An ArrayList of items connected to the given ShoppingList.
+     * @throws SQLException when failing to get Item.
      */
     public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
@@ -64,11 +64,6 @@ public class ItemDao {
             ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
             ps.setInt(1,id);
             rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
 
             Item item = new Item();
             ArrayList<Item> itemList = new ArrayList<Item>();
@@ -91,10 +86,10 @@ public class ItemDao {
         }
     }
 
-    /** gets a list of items i a disbursement
-     * @param id the id of the disbursement
-     * @return an ArrayList of item in the disbursement
-     * @throws SQLException if the query fails
+    /** Method that gets any items connected to a given Disbursement.
+     * @param id The id of the Disbursement the items are connected to.
+     * @return An ArrayList of items connected to the given Disbursement.
+     * @throws SQLException when failing to get Item.
      */
     public static ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
         connection = Db.instance().getConnection();
@@ -129,12 +124,11 @@ public class ItemDao {
         }
     }
 
-    /** adds an item to the database
-     * @param item the item you want to add
-     * @return true if the query succeeds
-     * @throws SQLException if the query fails
+    /** Method that adds an item to the database.
+     * @param item The item that is to be added to the database.
+     * @throws SQLException when failing to add Item.
      */
-    public static boolean addItem(Item item) throws SQLException {
+    public static Boolean addItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `dips_id`) " +
@@ -153,12 +147,11 @@ public class ItemDao {
         }
     }
 
-    /** update an item in the database
-     * @param item the item you want to update
-     * @return true if the query succeeds
-     * @throws SQLException if the query fails
+    /** Method that updates any and all information in an item given an id.
+     * @param item The item with an id of the item that is to be updated, as well as any information to be updated.
+     * @throws SQLException when failing to update Item.
      */
-    public static boolean updateItem(Item item) throws SQLException {
+    public static Boolean updateItem(Item item) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, dips_id=? where id=?");
@@ -178,16 +171,15 @@ public class ItemDao {
         }
     }
 
-    /** deletes an item in the database
-     * @param itemId the id of the item you want to delete
-     * @return true if the query succeeds
-     * @throws SQLException if the query fails
+    /** Method that deletes an item from the database.
+     * @param id The id of the item that is to be deleted.
+     * @throws SQLException when failing to delete Item.
      */
-    public static boolean delItem(int itemId) throws SQLException {
+    public static boolean delItem(int id) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM item where id=?");
-            ps.setInt(1, itemId);
+            ps.setInt(1, id);
             int result = ps.executeUpdate();
 
             ps.close();

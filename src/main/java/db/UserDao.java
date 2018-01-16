@@ -23,13 +23,12 @@ public class UserDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
-
-	/** gets the user by the user id i.e. email
-	 * @param email the id of the user you want to get
-	 * @return the user
-	 * @throws SQLException if the query fails
-	 */
-	public static User getUser(String email) throws SQLException {
+    /** Method that gets a user given an email.
+     * @param email The email of the user that is to be returned.
+     * @return A User with the information relative to the email entered.
+     * @throws SQLException when failing to get User.
+     */
+    public static User getUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
@@ -133,11 +132,6 @@ public class UserDao {
                     "IN( SELECT user_email FROM shoppinglist_user WHERE shoppinglist_user.shoppinglist_id = ?)");
 		    ps.setInt(1,shoppingListId);
 		    rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
 
 		    User user = new User();
 		    ArrayList<User> userList = new ArrayList<User>();
