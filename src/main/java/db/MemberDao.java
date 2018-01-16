@@ -10,6 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * Martin Wangen
+ */
 public class MemberDao {
     private static final Logger log = Logger.getLogger();
 

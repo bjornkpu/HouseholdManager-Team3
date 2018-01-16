@@ -18,6 +18,12 @@ import static org.junit.Assert.assertTrue;
 
 import static db.MemberDao.getMembers;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * Martin Wangen
+ */
 public class MemberDaoTest {
     private static final Logger log = Logger.getLogger();
     private static Connection connection;
