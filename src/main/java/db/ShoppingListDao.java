@@ -340,7 +340,7 @@ public class ShoppingListDao {
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
-// TODO teste
+//  TODO teste
 	public static boolean removeUserFromShoppingList(String userId, int shoppingListId) throws SQLException {
 		try {
 			ps = connection.prepareStatement("DELETE FROM shoppinglist_user " +

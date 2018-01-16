@@ -154,16 +154,6 @@ public class UserDao {
 	    }
     }
 
-	/** adds a user to a shopping list
-	 * @param user the user you want to add
-	 * @return true if the query succeeds
-	 * @throws SQLException if the query fails
-	 */
-	//TODO: make this method
-    public static boolean addUserToShoppingList(User user) throws SQLException {
-    	return true; //to make it compile
-    }
-
 	/** idk wft dis is. spør johan, han laga den her
 	 * @throws SQLException
 	 */
