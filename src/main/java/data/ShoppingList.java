@@ -100,4 +100,15 @@ public class ShoppingList {
     public void removeUser(int userId){
         userList.remove(userId);
     }
+
+    @Override
+    public String toString() {
+        return "ShoppingList{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", groupId=" + groupId +
+                ", itemList=" + itemList.toString() +
+                ", userList=" + userList.toString() +
+                '}';
+    }
 }

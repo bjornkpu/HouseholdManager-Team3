@@ -7,6 +7,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import util.Logger;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -70,24 +72,35 @@ public class ShoppingListDaoTest {
     }
 
     @Test
-    public void testGetShoppingListByGroupid(){
+    public void testGetShoppingListByGroupId(){
         ArrayList<ShoppingList> slList = new ArrayList<ShoppingList>();
-        ShoppingList testGetByGroup = new ShoppingList(slId+1, "getByGroupIdTest", groupId, null, userList);
+        ShoppingList testGetByGroup = new ShoppingList(46, "getByGroupIdTest", groupId, null, userList);
 
+//        adds new shoppinglist to database
         try {
             ShoppingListDao.addShoppingList(testGetByGroup);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+//      gets both shoppinglists from database connected to groupId
         try {
             slList = ShoppingListDao.getShoppingListByGroupid(groupId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+//      deletes extra added shoppinglist from database
+        try {
+            ShoppingListDao.delShoppingList(testGetByGroup.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         assertNotNull(slList);
+
         assertEquals(shoppingListTest.getId(), slList.get(0).getId());
+
         assertEquals(testGetByGroup.getId(), slList.get(1).getId());
     }
 

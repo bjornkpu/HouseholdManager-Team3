@@ -56,4 +56,15 @@ public class Item {
     public int getDisbursementId() { return disbursementId; }
 
     public void setDisbursementId(int disbursementId) { this.disbursementId = disbursementId; }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", shoppingListId=" + shoppingListId +
+                ", disbursementId=" + disbursementId +
+                '}';
+    }
 }
