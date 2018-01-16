@@ -6,6 +6,7 @@ import java.util.Date;
  * @author
  */
 public class WallPost {
+    private int id;
     private Date datePosted; //id
     private String message;
     private String postedBy;
@@ -16,7 +17,15 @@ public class WallPost {
     public WallPost() {
     }
 
-    public WallPost(Date datePosted, String message, String postedBy, int postedTo) {
+    public WallPost(int id, Date datePosted, String message, String postedBy, int postedTo) {
+        this.id =id;
+        this.datePosted = datePosted;
+        this.message = message;
+        this.postedBy = postedBy;
+        this.postedTo = postedTo;
+    }
+
+    public WallPost( Date datePosted, String message, String postedBy, int postedTo) {
         this.datePosted = datePosted;
         this.message = message;
         this.postedBy = postedBy;
@@ -53,5 +62,9 @@ public class WallPost {
 
     public void setPostedTo(int postedTo) {
         this.postedTo = postedTo;
+    }
+
+    public int getId(){
+        return id;
     }
 }
