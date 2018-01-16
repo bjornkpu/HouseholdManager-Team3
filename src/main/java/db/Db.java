@@ -15,7 +15,9 @@ public class Db {
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
 
-	/** constructor that sets up the connection pool.
+
+	/**
+	 * constructor that sets up the connection pool.
 	 * logs an exception error if it fails to initialize the connection pool to the database.
 	 */
     private Db() {
@@ -41,6 +43,7 @@ public class Db {
 
 	/** Method to instance the datasource. If a connection is already established it will return the connection.
 	 * This will prevent need to establish a new connection every time you need to make a query.
+	 * @return an instance of the datasource
 	 */
     public static Db instance() {
         if (datasource == null) {
@@ -53,6 +56,7 @@ public class Db {
 
 	/** Method to get a connection from the connection pool.
 	 * @return a connection ready for use.
+	 * @throws SQLException
 	 */
     public Connection getConnection() throws SQLException {
         return this.cpds.getConnection();

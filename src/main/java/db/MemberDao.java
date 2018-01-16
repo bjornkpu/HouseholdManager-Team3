@@ -21,10 +21,10 @@ public class MemberDao {
         String partyId = ""+groupId;
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM user NATURAL JOIN user_party WHERE party_id=? AND (status=? OR status=?");
+            ps = connection.prepareStatement("SELECT * FROM user NATURAL JOIN user_party WHERE party_id=? AND (status=? OR status=?);");
             ps.setString(1,partyId);
             ps.setString(2,String.valueOf(Member.ACCEPTED_STATUS));
-            ps.setString(2,String.valueOf(Member.ADMIN_STATUS));
+            ps.setString(3,String.valueOf(Member.ADMIN_STATUS));
             rs = ps.executeQuery();
 
             ArrayList<Member> members = new ArrayList<>();
@@ -114,9 +114,11 @@ public class MemberDao {
             ps.setString(2,String.valueOf(groupId));
             int result = ps.executeUpdate();
             ps.close();
-            log.info("Delete user " + (result == 1?"ok":"failed"));
+            log.info("Delete member " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
             connection.close();
         }
-}}
+    }
+
+}
