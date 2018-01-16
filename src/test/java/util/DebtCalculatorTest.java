@@ -7,6 +7,12 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * Martin Wangen
+ */
 public class DebtCalculatorTest {
 
     @Test

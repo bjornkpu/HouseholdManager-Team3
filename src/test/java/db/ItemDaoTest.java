@@ -1,8 +1,6 @@
 package db;
 
-import data.Item;
-import data.ShoppingList;
-import data.User;
+import data.*;
 import db.ItemDao;
 import db.ShoppingListDao;
 import db.UserDao;
@@ -21,31 +19,38 @@ public class ItemDaoTest {
     private static ShoppingList shoppingListTest;
     private static int itemId;
     private static int shoppingListId;
-    private static int dipsId;
+    private static int disbursementId;
     private static String userId;
 
     @BeforeClass
     public static void setUp()throws SQLException{
         itemId = 67;
         shoppingListId = 67;
-        dipsId = 67;
+        disbursementId = 67;
         userId = "itemTestUser@test.no";
+        itemTest = new Item();
+        itemTest.setId(itemId);
+        itemTest.setName("TestItem");
+        itemTest.setStatus(0);
 
+        ArrayList<User> userList = new ArrayList<>();
         User u = new User(userId, "itemTestUser", "", "");
-
-        ArrayList<User> userList = new ArrayList<User>();
         userList.add(u);
-
-        shoppingListTest = new ShoppingList(shoppingListId, "ItemTest", 2, null, userList);
-        itemTest = new Item(itemId, "TestItem", 0, shoppingListId, 1);
-
+        Group g = new Group();
+        g.setName("testgroup");
+        g.setAdmin(userId);
         UserDao.addUser(u);
+        GroupDao.addGroup(g);
+
+        shoppingListTest = new ShoppingList(shoppingListId, "ItemTest", 1, null, userList);
+
+
         ShoppingListDao.addShoppingList(shoppingListTest);
         ItemDao.addItem(itemTest);
     }
 
     @Test
-    public void testGetItem(){
+    public void testGetItem() throws SQLException {
         Item i = new Item();
 
         try {
@@ -60,10 +65,10 @@ public class ItemDaoTest {
     @Test
     public void testUpdateItem(){
         Item i = new Item();
-        Item newItemTest = new Item(itemId, "AnnetNavn", 1, shoppingListId, 1);
+        itemTest.setShoppingListId(shoppingListId);
 
         try {
-            ItemDao.updateItem(newItemTest);
+            ItemDao.updateItem(itemTest);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,9 +79,9 @@ public class ItemDaoTest {
             e.printStackTrace();
         }
 
-        assertEquals(newItemTest.getId(), i.getId());
-        assertEquals(newItemTest.getName(), i.getName());
-        assertEquals(newItemTest.getStatus(), i.getStatus());
+        assertEquals(itemTest.getId(), i.getId());
+        assertEquals(itemTest.getShoppingListId(), i.getShoppingListId());
+        assertEquals(itemTest.getStatus(), i.getStatus());
     }
 
     @Test
@@ -95,8 +100,9 @@ public class ItemDaoTest {
 
     @AfterClass
     public static void tearDown() throws SQLException{
-        //ItemDao.delItem(itemTest);
+        ItemDao.delItem(itemTest.getId());
         ShoppingListDao.delShoppingList(shoppingListTest.getId());
+        MemberDao.deleteMember(userId,1);
         UserDao.delUser(userId);
     }
 }

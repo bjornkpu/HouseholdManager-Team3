@@ -28,19 +28,13 @@ public class MemberDaoTest {
     private static final Logger log = Logger.getLogger();
     private static Connection connection;
     private static PreparedStatement ps;
-
-
-    private static MemberDao md;
     private static String name1 = "Vennegjengen";
-    private static String name2 = "Kollektivet";
-    private static String adminnavn = "admin";
     private static String email1 = "en@test1.no";
     private static String email2 = "to@test1.no";
     private static String email3 = "tre@test1.no";
     private static String email4 = "fire@test1.no";
     private static int groupId1 = 1001;
     private static int groupId2 = 1002;
-    private static ArrayList<Member> groupmembers = new ArrayList<>();
 
 
     @BeforeClass
@@ -91,16 +85,6 @@ public class MemberDaoTest {
         } finally {
             Db.close(ps);
             Db.close(connection);
-
-        Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.PENDING_STATUS);
-        Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
-        Member mem3 = new Member(email3, "User1", "90706060", "123",0,Member.ADMIN_STATUS);
-        Member mem4 = new Member(email4, "User1", "90706060", "123",0,Member.BLOCKED_STATUS);
-
-        groupmembers.add(mem1);
-        groupmembers.add(mem2);
-        groupmembers.add(mem3);
-        groupmembers.add(mem4);
         }
     }
 

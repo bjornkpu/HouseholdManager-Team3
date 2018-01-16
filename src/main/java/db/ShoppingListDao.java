@@ -198,8 +198,7 @@ public class ShoppingListDao {
             ps.close();
 
             //creates new connection between created shoppinglist and creator (User)
-            ps = connection.prepareStatement("INSERT INTO " +
-                    "shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
+            ps = connection.prepareStatement("INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
             ps.setInt(1, shoppingList.getId());
             ps.setString(2, shoppingList.getUserList().get(0).getEmail());
             int createDependancyResult = ps.executeUpdate();
