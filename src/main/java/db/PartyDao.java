@@ -1,9 +1,11 @@
 package db;
 import data.User;
-
-import java.sql.*;
-
 import util.Logger;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  * -Description of the class-
  *
@@ -13,6 +15,11 @@ public class PartyDao {
 
     private static final Logger log = Logger.getLogger();
 
+    /** gets a user by the email
+     * @param email the id of the user you want to get
+     * @return the user by the given email
+     * @throws SQLException if teh query fails
+     */
     public static User getUser(String email) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
@@ -38,6 +45,11 @@ public class PartyDao {
         }
     }
 
+    /** adds a user to the database
+     * @param user the user you want to add
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static boolean addUser(User user) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {
@@ -55,6 +67,11 @@ public class PartyDao {
         }
     }
 
+    /** updates a user by the user id, this will find the user id and overwrite the other values
+     * @param user the user you want to update to
+     * @return true if the update is a success
+     * @throws SQLException if the query fails
+     */
     public static boolean updateUser(User user) throws SQLException {
         Connection connection = Db.instance().getConnection();
         try {

@@ -1,15 +1,14 @@
 package db;
 import data.Group;
-import data.User;
 import org.junit.*;
 
-import db.GroupDao;
 import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static db.GroupDao.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 /**
@@ -39,7 +38,7 @@ public class GroupDaoTest {
         boolean ok = false;
         newGroup.setName(n);
         try {
-            ok = gr.addParty(newGroup);
+            ok = addGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -47,7 +46,7 @@ public class GroupDaoTest {
 
         try {
             int s = gr.getGroupByName(n).get(0).getId();
-            gr.deleteParty(s);
+            gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class GroupDaoTest {
         Group group = new Group();
         group.setName(nam);
         try{
-            gr.addParty(group);
+            addGroup(group);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -73,7 +72,7 @@ public class GroupDaoTest {
         assertEquals(gr1.getName(),nam);
         try {
             int s = gr.getGroupByName(nam).get(0).getId();
-            gr.deleteParty(s);
+            gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -111,7 +110,7 @@ public class GroupDaoTest {
         g.setName(nam);
         int s = 0;
         try{
-            gr.addParty(g);
+            addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -124,7 +123,7 @@ public class GroupDaoTest {
         }
         assertTrue(ok);
         try {
-            gr.deleteParty(s);
+            gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -138,7 +137,7 @@ public class GroupDaoTest {
         Group g = new Group();
         g.setName(nam);
         try{
-            gr.addParty(g);
+            addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -148,13 +147,13 @@ public class GroupDaoTest {
         newGroup.setName(name2);
         newGroup.setId(s);
         try {
-            ok = gr.updateParty(newGroup);
+            ok = gr.updateGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
         }
         assertTrue(ok);
         try {
-            gr.deleteParty(s);
+            gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -177,7 +176,7 @@ public class GroupDaoTest {
         g.setName(nam);
         int s = 0;
         try{
-            gr.addParty(g);
+            addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -187,7 +186,7 @@ public class GroupDaoTest {
         group.setId(s);
         group.setName(nam);
         try{
-            ok = gr.deleteParty(group);
+            ok = gr.deleteGroup(group);
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -201,14 +200,14 @@ public class GroupDaoTest {
         Group g = new Group();
         g.setName(nam);
         try{
-            gr.addParty(g);
+            addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
         }
         boolean ok = false;
         try {
-            ok = gr.deleteParty(s);
+            ok = gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
         }

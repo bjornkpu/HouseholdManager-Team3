@@ -46,11 +46,11 @@ public class ShoppingListTest {
     public void testGetShoppingList(){
         ShoppingList sl = new ShoppingList();
 
-        try {
+        /*try {
             sl = ShoppingListDao.getShoppingList(slId);
         } catch(SQLException e){
             e.printStackTrace();
-        }
+        }*/
 
         assertEquals(shoppingListTest.getId(), sl.getId());
     }
@@ -94,11 +94,11 @@ public class ShoppingListTest {
             e.printStackTrace();
         }
 
-        try {
+        /*try {
             updateTest = ShoppingListDao.getShoppingList(slId);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         assertEquals(updateTest.getId(), updatedSl.getId());
         assertEquals(updateTest.getName(), updatedSl.getName());

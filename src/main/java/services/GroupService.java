@@ -79,7 +79,7 @@ public class GroupService {
     public void addGroup(Group group) {
         try {
             log.info("Group added. ID: " + group.getId());
-            groupDao.addParty(group);
+            groupDao.addGroup(group);
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -100,7 +100,7 @@ public class GroupService {
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteGroup(@PathParam("groupid") int groupId){
         try {
-            groupDao.deleteParty(groupId);
+            groupDao.deleteGroup(groupId);
         } catch (SQLException e){
             log.info("Deleting group failed. Check constraints in database");
             throw new ServerErrorException("Failed to delete group", Response.Status.INTERNAL_SERVER_ERROR,e);
@@ -123,7 +123,7 @@ public class GroupService {
     public void updateGroup(Group group){
         try {
             log.info("Updating group. ID: " + group.getId());
-            groupDao.updateParty(group);
+            groupDao.updateGroup(group);
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
             throw new ServerErrorException("Failed to update group",Response.Status.INTERNAL_SERVER_ERROR);
