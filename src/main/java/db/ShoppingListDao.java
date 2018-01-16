@@ -250,21 +250,15 @@ public class ShoppingListDao {
 	 * @param id The ID of the shopping list you are trying to delete.
 	 * @throws SQLException when failing to delete shopping list.
 	 */
-//    TODO: delete the items in the list, not just the list itself
     public static boolean delShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
 
         try {
-            ps = connection.prepareStatement("DELETE FROM item WHERE shoppinglist_id = ?");
-            ps.setInt(1, id);
-            int deleteItems = ps.executeUpdate();
-            ps.close();
-
 //          deletes user_shoppinglist dependency
-//            ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
-//            ps.setInt(1,id);
-//            int deleteDependancyResult = ps.executeUpdate();
-//            ps.close();
+            ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
+            ps.setInt(1,id);
+            int deleteDependancyResult = ps.executeUpdate();
+            ps.close();
 
 //          deletes shopping list
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
@@ -273,8 +267,8 @@ public class ShoppingListDao {
             ps.close();
 
 //            TODO clean up
-            log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteItems == 1?"ok":"failed"));
-            return deleteShoppingListResult == 1 && deleteItems == 1;
+            log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
+            return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
 
         } finally {
             connection.close();
@@ -320,11 +314,12 @@ public class ShoppingListDao {
 //            connection.close();
         }
     }
-    public static boolean addUserToShoppingList(int userId, int shoppingListId) throws SQLException {
+    public static boolean addUserToShoppingList(String userId, int shoppingListId) throws SQLException {
 	    try {
-		    ps = connection.prepareStatement("SELECT user_email FROM user_party JOIN shoppinglist " +
-				    "ON user_party.party_id = shoppinglist.party_id AND shoppinglist.id = ? AND user_email = ?");
-		    //TODO: write code
+		    ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
+                    "VALUES (?, ?)");
+		    ps.setInt(1, shoppingListId);
+		    ps.setString(2, userId);
 		    int result = ps.executeUpdate();
 		    ps.close();
 
@@ -335,11 +330,12 @@ public class ShoppingListDao {
 	    }
     }
 
-	public static boolean removeUserFromShoppingList(int userId, int shoppingListId) throws SQLException {
+	public static boolean removeUserFromShoppingList(String userId, int shoppingListId) throws SQLException {
 		try {
-			ps = connection.prepareStatement("SELECT user_email FROM user_party JOIN shoppinglist " +
-					"ON user_party.party_id = shoppinglist.party_id AND shoppinglist.id = ? AND user_email = ?");
-			//TODO: write code
+			ps = connection.prepareStatement("DELETE FROM shoppinglist_user " +
+                    "WHERE shoppinglist_id = ? AND user_email = ?");
+            ps.setInt(1, shoppingListId);
+            ps.setString(2, userId);
 			int result = ps.executeUpdate();
 			ps.close();
 
