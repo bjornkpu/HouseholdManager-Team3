@@ -2,6 +2,8 @@ package data;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 /**
  * Class for the Group-object
  *
@@ -12,6 +14,8 @@ public class Group implements Serializable {
     private String name;
     private String description;
     private String admin;
+    private List<Member> members;
+
 
     public Group(){
     }
@@ -55,4 +59,11 @@ public class Group implements Serializable {
         this.admin = admin;
     }
 
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 }
