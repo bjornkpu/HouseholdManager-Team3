@@ -89,7 +89,7 @@ public class MemberDaoTest {
         groupmembers.add(mem4);
         }
     }
-
+    //TODO finn feilen...
     @Test
     public void getMembersTest() throws SQLException {
         ArrayList<Member> members = getMembers(groupId1);

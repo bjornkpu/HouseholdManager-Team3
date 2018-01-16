@@ -38,13 +38,38 @@ public class MemberDao {
                 member.setBalance(Integer.parseInt(rs.getString("balance")));
                 members.add(member);
             }
-            rs.close();
-            ps.close();
+
             return members;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
+    public static ArrayList<Group> getGroupsByMember(String email) throws SQLException {
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT party.id,party.name FROM party NATURAL JOIN user_party WHERE user_email=? AND (status=? OR status=?);");
+            ps.setString(1, email);
+            ps.setString(2, String.valueOf(Member.ACCEPTED_STATUS));
+            ps.setString(3, String.valueOf(Member.ADMIN_STATUS));
+            rs = ps.executeQuery();
+
+            ArrayList<Group> groups = new ArrayList<>();
+            Group group = null;
+            while (rs.next()) {
+                group = new Group();
+                group.setId(Integer.parseInt(rs.getString("id")));
+                group.setName(rs.getString("password"));
+            }
+            return groups;
+        } finally {
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
+
 
     public static ArrayList<Group> getGroupInvites(String email) throws SQLException{
         connection = Db.instance().getConnection();
@@ -62,11 +87,11 @@ public class MemberDao {
                 group.setName(rs.getString("name"));
                 invites.add(group);
             }
-            rs.close();
-            ps.close();
             return invites;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -80,13 +105,14 @@ public class MemberDao {
             ps.setString(3, "0");
             ps.setString(4, String.valueOf(Member.PENDING_STATUS));
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Invite user " + (result == 1 ? "ok" : "failed"));
             return result == 1;
         }catch (SQLException e){
             return false;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -99,11 +125,12 @@ public class MemberDao {
             ps.setString(3,member.getEmail());
             ps.setString(4,String.valueOf(groupId));
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update member " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);;
         }
     }
     public static boolean deleteMember(String email, int groupId) throws SQLException {
@@ -113,11 +140,12 @@ public class MemberDao {
             ps.setString(1,email);
             ps.setString(2,String.valueOf(groupId));
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Delete member " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 

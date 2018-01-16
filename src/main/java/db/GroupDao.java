@@ -69,11 +69,11 @@ public class GroupDao {
             } else {
                 log.info("Could not find group " + groupId);
             }
-            rs.close();
-            ps.close();
             return group;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -98,11 +98,11 @@ public class GroupDao {
                 group.setName(name);
                 g.add(group);
             }
-            rs.close();
-            ps.close();
             return g.size() == 0 ? null : g;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -141,12 +141,12 @@ public class GroupDao {
                 g.setMembers(members);
                 groups.add(g);
             }
-            rs.close();
-            ps.close();
             log.info("Found " + groups.size() + " groups from database");
             return groups.size() == 0 ? null : groups;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -170,12 +170,12 @@ public class GroupDao {
                     group.setName(rs.getString("name"));
                     groups.add(group);
                 }
-                rs.close();
-                ps.close();
                 log.info("Retrieving " + amountOfGroups + " groups from database. Amount retrieved: " + groups.size());
                 return groups.size() == 0 ? null:groups;
             } finally {
-                connection.close();
+                Db.close(rs);
+                Db.close(ps);
+                Db.close(connection);
             }
         }
         return null;
@@ -212,12 +212,12 @@ public class GroupDao {
             ps.setDouble(3,0);
             ps.setInt(4,UserStatus.ADMIN);
             result = ps.executeUpdate();
-
-            ps.close();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
 
     }
@@ -240,11 +240,12 @@ public class GroupDao {
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,groupId);
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Delete group, result: " + (result == 1 ? "ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -268,12 +269,13 @@ public class GroupDao {
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,group.getId());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Delete group, result: " + (result == 1 ? "ok":"failed"));
 
             return result == 1 && dependencyResult == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -293,11 +295,12 @@ public class GroupDao {
             ps.setString(1,group.getName());
             ps.setInt(2,group.getId());
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update group, result: " + (result == 1? "ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -316,11 +319,12 @@ public class GroupDao {
             ps.setString(1,newName);
             ps.setInt(2,groupid);
             int result = ps.executeUpdate();
-            ps.close();
             log.info("Update group, result: " + (result == 1? "ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 }

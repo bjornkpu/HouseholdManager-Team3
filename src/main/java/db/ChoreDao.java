@@ -34,12 +34,12 @@ public class ChoreDao {
             while(rs.next()){
                 result.add(rs.getString("user_id"));
             }
-            rs.close();
-            ps.close();
             return result;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -75,12 +75,12 @@ public class ChoreDao {
             else{
                 log.info("Could not find Todo");
             }
-            rs.close();
-            ps.close();
             return chore;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -100,11 +100,12 @@ public class ChoreDao {
             ps.setInt(4, partyId);
             ps.setString(5, chore.getAssignedTo());
             int result = ps.executeUpdate();
-            ps.close();
             return result == 1;
         }
         finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -121,11 +122,12 @@ public class ChoreDao {
             ps.setString(1,email);
             ps.setInt(2,id);
             int result = ps.executeUpdate();
-            ps.close();
             return result==1;
         }
         finally{
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 

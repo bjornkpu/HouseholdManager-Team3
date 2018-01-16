@@ -44,12 +44,11 @@ public class ItemDao {
             } else {
                 log.info("could not find item " + id);
             }
-
-            rs.close();
-            ps.close();
             return item;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -76,13 +75,11 @@ public class ItemDao {
                 item.setShoppingListId(rs.getInt("shoppinglist_id"));
                 item.setDispId(rs.getInt("dips_id"));
                 itemList.add(item);
-            }
-
-            rs.close();
-            ps.close();
-            return itemList;
+            }return itemList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -115,12 +112,11 @@ public class ItemDao {
                 item.setDispId(rs.getInt("dips_id"));
                 itemList.add(item);
             }
-
-            rs.close();
-            ps.close();
             return itemList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -138,12 +134,12 @@ public class ItemDao {
             ps.setInt(3,item.getShoppingListId());
             ps.setInt(4,item.getDispId());
             int result = ps.executeUpdate();
-
-            ps.close();
             log.info("Add item " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -162,12 +158,12 @@ public class ItemDao {
             ps.setInt(5,item.getStatus());
             ps.setInt(6,item.getId());
             int result = ps.executeUpdate();
-
-            ps.close();
             log.info("Update item " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
@@ -181,12 +177,12 @@ public class ItemDao {
             ps = connection.prepareStatement("DELETE FROM item where id=?");
             ps.setInt(1, id);
             int result = ps.executeUpdate();
-
-            ps.close();
             log.info("Delete item " + (result == 1?"ok":"failed"));
             return result == 1;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 }
