@@ -44,7 +44,7 @@ public class MemberDaoTest {
         groupmembers.add(mem2);
         groupmembers.add(mem3);
         groupmembers.add(mem4);
-        group1.
+
 
 
 
@@ -57,7 +57,7 @@ public class MemberDaoTest {
     public static void getMembersTest() throws SQLException {
         ArrayList<Member> members = getMembers(groupId1);
 
-        assertEquals();
+        //assertEquals();
     }
 }
     /*
