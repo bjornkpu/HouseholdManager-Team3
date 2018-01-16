@@ -41,6 +41,7 @@ public class ShoppingListService {
 	public ArrayList<ShoppingList> getShoppingListByGroupId(@PathParam("groupId") int groupId) {
 //		Session session = (Session)request.getSession();
 		try {
+			log.info("SIZE: " + shoppingListDao.getShoppingListByGroupid(groupId).size());
 			return shoppingListDao.getShoppingListByGroupid(groupId);
 		} catch(SQLException e) {
 			log.error("Failed to get shopping list array", e);

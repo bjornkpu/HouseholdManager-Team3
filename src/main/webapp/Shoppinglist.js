@@ -119,27 +119,30 @@ $(document).ready(function() {
 
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
-        // var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        // shoppingListArray = [];
-        //adding the names for all shoppinglist into the array shoppingListArray
-        // $.each(list, function (data) {
-        var obj = JSON.parse(data);
-        console.log(obj);
+        console.log("data:");
+        console.log(data);
+        console.log(data.length);
+
+        var i = 0;
+        var len = data.length;
+        for (; i < len; ) {
             $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-                obj.name + '</a></li>'
+                data[i].name + '</a></li>'
             );
-        // });
+            i++;
+        }
     }
 
     $('#menu1').click(function () {
         console.log("menu1 pressed")
+        $('#shoppinglistdropdown').empty();
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
-        $.getJSON(url, function(data, status){
+        $.get(url, function(data, status){
             renderShoppingListDropdownMenu(data)
-            if(status == "success"){
+            if(status === "success"){
                 console.log("External content loaded successfully!");
             }
-            if(status == "error"){
+            if(status === "error"){
                 console.log("Error in loading content");
             }
         });
