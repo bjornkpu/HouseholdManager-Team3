@@ -28,7 +28,7 @@ public class WallpostDao {
             rs = ps.executeQuery();
             ArrayList<WallPost> resultat = new ArrayList<>();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
@@ -58,13 +58,13 @@ public class WallpostDao {
     public static ArrayList<WallPost> getWallposts(String email, int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try{
-            ps = connection.prepareStatement("SELECT * WHERE party_id=? AND user_email=?");
+            ps = connection.prepareStatement("SELECT * FROM wallpost WHERE party_id=? AND user_email=?");
             ps.setInt(1,partyId);
             ps.setString(2,email);
             ArrayList<WallPost> resultat = new ArrayList<>();
             rs = ps.executeQuery();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
