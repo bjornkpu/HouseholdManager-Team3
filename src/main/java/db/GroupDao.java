@@ -303,19 +303,19 @@ public class GroupDao {
                 ps.setString(1, group.getName());
                 ps.setInt(2, group.getId());
                 result = ps.executeUpdate();
-                Db.close(ps);
+                //Db.close(ps);
                 log.info("Update group, result: " + (result == 1 ? "ok" : "failed"));
             } else {
                 result = 1;
                 log.info("New name not found. Updating group name unsuccessful");
             }
-            if(group.getAdmin() != null || !group.getAdmin().equals("") || userDao.getUser(group.getAdmin()) == null){
+            if(group.getAdmin() != null && !group.getAdmin().equals("") && userDao.getUser(group.getAdmin()) != null){
                 ps = connection.prepareStatement("UPDATE user_party set user_email=? WHERE party_id = ? AND status=?");
                 ps.setString(1,group.getAdmin());
                 ps.setInt(2,group.getId());
                 ps.setInt(3,UserStatus.ADMIN);
                 upUser = ps.executeUpdate();
-                Db.close(ps);
+                //Db.close(ps);
                 log.info("Update user_party, result: " + (upUser == 1? "ok":"failed"));
             } else {
                 upUser = 1;
