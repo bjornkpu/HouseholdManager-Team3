@@ -1,4 +1,4 @@
-package data;
+/*package data;
 
 import db.GroupDao;
 import db.PartyDao;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNull;
 /**
  * -Description of the class-
  * @author enoseber
- */
+
 public class ShoppingListTest {
     private static int slId;
     private static int groupId;
@@ -122,3 +122,4 @@ public class ShoppingListTest {
     }
 
 }
+*/
