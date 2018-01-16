@@ -1,6 +1,10 @@
 package db;
 
 import data.User;
+
+import java.sql.*;
+import java.util.ArrayList;
+
 import util.Logger;
 
 import java.sql.Connection;
@@ -151,19 +155,41 @@ public class UserDao {
 	    }
     }
 
-	/** idk wft dis is. spør johan, han laga den her
-	 * @throws SQLException
-	 */
-    public static void startTest() throws SQLException {
-        connection.setAutoCommit(false);
-    }
+    //TODO: doc and test
+    public static ArrayList<User> getUsersInDisbursement (int disbursementId) throws SQLException{
+        connection = Db.instance().getConnection();
+        try {
+            ps = connection.prepareStatement("SELECT *" +
+                    "FROM user " +
+                    "WHERE user.email " +
+                    "IN( SELECT user_email FROM user_disbursement ud WHERE ud.disp_id=?)");
+            ps.setInt(1,disbursementId);
+            rs = ps.executeQuery();
 
-	/** idk wft dis is. spør johan, han laga den her
-	 * @throws SQLException
-	 */
-    public static void endTest() throws SQLException{
-        connection.rollback();
-        connection.setAutoCommit(true);
+            User user = null;
+            ArrayList<User> userList= null;
+            if(rs.next()){
+                log.info("Found users in disbursement" + disbursementId);
+                userList = new ArrayList<User>();
+                do{
+                    user = new User();
+                    user.setEmail(rs.getString("email"));
+                    user.setName(rs.getString("name"));
+                    user.setPassword(rs.getString("password"));
+                    user.setPhone(rs.getString("phone"));
+                    user.setSalt(rs.getString("salt"));
+                    userList.add(user);
+                }while(rs.next());
+            }else{
+                log.info("Could not find any users in disbursement: "+disbursementId);
+            }
+
+            rs.close();
+            ps.close();
+            return userList;
+        } finally {
+            connection.close();
+        }
     }
 
 }

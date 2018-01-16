@@ -48,20 +48,20 @@ CREATE TABLE chore(
   id INTEGER NOT NULL AUTO_INCREMENT,
   name VARCHAR(90),
   regularity INTEGER (4),
-  deadline DATE,
+  deadline TIMESTAMP,
   party_id INTEGER NOT NULL,
   user_email VARCHAR(255),
   CONSTRAINT chore_pk PRIMARY KEY(id));
 
 CREATE TABLE chore_log(
-  user_email VARCHAR(80),
-  chore_id INTEGER(10),
+  user_email VARCHAR(80) NOT NULL,
+  chore_id INTEGER(10) NOT NULL,
   done TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT chore_log_pk PRIMARY KEY (user_email,chore_id)
 );
 
 CREATE TABLE item (
-  id INTEGER(10) AUTO_INCREMENT,
+  id INTEGER(10) NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL ,
   status INTEGER(1) NOT NULL,
   shoppinglist_id INTEGER(10),
@@ -90,7 +90,7 @@ CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
-  date DATE,
+  date TIMESTAMP NOT NULL,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   CONSTRAINT disbursement_pk PRIMARY KEY(id));

@@ -24,6 +24,7 @@ public class GroupDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
     private static UserStatus userStatus = new UserStatus();
+    private static UserDao userDao;
 
     /**
      * Retrieves a group object with groupname,groupId and the id of the administrator from database
@@ -189,8 +190,11 @@ public class GroupDao {
      */
     public static boolean addGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
+        userDao = new UserDao();
         if (group.getName() == null || group.getAdmin() == null){
             log.info("Name or admin missing. Group not added.");
+            return false;
+        } else if (userDao.getUser(group.getAdmin()) == null){
             return false;
         }
         try {
@@ -290,17 +294,38 @@ public class GroupDao {
      */
     public static boolean updateGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
+        int result = 0;
+        int upUser = 0;
+        userDao = new UserDao();
         try {
-            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
-            ps.setString(1,group.getName());
-            ps.setInt(2,group.getId());
-            int result = ps.executeUpdate();
-            log.info("Update group, result: " + (result == 1? "ok":"failed"));
-            return result == 1;
+            if(group.getName() != null || !group.getName().equals("")) {
+                ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
+                ps.setString(1, group.getName());
+                ps.setInt(2, group.getId());
+                result = ps.executeUpdate();
+                //Db.close(ps);
+                log.info("Update group, result: " + (result == 1 ? "ok" : "failed"));
+            } else {
+                result = 1;
+                log.info("New name not found. Updating group name unsuccessful");
+            }
+            if(group.getAdmin() != null && !group.getAdmin().equals("") && userDao.getUser(group.getAdmin()) != null){
+                ps = connection.prepareStatement("UPDATE user_party set user_email=? WHERE party_id = ? AND status=?");
+                ps.setString(1,group.getAdmin());
+                ps.setInt(2,group.getId());
+                ps.setInt(3,UserStatus.ADMIN);
+                upUser = ps.executeUpdate();
+                //Db.close(ps);
+                log.info("Update user_party, result: " + (upUser == 1? "ok":"failed"));
+            } else {
+                upUser = 1;
+                log.info("User not found " + group.getAdmin());
+                }
+            return result == 1 && upUser == 1;
         } finally {
-            Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+            Db.close(rs);
+            connection.close();
         }
     }
 

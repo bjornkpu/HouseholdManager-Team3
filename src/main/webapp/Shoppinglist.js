@@ -3,100 +3,77 @@ $(document).ready(function() {
     var disbursementList = [];
     var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
 
-    $('.dropdown-menu').click(function () {
 
-        var listDisbursements = document.getElementById('listOfDisbursements');
-        var addItemButton = document.getElementById('addItem');
-        var deleteItemButton = document.getElementById('deleteItem');
-        var configureListButton = document.getElementById('configureList');
-        var closeListButton = document.getElementById('closeList');
+
+    $('#goToDisbursements').click(function () {
+        var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
-        var backButton = document.getElementById('back');
-        var createDisbursement = document.getElementById('createDisbursement');
-        var createDisbursementButton = document.getElementById('createDisbursementButton');
-        var createShoppinglistButton = document.getElementById('createShoppinglistButton');
+        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
 
+        listOfDisbursements.style.display ="block";
+        shoppinglist.style.display="none";
+        dropdownShoppinglist.style.display="none";
+    })
 
-        listDisbursements.style.display ="none";
-        addItemButton.style.display = "block";
-        deleteItemButton.style.display = "block";
-        configureListButton.style.display = "block";
-        closeListButton.style.display = "block";
-        shoppinglist.style.display = "block";
-        backButton.style.display = "block";
-        createDisbursement.style.display ="none";
-        createDisbursementButton.style.display = "none";
-        createShoppinglistButton.style.display = "none";
-        });
+    $('.backToShoppinglist').click(function () {
+        var listOfDisbursements = document.getElementById('listOfDisbursements');
+        var shoppinglist = document.getElementById('shoppinglist');
+        var creatingShoppinglist =document.getElementById('creatingShoppinglist');
+        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+        var creatingDisbursement =document.getElementById('creatingDisbursement');
+
+        listOfDisbursements.style.display ="none";
+        shoppinglist.style.display="block";
+        creatingShoppinglist.style.display="none";
+        dropdownShoppinglist.style.display="block";
+        creatingDisbursement.style.display="none";
+
+    })
+
+    $('#createShoppinglistButton').click(function () {
+        var creatingShoppinglist =document.getElementById('creatingShoppinglist');
+        var shoppinglist = document.getElementById('shoppinglist');
+        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+
+        creatingShoppinglist.style.display="block";
+        shoppinglist.style.display="none";
+        dropdownShoppinglist.style.display="none";
+    })
 
     $('#createDisbursementButton').click(function () {
-
-
-        var listDisbursements = document.getElementById('listOfDisbursements');
-        var addItemButton = document.getElementById('addItem');
-        var deleteItemButton = document.getElementById('deleteItem');
-        var configureListButton = document.getElementById('configureList');
-        var closeListButton = document.getElementById('closeList');
+        var creatingDisbursement =document.getElementById('creatingDisbursement');
         var shoppinglist = document.getElementById('shoppinglist');
-        var shoppinglistButtons = document.getElementById('buttonsForShoppinglist');
-        var backButton = document.getElementById('back');
-        var createDisbursement = document.getElementById('createDisbursement');
-        var createDisbursementButton = document.getElementById('createDisbursementButton');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-        var headerDisbursement = document.getElementById('headerDisbursement');
-        var createShoppinglistButton = document.getElementById('createShoppinglistButton');
 
+        creatingDisbursement.style.display="block";
+        shoppinglist.style.display="none";
+        dropdownShoppinglist.style.display="none";
+    })
 
-        listDisbursements.style.display ="none";
-        addItemButton.style.display = "none";
-        deleteItemButton.style.display = "none";
-        configureListButton.style.display = "none";
-        closeListButton.style.display = "none";
-        shoppinglist.style.display = "none";
-        backButton.style.display = "none";
-        createDisbursement.style.display ="block";
-        createDisbursementButton.style.display = "none";
-        dropdownShoppinglist.style.display = "none";
-        headerDisbursement.style.display = "block";
-        createShoppinglistButton.style.display = "none";
-
+    $(document).on('click', 'button.removeItemButton', function () {
+        // AJAX Request
+        $.ajax({
+            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + itemId,
+            type: 'POST',
+            data: { id:id },
+            success: function(response){
+                alert("Item deleted from shoppinglist");
+                $(this).closest('tr').remove();
+            }
     });
-    $('#createShoppinglistButton').click(function () {
-
-
-        var listDisbursements = document.getElementById('listOfDisbursements');
-        var addItemButton = document.getElementById('addItem');
-        var deleteItemButton = document.getElementById('deleteItem');
-        var configureListButton = document.getElementById('configureList');
-        var closeListButton = document.getElementById('closeList');
-        var shoppinglist = document.getElementById('shoppinglist');
-        var shoppinglistButtons = document.getElementById('buttonsForShoppinglist');
-        var backButton = document.getElementById('back');
-        var createDisbursement = document.getElementById('createDisbursement');
-        var createDisbursementButton = document.getElementById('createDisbursementButton');
-        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-        var headerShoppinglist = document.getElementById('headerShoppinglist');
-        var headerDisbursement = document.getElementById('headerDisbursement');
-        var createShoppinglistButton = document.getElementById('createShoppinglistButton');
-
-
-        headerShoppinglist.style.display = "block";
-        listDisbursements.style.display ="none";
-        addItemButton.style.display = "none";
-        deleteItemButton.style.display = "none";
-        configureListButton.style.display = "none";
-        closeListButton.style.display = "none";
-        shoppinglist.style.display = "none";
-        backButton.style.display = "none";
-        createDisbursement.style.display ="block";
-        createDisbursementButton.style.display = "none";
-        dropdownShoppinglist.style.display = "none";
-        headerDisbursement.style.display = "none";
-        createShoppinglistButton.style.display = "none";
-
     });
 
+    //finds all shoppinglists
+    function getShoppingListByGroupId() {
+        var groupId=this.id;
+        $.ajax({
+            type: 'GET',
+            url: '/scrum/groups/'+1+'/ShoppingLists/',
+            dataType: "json",
+            success: renderShoppingListDropdownMenu(data)
 
+        });
+    }
     //finds all disbursements
     function findAllDisbursements() {
         console.log('findDisbursements');
@@ -140,38 +117,36 @@ $(document).ready(function() {
         });
     }
 
-    //finds all shoppinglists
-    function findAllShoppinglist() {
-        console.log('findAll i liveOpsett');
-        $.ajax({
-            type: 'GET',
-            url: '/scrum/Shoppinglist',
-            dataType: "json",
-            success: renderShoppingListDropdownMenu(),
-
-        });
-    }
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        shoppingListArray = [];
-        $.each(list, function(index, Shoppinglist) {
-            shoppingListArray.push({
-                "name": Shoppinglist.name,
-            });
-        });
+        console.log("data:");
+        console.log(data);
+        console.log(data.length);
 
-
-        console.log(shoppingListArray);
-        $.each(shoppingListArray, function (index, Shoppinglist) {
+        var i = 0;
+        var len = data.length;
+        for (; i < len; ) {
             $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-                shoppingList.name + '</a></li>'
+                data[i].name + '</a></li>'
             );
-
-            console.log("koden kom til bunnen av renderShoppinglist");
-
-        });
+            i++;
+        }
     }
+
+    $('#menu1').click(function () {
+        console.log("menu1 pressed")
+        $('#shoppinglistdropdown').empty();
+        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
+        $.get(url, function(data, status){
+            renderShoppingListDropdownMenu(data)
+            if(status === "success"){
+                console.log("External content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading content");
+            }
+        });
+    });
 
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {
@@ -184,12 +159,10 @@ $(document).ready(function() {
                 "status": Item.status,
             });
         });
-
-
         console.log(shoppingListArray);
-        $.each(disbursementList, function (index, Shoppinglist) {
+        $.each(itemArray, function (index, Shoppinglist) {
             var scopeNr = 1; //itemNr
-            if(shoppingListArray.item.getName() == itemArray.name) { //denne må endres til å sammenligne
+
                 //iteme i shoppingarray og alle item
                 $('#tableShoppinglist').append(
                     '<tr>' +
@@ -200,27 +173,6 @@ $(document).ready(function() {
 
                 console.log("koden kom til bunnen av render info about each shoppinglist");
                 scopeNr++; //disbursementNr increment on each new list
-            }
-        });
-    }
+            });
+        }
 });
-
-
-/**
- METODENE VI TRENGER I SERVICE KLASSEN
-
- @GET
- @Produces({ MediaType.APPLICATION_JSON})
- public List<ShoppingList> findAllShoppinglist() {
-
-
-     return ShoppingList.findAllShoppinglist();
-    }
-
- @GET
- @Produces({ MediaType.APPLICATION_JSON})
- public List<Disbursement> findAllDisbursements() {
-        return ShoppingList.findAllDisbursements();
-    }
- */
-
