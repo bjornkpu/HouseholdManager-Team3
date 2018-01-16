@@ -10,8 +10,7 @@ import java.util.ArrayList;
 /**
  * -Description of the class-
  *
- * @author
- * matseda
+ * @author matseda
  */
 
 public class WallpostDao {
@@ -20,6 +19,11 @@ public class WallpostDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** gets a list of wallposts in a group
+     * @param partyId the id of the group you want to get all wallposts from
+     * @return an ArrayList of WallPosts on the given group ID
+     * @throws SQLException if the query fails
+     */
     public static ArrayList<WallPost> getWallposts(int partyId) throws SQLException{
         connection=Db.instance().getConnection();
         try{
@@ -28,7 +32,7 @@ public class WallpostDao {
             rs = ps.executeQuery();
             ArrayList<WallPost> resultat = new ArrayList<>();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
@@ -39,6 +43,11 @@ public class WallpostDao {
         }
     }
 
+    /** adds a wallpost to the database including the group id the wallpost belongs to
+     * @param wallPost the wallpost you want to "post"
+     * @return true if the wallpost is added successfully
+     * @throws SQLException if the query fails
+     */
     public static boolean postWallpost(WallPost wallPost) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -55,16 +64,22 @@ public class WallpostDao {
         }
     }
 
+    /** gets a wallpost by the party ID
+     * @param email the id of the one asking, for authentication
+     * @param partyId the id of the group you want to get all wallposts from
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static ArrayList<WallPost> getWallposts(String email, int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try{
-            ps = connection.prepareStatement("SELECT * WHERE party_id=? AND user_email=?");
+            ps = connection.prepareStatement("SELECT * FROM wallpost WHERE party_id=? AND user_email=?");
             ps.setInt(1,partyId);
             ps.setString(2,email);
             ArrayList<WallPost> resultat = new ArrayList<>();
             rs = ps.executeQuery();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
                 resultat.add(wallPost);
             }
             rs.close();
@@ -76,6 +91,11 @@ public class WallpostDao {
         }
     }
 
+    /** deletes a wallpost from teh databse
+     * @param id the idof the wallpost
+     * @return true if the query succeeds
+     * @throws SQLException if the query fails
+     */
     public static boolean deleteWallpost(int id) throws SQLException{
         connection = Db.instance().getConnection();
         try{
