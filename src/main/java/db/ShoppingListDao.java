@@ -31,7 +31,7 @@ public class ShoppingListDao {
     public static ShoppingList getShoppingList(int id, String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM shoppinglist JOIN user_party ON party_id WHERE email=? AND id=?");
+            ps = connection.prepareStatement("SELECT * FROM shoppinglist JOIN user_party ON shoppinglist.party_id WHERE user_email=? AND id=?");
             ps.setString(1,email);
             ps.setInt(2,id);
             rs = ps.executeQuery();

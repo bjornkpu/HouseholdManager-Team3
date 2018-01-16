@@ -231,6 +231,12 @@ public class GroupDao {
     public static boolean deleteGroup(int groupId) throws SQLException {
         connection = Db.instance().getConnection(); // heu
         try{
+            ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id = ?");
+            ps.setInt(1, groupId);
+            int dependencyResult = ps.executeUpdate();
+            ps.close();
+            log.info("Delete dependency " + (dependencyResult == 1 ? "ok" : "failed"));
+
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,groupId);
             int result = ps.executeUpdate();
@@ -251,12 +257,21 @@ public class GroupDao {
     public static boolean deleteGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
         try{
+//          deletes a user_party dependency
+            ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id = ?");
+            ps.setInt(1, group.getId());
+            int dependencyResult = ps.executeUpdate();
+            ps.close();
+            log.info("Delete dependency " + (dependencyResult == 1 ? "ok" : "failed"));
+
+//          deletes a party from the database
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,group.getId());
             int result = ps.executeUpdate();
             ps.close();
             log.info("Delete group, result: " + (result == 1 ? "ok":"failed"));
-            return result == 1;
+
+            return result == 1 && dependencyResult == 1;
         } finally {
             connection.close();
         }
