@@ -12,6 +12,7 @@ import java.util.ArrayList;
  *
  * @author BK
  * @author jmska
+ * @author enoseber
  */
 public class ShoppingListDao {
 
@@ -150,11 +151,6 @@ public class ShoppingListDao {
             ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE party_id = ?");
             ps.setInt(1,groupId);
             rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
 
             ShoppingList sl = new ShoppingList();
             ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();

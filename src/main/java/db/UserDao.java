@@ -23,6 +23,11 @@ public class UserDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /** Method that gets a user given an email.
+     * @param email The email of the user that is to be returned.
+     * @return A User with the information relative to the email entered.
+     * @throws SQLException when failing to get User.
+     */
     public static User getUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -50,6 +55,10 @@ public class UserDao {
         }
     }
 
+    /** Method that adds a user
+     * @param user The user that is to be added.
+     * @throws SQLException when failing to add user.
+     */
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -67,6 +76,10 @@ public class UserDao {
         }
     }
 
+    /** Method that updates any information in a user.
+     * @param user A user with updated information, and an email of a user in the database that is to be updated.
+     * @throws SQLException when failing to get User.
+     */
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -84,6 +97,10 @@ public class UserDao {
         }
     }
 
+    /** Method that deletes a user given an email.
+     * @param email The email of the user that is to be deleted.
+     * @throws SQLException when failing to get User.
+     */
     public static boolean delUser(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -98,6 +115,11 @@ public class UserDao {
         }
     }
 
+    /** Method that gets any users connected to a given ShoppingList.
+     * @param shoppingListId The id of the ShoppingList the returned users are connected to.
+     * @return An ArrayList of users connected to the given ShoppingList.
+     * @throws SQLException when failing to get users.
+     */
     public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
 	    connection = Db.instance().getConnection();
 	    try {
@@ -107,11 +129,6 @@ public class UserDao {
                     "IN( SELECT user_email FROM shoppinglist_user WHERE shoppinglist_user.shoppinglist_id = ?)");
 		    ps.setInt(1,shoppingListId);
 		    rs = ps.executeQuery();
-
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
 
 		    User user = new User();
 		    ArrayList<User> userList = new ArrayList<User>();
