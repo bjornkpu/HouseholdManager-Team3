@@ -18,6 +18,8 @@ import java.util.ArrayList;
  *
  * @author BK
  * @author johanmsk
+ * @version     %I%, %G%
+ * @since       1.0
  */
 public class UserDao {
 
@@ -66,11 +68,12 @@ public class UserDao {
     public static boolean addUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password) VALUES(?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password,salt) VALUES(?,?,?,?,?)");
             ps.setString(1,user.getEmail());
             ps.setString(2,user.getName());
             ps.setString(3,user.getPhone());
             ps.setString(4,user.getPassword());
+            ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             log.info("Add user " + (result == 1?"ok":"failed"));
             return result == 1;
@@ -88,11 +91,12 @@ public class UserDao {
     public static boolean updateUser(User user) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=? where email=?");
+            ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=?, salt=? where email=?");
             ps.setString(1,user.getName());
             ps.setString(2,user.getPhone());
             ps.setString(3,user.getPassword());
-            ps.setString(4,user.getEmail());
+            ps.setString(4,user.getSalt());
+            ps.setString(5,user.getEmail());
             int result = ps.executeUpdate();
             log.info("Update user " + (result == 1?"ok":"failed"));
             return result == 1;
@@ -101,6 +105,7 @@ public class UserDao {
             Db.close(connection);
         }
     }
+
 
 	/** deletes a user with the given user id
 	 * @param email the id of the user you want to delete
@@ -155,7 +160,12 @@ public class UserDao {
 	    }
     }
 
-    //TODO: doc and test
+    /**Gets an ArrayList of the participants in a disbursement
+     *
+     * @param disbursementId the ID of the disbursements to get the participants from
+     * @return an {@linkplain ArrayList} with {@linkplain User}s
+     * @throws SQLException if the query errors
+     */
     public static ArrayList<User> getUsersInDisbursement (int disbursementId) throws SQLException{
         connection = Db.instance().getConnection();
         try {

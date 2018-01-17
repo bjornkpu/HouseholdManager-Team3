@@ -1,5 +1,7 @@
 package services;
+import data.Session;
 import data.User;
+import db.Db;
 import db.UserDao;
 import java.sql.SQLException;
 import util.Logger;
@@ -42,7 +44,9 @@ public class UserService {
     public void add(User user) {
         String salt = LoginCheck.getSalt();
         user.setSalt(salt);
-        user.setPassword(LoginCheck.getHash(user.getPassword()+salt));
+        String pw=LoginCheck.getHash(user.getPassword()+salt);
+        user.setPassword(pw);
+        log.info("Salt: "+salt+" PW: "+pw);
         try {
             userDao.addUser(user);
             log.info("Added user!");
@@ -56,7 +60,17 @@ public class UserService {
     @Path("/{user}")
     @Consumes("application/json")
     public void update(User user) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        String currentUserEmail = session.getEmail();
         try {
+            User oldUser = userDao.getUser(currentUserEmail);
+            if(user.getPassword()==null){
+                user.setPassword(oldUser.getPassword());
+                user.setSalt(oldUser.getSalt());
+            }if(user.getName()==null){
+                user.setName(oldUser.getName());
+                user.setPhone(oldUser.getPhone());
+            }
             userDao.updateUser(user);
             log.info("Updated user!");
         } catch(SQLException e) {
