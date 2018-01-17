@@ -18,8 +18,16 @@ public class DisbursementDao {
 
     private static Connection connection;
     private static PreparedStatement ps;
+    private static Statement statement;
     private static ResultSet rs;
 
+    /**Fetches a list of disbursements in a group, where the user is a participant of the disbursement
+     *
+     * @param groupId The id of the group to get disbursements from.
+     * @param email The email of the user.
+     * @return An {@link ArrayList} of {@link Disbursement}s, without participants or items.
+     * @throws SQLException
+     */
     public static ArrayList<Disbursement> getDisbursementsInGroup(int groupId, String email) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -44,14 +52,22 @@ public class DisbursementDao {
             } else {
                 log.info("Could not find any disbursement in group: "+groupId+" user: " + email);
             }
-            rs.close();
-            ps.close();
             return disbursements;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+    /**Fetches the participants and items in a given disbursement, if the user
+     * is one of the participants.
+     *
+     * @param disbursementId The id of the disbursement to fetch.
+     * @param email The id of the user.
+     * @return The {@link Disbursement}, with complete data including items and participants.
+     * @throws SQLException
+     */
     public static  Disbursement getDisbursementDetails(int disbursementId, String email)throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -77,77 +93,123 @@ public class DisbursementDao {
             } else {
                 log.info("Could not find any disbursement with id: "+disbursementId);
             }
-            rs.close();
-            ps.close();
             return disbursement;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
         }
     }
 
+    /**Adds a {@link data.Disbursement} to the given group. Does not commit
+     * anything to the database unless all parts of the disbursement are succesfully
+     * inserted.
+     *
+     * @param disbursement {@link Disbursement} to add.
+     * @param groupid Id of the group the disbursement belongs.
+     * @return {@code true} if successful, @{code false} if not successful.
+     * @throws SQLException in case of error in statements or connection.
+     */
     public static boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
         connection = Db.instance().getConnection();
         connection.setAutoCommit(false);
         try {
-            disbursement.setId(makeDisbursement(disbursement,groupid));
-            if(disbursement.getId()>=0){
-                if(addDisbursementToUsers(disbursement)){
-                    connection.commit();
-                    return true;
+            if(makeDisbursement(disbursement,groupid)){
+                disbursement.setId(lastId());
+                if(addParticipantsToDisbursement(disbursement)){
+                    if(addItemsToDisbursement(disbursement)){
+                        connection.commit();
+                        return true;
+                    }
                 }
             }
 
         } finally {
-            connection.setAutoCommit(true);
-            connection.close();
+            if(connection!=null){
+                connection.rollback();
+                connection.setAutoCommit(true);
+                connection.close();
+            }
         }
         return false;
     }
 
-    private static boolean addDisbursementToUsers(Disbursement disbursement) throws SQLException {
-        ps = connection.prepareStatement("INSERT INTO user_disbursement " +
-                "(user_email,disp_id)" +
-                "VALUES (?,?)");
-        int i=0;
-        for (User u : disbursement.getParticipants()) {
-            ps.setString(1,u.getEmail());
-            ps.setInt(2,disbursement.getId());
-            ps.addBatch();
-            i++;
-            if(i % 1000 == 0 || i == disbursement.getParticipants().size()){
-                int[] result =ps.executeBatch();
-                for(int r : result){
-                    if(r==Statement.EXECUTE_FAILED){
-                        return false;
+    private static int lastId()throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+            rs = ps.executeQuery();
+            if(!rs.next()){
+                log.info("Cant get last insert ID");
+            }return rs.getInt(1);
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+        }
+    }
+
+    private static boolean addParticipantsToDisbursement(Disbursement disbursement) throws SQLException {
+        try{
+            ps = connection.prepareStatement("INSERT INTO user_disbursement " +
+                    "(user_email,disp_id)" +
+                    "VALUES (?,?)");
+            int i=0;
+            for (User u : disbursement.getParticipants()) {
+                ps.setString(1,u.getEmail());
+                ps.setInt(2,disbursement.getId());
+                ps.addBatch();
+                i++;
+                if(i % 1000 == 0 || i == disbursement.getParticipants().size()){
+                    int[] result =ps.executeBatch();
+                    for(int r : result){
+                        if(r==Statement.EXECUTE_FAILED){
+                            return false;
+                        }
                     }
                 }
             }
+            return true;
+        }finally {
+            Db.close(ps);
         }
-        return true;
+    }
+    private static boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
+        try{
+            statement = connection.createStatement();
+            String sql= "UPDATE item SET shoppinglist_id=NULL ,disbursement_id="+disbursement.getId()+" WHERE ";
+            int i=0;
+            for (Item item : disbursement.getItems()) {
+                if(i==0){
+                    sql+="id="+ item.getId();
+                }
+                sql+=" OR id="+item.getId();
+                i++;
+            }
+            sql+=";";
+            int result=-1;
+            if(i<0){
+                result=statement.executeUpdate(sql);
+            }
+            return result==disbursement.getItems().size();
+        }finally {
+            Db.close(statement);
+        }
     }
 
-    private static int makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
-        Timestamp ts = new Timestamp(disbursement.getDate().getTime());
-        String payerEmail = disbursement.getPayer().getEmail();
-        ps = connection.prepareStatement("INSERT INTO disbursement " +
-                "(price, name, date, payer_id, party_id) " +
-                "VALUES (?,?,?,?,?)");
-        ps.setDouble(1,disbursement.getDisbursement());
-        ps.setString(2,disbursement.getName());
-        ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
-        ps.setString(4,payerEmail);
-        ps.setInt(5,groupid);
-        int result = ps.executeUpdate();
-        ps.close();
-        log.info("Add user " + (result == 1?"ok":"failed"));
-        ps=connection.prepareStatement("SELECT id FROM disbursement " +
-                "WHERE date=? and payer_id=?");
-        ps.setTimestamp(1,ts);
-        ps.setString(2,payerEmail);
-        rs=ps.executeQuery();
-        if(rs.next()){
-            return rs.getInt("id");
+    private static boolean makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
+        try{
+            ps = connection.prepareStatement("INSERT INTO disbursement " +
+                    "(price, name, date, payer_id, party_id) " +
+                    "VALUES (?,?,?,?,?)");
+            ps.setDouble(1,disbursement.getDisbursement());
+            ps.setString(2,disbursement.getName());
+            ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            ps.setString(4,disbursement.getPayer().getEmail());
+            ps.setInt(5,groupid);
+            int result = ps.executeUpdate();
+            log.info("Add user " + (result == 1?"ok":"failed"));
+            return result==1;
+        }finally {
+            Db.close(ps);
         }
-        return -1;
     }
 }
