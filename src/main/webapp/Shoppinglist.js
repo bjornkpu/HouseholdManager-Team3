@@ -183,11 +183,14 @@ $(document).ready(function() {
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
         $.get(url, function(data, status){
             lists = data;
-            // renderShoppingListInformation();
-            renderShoppingListDropdownMenu(data);
-            getItemsInShoppingList(data[0].id);
+            // renderShoppingListDropdownMenu(data);
+            // getItemsInShoppingList(data[0].id);
+
             if(status === "success"){
                 console.log("ShoppingList content loaded successfully!");
+                //Here to prevent undefined variables and methods out of order
+                renderShoppingListDropdownMenu(data);
+                getItemsInShoppingList(data[0].id);
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
@@ -195,12 +198,28 @@ $(document).ready(function() {
         });
     });
 
+    //When clicking
+    $("#shoppinglistdropdown").on("click", "a.link", function(){
+        currentShoppingList = this.id;
+        renderShoppingListInformation(this.id);
+    });
+
+    function renderShoppingListInformation(){
+        $("#tableShoppinglist").empty();
+
+        getItemsInShoppingList(lists[currentShoppingList].id);
+
+        $("#shoppinglistName").text(lists[currentShoppingList].name);
+    }
+
     function getItemsInShoppingList(id){
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists/'+id+'/items';
+
         $.get(url, function(data, status){
-            items = data;
             if(status === "success"){
+                items = data;
                 console.log("Item content loaded successfully!");
+                setItemsInTable();
             }
             if(status === "error"){
                 console.log("Error in loading Item content");
@@ -208,24 +227,19 @@ $(document).ready(function() {
         });
     }
 
-    $("#shoppinglistdropdown").on("click", "a.link", function(){
-        // alert(lists[this.id].name);
-        currentShoppingList = this.id;
-        renderShoppingListInformation(this.id);
-    });
-
-    function renderShoppingListInformation(){
-        $("#shoppinglistName").text(lists[currentShoppingList].name);
-
+    function setItemsInTable(){
         var len = items.length;
         for(var i = 0; i < len; i++){
-            $("#tableShoppinglist").append("<tr>" +
+            $("#tableShoppinglist").append(
+                "<tr>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <button type=\"button\"  class=\"removeItemButton\" title=\"Remove this row\">Delete</button></td>" +
-                "</tr>");
+                "<td> <button type=\"button\" class=\"removeItemButton\" title=\"Remove this row\">Delete</button></td>" +
+                "</tr>"
+            );
         }
+        console.log("Added Items");
     }
 
     //function which lists out information on the choosen shoppinglist
