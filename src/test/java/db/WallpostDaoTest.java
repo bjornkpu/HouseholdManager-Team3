@@ -1,6 +1,5 @@
 package db;
 
-import data.Group;
 import data.User;
 import data.WallPost;
 import org.junit.*;
@@ -10,9 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import static db.WallpostDao.deleteWallpost;
-import static db.WallpostDao.getWallposts;
-import static db.WallpostDao.postWallpost;
+import static db.WallpostDao.*;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
@@ -24,8 +21,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class WallpostDaoTest {
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private static User user1 = new User("m@m.no", "Mats", "90807060", "password1");
-    private static User user2 = new User("k@k.no", "Knut", "90805050", "password2");
+    private static User user1 = new User("m@m.no", "Mats", "90807060", "password1", "123");
+    private static User user2 = new User("k@k.no", "Knut", "90805050", "password2", "123");
     private static ArrayList<WallPost> list1 = new ArrayList<>();
     private static ArrayList<WallPost> list2 = new ArrayList<>();
 

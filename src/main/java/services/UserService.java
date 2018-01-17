@@ -1,9 +1,7 @@
 package services;
 import data.Session;
 import data.User;
-import db.Db;
 import db.UserDao;
-import java.sql.SQLException;
 import util.Logger;
 import util.LoginCheck;
 
@@ -11,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.sql.SQLException;
 /**
  * Service that handles reading, making, updating and deleting user information.
  *

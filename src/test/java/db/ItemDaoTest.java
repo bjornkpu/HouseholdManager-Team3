@@ -1,12 +1,13 @@
 package db;
 
-import data.*;
-import db.ItemDao;
-import db.ShoppingListDao;
-import db.UserDao;
+import data.Group;
+import data.Item;
+import data.ShoppingList;
+import data.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import util.LoginCheck;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class ItemDaoTest {
         itemTest.setStatus(0);
 
         ArrayList<User> userList = new ArrayList<>();
-        User u = new User(userId, "itemTestUser", "", "");
+        User u = new User(userId, "itemTestUser", "", "", LoginCheck.getSalt());
         userList.add(u);
         Group g = new Group();
         g.setName("testgroup");
@@ -98,11 +99,24 @@ public class ItemDaoTest {
         assertEquals(items.get(0).getId(), itemTest.getId());
     }
 
+    @Test
+    public void testToString() {
+        String expected = "Item{" +
+	    "id=" + 67 +
+	    ", name='" + "TestItem" + '\'' +
+	    ", status=" + 0 +
+	    ", shoppingListId=" + -1 +
+	    ", disbursementId=" + -1 +
+	    '}';
+        assertEquals(expected, itemTest.toString());
+    }
+
     @AfterClass
     public static void tearDown() throws SQLException{
         ItemDao.delItem(itemTest.getId());
         ShoppingListDao.delShoppingList(shoppingListTest.getId());
         MemberDao.deleteMember(userId,1);
+        GroupDao.deleteGroup(GroupDao.getGroupByName("testgroup").get(0).getId());
         UserDao.delUser(userId);
     }
 }

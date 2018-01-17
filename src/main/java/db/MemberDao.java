@@ -39,6 +39,7 @@ public class MemberDao {
                 member = new Member();
                 member.setEmail(rs.getString("email"));
                 member.setPassword(rs.getString("password"));
+                member.setSalt(rs.getString("salt"));
                 member.setPhone(rs.getString("phone"));
                 member.setName(rs.getString("name"));
                 member.setBalance(Integer.parseInt(rs.getString("balance")));

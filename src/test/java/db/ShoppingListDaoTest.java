@@ -6,8 +6,7 @@ import data.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import util.Logger;
+import util.LoginCheck;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,13 +17,14 @@ import static org.junit.Assert.assertNotNull;
 /**
  * -Description of the class-
  * @author enoseber
+ * @author bk
  */
 public class ShoppingListDaoTest {
     private static int slId;
     private static int groupId;
-    private static User u;
-    private static Group g;
-    private static ShoppingList shoppingListTest;
+    private static User testUser;
+    private static Group testGroup;
+    private static ShoppingList shoppingListTest, testSmallShoppingList;
     private static ArrayList<User> userList;
 
     @BeforeClass
@@ -33,22 +33,25 @@ public class ShoppingListDaoTest {
         groupId = 1;
 
 
-        u = new User("shoppinglistTest@user.no", "shoppinglistTestUser", "", "");
-        g = new Group(groupId, "shoppingListTestGroup", "", u.getEmail());
+        testUser = new User("shoppinglistTest@user.no", "shoppinglistTestUser", "", "", LoginCheck.getSalt());
+        testGroup = new Group(groupId, "shoppingListTestGroup", "", testUser.getEmail());
 
-        UserDao.addUser(u);
-        GroupDao.addGroup(g);
+        UserDao.addUser(testUser);
+        GroupDao.addGroup(testGroup);
 
         groupId = GroupDao.getGroupByName("shoppingListTestGroup").get(0).getId();
-        g.setId(groupId);
+        testGroup.setId(groupId);
 
         userList = new ArrayList<User>();
-        userList.add(u);
+        userList.add(testUser);
 
         shoppingListTest = new ShoppingList(slId, "shoppingListTest",
                 groupId, null, userList);
 
+	    testSmallShoppingList = new ShoppingList(slId, "shoppingListTest");
+
         ShoppingListDao.addShoppingList(shoppingListTest);
+        ShoppingListDao.addShoppingList(testSmallShoppingList);
     }
 
     @Test
@@ -63,7 +66,7 @@ public class ShoppingListDaoTest {
         ShoppingList sl = new ShoppingList();
 
         try {
-            sl = ShoppingListDao.getShoppingList(slId, u.getEmail());
+            sl = ShoppingListDao.getShoppingList(slId, testUser.getEmail());
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -109,7 +112,7 @@ public class ShoppingListDaoTest {
         ArrayList<ShoppingList> slList = new ArrayList<ShoppingList>();
 
         try {
-            slList = ShoppingListDao.getShoppingListByUser(u);
+            slList = ShoppingListDao.getShoppingListByUser(testUser);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,7 +133,7 @@ public class ShoppingListDaoTest {
         }
 
         try {
-            updateTest = ShoppingListDao.getShoppingList(slId, u.getEmail());
+            updateTest = ShoppingListDao.getShoppingList(slId, testUser.getEmail());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -140,11 +143,53 @@ public class ShoppingListDaoTest {
 
     }
 
+  /*  @Test
+    public void testItemInShoppingList(){
+
+	    addItem(Item i)
+	    addItem(int itemId, String desc, int status)
+	    removeItem(Item i){
+		    removeItem(int itemId){
+	    }
+		    getItemList()
+		    getItemFromList(int itemId)
+    }*/
+
+    @Test
+    public void testUserInShoppingList(){
+
+    }
+
+    @Test
+    public void testToString() {
+	    System.out.println("tostringen: "+shoppingListTest.toString());
+	    String expected = "ShoppingList{" +
+	    "id=" + 45 +
+	    ", name='" + "shoppingListTest" + '\'' +
+	    ", groupId=" + 1 +
+	    ", itemList=" + "Item{" +
+			    "id=" + 67 +
+			    ", name='" + "TestItem" + '\'' +
+			    ", status=" + 0 +
+			    ", shoppingListId=" + 67 +
+			    ", disbursementId=" + 67 +
+			    '}' +
+	    ", userList=" + "User{" +
+			    "email='" + "LoginTestEmailATemailDOTcom" + '\'' +
+			    ", name='" + "User1" + '\'' +
+			    ", phone='" + "90706060" + '\'' +
+			    ", password='" + "123" + '\'' +
+			    ", salt='" + testUser.getSalt() + '\'' +
+			    '}' +
+	    '}';
+	    assertEquals(expected, shoppingListTest.toString());
+    }
+
     @AfterClass
     public static void tearDown() throws SQLException{
         ShoppingListDao.delShoppingList(slId);
-        GroupDao.deleteGroup(g);
-        UserDao.delUser(u.getEmail());
+        GroupDao.deleteGroup(testGroup);
+        UserDao.delUser(testUser.getEmail());
     }
 
 }

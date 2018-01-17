@@ -1,14 +1,14 @@
 package db;
 import data.User;
-import db.UserDao;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import util.LoginCheck;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 /**
  * Tests for UserDao
  *
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.mock;
  */
 public class UserDaoTest {
     private static User user;
+    private static String salt = LoginCheck.getSalt();
     private static final String email="LoginTestEmailATemailDOTcom";
 
 
     @BeforeClass
     public static void setUp() throws SQLException {
-
-        user = new User(email, "User1", "90706060", "123");
+        user = new User(email, "User1", "90706060", "123", salt);
         UserDao.addUser(user);
     }
 
@@ -75,6 +75,20 @@ public class UserDaoTest {
         assertEquals(user.getPhone(), test.getPhone());
         assertEquals(user.getPassword(), test.getPassword());
     }
+
+    @Test
+    public void testToString() {
+        String expected = "User{" +
+        "email='" + "LoginTestEmailATemailDOTcom" + '\'' +
+        ", name='" + "User1" + '\'' +
+        ", phone='" + "90706060" + '\'' +
+        ", password='" + "123" + '\'' +
+        ", salt='" + user.getSalt() + '\'' +
+        '}';
+        assertEquals(expected, user.toString());
+    }
+
+
     /**
      * Deleting the user made in insert_user to prevent the sql error the next time we run the insert_user-test
      */

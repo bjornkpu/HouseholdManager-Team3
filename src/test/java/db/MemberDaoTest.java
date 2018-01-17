@@ -6,17 +6,15 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import util.Logger;
+import util.LoginCheck;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import static db.MemberDao.getMembers;
+import static org.junit.Assert.assertTrue;
 
 /**
  * -Description of the class-
@@ -132,7 +130,7 @@ public class MemberDaoTest {
 
     @Test
     public void updateUserTest()throws SQLException{
-        Member mem1 = new Member(email1, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        Member mem1 = new Member(email1, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
         MemberDao.updateUser(mem1,groupId2);
         ArrayList<Member> members = MemberDao.getMembers(groupId2);
         Boolean ok = false;
@@ -148,7 +146,7 @@ public class MemberDaoTest {
     public void deleteMemberTest() throws SQLException{
         Boolean test = false;
         Boolean test2 = false;
-        Member mem2 = new Member(email2, "User1", "90706060", "123",0,Member.ACCEPTED_STATUS);
+        Member mem2 = new Member(email2, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
         MemberDao.inviteUser(email2,groupId2);
         MemberDao.updateUser(mem2,groupId2);
         ArrayList<Member> members = MemberDao.getMembers(groupId2);
