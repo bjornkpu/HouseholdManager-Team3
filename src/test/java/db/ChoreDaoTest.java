@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import static db.ChoreDao.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
@@ -83,6 +85,11 @@ public class ChoreDaoTest {
         st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (203,'desc4',0,?,101,'m@m.no')");
         st.setDate(1, currDate);
         st.executeUpdate();
+        st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id,done) VALUES ('m@m.no',200,?)");
+        st.setTimestamp(1, timestamp);
+        st.executeUpdate();
+        st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id) VALUES ('m@m.no',202)");
+        st.executeUpdate();
 
         st.close();
         connection.close();
@@ -97,7 +104,9 @@ public class ChoreDaoTest {
             System.out.println("Connection opened after");
 
             //Deleting wallpost test-data
-            PreparedStatement st = connection.prepareStatement("DELETE FROM chore WHERE id = 200");
+            PreparedStatement st = connection.prepareStatement("DELETE FROM chore_log WHERE user_email='m@m.no'");
+            st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM chore WHERE id = 200");
             st.executeUpdate();
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 201");
             st.executeUpdate();
@@ -195,5 +204,20 @@ public class ChoreDaoTest {
         assignChore("k@k.no",200);
         String email2 = getChore(200).getAssignedTo();
         assertNotEquals(email1,email2);
+    }
+
+    @Test
+    public void testSetCompletedBy() throws  Exception{
+        System.out.println("Testing setCompletedBy");
+        ArrayList<String> brukere = getCompletedBy(200);
+        ArrayList<String> brukere1 = new ArrayList<>();
+        brukere1.add("m@m.no");
+        brukere1.add("k@k.no");
+        setCompletedBy(200,brukere1);
+        ArrayList<String> brukere2 = getCompletedBy(200);
+        setCompletedBy(200,brukere); //Resets completed by.
+        assertEquals(brukere1.size(),brukere2.size());
+        assertTrue(brukere.size()<brukere2.size());
+
     }
 }
