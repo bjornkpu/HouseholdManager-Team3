@@ -44,8 +44,8 @@ public class Member extends User{
     public static final int BLOCKED_STATUS = 3;
     public Member() {}
 
-    public Member(String email, String name, String phone, String password, double balance, int status) {
-        super(email, name, phone, password);
+    public Member(String email, String name, String phone, String password, String salt, double balance, int status) {
+        super(email, name, phone, password, salt);
         this.balance = balance;
         this.status = status;
     }

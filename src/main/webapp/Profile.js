@@ -5,20 +5,51 @@ $(document).ready(function() {
 
         tableReadOnly.style.display = "none";
         tableEdit.style.display = "block";
-        sessionEmail();
+
     });
 
-    var sessionEmail = function () {
+    getLoggedOnUser(setData);
+    var sessionEmail;
+    //getEmail;
+
+    function setData(user) {
+        console.log("name: " + user.name);
+        console.log("email: " + user.email);
+        sessionEmail = user.email;
+        $('#nameReadOnly').attr('value', user.name);
+        $('#emailReadOnly').attr('value', user.email);
+        $('#phoneReadOnly').attr('value', user.phone);
+    }
+
+    function getEmail () {
         $.ajax({
             type: 'GET',
             url:'http://localhost:8080/scrum/rest/session',
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                return data;
+                sessionEmail=data;
+                getInfo(data.email);
+
             }
         })
-    };
+    }
+
+    function getInfo(email){
+        $.ajax({
+            type: 'GET',
+            url: '/scrum/rest/user/' + email,
+            dataType: 'json',
+            success: function (data) {
+                console.log( "data: " + data);
+                console.log(email)
+                $('#nameReadOnly').attr('value', data.name);
+                $('#emailReadOnly').attr('value', email);
+                $('#phoneReadOnly').attr('value', data.phone);
+            }
+        })
+    }
+
 
     //Updating user information
     $('#Confirm').click(function () {
@@ -41,19 +72,19 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'PUT',
-                url: 'http://localhost:8080/scrum/rest/user/'+ sessionEmail.email, //test
+                url: 'http://localhost:8080/scrum/rest/user/'+ sessionEmail, //test
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
                     "name": nameField,
                     "phone": phoneField,
-                    "email": sessionEmail.email,
+                    "email": sessionEmail,
                     "password":null
 
                 }),
                 success: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
-                        case 200:
+                        case 204:
                             console.log("ajax update user info");
                             alert("Information updated");
                             break;

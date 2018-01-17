@@ -3,15 +3,12 @@ package db;
 import data.Disbursement;
 import data.Group;
 import data.Member;
-import data.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Date;
 import java.sql.SQLException;
-
-import static org.junit.Assert.*;
+import java.util.Date;
 
 
 //TODO: class
@@ -30,7 +27,7 @@ public class DisbursementDaoTest {
         testDisbursement = new Disbursement();
         testDisbursement.setDate(new Date());
         testDisbursement.setName("disburse");
-        member = new Member(userEmail, "name", "phone", "password",0,2);
+        member = new Member(userEmail, "name", "phone", "password","123",0,2);
         group = new Group();
         group.setName("groupname");
         group.setAdmin(userEmail);

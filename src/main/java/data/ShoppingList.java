@@ -18,6 +18,8 @@ public class ShoppingList {
     public ShoppingList(int id, String name){
         this.id = id;
         this.name = name;
+        itemList = new ArrayList<>();
+        userList = new ArrayList<>();
     }
 
     public ShoppingList(int id, String name, int groupId,
@@ -81,12 +83,22 @@ public class ShoppingList {
         itemList.add(new Item(itemId, desc, status));
     }
 
+    public void addItem(int id, String name, int status, int shoppingListId, int disbursementId){
+        itemList.add(new Item(id, name, status, shoppingListId, disbursementId));
+    }
+
     public void removeItem(Item i){
         itemList.remove(i);
     }
 
     public void removeItem(int itemId){
-        itemList.remove(itemId);
+    	while(itemList.contains(itemId)){
+    		int i = 0;
+    		if(itemList.get(i).getId() == itemId){
+    			itemList.remove(i);
+    			break;
+		    }
+	    }
     }
 
     public void addUser(User u){
@@ -97,7 +109,7 @@ public class ShoppingList {
         userList.remove(u);
     }
 
-    public void removeUser(int userId){
+    public void removeUser(String userId){
         userList.remove(userId);
     }
 
