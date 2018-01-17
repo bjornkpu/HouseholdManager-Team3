@@ -89,8 +89,8 @@ public class DisbursementDao {
         connection = Db.instance().getConnection();
         connection.setAutoCommit(false);
         try {
-            disbursement.setId(makeDisbursement(disbursement,groupid));
-            if(disbursement.getId()>=0){
+            if(makeDisbursement(disbursement,groupid)){
+                disbursement.setId(lastId());
                 if(addDisbursementToUsers(disbursement)){
                     connection.commit();
                     return true;
@@ -104,50 +104,60 @@ public class DisbursementDao {
         return false;
     }
 
+    private static int lastId()throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+            rs = ps.executeQuery();
+            if(!rs.next()){
+                log.info("Cant get last insert ID");
+            }return rs.getInt(1);
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+        }
+    }
+
     private static boolean addDisbursementToUsers(Disbursement disbursement) throws SQLException {
-        ps = connection.prepareStatement("INSERT INTO user_disbursement " +
-                "(user_email,disp_id)" +
-                "VALUES (?,?)");
-        int i=0;
-        for (User u : disbursement.getParticipants()) {
-            ps.setString(1,u.getEmail());
-            ps.setInt(2,disbursement.getId());
-            ps.addBatch();
-            i++;
-            if(i % 1000 == 0 || i == disbursement.getParticipants().size()){
-                int[] result =ps.executeBatch();
-                for(int r : result){
-                    if(r==Statement.EXECUTE_FAILED){
-                        return false;
+        try{
+            ps = connection.prepareStatement("INSERT INTO user_disbursement " +
+                    "(user_email,disp_id)" +
+                    "VALUES (?,?)");
+            int i=0;
+            for (User u : disbursement.getParticipants()) {
+                ps.setString(1,u.getEmail());
+                ps.setInt(2,disbursement.getId());
+                ps.addBatch();
+                i++;
+                if(i % 1000 == 0 || i == disbursement.getParticipants().size()){
+                    int[] result =ps.executeBatch();
+                    for(int r : result){
+                        if(r==Statement.EXECUTE_FAILED){
+                            return false;
+                        }
                     }
                 }
             }
+            return true;
+        }finally {
+            Db.close(ps);
         }
-        return true;
     }
 
-    private static int makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
-        Timestamp ts = new Timestamp(disbursement.getDate().getTime());
-        String payerEmail = disbursement.getPayer().getEmail();
-        ps = connection.prepareStatement("INSERT INTO disbursement " +
-                "(price, name, date, payer_id, party_id) " +
-                "VALUES (?,?,?,?,?)");
-        ps.setDouble(1,disbursement.getDisbursement());
-        ps.setString(2,disbursement.getName());
-        ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
-        ps.setString(4,payerEmail);
-        ps.setInt(5,groupid);
-        int result = ps.executeUpdate();
-        ps.close();
-        log.info("Add user " + (result == 1?"ok":"failed"));
-        ps=connection.prepareStatement("SELECT id FROM disbursement " +
-                "WHERE date=? and payer_id=?");
-        ps.setTimestamp(1,ts);
-        ps.setString(2,payerEmail);
-        rs=ps.executeQuery();
-        if(rs.next()){
-            return rs.getInt("id");
+    private static boolean makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
+        try{
+            ps = connection.prepareStatement("INSERT INTO disbursement " +
+                    "(price, name, date, payer_id, party_id) " +
+                    "VALUES (?,?,?,?,?)");
+            ps.setDouble(1,disbursement.getDisbursement());
+            ps.setString(2,disbursement.getName());
+            ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            ps.setString(4,disbursement.getPayer().getEmail());
+            ps.setInt(5,groupid);
+            int result = ps.executeUpdate();
+            log.info("Add user " + (result == 1?"ok":"failed"));
+            return result==1;
+        }finally {
+            Db.close(ps);
         }
-        return -1;
     }
 }
