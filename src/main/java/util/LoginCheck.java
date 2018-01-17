@@ -14,18 +14,21 @@ import java.security.SecureRandom;
  */
 public class LoginCheck {
 
+    private static final Logger log = Logger.getLogger();
 
     /**
      * Method used for checking the if the password of a LoginData matches the
      * unhashed password of the user.
-     * @param data The (@code LoginData) object with the user-input password.
-     * @param user The (@code User) object from the database.
+     * @param data The (@link LoginData) object with the user-input password.
+     * @param user The (@link User) object from the database.
      * @return Returns true if the password matches.
      */
     public static boolean correctLogin(LoginData data, User user){
         if(user == null && data.getEmail() != null) {
+            log.info("user null ");
             return false;
         }else if(!user.getEmail().equals(data.getEmail())){
+            log.info("usernames not same");
             return false;
         }
         //Get users salt
