@@ -135,6 +135,7 @@ public class WallpostDaoTest {
 
     }
 
+    //Checks if you get the same list of wallpost as expected when using the method getWallposts()
     @Test
     public void testGetWallposts1() throws Exception{
         System.out.println("Test getWallposts1()");
@@ -150,6 +151,7 @@ public class WallpostDaoTest {
         assertArrayEquals(result,expResult);
     }
 
+    //Checks if you get the correct list of wallposts when using the method with user_email and party_id as parameters
     @Test
     public void testGetWallposts2() throws Exception{
         System.out.println("Test getWallposts2()");

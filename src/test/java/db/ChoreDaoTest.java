@@ -18,6 +18,13 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * matseda
+ */
+
 public class ChoreDaoTest {
 
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
