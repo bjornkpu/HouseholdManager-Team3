@@ -8,13 +8,22 @@ public class Disbursement {
     private double disbursement;
     private String name;
     private Date date;
-    private User payer;
+    private Member payer;
 
 
     private ArrayList<User> participants;
     private ArrayList<Item> items;
 
-    public Disbursement() {
+    public Disbursement(){}
+
+    public Disbursement(double disbursement, String name, Date date, Member payer) {
+        this.disbursement = disbursement;
+        this.name = name;
+        this.date = date;
+        this.payer = payer;
+    }
+
+    public Disbursement(double disbursement, String name, Date date, User payer) {
 
     }
 
@@ -31,7 +40,7 @@ public class Disbursement {
         return payer;
     }
 
-    public void setPayer(User payer) {
+    public void setPayer(Member payer) {
         this.payer = payer;
     }
 

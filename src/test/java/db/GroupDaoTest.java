@@ -24,33 +24,25 @@ public class GroupDaoTest {
     private static String name2 = "Kollektiv";
     private static String adminnavn = "tre@h.no";
     private static String newAdmin = "to@h.no";
-    private static int id1 = 1;
-    private static int id2 = 2;
+    private static Group newGroup = new Group();
+
 
     @BeforeClass
     public static void setUp() throws Exception {
         gr = new GroupDao();
+        newGroup.setName(name1);
+        newGroup.setAdmin(adminnavn);
     }
     @Test
     public void addGroupUsingObjectTest() throws SQLException {
-        Group newGroup = new Group();
-        String n = "fheu32hhjfhjfhjshdfjghhjrt";
-        boolean ok = false;
-        newGroup.setName(n);
-        newGroup.setAdmin(adminnavn);
+        int ok = 0;
         try {
             ok = addGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
         }
-        assertTrue(ok);
-
-        try {
-            int s = gr.getGroupByName(n).get(0).getId();
-            gr.deleteGroup(s);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        newGroup.setId(ok);
+        assertTrue(ok!=-1&&ok!=0);
     }
 
     @Test

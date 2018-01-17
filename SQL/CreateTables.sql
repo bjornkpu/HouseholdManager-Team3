@@ -151,3 +151,4 @@ ALTER TABLE chore_log
 ALTER TABLE chore_log
     ADD CONSTRAINT chore_log_fk2 FOREIGN KEY (chore_id) REFERENCES chore(id);
 
+

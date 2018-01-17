@@ -3,10 +3,7 @@ import data.Group;
 import data.Member;
 import util.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -186,36 +183,29 @@ public class GroupDao {
      * @return Returns true if adding a group was successful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static boolean addGroup(Group group) throws SQLException {
+    public static int addGroup(Group group) throws SQLException {
+        int auto_id = -1;
         connection = Db.instance().getConnection();
         userDao = new UserDao();
-        if (group.getName() == null || group.getAdmin() == null){
-            log.info("Name or admin missing. Group not added.");
-            return false;
-        } else if (userDao.getUser(group.getAdmin()) == null){
-            return false;
+        if (group.getName() == null){
+            log.info("Name missing. Group not added.");
+            return -1;
         }
         try {
-            ps = connection.prepareStatement("INSERT INTO party (name) VALUES(?)");
+            ps = connection.prepareStatement("INSERT INTO party (name) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,group.getName());
-            int result = ps.executeUpdate();
-
-            ps = connection.prepareStatement("SELECT * FROM party WHERE NOT EXISTS (SELECT * FROM user_party WHERE user_party.party_id = party.id) AND name = ?");
-            ps.setString(1,group.getName());
-            rs = ps.executeQuery();
-            Group g  = new Group();
-            if (rs.next()){
-                g.setId(rs.getInt("id"));
-                g.setName(group.getName());
+            ps.executeUpdate();
+            rs=ps.getGeneratedKeys();
+            if(rs.next()){
+                auto_id=rs.getInt(1);
             }
-            ps = connection.prepareStatement("INSERT INTO user_party (user_email,party_id,balance,status) VALUES (?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO user_party (user_email,party_id,balance,status) VALUES (?,?,0,?)");
             ps.setString(1,group.getAdmin());
-            ps.setInt(2,g.getId());
-            ps.setDouble(3,0);
-            ps.setInt(4,Member.ADMIN_STATUS);
-            result = ps.executeUpdate();
+            ps.setInt(2,auto_id);
+            ps.setInt(3,Member.ADMIN_STATUS);
+            int result = ps.executeUpdate();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
-            return result == 1;
+            return auto_id;
         } finally {
             Db.close(rs);
             Db.close(ps);

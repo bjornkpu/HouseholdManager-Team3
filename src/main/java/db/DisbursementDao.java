@@ -85,7 +85,7 @@ public class DisbursementDao {
         }
     }
 
-    public static boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
+    public static int addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
         connection = Db.instance().getConnection();
         connection.setAutoCommit(false);
         try {
@@ -93,15 +93,15 @@ public class DisbursementDao {
             if(disbursement.getId()>=0){
                 if(addDisbursementToUsers(disbursement)){
                     connection.commit();
-                    return true;
+                    return disbursement.getId();
                 }
             }
 
         } finally {
             connection.setAutoCommit(true);
-            connection.close();
+            Db.close(connection);
         }
-        return false;
+        return -1;
     }
 
     private static boolean addDisbursementToUsers(Disbursement disbursement) throws SQLException {
@@ -131,7 +131,7 @@ public class DisbursementDao {
         String payerEmail = disbursement.getPayer().getEmail();
         ps = connection.prepareStatement("INSERT INTO disbursement " +
                 "(price, name, date, payer_id, party_id) " +
-                "VALUES (?,?,?,?,?)");
+                "VALUES (?,?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
         ps.setDouble(1,disbursement.getDisbursement());
         ps.setString(2,disbursement.getName());
         ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
@@ -149,5 +149,8 @@ public class DisbursementDao {
             return rs.getInt("id");
         }
         return -1;
+    }
+    public boolean addItemsToDisbursement(){
+        return true;
     }
 }
