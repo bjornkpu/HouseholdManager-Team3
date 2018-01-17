@@ -73,7 +73,8 @@
     .navbar-brand.text{
         font-size: 18px;
         color: cadetblue;
-        transform: translateX(20px);
+        transform: translateX(5px);
+        transform: translateY(5px);
     }
 
     /*
