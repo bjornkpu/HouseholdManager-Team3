@@ -154,7 +154,5 @@ $(document).ready(function() {
             }
         })
 
-
-
     })
 });
