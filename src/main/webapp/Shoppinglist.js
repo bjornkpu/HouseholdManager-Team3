@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    var group = function () {
+        
+    };
     var disbursementList = [];
     var lists;
     var items;
@@ -15,12 +18,41 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
     });
 
+    function itemDataJSON(){
+        return JSON.stringify(
+            {
+                navn: $("#navnInput").val()
+            });
+    }
+
     $('#addItem').click(function () {
         var name=prompt("Add item:","Item name");
         if (name!=null){
             x= name + " registered!";
             alert(x);
         }
+
+        $.ajax({
+            type: "POST",
+            url: "rest/groups/1/shoppingLists/1/items",
+            data: JSON.stringify(
+                {
+                    name: name,
+                    status: 1,
+                    shoppingListId: 1,
+                    id: 0,
+                    disbursementId: -1
+                }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function () {
+                console.log("Fikk registrert");
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+
         var tableRef = document.getElementById('shoppingTable').getElementsByTagName('tbody')[0];
 
 // Insert a row in the table at the last row
@@ -42,7 +74,7 @@ $(document).ready(function() {
         newCell.appendChild(newText);
         newCell = newRow.insertCell(3);
         newCell.innerHTML = '<button type="button"  class="removeItemButton" title="Remove this row">Delete</button>';
-    })
+    });
 
     $('.backToShoppinglist').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');

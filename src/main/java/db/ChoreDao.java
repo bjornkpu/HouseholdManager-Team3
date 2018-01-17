@@ -19,13 +19,14 @@ public class ChoreDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
     private static ResultSet res;
+    private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /** Find what user completed the chore
      * @param choreID id of the chore you want to check
      * @return the email of teh user who is on the chore
      * @throws SQLException if the query fails
      */
-    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+    static ArrayList<String> getCompletedBy(int choreID) throws SQLException{
         connection = Db.instance().getConnection();
         try{
             ps= connection.prepareStatement("SELECT user_email FROM chore_log WHERE chore_id=?");
@@ -33,7 +34,7 @@ public class ChoreDao {
             res = ps.executeQuery();
             ArrayList<String> result = new ArrayList<>();
             while(res.next()){
-                result.add(res.getString("user_id"));
+                result.add(res.getString("user_email"));
             }
             return result;
         }
@@ -67,7 +68,7 @@ public class ChoreDao {
                 }
                 chore.setChoreId(rs.getInt("id"));
                 chore.setDescription(rs.getString("name"));
-                ArrayList<String> completedBy = findCompletedBy(choreId);
+                ArrayList<String> completedBy = getCompletedBy(choreId);
                 chore.setCompletedBy(completedBy);
                 chore.setAssignedTo(rs.getString("user_email"));
                 chore.setDeadline(rs.getDate("deadline"));
@@ -80,6 +81,29 @@ public class ChoreDao {
         }
         finally {
             Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
+
+    public static boolean setCompletedBy(int choreId, ArrayList<String> users) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            //Removes all previous data on completed by for this chore.
+            ps = connection.prepareStatement("DELETE FROM chore_log WHERE chore_id=?");
+            ps.setInt(1,choreId);
+            ps.executeUpdate();
+            for (String user : users) {
+                ps = connection.prepareStatement("INSERT INTO chore_log(user_email,chore_id,done) VALUES (?,?,?)");
+                ps.setString(1, user);
+                ps.setInt(2, choreId);
+                ps.setTimestamp(3, timestamp);
+                int result = ps.executeUpdate();
+                if (result != 1) return false;
+            }
+            return true;
+        }
+        finally {
             Db.close(ps);
             Db.close(connection);
         }
