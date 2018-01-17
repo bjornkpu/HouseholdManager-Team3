@@ -7,6 +7,7 @@ notifications:
 
 
 
+script: "mvn -B .."
 script: "mvn cobertura:cobertura"
 
 after_success:

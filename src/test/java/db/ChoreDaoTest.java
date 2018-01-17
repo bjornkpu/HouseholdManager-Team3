@@ -21,19 +21,21 @@ import static org.junit.Assert.assertNotEquals;
 /**
  * -Description of the class-
  *
- * @author
- * matseda
+ * @author matseda
+ * @author bk
  */
 
 public class ChoreDaoTest {
 
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private static User user1 = new User("m@m.no", "Mats", "90807060", "password1");
-    private static User user2 = new User("k@k.no", "Knut", "90805050", "password2");
+    private static User user1 = new User("m@m.no", "Mats", "90807060", "password1","123");
+    private static User user2 = new User("k@k.no", "Knut", "90805050", "password2","123");
     private static ArrayList<Chore> list1 = new ArrayList<>();
     private static ArrayList<Chore> list2 = new ArrayList<>();
     static private java.sql.Date currDate;
     static Chore c5=new Chore("desc4", currDate,101);
+	static Chore c6=new Chore(204,"desc5");
+	static ArrayList<String> compledetBy = new ArrayList<>();
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -42,12 +44,13 @@ public class ChoreDaoTest {
         java.util.Date myDate = new java.util.Date(System.currentTimeMillis());
         currDate = new java.sql.Date(myDate.getTime());
 
-        ArrayList<String> compledetBy = new ArrayList<>();
-        compledetBy.add("Mats");
+
+	    compledetBy.add("Mats");
         Chore c1=new Chore(200,"desc1",compledetBy,"m@m.no", currDate, 100);
         Chore c2=new Chore(201,"desc2",compledetBy,"k@k.no", currDate,100);
         Chore c3=new Chore(202,"desc3",compledetBy,"m@m.no", currDate,100);
         Chore c4=new Chore(203,"desc4",compledetBy,"m@m.no", currDate,101);
+
         list1.add(c1);
         list1.add(c2);
         list1.add(c3);
@@ -81,6 +84,9 @@ public class ChoreDaoTest {
         st.setDate(1, currDate);
         st.executeUpdate();
         st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (203,'desc4',0,?,101,'m@m.no')");
+        st.setDate(1, currDate);
+        st.executeUpdate();
+        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (204,'desc5',0,?,101,'m@m.no')");
         st.setDate(1, currDate);
         st.executeUpdate();
 
@@ -195,5 +201,24 @@ public class ChoreDaoTest {
         assignChore("k@k.no",200);
         String email2 = getChore(200).getAssignedTo();
         assertNotEquals(email1,email2);
+    }
+
+    //TODO: lage testen når setChore er laget i ChoreDao. mats lager den.
+    //getting who compleated the chore
+    @Test
+	public void testCompletedBy() throws Exception {
+	    System.out.println("Testing compleatedBy()");
+	    Chore chore = getChore(204);
+	    ArrayList<String> result = chore.getCompletedBy()
+			    ;
+	    String expResult = list1.get(0).getDescription();
+	    assertEquals(result,expResult);
+
+
+
+	    System.out.println("Testing compleatedBy()");
+	    c6.setCompletedBy(compledetBy);
+
+	    assertEquals(compledetBy,c6.getCompletedBy());
     }
 }
