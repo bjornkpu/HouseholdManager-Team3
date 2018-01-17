@@ -22,6 +22,8 @@
         <div class="navbar-nav flex-row">
             <div class="navbar-brand logo" href="#">
                 <img class="logo" src="images/hhm_logo_icon_only.JPG" width="30" height="30" alt="" class="d-inline-block align-top" alt="">
+            </div>
+            <div class="navbar-brand text">
                 <strong>Household Manager</strong>
             </div>
         </div>
@@ -72,34 +74,37 @@
 
 <!-- Sidebar -->
 <div class="sidebar-wrapper">
-    <nav id="sidebar" >
-        <ul class="list-unstyled sidebar-list">
-            <li>
-                <a id="loadFeed" href="#feed" class="sidebar-list-items" >
-                    <i class="material-icons md-36">insert_comment</i>
-                    <p>Feed</p>
-                </a>
-            </li>
-            <li>
-                <a id="loadShoppingList" href="#shopping" class="sidebar-list-items">
-                    <i class="material-icons md-36">attach_money</i><br>
-                    <p>Shopping</p>
-                </a>
-            </li>
-            <li>
-                <a id="loadTasks" href="#tasks" class="sidebar-list-items">
-                    <i class="material-icons md-36">work</i><br>
-                    <p>Tasks</p>
-                </a>
-            </li>
-            <li>
-                <a id="loadStatistics" href="#stats" class="sidebar-list-items">
-                    <i class="material-icons md-36">pie_chart</i><br>
-                    <p>Statistics</p>
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div class="sidebar-list">
+        <div class="sidebar-list-items">
+            <a id="loadFeed" href="#feed">
+                <i class="material-icons md-36">insert_comment</i>
+                <p>Feed</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadShoppingList" href="#shopping">
+                <i class="material-icons md-36">attach_money</i>
+                <p>Shopping</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadTasks" href="#tasks">
+                <i class="material-icons md-36">work</i>
+                <p>Tasks</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadStatistics" href="#stats">
+                <i class="material-icons md-36">pie_chart</i>
+                <p>Statistics</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items aboutlink">
+            <a id="loadAbout" href="#about">
+                <p>About</p>
+            </a>
+        </div>
+    </div>
 </div>
 
 <!-- Middle of page: Group pages with sidebar are loaded into this div -->
