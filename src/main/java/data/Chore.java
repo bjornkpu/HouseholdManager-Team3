@@ -12,6 +12,7 @@ public class Chore {
     private ArrayList<String> completedBy;
     private String assignedTo;
     private Date deadline;
+    private int partyId;
 
     public Chore() {
     }
@@ -21,12 +22,19 @@ public class Chore {
         this.description = description;
     }
 
-    public Chore(int choreID, String description, ArrayList<String> completedBy, boolean finished) {
+    public Chore(int choreID, String description, ArrayList<String> completedBy, String assignedTo, Date deadline, int partyId) {
         this.choreId = choreID;
         this.description = description;
         this.completedBy = completedBy;
         this.assignedTo = assignedTo;
         this.deadline = deadline;
+        this.partyId=partyId;
+    }
+
+    public Chore(String description, Date deadline, int partyId) {
+        this.description = description;
+        this.deadline = deadline;
+        this.partyId=partyId;
     }
 
     public int getChoreId() {
@@ -69,5 +77,11 @@ public class Chore {
         this.deadline=deadline;
     }
 
+    public int getPartyId() {
+        return partyId;
+    }
 
+    public void setPartyId(int partyId) {
+        this.partyId = partyId;
+    }
 }

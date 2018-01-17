@@ -9,8 +9,8 @@ public class Item {
     private int id;
     private String name;
     private int status;
-    private int shoppingListId;
-    private int dispId;
+    private int shoppingListId = -1;
+    private int disbursementId = -1;
 
     public Item(){
     }
@@ -21,12 +21,12 @@ public class Item {
         this.status = status;
     }
 
-    public Item(int id, String name, int status, int shoppingListId, int dispId) {
+    public Item(int id, String name, int status, int shoppingListId, int disbursementId) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.shoppingListId = shoppingListId;
-        this.dispId = dispId;
+        this.disbursementId = disbursementId;
     }
 
     public int getId() {
@@ -53,7 +53,18 @@ public class Item {
 
     public void setShoppingListId(int shoppingListId) { this.shoppingListId = shoppingListId; }
 
-    public int getDispId() { return dispId; }
+    public int getDisbursementId() { return disbursementId; }
 
-    public void setDispId(int dispId) { this.dispId = dispId; }
+    public void setDisbursementId(int disbursementId) { this.disbursementId = disbursementId; }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", shoppingListId=" + shoppingListId +
+                ", disbursementId=" + disbursementId +
+                '}';
+    }
 }

@@ -2,7 +2,6 @@ package db;
 import data.Group;
 import data.Member;
 import util.Logger;
-import util.UserStatus;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +22,7 @@ public class GroupDao {
     private static Connection connection;
     private static PreparedStatement ps;
     private static ResultSet rs;
-    private static UserStatus userStatus = new UserStatus();
+    private static UserDao userDao;
 
     /**
      * Retrieves a group object with groupname,groupId and the id of the administrator from database
@@ -37,7 +36,7 @@ public class GroupDao {
         try {
             ps = connection.prepareStatement("SELECT party.id,party.name,user_party.user_email FROM party,user_party WHERE party.id = ? AND user_party.party_id = party.id AND user_party.status = ?");
             ps.setInt(1,groupId);
-            ps.setInt(2,userStatus.ADMIN);
+            ps.setInt(2,Member.ADMIN_STATUS);
             rs = ps.executeQuery();
 
             Group group = null;
@@ -52,7 +51,7 @@ public class GroupDao {
                 try {
                     ps = connection.prepareStatement("SELECT * FROM user_party WHERE party_id = ? AND status = ?");
                     ps.setInt(1,groupId);
-                    ps.setInt(2,UserStatus.MEMBER);
+                    ps.setInt(2,Member.ACCEPTED_STATUS);
                     rs = ps.executeQuery();
 
                     while (rs.next()){
@@ -125,7 +124,7 @@ public class GroupDao {
                 try {
                     PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_party WHERE party_id = ? AND status = ?");
                     preparedStatement.setInt(1,g.getId());
-                    preparedStatement.setInt(2,UserStatus.MEMBER);
+                    preparedStatement.setInt(2,Member.ACCEPTED_STATUS);
                     ResultSet resultSets = preparedStatement.executeQuery();
 
                     while (resultSets.next()) {
@@ -189,8 +188,11 @@ public class GroupDao {
      */
     public static boolean addGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
+        userDao = new UserDao();
         if (group.getName() == null || group.getAdmin() == null){
             log.info("Name or admin missing. Group not added.");
+            return false;
+        } else if (userDao.getUser(group.getAdmin()) == null){
             return false;
         }
         try {
@@ -210,7 +212,7 @@ public class GroupDao {
             ps.setString(1,group.getAdmin());
             ps.setInt(2,g.getId());
             ps.setDouble(3,0);
-            ps.setInt(4,UserStatus.ADMIN);
+            ps.setInt(4,Member.ADMIN_STATUS);
             result = ps.executeUpdate();
             log.info("Add party result:" + (result == 1 ? "ok": "failed"));
             return result == 1;
@@ -235,7 +237,7 @@ public class GroupDao {
             ps.setInt(1, groupId);
             int dependencyResult = ps.executeUpdate();
             ps.close();
-            log.info("Delete dependency " + (dependencyResult == 1 ? "ok" : "failed"));
+            log.info("Delete user_party dependency " + (dependencyResult == 1 ? "ok" : "failed"));
 
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
             ps.setInt(1,groupId);
@@ -290,17 +292,38 @@ public class GroupDao {
      */
     public static boolean updateGroup(Group group) throws SQLException {
         connection = Db.instance().getConnection();
+        int result = 0;
+        int upUser = 0;
+        userDao = new UserDao();
         try {
-            ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
-            ps.setString(1,group.getName());
-            ps.setInt(2,group.getId());
-            int result = ps.executeUpdate();
-            log.info("Update group, result: " + (result == 1? "ok":"failed"));
-            return result == 1;
+            if(group.getName() != null || !group.getName().equals("")) {
+                ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
+                ps.setString(1, group.getName());
+                ps.setInt(2, group.getId());
+                result = ps.executeUpdate();
+                //Db.close(ps);
+                log.info("Update group, result: " + (result == 1 ? "ok" : "failed"));
+            } else {
+                result = 1;
+                log.info("New name not found. Updating group name unsuccessful");
+            }
+            if(group.getAdmin() != null && !group.getAdmin().equals("") && userDao.getUser(group.getAdmin()) != null){
+                ps = connection.prepareStatement("UPDATE user_party set user_email=? WHERE party_id = ? AND status=?");
+                ps.setString(1,group.getAdmin());
+                ps.setInt(2,group.getId());
+                ps.setInt(3,Member.ADMIN_STATUS);
+                upUser = ps.executeUpdate();
+                //Db.close(ps);
+                log.info("Update user_party, result: " + (upUser == 1? "ok":"failed"));
+            } else {
+                upUser = 1;
+                log.info("User not found " + group.getAdmin());
+                }
+            return result == 1 && upUser == 1;
         } finally {
-            Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+            Db.close(rs);
+            connection.close();
         }
     }
 

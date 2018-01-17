@@ -7,6 +7,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import util.Logger;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -50,6 +52,13 @@ public class ShoppingListDaoTest {
     }
 
     @Test
+    public void addShoppingList() throws SQLException{
+        ShoppingList sl = new ShoppingList();
+        sl.setId(slId);
+        ShoppingListDao.addShoppingList(sl);
+    }
+
+    @Test
     public void testGetShoppingList(){
         ShoppingList sl = new ShoppingList();
 
@@ -63,17 +72,36 @@ public class ShoppingListDaoTest {
     }
 
     @Test
-    public void testGetShoppingListByGroupid(){
+    public void testGetShoppingListByGroupId(){
         ArrayList<ShoppingList> slList = new ArrayList<ShoppingList>();
+        ShoppingList testGetByGroup = new ShoppingList(46, "getByGroupIdTest", groupId, null, userList);
 
+//        adds new shoppinglist to database
+        try {
+            ShoppingListDao.addShoppingList(testGetByGroup);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+//      gets both shoppinglists from database connected to groupId
         try {
             slList = ShoppingListDao.getShoppingListByGroupid(groupId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+//      deletes extra added shoppinglist from database
+        try {
+            ShoppingListDao.delShoppingList(testGetByGroup.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         assertNotNull(slList);
-        assertEquals(slList.get(0).getId(), shoppingListTest.getId());
+
+        assertEquals(shoppingListTest.getId(), slList.get(0).getId());
+
+        assertEquals(testGetByGroup.getId(), slList.get(1).getId());
     }
 
     @Test
@@ -87,30 +115,30 @@ public class ShoppingListDaoTest {
         }
 
         assertNotNull(slList);
-        assertEquals(slList.get(0).getId(), shoppingListTest.getId());
+        assertEquals(shoppingListTest.getId(), slList.get(0).getId());
     }
 
-//    @Test
-//    public void testUpdateShoppingList(){
-//        ShoppingList updatedSl = new ShoppingList(slId, "nyttNavn", groupId, null, null);
-//        ShoppingList updateTest = new ShoppingList();
-//
-//        try {
-//            ShoppingListDao.updateShoppingList(updatedSl);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            updateTest = ShoppingListDao.getShoppingList(slId, u.getEmail());
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        assertEquals(updateTest.getId(), updatedSl.getId());
-//        assertEquals(updateTest.getName(), updatedSl.getName());
-//
-//    }
+    @Test
+    public void testUpdateShoppingList(){
+        ShoppingList updatedSl = new ShoppingList(slId, "nyttNavn", groupId, null, userList);
+        ShoppingList updateTest = new ShoppingList();
+
+        try {
+            ShoppingListDao.updateShoppingList(updatedSl);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            updateTest = ShoppingListDao.getShoppingList(slId, u.getEmail());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertEquals(updatedSl.getId(), updateTest.getId());
+        assertEquals(updatedSl.getName(), updateTest.getName());
+
+    }
 
     @AfterClass
     public static void tearDown() throws SQLException{

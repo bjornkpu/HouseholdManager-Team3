@@ -10,6 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * Martin Wangen
+ */
 public class MemberDao {
     private static final Logger log = Logger.getLogger();
 
@@ -21,7 +27,7 @@ public class MemberDao {
         String partyId = ""+groupId;
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT * FROM user NATURAL JOIN user_party WHERE party_id=? AND (status=? OR status=?);");
+            ps = connection.prepareStatement("SELECT * FROM user LEFT JOIN user_party ON user.email = user_party.user_email WHERE party_id=? AND (status=? OR status=?);");
             ps.setString(1,partyId);
             ps.setString(2,String.valueOf(Member.ACCEPTED_STATUS));
             ps.setString(3,String.valueOf(Member.ADMIN_STATUS));
@@ -50,7 +56,7 @@ public class MemberDao {
     public static ArrayList<Group> getGroupsByMember(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("SELECT party.id,party.name FROM party NATURAL JOIN user_party WHERE user_email=? AND (status=? OR status=?);");
+            ps = connection.prepareStatement("SELECT id,name FROM party LEFT JOIN user_party ON party.id = user_party.party_id WHERE user_email=? AND (status=? OR status=?);");
             ps.setString(1, email);
             ps.setString(2, String.valueOf(Member.ACCEPTED_STATUS));
             ps.setString(3, String.valueOf(Member.ADMIN_STATUS));
@@ -61,7 +67,8 @@ public class MemberDao {
             while (rs.next()) {
                 group = new Group();
                 group.setId(Integer.parseInt(rs.getString("id")));
-                group.setName(rs.getString("password"));
+                group.setName(rs.getString("name"));
+                groups.add(group);
             }
             return groups;
         } finally {
@@ -75,7 +82,7 @@ public class MemberDao {
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement(
-                    "SELECT party.name,party_id FROM user_party LEFT JOIN party ON party.id= user_party.party_id WHERE user_email=? AND status=?");
+                    "SELECT name,party_id FROM user_party LEFT JOIN party ON party.id= user_party.party_id WHERE user_email=? AND status=?");
             ps.setString(1,email);
             ps.setString(2,String.valueOf(Member.PENDING_STATUS));
             rs = ps.executeQuery();
@@ -84,6 +91,7 @@ public class MemberDao {
             Group group = null;
             while(rs.next()) {
                 group = new Group();
+                group.setId(Integer.parseInt(rs.getString("party_id")));
                 group.setName(rs.getString("name"));
                 invites.add(group);
             }

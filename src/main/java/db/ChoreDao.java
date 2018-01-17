@@ -18,6 +18,31 @@ public class ChoreDao {
     private static Connection connection;
     private static PreparedStatement ps;
     private static ResultSet rs;
+    private static ResultSet res;
+
+    /** Find what user completed the chore
+     * @param choreID id of the chore you want to check
+     * @return the email of teh user who is on the chore
+     * @throws SQLException if the query fails
+     */
+    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            ps= connection.prepareStatement("SELECT user_email FROM chore_log WHERE chore_id=?");
+            ps.setInt(1,choreID);
+            res = ps.executeQuery();
+            ArrayList<String> result = new ArrayList<>();
+            while(res.next()){
+                result.add(res.getString("user_id"));
+            }
+            return result;
+        }
+        finally {
+            Db.close(res);
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
 
     /** gets the chore by id
      * @param choreId the chore you want to get
@@ -29,24 +54,24 @@ public class ChoreDao {
         try {
             ps = connection.prepareStatement("SELECT * FROM chore WHERE id=?");
             ps.setInt(1,choreId);
-            ResultSet res = ps.executeQuery();
+            rs = ps.executeQuery();
             Chore chore = null;
-            if(res.next()){
+            if(rs.next()){
                 log.info("Found Todo with id: " + choreId);
-                String regularityRead = rs.getString("regularity");
-                int regularity = Integer.parseInt(regularityRead);
+                int regularity = rs.getInt("regularity");
                 if(regularity>0){
                     chore =new RepeatedChore(regularity);
                 }
                 else{
                     chore = new Chore();
                 }
-                chore = new Chore();
-                chore.setDescription(rs.getString("description"));
+                chore.setChoreId(rs.getInt("id"));
+                chore.setDescription(rs.getString("name"));
                 ArrayList<String> completedBy = findCompletedBy(choreId);
                 chore.setCompletedBy(completedBy);
-                chore.setAssignedTo(rs.getString("assignedTo"));
+                chore.setAssignedTo(rs.getString("user_email"));
                 chore.setDeadline(rs.getDate("deadline"));
+                chore.setPartyId(rs.getInt("party_id"));
             }
             else{
                 log.info("Could not find Todo");
@@ -60,47 +85,46 @@ public class ChoreDao {
         }
     }
 
-    /** adds a chore tot he database
-     * @param chore the chore you want to add
-     * @param partyId the id of the group you want to add the chore to
-     * @return true if the query succeeds
-     * @throws SQLException if the query fails
-     */
-    public static boolean addChore(Chore chore, int partyId) throws SQLException{
+    public static ArrayList<Chore> getChores(int partyId) throws SQLException{
         connection = Db.instance().getConnection();
-        try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(description, regularity, deadline, party_id, user_email) VALUES (?,?,?,?,?,?)");
-            ps.setString(1, chore.getDescription());
-            ps.setInt(2, 0);
-            ps.setDate(3, (Date) chore.getDeadline());
-            ps.setInt(4, partyId);
-            ps.setString(5, chore.getAssignedTo());
-            int result = ps.executeUpdate();
-            return result == 1;
+        try{
+            ps = connection.prepareStatement("SELECT * FROM chore WHERE party_id=?");
+            ps.setInt(1,partyId);
+            res = ps.executeQuery();
+            ArrayList<Chore> resultat = new ArrayList<>();
+            while(res.next()){
+                Chore chore;
+                if(res.getInt("regularity")>0){
+                    chore = new RepeatedChore(res.getInt("regularity"));
+                }
+                else{
+                    chore = new Chore();
+                }
+                chore.setPartyId(partyId);
+                chore.setChoreId(res.getInt("id"));
+                chore.setDescription(res.getString("name"));
+                chore.setAssignedTo(res.getString("user_email"));
+                chore.setDeadline(res.getDate("deadline"));
+                resultat.add(chore);
+            }
+            return resultat;
         }
         finally {
-            Db.close(rs);
-            Db.close(ps);
-            Db.close(connection);
+            res.close();
+            ps.close();
+            connection.close();
         }
     }
 
-    /** Find what user completed the chore
-     * @param choreID id of the chore you want to check
-     * @return the email of teh user who is on the chore
-     * @throws SQLException if the query fails
-     */
-    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+    public static boolean addChore(Chore chore) throws SQLException{
         connection = Db.instance().getConnection();
-        try{
-            ps= connection.prepareStatement("SELECT user_id FROM chore_log WHERE chore_id=?");
-            ps.setInt(1,choreID);
-            rs = ps.executeQuery();
-            ArrayList<String> result = new ArrayList<>();
-            while(rs.next()){
-                result.add(rs.getString("user_id"));
-            }
-            return result;
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(name, regularity, deadline, party_id) VALUES (?,0,?,?)");
+            ps.setString(1, chore.getDescription());
+            ps.setDate(2, (Date) chore.getDeadline());
+            ps.setInt(3, chore.getPartyId());
+            int result = ps.executeUpdate();
+            return result == 1;
         }
         finally {
             Db.close(rs);
@@ -128,6 +152,20 @@ public class ChoreDao {
             Db.close(rs);
             Db.close(ps);
             Db.close(connection);
+        }
+    }
+
+    public static boolean deleteChore(int id) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            ps = connection.prepareStatement("DELETE FROM chore WHERE id=?");
+            ps.setInt(1,id);
+            int result = ps.executeUpdate();
+            return result == 1;
+        }
+        finally{
+            ps.close();
+            connection.close();
         }
     }
 

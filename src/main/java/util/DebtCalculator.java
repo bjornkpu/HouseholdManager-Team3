@@ -4,6 +4,13 @@ import data.Member;
 
 import java.util.ArrayList;
 
+/**
+ * -Description of the class-
+ *
+ * @author
+ * Martin Wangen
+ */
+
 public class DebtCalculator {
     public static boolean makePayment(Member payer, Member recipient, double amount){
 

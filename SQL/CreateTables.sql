@@ -48,24 +48,24 @@ CREATE TABLE chore(
   id INTEGER NOT NULL AUTO_INCREMENT,
   name VARCHAR(90),
   regularity INTEGER (4),
-  deadline DATE,
+  deadline TIMESTAMP,
   party_id INTEGER NOT NULL,
   user_email VARCHAR(255),
   CONSTRAINT chore_pk PRIMARY KEY(id));
 
 CREATE TABLE chore_log(
-  user_email VARCHAR(80),
-  chore_id INTEGER(10),
+  user_email VARCHAR(80) NOT NULL,
+  chore_id INTEGER(10) NOT NULL,
   done TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT chore_log_pk PRIMARY KEY (user_email,chore_id)
 );
 
 CREATE TABLE item (
-  id INTEGER(10) AUTO_INCREMENT,
+  id INTEGER(10) NOT NULL AUTO_INCREMENT,
   name VARCHAR(30) NOT NULL ,
   status INTEGER(1) NOT NULL,
   shoppinglist_id INTEGER(10),
-  dips_id INTEGER(10),
+  disbursement_id INTEGER(10),
   CONSTRAINT item_pk PRIMARY KEY (id));
 
 CREATE TABLE shoppinglist(
@@ -90,7 +90,7 @@ CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
-  date DATE,
+  date TIMESTAMP NOT NULL,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   CONSTRAINT disbursement_pk PRIMARY KEY(id));
@@ -134,7 +134,7 @@ ALTER TABLE user_disbursement
   ADD CONSTRAINT user_disbursement_fk2 FOREIGN KEY(disp_id)REFERENCES disbursement(id);
 
 ALTER TABLE item
-  ADD CONSTRAINT item_fk1 FOREIGN KEY(dips_id) REFERENCES  disbursement(id);
+  ADD CONSTRAINT item_fk1 FOREIGN KEY(disbursement_id) REFERENCES  disbursement(id);
 
 ALTER TABLE item
   ADD CONSTRAINT item_fk2 FOREIGN KEY(shoppinglist_id) REFERENCES shoppinglist(id);
@@ -150,3 +150,4 @@ ALTER TABLE chore_log
 
 ALTER TABLE chore_log
     ADD CONSTRAINT chore_log_fk2 FOREIGN KEY (chore_id) REFERENCES chore(id);
+
