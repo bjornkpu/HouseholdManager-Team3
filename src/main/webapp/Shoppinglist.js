@@ -16,6 +16,35 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
     })
 
+    $('#addItem').click(function () {
+        var name=prompt("Add item:","Item name");
+        if (name!=null){
+            x= name + " registered!";
+            alert(x);
+        }
+        var tableRef = document.getElementById('shoppingTable').getElementsByTagName('tbody')[0];
+
+// Insert a row in the table at the last row
+        var newRow   = tableRef.insertRow(tableRef.rows.length);
+        alert(tableRef.rows.length);
+
+// Insert a cell in the row at index 0
+        var newCell  = newRow.insertCell(0);
+
+// Append a text node to the cell
+        newText  = document.createTextNode(String(tableRef.rows.length));
+        newCell.appendChild(newText);
+        newCell.scope='row';
+        newCell = newRow.insertCell(1);
+        var newText  = document.createTextNode(name);
+        newCell.appendChild(newText);
+        newCell = newRow.insertCell(2);
+        newText  = document.createTextNode('unassigned');
+        newCell.appendChild(newText);
+        newCell = newRow.insertCell(3);
+        newCell.innerHTML = '<button type="button"  class="removeItemButton" title="Remove this row">Delete</button>';
+    })
+
     $('.backToShoppinglist').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
@@ -115,7 +144,7 @@ $(document).ready(function() {
         // shoppingListArray = data;
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
-            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="3" href="#'+i+'">' +
+            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
                 data[i].name + '</aclass></li>'
             );
         }
@@ -140,11 +169,19 @@ $(document).ready(function() {
         });
     });
 
-    $('#shoppinglistdropdown').click(function(){
-        document.cookie = "listindex="+document.URL.substr(document.URL.indexOf('#')+1);
+    // $('#shoppinglistdropdown').click(function(){
+    //     alert($(this).index());
+    // });
 
-        alert(document.cookie);
+    $("#shoppinglistdropdown").on("click", "a.link", function(){
+        alert(lists[this.id].name);
     });
+
+    // var selected_index = null;
+    // $('.dropdown-menu').on('click', function(){
+    //     $(this).parent().parent().prev().html($(this).html() + '<span class="caret"></span>');
+    //     selected_index = $(this).closest('li').index();
+    // });
 
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {

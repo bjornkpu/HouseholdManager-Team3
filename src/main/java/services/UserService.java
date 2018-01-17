@@ -61,15 +61,17 @@ public class UserService {
     public void update(User user) {
         Session session = (Session)request.getSession().getAttribute("session");
         String currentUserEmail = session.getEmail();
+        System.out.println(currentUserEmail);
         try {
             User oldUser = userDao.getUser(currentUserEmail);
-            if(user.getPassword()==null){
+            if(user.getPassword()==null || user.getPassword().equals("")){
                 user.setPassword(oldUser.getPassword());
                 user.setSalt(oldUser.getSalt());
-            }if(user.getName()==null){
+            }if(user.getName()==null || user.getName().equals("")){
                 user.setName(oldUser.getName());
                 user.setPhone(oldUser.getPhone());
             }
+            user.setEmail(currentUserEmail);
             userDao.updateUser(user);
             log.info("Updated user!");
         } catch(SQLException e) {
