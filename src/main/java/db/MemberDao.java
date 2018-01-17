@@ -42,7 +42,7 @@ public class MemberDao {
                 member.setSalt(rs.getString("salt"));
                 member.setPhone(rs.getString("phone"));
                 member.setName(rs.getString("name"));
-                member.setBalance(Integer.parseInt(rs.getString("balance")));
+                member.setBalance(rs.getDouble("balance"));
                 members.add(member);
             }
 
