@@ -144,7 +144,7 @@ $(document).ready(function() {
         // shoppingListArray = data;
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
-            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="3" href="#'+i+'">' +
+            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
                 data[i].name + '</aclass></li>'
             );
         }
@@ -169,11 +169,19 @@ $(document).ready(function() {
         });
     });
 
-    $('#shoppinglistdropdown').click(function(){
-        document.cookie = "listindex="+document.URL.substr(document.URL.indexOf('#')+1);
+    // $('#shoppinglistdropdown').click(function(){
+    //     alert($(this).index());
+    // });
 
-        alert(document.cookie);
+    $("#shoppinglistdropdown").on("click", "a.link", function(){
+        alert(lists[this.id].name);
     });
+
+    // var selected_index = null;
+    // $('.dropdown-menu').on('click', function(){
+    //     $(this).parent().parent().prev().html($(this).html() + '<span class="caret"></span>');
+    //     selected_index = $(this).closest('li').index();
+    // });
 
     //function which lists out information on the choosen shoppinglist
     function renderShoppingListInfo(data) {
