@@ -1,12 +1,9 @@
 $(document).ready(function() {
 
-    var group = function () {
-        
-    };
     var disbursementList = [];
     var lists;
     var items;
-    var currentShoppingList = 0;
+    var currentShoppingList = 1;
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -18,23 +15,12 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
     });
 
-    function itemDataJSON(){
-        return JSON.stringify(
-            {
-                navn: $("#navnInput").val()
-            });
-    }
-
     $('#addItem').click(function () {
         var name=prompt("Add item:","Item name");
-        if (name!=null){
-            x= name + " registered!";
-            alert(x);
-        }
 
         $.ajax({
             type: "POST",
-            url: "rest/groups/1/shoppingLists/1/items",
+            url: "rest/groups/1/shoppingLists/"+currentShoppingList+"/items",
             data: JSON.stringify(
                 {
                     name: name,
@@ -52,28 +38,6 @@ $(document).ready(function() {
                 console.log(xhr, resp, text);
             }
         });
-
-        var tableRef = document.getElementById('shoppingTable').getElementsByTagName('tbody')[0];
-
-// Insert a row in the table at the last row
-        var newRow   = tableRef.insertRow(tableRef.rows.length);
-        alert(tableRef.rows.length);
-
-// Insert a cell in the row at index 0
-        var newCell  = newRow.insertCell(0);
-
-// Append a text node to the cell
-        newText  = document.createTextNode(String(tableRef.rows.length));
-        newCell.appendChild(newText);
-        newCell.scope='row';
-        newCell = newRow.insertCell(1);
-        var newText  = document.createTextNode(name);
-        newCell.appendChild(newText);
-        newCell = newRow.insertCell(2);
-        newText  = document.createTextNode('unassigned');
-        newCell.appendChild(newText);
-        newCell = newRow.insertCell(3);
-        newCell.innerHTML = '<button type="button"  class="removeItemButton" title="Remove this row">Delete</button>';
     });
 
     $('.backToShoppinglist').click(function () {
@@ -109,17 +73,22 @@ $(document).ready(function() {
         creatingDisbursement.style.display="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
-    })
+    });
 
-    $(document).on('click', 'button.removeItemButton', function () {
+    $(".removeItemButton").click(function () {
         // AJAX Request
+        alert("klikk");
         $.ajax({
-            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + itemId,
+            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
             type: 'POST',
             data: { id:id },
             success: function(response){
                 alert("Item deleted from shoppinglist");
+                console.log(this.value);
                 $(this).closest('tr').remove();
+            },
+            error: function(){
+                console.log(this.value);
             }
         });
     });
@@ -230,13 +199,18 @@ $(document).ready(function() {
 
     function setItemsInTable(){
         var len = items.length;
+        var table = document.getElementById("tableShoppinglist");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+
         for(var i = 0; i < len; i++){
             $("#tableShoppinglist").append(
                 "<tr>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <button type=\"button\" class=\"removeItemButton\" title=\"Remove this row\">Delete</button></td>" +
+                "<td> <button value="+ items[i].id +" id=\"a\" type=\"button\" class=\"removeItemButton\" title=\"Remove this row\" >Delete</button></td>" +
                 "</tr>"
             );
         }
