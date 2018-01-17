@@ -140,11 +140,11 @@ public class ShoppingListDao {
         connection = Db.instance().getConnection();
         try {
 
-            if(!groupCheck(groupId)){ //checks if the party-object exists
-                log.info("Could not find party " + groupId);
-//              TODO should this return null
-                return null;
-            }
+//            if(!groupCheck(groupId)){ //checks if the party-object exists
+//                log.info("Could not find party " + groupId);
+////              TODO should this return null
+//                return null;
+//            }
 
             ps = connection.prepareStatement("SELECT * FROM shoppinglist WHERE party_id = ?");
             ps.setInt(1,groupId);
@@ -158,8 +158,8 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId(), connection));
-                sl.setUserList(UserDao.getUsersInShoppingList(sl.getId()));
+//                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
+//                sl.setUserList(UserDao.getUsersInShoppingList(sl.getId()));
                 shoppinglistList.add(sl);
             }
             return shoppinglistList;

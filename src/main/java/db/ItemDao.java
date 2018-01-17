@@ -50,30 +50,31 @@ public class ItemDao {
         }
     }
 
-    /** Method that gets any items connected to a given ShoppingList.
-     * @param id The id of the ShoppingList the items are connected to.
-     * @return An ArrayList of items connected to the given ShoppingList.
-     * @throws SQLException when failing to get Item.
-     */
+//    /** Method that gets any items connected to a given ShoppingList.
+//     * @param id The id of the ShoppingList the items are connected to.
+//     * @return An ArrayList of items connected to the given ShoppingList.
+//     * @throws SQLException when failing to get Item.
+//     */
+//    public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
+//        connection = Db.instance().getConnection();
+//        try{
+//	        return getItemsInShoppingListMethod(id, connection);
+//        }finally {
+//	        Db.close(connection);
+//        }
+//    }
+//
+//    /** Method that gets any items connected to a given ShoppingList.
+//     * @param id The id of the ShoppingList the items are connected to.
+//     * @return An ArrayList of items connected to the given ShoppingList.
+//     * @throws SQLException when failing to get Item.
+//     */
+//    public static ArrayList<Item> getItemsInShoppingList(int id, Connection connection) throws SQLException {
+//	    return getItemsInShoppingListMethod(id, connection);
+//    }
+
     public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
-        try{
-	        return getItemsInShoppingListMethod(id, connection);
-        }finally {
-	        Db.close(connection);
-        }
-    }
-
-    /** Method that gets any items connected to a given ShoppingList.
-     * @param id The id of the ShoppingList the items are connected to.
-     * @return An ArrayList of items connected to the given ShoppingList.
-     * @throws SQLException when failing to get Item.
-     */
-    public static ArrayList<Item> getItemsInShoppingList(int id, Connection connection) throws SQLException {
-	    return getItemsInShoppingListMethod(id, connection);
-    }
-
-    private static ArrayList<Item> getItemsInShoppingListMethod(int id, Connection connection) throws SQLException {
 	    try {
 		    ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
 		    ps.setInt(1,id);
@@ -99,6 +100,7 @@ public class ItemDao {
 	    } finally {
 		    Db.close(rs);
 		    Db.close(ps);
+		    Db.close(connection);
 	    }
     }
 

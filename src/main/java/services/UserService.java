@@ -4,6 +4,8 @@ import data.User;
 import db.Db;
 import db.UserDao;
 import java.sql.SQLException;
+
+import util.ForgottenPassword;
 import util.Logger;
 import util.LoginCheck;
 
@@ -75,6 +77,29 @@ public class UserService {
             user.setEmail(currentUserEmail);
             userDao.updateUser(user);
             log.info("Updated user!");
+        } catch(SQLException e) {
+            log.error("Failed to update user", e);
+            throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+    @PUT
+    @Path("/forgotPw/{toEmail}")
+    public void genNewPassword(@PathParam("toEmail") String toEmail) {
+            String newPassword = null;
+            log.info("Reset password request recieved!");
+        try {
+            User user = UserDao.getUser(toEmail);
+            if(user!=null){
+                newPassword = ForgottenPassword.generateNewPassword(toEmail);
+                newPassword = LoginCheck.getHash(newPassword);
+                String salt = LoginCheck.getSalt();
+                user.setSalt(salt);
+                String pw=LoginCheck.getHash(newPassword+salt);
+                user.setPassword(pw);
+                log.info("Salt: "+salt+" PW: "+pw);
+                userDao.updateUser(user);
+                log.info("Updated user!");
+            }
         } catch(SQLException e) {
             log.error("Failed to update user", e);
             throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
