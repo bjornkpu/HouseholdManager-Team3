@@ -76,10 +76,11 @@ public class GroupService {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void addGroup(Group group) {
+    public Response addGroup(Group group) {
         try {
             log.info("Group added. ID: " + group.getId());
-            groupDao.addGroup(group);
+            //groupDao.addGroup(group);
+            return Response.status(200).entity(groupDao.addGroup(group)).build();
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);

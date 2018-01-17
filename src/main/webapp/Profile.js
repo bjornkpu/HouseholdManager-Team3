@@ -123,7 +123,7 @@ $(document).ready(function() {
             data: JSON.stringify({
                 'name': $("#nameGroup").val(),
                 'description':null,
-                'admin':"en@h.no",
+                'admin':$("#emailReadOnly").val(),
                 'members':null
             }),
             /*
@@ -151,6 +151,7 @@ $(document).ready(function() {
                 },
                 200: function () {
                     console.log("Group Added");
+                    window.location.href = "Navbars.html";
 
                 }
             }
