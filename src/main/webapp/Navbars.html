@@ -109,7 +109,19 @@
 
 <!-- Middle of page: Group pages with sidebar are loaded into this div -->
 <div id="page-content">
-    <p>Text test <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <br><br>
+    <table id="tempDivForGroupUsers">
+        <tr><h5>Invite users to group</h5></tr>
+        <tr>
+            <td><input type="text" id="invUserField" placeholder="insert username"> </td>
+            <td> <button id="invUserButton">Invite</button></td>
+        </tr>
+        <table id="tabForUsersInGroup">
+            <th> Members</th>
+        </table>
+    </table>
+
+    <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br><br><br><br><br><br> Scroll</p>
 </div>
 
@@ -123,5 +135,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="navbars.js"></script>
+
 </body>
 </html>

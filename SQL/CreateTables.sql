@@ -159,6 +159,11 @@ INSERT INTO user(name, email, password, salt, phone) VALUES( 'Muts Duvudsun', 'e
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'Murtin Wungun', 'to@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'Knat Waag', 'tre@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'PW: qwe', 'abcqwe', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'geir', 'fire@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',123456);
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'ove', 'fem@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
+INSERT INTO user(name, email, password, salt, phone) VALUES( 'lisa', 'seks@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@g.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+
 
 INSERT INTO party(name) VALUES ('Frex');
 INSERT INTO party(name) VALUES ('Brummun');
@@ -166,7 +171,11 @@ INSERT INTO party(name) VALUES ('Brummun');
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,0.2,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-2000.1,0);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',1,0,0);
-INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',2,0,2);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',2,0,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fire@h.no',2,0.2,2);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fem@h.no',2,-2000.1,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('seks@h.no',2,0,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('sju@h.no',2,0,1);
 
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Husk å dra ned i do, Murtin',1,'en@h.no');
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Kommer ikke hjem før onsdag',1,'to@h.no');
