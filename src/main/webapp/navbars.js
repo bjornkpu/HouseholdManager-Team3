@@ -13,33 +13,18 @@ $(document).ready(function(){
         });
     });
 
-
-
-    function renderMembers(data) {
-        var len = data.length;
-        for (var i = 0; i < len;i++ ) {
-            $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
-        }
-    }
     var lists;
-
-    $(document).ready(function () {
-        // console.log("menu1 pressed")
-        var url='http://localhost:8080/scrum/rest/groups/'+2+'/members';
-        $.get(url, function(data, status){
-            lists=data;
-            renderMembers(data)
-            if(status === "success"){
-                console.log("members content loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading members");
-            }
-        });
+    var url='http://localhost:8080/scrum/rest/groups/'+2+'/members';
+    $.get(url, function(data, status){
+        lists=data;
+        renderMembers(data)
+        if(status === "success"){
+            console.log("members content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading members");
+        }
     });
-
-
-
 
     /*
      * Changing the dropdown arrow to go upwards when clicked
@@ -74,4 +59,11 @@ $(document).ready(function(){
     });
 
 });
+
+function renderMembers(data) {
+    var len = data.length;
+    for (var i = 0; i < len;i++ ) {
+        $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
+    }
+}
 
