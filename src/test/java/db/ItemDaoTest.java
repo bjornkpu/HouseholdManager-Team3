@@ -11,6 +11,7 @@ import util.LoginCheck;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,13 +23,13 @@ public class ItemDaoTest {
     private static int shoppingListId;
     private static int disbursementId;
     private static String userId;
+    private static int groupId;
 
     @BeforeClass
     public static void setUp() throws SQLException{
         itemId = 67;
         shoppingListId = 67;
-        disbursementId = 67;
-        userId = "itemTestUser@test.no";
+        userId = "itemTestUser5@test.no";
         itemTest = new Item();
         itemTest.setId(itemId);
         itemTest.setName("TestItem");
@@ -41,9 +42,11 @@ public class ItemDaoTest {
         g.setName("testgroup");
         g.setAdmin(userId);
         UserDao.addUser(u);
-        GroupDao.addGroup(g);
+        groupId = GroupDao.addGroup(g);
+        Disbursement disbursement = new Disbursement(0,"name",new Date(),u);
+        disbursementId = DisbursementDao.addDisbursement(disbursement,groupId);
 
-        shoppingListTest = new ShoppingList(shoppingListId, "ItemTest", 1, null, userList);
+        shoppingListTest = new ShoppingList(shoppingListId, "ItemTest",groupId, null, userList);
 
 
         ShoppingListDao.addShoppingList(shoppingListTest);
@@ -87,9 +90,26 @@ public class ItemDaoTest {
 
     @Test
     public void testGetItemsInShoppingList(){
-        ArrayList<Item> items = new ArrayList<Item>();
+        ArrayList<Item> items = new ArrayList<>();
+        itemTest.setShoppingListId(shoppingListId);
 
         try {
+            ItemDao.updateItem(itemTest);
+            items = ItemDao.getItemsInShoppingList(shoppingListId);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        assertNotNull(items);
+        assertEquals(items.get(0).getId(), itemTest.getId());
+    }
+    @Test
+    public void testGetItemsInDisbursment(){
+        ArrayList<Item> items = new ArrayList<>();
+        itemTest.setDisbursementId(disbursementId);
+
+        try {
+            ItemDao.updateItem(itemTest);
             items = ItemDao.getItemsInShoppingList(shoppingListId);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -115,7 +135,7 @@ public class ItemDaoTest {
     public static void tearDown() throws SQLException{
         ItemDao.delItem(itemTest.getId());
         ShoppingListDao.delShoppingList(shoppingListTest.getId());
-        MemberDao.deleteMember(userId,1);
+        MemberDao.deleteMember(userId,groupId);
         GroupDao.deleteGroup(GroupDao.getGroupByName("testgroup").get(0).getId());
         UserDao.delUser(userId);
     }
