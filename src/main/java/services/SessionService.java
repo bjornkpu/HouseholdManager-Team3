@@ -66,7 +66,7 @@ public class SessionService {
         //Check if there is a session
         if(session == null) {
             log.info("Session not found");
-            throw new NotFoundException();
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
         }
         log.info("Returning session info!");
         return session;
