@@ -1,10 +1,9 @@
 $(document).ready(function() {
 
     var disbursementList = [];
-    var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
-    var elements = [];
-
-
+    var lists;
+    var items;
+    var currentShoppingList = 0;
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -14,7 +13,7 @@ $(document).ready(function() {
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
-    })
+    });
 
     $('#addItem').click(function () {
         var name=prompt("Add item:","Item name");
@@ -138,28 +137,23 @@ $(document).ready(function() {
 
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
-        // console.log("data:");
-        // console.log(data);
-        // console.log(data.length);
-        // shoppingListArray = data;
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
                 data[i].name + '</aclass></li>'
             );
         }
-        // elements = document.getElementsByClassName("shoppingListClass");
     }
-
-    var lists;
 
     $(document).ready(function () {
         // console.log("menu1 pressed")
         $('#shoppinglistdropdown').empty();
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
         $.get(url, function(data, status){
-            lists=data;
-            renderShoppingListDropdownMenu(data)
+            lists = data;
+            // renderShoppingListInformation();
+            renderShoppingListDropdownMenu(data);
+            getItemsInShoppingList(data[0].id);
             if(status === "success"){
                 console.log("ShoppingList content loaded successfully!");
             }
@@ -169,45 +163,65 @@ $(document).ready(function() {
         });
     });
 
-    // $('#shoppinglistdropdown').click(function(){
-    //     alert($(this).index());
-    // });
+    function getItemsInShoppingList(id){
+        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists/'+id+'/items';
+        $.get(url, function(data, status){
+            items = data;
+            if(status === "success"){
+                console.log("Item content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading Item content");
+            }
+        });
+    }
 
     $("#shoppinglistdropdown").on("click", "a.link", function(){
-        alert(lists[this.id].name);
+        // alert(lists[this.id].name);
+        currentShoppingList = this.id;
+        renderShoppingListInformation(this.id);
     });
 
-    // var selected_index = null;
-    // $('.dropdown-menu').on('click', function(){
-    //     $(this).parent().parent().prev().html($(this).html() + '<span class="caret"></span>');
-    //     selected_index = $(this).closest('li').index();
-    // });
+    function renderShoppingListInformation(){
+        $("#shoppinglistName").text(lists[currentShoppingList].name);
+
+        var len = items.length;
+        for(var i = 0; i < len; i++){
+            $("#tableShoppinglist").append("<tr>" +
+                "<th scope=\"row\">"+(i+1)+"</th>" +
+                "<td>" + items[i].name + "</td>" +
+                "<td>" + items[i].status + "</td>" +
+                "<td> <button type=\"button\"  class=\"removeItemButton\" title=\"Remove this row\">Delete</button></td>" +
+                "</tr>");
+        }
+    }
 
     //function which lists out information on the choosen shoppinglist
-    function renderShoppingListInfo(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        shoppingListArray = [];
-        var itemArray = [];
-        $.each(list, function(index, Shoppinglist) {
-            itemArray.push({
-                "name": Item.name,
-                "status": Item.status,
-            });
-        });
-        console.log(shoppingListArray);
-        $.each(itemArray, function (index, Shoppinglist) {
-            var scopeNr = 1; //itemNr
-
-                //iteme i shoppingarray og alle item
-                $('#tableShoppinglist').append(
-                    '<tr>' +
-                    '<th scope="row">' + scopeNr + ' </th>' +
-                    '<td>' + Shoppinglist.name + '</td>' +
-                    '<td >' + Shoppinglist.status + '</td>' +
-                    '</tr>');
-
-                console.log("koden kom til bunnen av render info about each shoppinglist");
-                scopeNr++; //disbursementNr increment on each new list
-            });
-        }
+    // function renderShoppingListInfo(data) {
+    //     var list = data == null ? [] : (data instanceof Array ? data : [data]);
+    //     shoppingListArray = [];
+    //     var itemArray = [];
+    //     $.each(list, function(index, Shoppinglist) {
+    //         itemArray.push({
+    //             "name": Item.name,
+    //             "status": Item.status,
+    //         });
+    //     });
+    //     console.log(shoppingListArray);
+    //
+    //     $.each(itemArray, function (index, Shoppinglist) {
+    //         var scopeNr = 1; //itemNr
+    //
+    //             //iteme i shoppingarray og alle item
+    //             $('#tableShoppinglist').append(
+    //                 '<tr>' +
+    //                 '<th scope="row">' + scopeNr + ' </th>' +
+    //                 '<td>' + Shoppinglist.name + '</td>' +
+    //                 '<td >' + Shoppinglist.status + '</td>' +
+    //                 '</tr>');
+    //
+    //             console.log("koden kom til bunnen av render info about each shoppinglist");
+    //             scopeNr++; //disbursementNr increment on each new list
+    //         });
+    //     }
 });
