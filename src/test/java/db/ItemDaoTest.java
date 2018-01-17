@@ -24,7 +24,7 @@ public class ItemDaoTest {
     private static String userId;
 
     @BeforeClass
-    public static void setUp()throws SQLException{
+    public static void setUp() throws SQLException{
         itemId = 67;
         shoppingListId = 67;
         disbursementId = 67;

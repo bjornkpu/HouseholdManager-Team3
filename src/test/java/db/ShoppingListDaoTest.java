@@ -1,6 +1,7 @@
 package db;
 
 import data.Group;
+import data.Item;
 import data.ShoppingList;
 import data.User;
 import org.junit.AfterClass;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * -Description of the class-
@@ -143,44 +145,77 @@ public class ShoppingListDaoTest {
 
     }
 
-   /* @Test
-    public void testItemInShoppingList(){
-	    ItemDao.addItem(itemId,  desc, status)
-    }
-	    addItem(Item i)
+    @Test
+    public void testItemInShoppingList() throws SQLException {
+    	int itemId = 451;
+    	String itemName = "test item";
+    	int itemStatus = 0;
+    	int slId = 946;
+    	int disId = 467;
 
-	    removeItem(Item i){
-		    removeItem(int itemId){
-	    }
-		    getItemList()
-		    getItemFromList(int itemId)
-    }*/
+	    Item smallItem = new Item(itemId, itemName, itemStatus);
+	    Item mediumItem = new Item(itemId+1, itemName+"1", itemStatus);
+	    Item longItem = new Item(itemId+2, itemName+" 2", itemStatus, slId+1, disId+1);
+
+	    ArrayList<Item> itemList = new ArrayList<>();
+	    itemList.add(smallItem);
+	    itemList.add(mediumItem);
+	    itemList.add(longItem);
+
+	    testSmallShoppingList.addItem(itemList.get(0));
+	    testSmallShoppingList.addItem(itemList.get(1));
+	    testSmallShoppingList.addItem(itemList.get(2));
+
+	    assertEquals(testSmallShoppingList.getItemList(), itemList);
+	    assertEquals(testSmallShoppingList.getItemFromList(1), itemList.get(1));
+
+	    testSmallShoppingList.removeItem(smallItem);
+	    testSmallShoppingList.removeItem(mediumItem);
+	    testSmallShoppingList.removeItem(itemId+2);
+
+
+    }
 
     @Test
     public void testUserInShoppingList(){
+    	User testUser = new User( "b@k.com",  "bk",  "123",  "456",  "789");
+	    testSmallShoppingList.addUser(testUser);
+	    User testUser2 = testUser;
+	    testUser2.setEmail("b@k.no");
+	    testSmallShoppingList.addUser(testUser2);
+    	assertTrue(testSmallShoppingList.getUserList().size() == 2);
+    	testSmallShoppingList.removeUser(testUser);
+	    assertTrue(testSmallShoppingList.getUserList().size() == 1);
+	    testSmallShoppingList.removeUser("b@k.no");
+	    assertTrue(testSmallShoppingList.getUserList().size() == 0);
 
     }
 
-    /*@Test
+    @Test
     public void testToString() {
-	    String expected = "ShoppingList{" +
-	    "id=" + 45 +
-	    ", name='" + "testSmallShoppingList" + '\'' +
-	    ", groupId=" + 1 +
-	    ", itemList=" + ""+
-	    ", userList=" + "User{" +
-			    "email='" + "LoginTestEmailATemailDOTcom" + '\'' +
-			    ", name='" + "User1" + '\'' +
-			    ", phone='" + "90706060" + '\'' +
-			    ", password='" + "123" + '\'' +
-			    ", salt='" + testUser.getSalt() + '\'' +
-			    '}' +
-	    '}';
+	    ArrayList<Item> itemList = new ArrayList<Item>();
+	    itemList.add(new Item(8574, "toStringTest", 0));
+	    testSmallShoppingList.addItem(itemList.get(0));
+
+	   String expected = "ShoppingList{" +
+			   "id=46, " +
+			   "name='shoppingListTest', " +
+			   "groupId=0, " +
+			   "itemList=[Item{" +
+				   "id=8574, " +
+				   "name='toStringTest', " +
+				   "status=0, " +
+				   "shoppingListId=-1, " +
+				   "disbursementId=-1}], " +
+			   "userList=[]}";
 	    assertEquals(expected, testSmallShoppingList.toString());
-    }*/
+	    testSmallShoppingList.removeItem(8574);
+    }
 
     @AfterClass
     public static void tearDown() throws SQLException{
+
+
         ShoppingListDao.delShoppingList(slId);
         GroupDao.deleteGroup(testGroup);
         UserDao.delUser(testUser.getEmail());
