@@ -121,15 +121,19 @@ public class ItemDao {
 
             Item item = new Item();
             ArrayList<Item> itemList = new ArrayList<Item>();
-            while(rs.next()) {
-                log.info("Found item in disbursement" + id);
-                item = new Item();
-                item.setId(rs.getInt("id"));
-                item.setName(rs.getString("name"));
-                item.setStatus(rs.getInt("status"));
-                item.setShoppingListId(rs.getInt("shoppinglist_id"));
-                item.setDisbursementId(rs.getInt("disbursement_id"));
-                itemList.add(item);
+            if(rs.next()){
+                do{
+                    log.info("Found item in disbursement" + id);
+                    item = new Item();
+                    item.setId(rs.getInt("id"));
+                    item.setName(rs.getString("name"));
+                    item.setStatus(rs.getInt("status"));
+                    item.setShoppingListId(rs.getInt("shoppinglist_id"));
+                    item.setDisbursementId(rs.getInt("disbursement_id"));
+                    itemList.add(item);
+                }while(rs.next());
+            }else{
+                log.info("Found no items in disbursement "+ id);
             }
             return itemList;
         } finally {
