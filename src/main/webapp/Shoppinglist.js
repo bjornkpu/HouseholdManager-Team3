@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     var disbursementList = [];
     var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
+    var elements = [];
 
 
 
@@ -140,34 +141,38 @@ $(document).ready(function() {
         // console.log("data:");
         // console.log(data);
         // console.log(data.length);
-
-        var i = 0;
+        // shoppingListArray = data;
         var len = data.length;
-        for (; i < len; ) {
-            $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-                data[i].name + '</a></li>'
+        for (var i = 0; i < len;i++ ) {
+            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="3" href="#'+i+'">' +
+                data[i].name + '</aclass></li>'
             );
-            i++;
         }
+        // elements = document.getElementsByClassName("shoppingListClass");
     }
 
-    $('#menu1').click(function () {
-        console.log("menu1 pressed")
+    var lists;
+
+    $(document).ready(function () {
+        // console.log("menu1 pressed")
         $('#shoppinglistdropdown').empty();
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
         $.get(url, function(data, status){
+            lists=data;
             renderShoppingListDropdownMenu(data)
             if(status === "success"){
-                console.log("External content loaded successfully!");
+                console.log("ShoppingList content loaded successfully!");
             }
             if(status === "error"){
-                console.log("Error in loading content");
+                console.log("Error in loading ShoppingList content");
             }
         });
     });
 
-    $('#menu1.dropdown-item').click(function () {
-        alert("link: ");
+    $('#shoppinglistdropdown').click(function(){
+        document.cookie = "listindex="+document.URL.substr(document.URL.indexOf('#')+1);
+
+        alert(document.cookie);
     });
 
     //function which lists out information on the choosen shoppinglist
