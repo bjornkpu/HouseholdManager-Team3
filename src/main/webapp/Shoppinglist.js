@@ -60,20 +60,9 @@ $(document).ready(function() {
                 alert("Item deleted from shoppinglist");
                 $(this).closest('tr').remove();
             }
-    });
-    });
-
-    //finds all shoppinglists
-    function getShoppingListByGroupId() {
-        var groupId=this.id;
-        $.ajax({
-            type: 'GET',
-            url: '/scrum/groups/'+1+'/ShoppingLists/',
-            dataType: "json",
-            success: renderShoppingListDropdownMenu(data)
-
         });
-    }
+    });
+
     //finds all disbursements
     function findAllDisbursements() {
         console.log('findDisbursements');
@@ -119,9 +108,9 @@ $(document).ready(function() {
 
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
-        console.log("data:");
-        console.log(data);
-        console.log(data.length);
+        // console.log("data:");
+        // console.log(data);
+        // console.log(data.length);
 
         var i = 0;
         var len = data.length;
@@ -146,6 +135,10 @@ $(document).ready(function() {
                 console.log("Error in loading content");
             }
         });
+    });
+
+    $('#menu1.dropdown-item').click(function () {
+        alert("link: ");
     });
 
     //function which lists out information on the choosen shoppinglist
