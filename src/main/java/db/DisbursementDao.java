@@ -20,6 +20,13 @@ public class DisbursementDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
 
+    /**
+     * List out disbursements a mamber has in a group
+     * @param groupId Id of the group
+     * @param email Id of the member who's disbursments is to be listed.
+     * @return Disbursement list
+     * @throws SQLException in case of error when connection to database.
+     */
     public static ArrayList<Disbursement> getDisbursementsInGroup(int groupId, String email) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -52,6 +59,13 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Details about a specific disbursment
+     * @param disbursementId id of said disbursment
+     * @param email of the user who request details.
+     * @return Details
+     * @throws SQLException in case of error when connection to database.
+     */
     public static  Disbursement getDisbursementDetails(int disbursementId, String email)throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -85,6 +99,13 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * A method simplyfing and getting a redundency to adding a disbursement to the database
+     * @param disbursement Details about disbursement.
+     * @param groupid group wich the disbursement is to be registered to.
+     * @return boolean to tell if the reistration was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
     public static boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
         connection = Db.instance().getConnection();
         connection.setAutoCommit(false);
@@ -104,6 +125,12 @@ public class DisbursementDao {
         return false;
     }
 
+    /**
+     * Method to connect users to a disbursement.
+     * @param disbursement details containing the users and id of the users to be connected together.
+     * @return boolean to tellif the registration was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
     private static boolean addDisbursementToUsers(Disbursement disbursement) throws SQLException {
         ps = connection.prepareStatement("INSERT INTO user_disbursement " +
                 "(user_email,disp_id)" +
@@ -126,6 +153,13 @@ public class DisbursementDao {
         return true;
     }
 
+    /**
+     * Adding a disbursement to the database
+     * @param disbursement Details about disbursement.
+     * @param groupid group wich the disbursement is to be registered to.
+     * @return id of the disbursement
+     * @throws SQLException in case of error when connection to database.
+     */
     private static int makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
         Timestamp ts = new Timestamp(disbursement.getDate().getTime());
         String payerEmail = disbursement.getPayer().getEmail();

@@ -73,6 +73,12 @@ public class ItemDao {
 //	    return getItemsInShoppingListMethod(id, connection);
 //    }
 
+    /**
+     * Method returning items contained by a given shoppinglist
+     * @param id of the shoppinglist containig the
+     * @return
+     * @throws SQLException
+     */
     public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
         connection = Db.instance().getConnection();
 	    try {

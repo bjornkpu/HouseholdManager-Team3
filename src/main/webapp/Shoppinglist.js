@@ -40,6 +40,88 @@ $(document).ready(function() {
         });
     });
 
+    $('#deleteItems').click(function() {
+        var checked=getChecked();
+        // AJAX Request
+        $.ajax({
+            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/',
+            type: 'DELETE',
+            data: JSON.stringify(checked),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function(response){
+                var table_length = $('#shoppingTable tr').length;
+                for (var i =0; i<table_length;i++){
+                    if($("#checkbox"+i).is(':checked')){
+                        $("#checkbox"+i).closest('tr').remove();
+                    }
+                }
+                alert("Items deleted from shoppinglist");
+            },
+            error: function(){
+                console.log(item.value);
+            }
+        });
+    });
+
+    $('#toBeBought').click(function() {
+        var checked=getChecked();
+        // AJAX Request
+        $.ajax({
+            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/2',
+            type: 'PUT',
+            data: JSON.stringify(checked),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function(response){
+                var table_length = $('#shoppingTable tr').length;
+                for (var i =0; i<table_length;i++){
+                    if($("#checkbox"+i).is(':checked')){
+                        $("#checkbox"+i).closest('tr').addClass('boughtMarked');
+                    }
+                }
+                alert("Items deleted from shoppinglist");
+            },
+            error: function(){
+                console.log(item.value);
+            }
+        });
+    });
+
+    $('#unmarked').click(function() {
+        var checked=getChecked();
+        // AJAX Request
+        var table_length = $('#shoppingTable tr').length;
+        for (var i =0; i<table_length;i++){
+            if($("#checkbox"+i).is(':checked')){
+                $("#checkbox"+i).closest('tr').removeClass("boughtMarked");
+            }
+        }
+        /*$.ajax({
+            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/1',
+            type: 'PUT',
+            data: JSON.stringify(checked),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function(response){
+                var table_length = $('#shoppingTable tr').length;
+                for (var i =0; i<table_length;i++){
+                    if($("#checkbox"+i).is(':checked')){
+                        $("#checkbox"+i).closest('tr').css('background-color', '#00ff04');
+                    }
+                }
+                alert("Items deleted from shoppinglist");
+            },
+            error: function(){
+                console.log(item.value);
+            }
+        });*/
+    });
+
+
     $('.backToShoppinglist').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
@@ -73,24 +155,6 @@ $(document).ready(function() {
         creatingDisbursement.style.display="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
-    });
-
-    $(".removeItemButton").click(function () {
-        // AJAX Request
-        alert("klikk");
-        $.ajax({
-            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
-            type: 'POST',
-            data: { id:id },
-            success: function(response){
-                alert("Item deleted from shoppinglist");
-                console.log(this.value);
-                $(this).closest('tr').remove();
-            },
-            error: function(){
-                console.log(this.value);
-            }
-        });
     });
 
     //finds all disbursements
@@ -205,12 +269,13 @@ $(document).ready(function() {
         }
 
         for(var i = 0; i < len; i++){
+            var id = items[i].id;
             $("#tableShoppinglist").append(
                 "<tr>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <button value="+ items[i].id +" id=\"a\" type=\"button\" class=\"removeItemButton\" title=\"Remove this row\" >Delete</button></td>" +
+                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
                 "</tr>"
             );
         }
@@ -246,3 +311,18 @@ $(document).ready(function() {
     //         });
     //     }
 });
+
+function getChecked(){
+    var table_length = $('#shoppingTable tr').length;
+    var checked = [];
+    for (var i =0; i<table_length;i++){
+        if($("#checkbox"+i).is(':checked')){
+            //checked.add($("#checkbox"+i).value)
+            var id = $("#checkbox"+i)[0].value;
+            checked.push(id);
+        }
+    }return checked;
+
+}
+
+

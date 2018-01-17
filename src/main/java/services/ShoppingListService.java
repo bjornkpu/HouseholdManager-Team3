@@ -19,6 +19,7 @@ import java.util.ArrayList;
 /** Service that handles reading, making, updating and deleting shopping list information.
  * @author BK
  * @author johanmsk
+ * @author Martin Wangen
  */
 @Path("/groups/{groupId}/shoppingLists/")
 public class ShoppingListService {
@@ -184,14 +185,17 @@ public class ShoppingListService {
 	}
 
 	/** Delete the item with the given Id.
-	 * @param itemId the id to the item you are trying to get.
+	 * @param itemIds the id to the items you are trying to delete.
 	 * @throws ServerErrorException when failing to get the item.
 	 */
 	@DELETE
-	@Path("/{shoppingListId}/items/{itemId}")
-	public void delItemById(@PathParam("itemId") int itemId){
+	@Path("/items/")
+	@Consumes("application/json")
+	public void delItemById(int[] itemIds){
 		try{
-			itemDao.delItem(itemId);
+			for(int i = 0;i<itemIds.length;i++){
+				itemDao.delItem(itemIds[i]);
+			}
 		} catch(SQLException e){
 			log.error("Failed to delete item", e);
 			throw new ServerErrorException("Failed to delete item", Response.Status.INTERNAL_SERVER_ERROR, e);

@@ -86,6 +86,13 @@ public class ChoreDao {
         }
     }
 
+    /**
+     * This method is called upon when a chore is completed and is to be logged.
+     * @param choreId  Id of the chore wich is completed
+     * @param users Wich members of the group completed this task
+     * @return Boolean telling if the method was successful
+     * @throws SQLException in case of error when connection to database.
+     */
     public static boolean setCompletedBy(int choreId, ArrayList<String> users) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -109,6 +116,12 @@ public class ChoreDao {
         }
     }
 
+    /**
+     * This method is called uppon when someone wants to display chores registered to a group.
+     * @param partyId The id of the groups, who the chores are registered to.
+     * @return List of the chores registered to the group
+     * @throws SQLException in case of error when connection to database.
+     */
     public static ArrayList<Chore> getChores(int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -140,6 +153,12 @@ public class ChoreDao {
         }
     }
 
+    /**
+     * When adding a chore to a groups To-Do list
+     * @param chore wich needs to be done.
+     * @return boolean to tell if the registration was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
     public static boolean addChore(Chore chore) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -178,6 +197,13 @@ public class ChoreDao {
             Db.close(connection);
         }
     }
+
+    /**
+     *  When a chore is completed and no longer is needed to be stored
+     * @param id of the chore
+     * @return boolean to tell if the deletion was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
 
     public static boolean deleteChore(int id) throws SQLException{
         connection = Db.instance().getConnection();
