@@ -15,11 +15,7 @@ $(document).ready(function() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                var x;
-                x.email=data.email;
-                x.loggedOn=data.loggedOn;
-                console.log(sessionEmail());
-                return x;
+                return data;
             }
         })
     };
@@ -45,13 +41,14 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'PUT',
-                url: 'http://localhost:8080/scrum/rest/user/abcqwe' /**+ sessionEmail()*/, //test
+                url: 'http://localhost:8080/scrum/rest/user/'+ sessionEmail.email, //test
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
                     "name": nameField,
                     "phone": phoneField,
-
+                    "email": sessionEmail.email,
+                    "password":null
 
                 }),
                 success: function (jqXHR, textStatus) {
@@ -123,7 +120,7 @@ $(document).ready(function() {
             data: JSON.stringify({
                 'name': $("#nameGroup").val(),
                 'description':null,
-                'admin':"en@h.no",
+                'admin':$("#emailReadOnly").val(),
                 'members':null
             }),
             /*
@@ -151,6 +148,7 @@ $(document).ready(function() {
                 },
                 200: function () {
                     console.log("Group Added");
+                    window.location.href = "Navbars.html";
 
                 }
             }

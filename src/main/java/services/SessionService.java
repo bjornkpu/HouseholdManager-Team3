@@ -25,7 +25,7 @@ import static util.LoginCheck.correctLogin;
  *
  * @author johanmsk
  */
-@Path("session")
+@Path("/session/")
 public class SessionService {
 
     private static final Logger log = Logger.getLogger();
