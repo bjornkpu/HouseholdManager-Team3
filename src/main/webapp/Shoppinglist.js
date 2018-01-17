@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     var disbursementList = [];
     var shoppingListArray = []; //heter det for ikke å blandes med javaklassen shoppinglist
+    var elements = [];
 
 
 
@@ -13,6 +14,35 @@ $(document).ready(function() {
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
+    })
+
+    $('#addItem').click(function () {
+        var name=prompt("Add item:","Item name");
+        if (name!=null){
+            x= name + " registered!";
+            alert(x);
+        }
+        var tableRef = document.getElementById('shoppingTable').getElementsByTagName('tbody')[0];
+
+// Insert a row in the table at the last row
+        var newRow   = tableRef.insertRow(tableRef.rows.length);
+        alert(tableRef.rows.length);
+
+// Insert a cell in the row at index 0
+        var newCell  = newRow.insertCell(0);
+
+// Append a text node to the cell
+        newText  = document.createTextNode(String(tableRef.rows.length));
+        newCell.appendChild(newText);
+        newCell.scope='row';
+        newCell = newRow.insertCell(1);
+        var newText  = document.createTextNode(name);
+        newCell.appendChild(newText);
+        newCell = newRow.insertCell(2);
+        newText  = document.createTextNode('unassigned');
+        newCell.appendChild(newText);
+        newCell = newRow.insertCell(3);
+        newCell.innerHTML = '<button type="button"  class="removeItemButton" title="Remove this row">Delete</button>';
     })
 
     $('.backToShoppinglist').click(function () {
@@ -111,34 +141,38 @@ $(document).ready(function() {
         // console.log("data:");
         // console.log(data);
         // console.log(data.length);
-
-        var i = 0;
+        // shoppingListArray = data;
         var len = data.length;
-        for (; i < len; ) {
-            $('#shoppinglistdropdown').append('<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >' +
-                data[i].name + '</a></li>'
+        for (var i = 0; i < len;i++ ) {
+            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="3" href="#'+i+'">' +
+                data[i].name + '</aclass></li>'
             );
-            i++;
         }
+        // elements = document.getElementsByClassName("shoppingListClass");
     }
 
-    $('#menu1').click(function () {
-        console.log("menu1 pressed")
+    var lists;
+
+    $(document).ready(function () {
+        // console.log("menu1 pressed")
         $('#shoppinglistdropdown').empty();
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
         $.get(url, function(data, status){
+            lists=data;
             renderShoppingListDropdownMenu(data)
             if(status === "success"){
-                console.log("External content loaded successfully!");
+                console.log("ShoppingList content loaded successfully!");
             }
             if(status === "error"){
-                console.log("Error in loading content");
+                console.log("Error in loading ShoppingList content");
             }
         });
     });
 
-    $('#menu1.dropdown-item').click(function () {
-        alert("link: ");
+    $('#shoppinglistdropdown').click(function(){
+        document.cookie = "listindex="+document.URL.substr(document.URL.indexOf('#')+1);
+
+        alert(document.cookie);
     });
 
     //function which lists out information on the choosen shoppinglist

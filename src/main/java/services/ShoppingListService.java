@@ -56,7 +56,7 @@ public class ShoppingListService {
     @Consumes("application/json")
     public void addShoppingList(ShoppingList shoppingList) {
         try {
-            shoppingListDao.addShoppingList(shoppingList);
+            ShoppingListDao.addShoppingList(shoppingList);
             log.info("Added shopping list!");
         } catch(SQLException e) {
             log.error("Failed to Add shopping list", e);

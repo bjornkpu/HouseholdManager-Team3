@@ -2,24 +2,15 @@
  * Base structure
  */
 
-@media screen and (orientation: landscape) {
-    /* Move down content because we have a fixed navbar that is 50px tall */
-    body {
-        padding-top: 60px;
-    }
-
-    /*
-     * TOP NAVBAR STYLING LANDSCAPE
-     */
+/*
+ * Top navbar general
+ */
     .navbar-light{
         background-color: #3d3b3b;
     }
+
     .navbarcontainer{
         width: 100%;
-    }
-    .navbar-brand.logo{
-        font-size: 18px;
-        color: cadetblue;
     }
 
     .username{
@@ -33,40 +24,22 @@
     .groupicon{
         color: cadetblue;
     }
+
     .groupicon:hover{
         color: black;
     }
+
     .groupdropdown{
-        background-color: cadetblue;
+        background-color: lightgrey;
         left: -50%;
         right: -50%;
         transform: translateX(-30%);
     }
 
-
-
     /*
-     * SIDEBAR STYLING LANDSCAPE
+     * Sidebar general
      */
-
-    .sidebar-wrapper {
-        display: flex;
-        position: fixed;
-    }
-
-    #sidebar {
-        background-color: #3d3b3b;
-        min-width: 85px;
-        max-width: 85px;
-        height: 100vh;
-    }
-
-    .sidebar-list {
-        padding: 10px;
-        text-align: center;
-    }
-
-    .sidebar-list-items {
+    .sidebar-list-items a {
         color: cadetblue;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -75,21 +48,68 @@
         -ms-user-select: none;
         user-select: none;
     }
-    .sidebar-list-items:visited{
+    .sidebar-list-items a:visited{
         color: cadetblue;
         cursor: default;
         text-decoration: none;
     }
 
-    .sidebar-list-items:hover {
+    .sidebar-list-items a:hover {
         color: black;
+    }
+
+
+
+@media screen and (orientation: landscape) {
+    /* Move down content because we have a fixed navbar that is 50px tall */
+    body {
+        padding-top: 60px;
+    }
+
+    /*
+     * TOP NAVBAR STYLING LANDSCAPE
+     */
+
+    .navbar-brand.text{
+        font-size: 18px;
+        color: cadetblue;
+        transform: translateX(20px);
+    }
+
+    /*
+     * SIDEBAR STYLING LANDSCAPE
+     */
+    .sidebar-wrapper {
+        display: flex;
+        position: fixed;
+    }
+
+
+    .sidebar-list {
+        padding-top: 30px;
+        padding-bottom: 50px;
+        background-color: #3d3b3b;
+        min-width: 70px;
+        max-width: 70px;
+        height: 100vh;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+    }
+
+    .sidebar-list p{
+        font-size: 14px;
+    }
+    .sidebar-list-items.aboutlink{
+        margin-top: auto;
     }
 
     /*
      * PAGE CONTENT STYLING LANDSCAPE
      */
     #page-content {
-        margin-left: 85px;
+        margin-left: 70px;
         top: 0px;
         position: relative;
         background-color: lightgrey;
@@ -122,85 +142,61 @@
     /*
      * TOP BAR STYLING PORTRAIT
      */
-    .navbar-light{
-        background-color: #3d3b3b;
-    }
 
-    .navbar-brand.logo{
+    .navbar-brand.text{
         font-size: 0;
     }
-    .navbarcontainer{
-        width: 100%;
-    }
+
     .username{
         font-size: 0px;
         padding-right: 3px;
         color: cadetblue;
-    }
-    .account:hover .username{
-        color: black;
-    }
-
-    .groupicon{
-        color: cadetblue;
-    }
-    .groupicon:hover{
-        color: black;
     }
 
     /*
      * SIDEBAR STYLING PORTRAIT
      */
     .sidebar-wrapper {
-        display: inline-flex;
         position: fixed;
+        background-color: #3d3b3b;
         bottom: 0px;
         height: 65px;
         width: 100%;
         z-index: 1;
     }
 
-    #sidebar {
-        background-color: #3d3b3b;
-        height: 65px;
-        width: 100%;
-        bottom: 0;
-        position: fixed;
-    }
-
     .sidebar-list {
         padding: 10px;
         text-align: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+
     }
 
     .sidebar-list-items {
         float: left;
-        margin-left: 10%;
-        display: inline-block;
+        margin-left: 5%;
+        margin-right: 5%;
         position: relative;
         color: cadetblue;
     }
+    .sidebar-list-items.aboutlink{
+        display: none;
+    }
 
-    .sidebar-list-items:hover {
-        color: black;
-    }
-    .groupdropdown{
-        background-color: cadetblue;
-        left: -50%;
-        right: -50%;
-        transform: translateX(-30%);
-    }
 
     /*
      * PAGE CONTENT STYLING PORTRAIT
      */
     #page-content {
-        background-color: lightsalmon;
+        background-color: lightgrey;
         margin-top: 60px;
         margin-bottom: 65px;
         padding-top: 3px;
         padding-bottom: 3px;
         position: relative;
+        height: 100vh;
     }
 
     /*
@@ -210,7 +206,7 @@
     /* Rules for sizing the icon. */
     .material-icons.md-18 { font-size: 18px; }
     .material-icons.md-24 { font-size: 24px; }
-    .material-icons.md-36 { font-size: 24px; }
+    .material-icons.md-36 { font-size: 22px; }
     .material-icons.md-48 { font-size: 48px; }
 
     /* Rules for using icons as black on a light background. */
