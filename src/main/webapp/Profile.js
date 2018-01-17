@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
     $('#editUser').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
@@ -47,6 +48,53 @@ $(document).ready(function() {
             console.log("update user info");
             return json;
         }
+
+    })
+
+    $("#createGroupButton").click(function () {
+        console.log("Click");
+        $.ajax({
+            type:'POST',
+            url:'http://localhost:8080/scrum/rest/groups/',
+            contentType: 'application/json; charset=utf-8',
+            dataType:'json',
+            data: JSON.stringify({
+                'name': $("#nameGroup").val(),
+                'description':null,
+                'admin':"en@h.no",
+                'members':null
+            }),
+            /*
+            error: function() {
+                window.location.href = "error.html";
+            },
+            complete: function(jqXHR,textStatus) {
+                switch (jqXHR.status) {
+                    case 200:
+                        console.log("creating group");
+                        window.location.href = "Navbar.html";
+                        break;
+                    case 404:
+                        console.log("Group not created");
+                        break;
+                    default:
+                        window.location.href="error.html";
+                        break;
+                }
+            }
+            */
+            statusCode: {
+                404: function () {
+                    console.log("404 - Not Found");
+                },
+                200: function () {
+                    console.log("Group Added");
+
+                }
+            }
+        })
+
+
 
     })
 });
