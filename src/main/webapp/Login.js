@@ -4,7 +4,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(session){
-            window.location.href="Navbars.html";
+            // window.location.href="Navbars.html";
         }
     });
 
@@ -25,7 +25,6 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            document.cookie = "testcookie=this is a test";
                             window.location.href = "Navbars.html";
                             break;
                         case 401:

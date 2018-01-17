@@ -1,5 +1,6 @@
 package db;
 import data.Group;
+import data.Member;
 import org.junit.*;
 
 import org.junit.runners.MethodSorters;
@@ -98,6 +99,11 @@ public class GroupDaoTest {
         List<Group> groupList = new ArrayList<Group>();
         try {
             groupList = gr.getAllGroups();
+            List<Member> members1=groupList.get(0).getMembers();
+            System.out.println("members: "+members1.size());
+            for(Member e: members1){
+                System.out.println("memberemail = " + e.getEmail());
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
