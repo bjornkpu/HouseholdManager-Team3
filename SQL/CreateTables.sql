@@ -1,3 +1,6 @@
+-- Kill all connections
+SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='root' AND info = 'SELECT * FROM processlist';
+
 -- Sletter tabeller
 
 DROP TABLE IF EXISTS item_shoppinglist;
