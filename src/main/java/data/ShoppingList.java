@@ -81,6 +81,10 @@ public class ShoppingList {
         itemList.add(new Item(itemId, desc, status));
     }
 
+    public void addItem(int id, String name, int status, int shoppingListId, int disbursementId){
+        itemList.add(new Item(id, name, status, shoppingListId, disbursementId));
+    }
+
     public void removeItem(Item i){
         itemList.remove(i);
     }

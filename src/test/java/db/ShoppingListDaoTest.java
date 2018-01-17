@@ -48,7 +48,7 @@ public class ShoppingListDaoTest {
         shoppingListTest = new ShoppingList(slId, "shoppingListTest",
                 groupId, null, userList);
 
-	    testSmallShoppingList = new ShoppingList(slId, "shoppingListTest");
+	    testSmallShoppingList = new ShoppingList(46, "shoppingListTest");
 
         ShoppingListDao.addShoppingList(shoppingListTest);
         ShoppingListDao.addShoppingList(testSmallShoppingList);
@@ -143,11 +143,12 @@ public class ShoppingListDaoTest {
 
     }
 
-  /*  @Test
+   /* @Test
     public void testItemInShoppingList(){
-
+	    ItemDao.addItem(itemId,  desc, status)
+    }
 	    addItem(Item i)
-	    addItem(int itemId, String desc, int status)
+
 	    removeItem(Item i){
 		    removeItem(int itemId){
 	    }
@@ -160,20 +161,13 @@ public class ShoppingListDaoTest {
 
     }
 
-    @Test
+    /*@Test
     public void testToString() {
-	    System.out.println("tostringen: "+shoppingListTest.toString());
 	    String expected = "ShoppingList{" +
 	    "id=" + 45 +
-	    ", name='" + "shoppingListTest" + '\'' +
+	    ", name='" + "testSmallShoppingList" + '\'' +
 	    ", groupId=" + 1 +
-	    ", itemList=" + "Item{" +
-			    "id=" + 67 +
-			    ", name='" + "TestItem" + '\'' +
-			    ", status=" + 0 +
-			    ", shoppingListId=" + 67 +
-			    ", disbursementId=" + 67 +
-			    '}' +
+	    ", itemList=" + ""+
 	    ", userList=" + "User{" +
 			    "email='" + "LoginTestEmailATemailDOTcom" + '\'' +
 			    ", name='" + "User1" + '\'' +
@@ -182,8 +176,8 @@ public class ShoppingListDaoTest {
 			    ", salt='" + testUser.getSalt() + '\'' +
 			    '}' +
 	    '}';
-	    assertEquals(expected, shoppingListTest.toString());
-    }
+	    assertEquals(expected, testSmallShoppingList.toString());
+    }*/
 
     @AfterClass
     public static void tearDown() throws SQLException{
