@@ -58,6 +58,31 @@ $(document).ready(function(){
         $("#page-content").load("Tasks.html");
     });
 
+
+
+    //TODO: remove 2 from url. Get group from cookies or something.
+    $("#invUserButton").click(function () {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"http://localhost:8080/scrum/rest/groups/2/members/" + $("#invUserField").val(),
+            contentType: "application/json",
+            data:JSON.stringify({
+                "email": $("#invUserField").val()
+            }),
+            statusCode: {
+                200: function () {
+                    window.location.href = "Navbars.html";
+                },
+                500: function () {
+                    console.log("Internal Server Error");
+                }
+            }
+
+        })
+
+    })
+
 });
 
 function renderMembers(data) {

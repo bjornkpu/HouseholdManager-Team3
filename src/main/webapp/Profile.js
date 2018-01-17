@@ -142,7 +142,7 @@ $(document).ready(function() {
 
 
     $("#createGroupButton").click(function () {
-        console.log("Click");
+        //console.log("Click");
         $.ajax({
             type:'POST',
             url:'http://localhost:8080/scrum/rest/groups/',
