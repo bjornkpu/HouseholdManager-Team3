@@ -190,6 +190,7 @@ $(document).ready(function() {
                 console.log("ShoppingList content loaded successfully!");
                 //Here to prevent undefined variables and methods out of order
                 renderShoppingListDropdownMenu(data);
+                $("#shoppinglistName").text(data[0].name);
                 getItemsInShoppingList(data[0].id);
             }
             if(status === "error"){
