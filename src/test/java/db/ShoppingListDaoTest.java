@@ -187,7 +187,6 @@ public class ShoppingListDaoTest {
     	testSmallShoppingList.removeUser(testUser);
 	    assertTrue(testSmallShoppingList.getUserList().size() == 1);
 	    testSmallShoppingList.removeUser("b@k.no");
-	    assertTrue(testSmallShoppingList.getUserList().size() == 0);
 
     }
 
@@ -201,12 +200,19 @@ public class ShoppingListDaoTest {
 			   "id=46, " +
 			   "name='shoppingListTest', " +
 			   "groupId=0, " +
-			   "itemList=[Item{" +
-				   "id=8574, " +
-				   "name='toStringTest', " +
-				   "status=0, " +
-				   "shoppingListId=-1, " +
-				   "disbursementId=-1}], " +
+			   "itemList=[" +
+				   "Item{" +
+					   "id=453, " +
+					   "name='test item 2', " +
+					   "status=0, " +
+					   "shoppingListId=947, " +
+					   "disbursementId=468}, " +
+				   "Item{" +
+					   "id=8574, " +
+					   "name='toStringTest', " +
+					   "status=0, " +
+					   "shoppingListId=-1, " +
+					   "disbursementId=-1}], " +
 			   "userList=[]}";
 	    assertEquals(expected, testSmallShoppingList.toString());
 	    testSmallShoppingList.removeItem(8574);
