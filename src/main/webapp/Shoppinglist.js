@@ -234,16 +234,16 @@ $(document).ready(function() {
 
     //When clicking
     $("#shoppinglistdropdown").on("click", "a.link", function(){
-        currentShoppingList = this.id;
-        renderShoppingListInformation(this.id);
+        currentShoppingList = lists[this.id].id;
+        renderShoppingListInformation(currentShoppingList);
     });
 
-    function renderShoppingListInformation(){
+    function renderShoppingListInformation(id){
         $("#tableShoppinglist").empty();
 
-        getItemsInShoppingList(lists[currentShoppingList].id);
+        getItemsInShoppingList(id);
 
-        $("#shoppinglistName").text(lists[currentShoppingList].name);
+        $("#shoppinglistName").text(lists[id].name);
     }
 
     function getItemsInShoppingList(id){
