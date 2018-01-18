@@ -72,7 +72,7 @@ $(document).ready(function() {
         var checked=getChecked();
         // AJAX Request
         $.ajax({
-            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/2',
+            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/2 ',
             type: 'PUT',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
@@ -290,12 +290,13 @@ $(document).ready(function() {
         }
 
         for(var i = 0; i < len; i++){
+            var id = items[i].id;
             $("#tableShoppinglist").append(
                 "<tr>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <button value="+ items[i].id +" id=\"a\" type=\"button\" class=\"removeItemButton\" title=\"Remove this row\" >Delete</button></td>" +
+                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
                 "</tr>"
             );
         }
