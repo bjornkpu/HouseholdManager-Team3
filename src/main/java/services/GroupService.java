@@ -79,8 +79,12 @@ public class GroupService {
     public Response addGroup(Group group) {
         try {
             log.info("Group added. ID: " + group.getId());
-            //groupDao.addGroup(group);
-            return Response.status(200).entity(groupDao.addGroup(group)).build();
+            int s = groupDao.addGroup(group);
+            if (s != -1){
+                return Response.status(200).entity(s).build();
+            }
+            return Response.status(404).entity(-1).build();
+
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);
