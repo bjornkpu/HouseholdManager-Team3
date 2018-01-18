@@ -16,7 +16,10 @@ $(document).ready(function() {
     });
 
     $('#addItem').click(function () {
-        var name=prompt("Add item:","Item name");
+        var name=prompt("Add item:");
+        if(name == null){
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -157,6 +160,24 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
     });
 
+    $(".removeItemButton").click(function () {
+        // AJAX Request
+        alert("klikk");
+        $.ajax({
+            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
+            type: 'POST',
+            data: { id:id },
+            success: function(response){
+                alert("Item deleted from shoppinglist");
+                console.log(this.value);
+                $(this).closest('tr').remove();
+            },
+            error: function(){
+                console.log(this.value);
+            }
+        });
+    });
+
     //finds all disbursements
     function findAllDisbursements() {
         console.log('findDisbursements');
@@ -269,13 +290,12 @@ $(document).ready(function() {
         }
 
         for(var i = 0; i < len; i++){
-            var id = items[i].id;
             $("#tableShoppinglist").append(
                 "<tr>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
+                "<td> <button value="+ items[i].id +" id=\"a\" type=\"button\" class=\"removeItemButton\" title=\"Remove this row\" >Delete</button></td>" +
                 "</tr>"
             );
         }
