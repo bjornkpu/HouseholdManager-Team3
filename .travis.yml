@@ -1,14 +1,13 @@
 language: java
+script: mvn test -P !build-extras -B
 sudo: false
-script: mvn clean verify
+#script: mvn clean verify
 notifications:
   email:
     - krisnyb@stud.ntnu.no
 
 
-
-script: "mvn -B .."
-script: "mvn cobertura:cobertura"
+#script: "mvn cobertura:cobertura -B"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) -t ce6c8225-9b63-43d1-b59a-161d61f0e067
