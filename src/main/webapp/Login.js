@@ -4,7 +4,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(session){
-            window.location.href="Navbars.html";
+            // window.location.href="Navbars.html";
         }
     });
 
@@ -25,12 +25,12 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            document.cookie = "testcookie=this is a test";
                             window.location.href = "Navbars.html";
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");
                             alert("Wrong email or password");
+                            $('#forgottenPassword').show();
                             break;
                         default:
                             // window.location.href="error.html";
@@ -40,7 +40,22 @@ $(document).ready(function(){
             });
         });
     });
-
+    $('#forgottenPassword').hide();
+    $('#forgottenPassword').click(function () {
+        toEmail = $("#emailField").val();
+        mess1 = "Send new password to: "+ toEmail;
+        x = confirm(mess1);
+        if (x == true) {
+            $.ajax({
+                url: 'rest/user/forgotPw/'+toEmail,
+                type: 'PUT',
+                complete: function () {
+                    alert("Password sent to: "+toEmail);
+                }
+            });
+        }
+    })
+    
     $('#registerButton').click(function () {
         $("#div_for_login").hide();
         $("#div_reg").show();

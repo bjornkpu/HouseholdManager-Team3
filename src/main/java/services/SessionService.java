@@ -44,7 +44,7 @@ public class SessionService {
             User user = userDao.getUser(data.getEmail());
             if(!correctLogin(data,user)) {
                 log.info("Failed login. Username: "+ data.getEmail());
-                throw new NotAuthorizedException("Wrong username or password",Response.Status.FORBIDDEN);
+                throw new NotAuthorizedException("Wrong username or password");
             }
         } catch(SQLException e) {
             log.error("Failed to check user", e);
