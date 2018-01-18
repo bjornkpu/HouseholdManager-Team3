@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import static db.ChoreDao.*;
+import static db.Db.close;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertArrayEquals;
@@ -63,84 +64,113 @@ public class ChoreDaoTest {
 
         //Inserting test-data into database for usage in the tests
 
-        PreparedStatement st = connection.prepareStatement("INSERT INTO user (name,email,password,salt,phone) VALUES ('Mats','m@m.no','password','123','90807060')");
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO user (name,email,password,salt,phone) VALUES ('Knut','k@k.no','password','321','90805050')");
-        st.executeUpdate();
+        PreparedStatement st = null;
+        try{
+            st = connection.prepareStatement("INSERT INTO user (name,email,password,salt,phone) VALUES ('Mats','m@m.no','password','123','90807060')");
+            st.executeUpdate();
 
-        st = connection.prepareStatement("INSERT INTO party (id, name) VALUES (100,'123Kollektiv')");
-        st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO user (name,email,password,salt,phone) VALUES ('Knut','k@k.no','password','321','90805050')");
+            st.executeUpdate();
 
-        st = connection.prepareStatement("INSERT INTO party (id,name) VALUES (101,'Kollektiv123')");
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO party (id,name) VALUES (102,'Kollektiv123')");
-        st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO party (id, name) VALUES (100,'123Kollektiv')");
+            st.executeUpdate();
 
-        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (200,'desc1',0,?,100,'m@m.no')");
-        st.setDate(1, currDate);
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (201,'desc2',0,?,100,'k@k.no')");
-        st.setDate(1, currDate);
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (202,'desc3',7,?,100,'m@m.no')");
-        st.setDate(1, currDate);
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (203,'desc4',0,?,101,'m@m.no')");
-        st.setDate(1, currDate);
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (204,'desc5',0,?,101,'m@m.no')");
-        st.setDate(1, currDate);
-        st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO party (id,name) VALUES (101,'Kollektiv123')");
+            st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO party (id,name) VALUES (102,'Kollektiv123')");
+            st.executeUpdate();
 
-        st.close();
-        connection.close();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (200,'desc1',0,?,100,'m@m.no')");
+            st.setDate(1, currDate);
+            st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (201,'desc2',0,?,100,'k@k.no')");
+            st.setDate(1, currDate);
+            st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (202,'desc3',7,?,100,'m@m.no')");
+            st.setDate(1, currDate);
+            st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (203,'desc4',0,?,101,'m@m.no')");
+            st.setDate(1, currDate);
+            st.executeUpdate();
+            close(st);
+            st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (204,'desc5',0,?,101,'m@m.no')");
+            st.setDate(1, currDate);
+            st.executeUpdate();
+        }finally{
+            close(st);
+            close(connection);
+        }
+
         System.out.println("Connection closed before, testdata inserted");
 
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        Connection connection= null;
+        PreparedStatement st=null;
         try {
-            Connection connection = Db.instance().getConnection();
+            connection = Db.instance().getConnection();
             System.out.println("Connection opened after");
 
             //Deleting wallpost test-data
-            PreparedStatement st = connection.prepareStatement("DELETE FROM chore_log WHERE user_email='m@m.no'");
+            st = connection.prepareStatement("DELETE FROM chore_log WHERE user_email='m@m.no'");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 200");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 201");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 202");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 203");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 204");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 205");
             st.executeUpdate();
 
             //Deleting party test-data
+            close(st);
             st = connection.prepareStatement("DELETE FROM party WHERE id=100");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM party WHERE id=101");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM party WHERE id=102");
             st.executeUpdate();
 
             //Deleting user test-data
+            close(st);
             st = connection.prepareStatement("DELETE FROM user WHERE email = 'm@m.no';");
             st.executeUpdate();
+            close(st);
             st = connection.prepareStatement("DELETE FROM user WHERE email = 'k@k.no';");
             st.executeUpdate();
 
 
-            st.close();
-            connection.close();
-            System.out.println("Connection closed after, testdata deleted");
 
         } catch (Exception e) {
             System.out.print(e);
+        }finally {
+            close(st);
+            close(connection);
+            System.out.println("Connection closed after, testdata deleted");
+
         }
 
     }
