@@ -1,17 +1,55 @@
 
 $(document).ready(function(){
 
-    $("#logout").click(function(){
-        console.log("logout");
+    findAllGroups();
+
+    var groups;
+    var currentGroup;
+
+    //Goes to correct page when reload
+    if (window.location.hash == "#shopping"){
+        $("#page-content").load("Shoppinglist.html");
+    }
+
+
+    //finds all groups
+    function findAllGroups() {
+        console.log('findGroups');
         $.ajax({
-            url: 'rest/session',
-            type: 'DELETE',
-            dataType: 'json',
-            success: function(session){
-                 window.location.href="Login.html";
-            }
+            type: 'GET',
+            url: '/scrum/rest/groups',
+            dataType: "json",
+            success: renderGroupDropdown
         });
+    }
+
+    //function which lists out the different groups into the dropdown menu
+    function renderGroupDropdown(data) {
+        // console.log("data:");
+        // console.log(data);
+        // console.log(data.length);
+        console.log("render grouplist");
+        groups=data;
+        var len = data.length;
+        for (var i = 0; i < len;i++ ) {
+            var groupname= data[i].name;
+            var id='';
+            id+=i;
+            id+='group';
+            $('#groupdropdown').append('<li><a class="dropdown-item" href="#" id="'+id+'">'+
+                groupname+'</a></li>'
+            );
+            console.log("Added group: "+groupname);
+        }
+    }
+
+    $("#groupdropdown").on("click", "a.dropdown-item", function(){
+        var i=this.id.charAt(0);
+        currentGroup=groups[i];
+        document.cookie="groupId="+currentGroup.id;
+        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
     });
+
 
     var lists;
     var url='http://localhost:8080/scrum/rest/groups/'+2+'/members';
@@ -32,16 +70,21 @@ $(document).ready(function(){
     $(".dropdown").on("hide.bs.dropdown", function(){
         $(".btn").html('My groups <span class="caret"></span>');
     });
+
     $(".dropdown").on("show.bs.dropdown", function(){
         $(".btn").html('My groups <span class="caret caret-up"></span>');
     });
 
 
+    //Assigns logout to logout button
+    $("#logout").click(function(){
+        logOut();
+    });
     if (window.location.hash == "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     };
 
-
+    //Loads content when clicking sidebar.
     $("#loadShoppingList").click(function(){
         $("#page-content").load("Shoppinglist.html");
     });
@@ -57,6 +100,31 @@ $(document).ready(function(){
     $("#loadTasks").click(function(){
         $("#page-content").load("Tasks.html");
     });
+
+
+
+    //TODO: remove 2 from url. Get group from cookies or something.
+    $("#invUserButton").click(function () {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"http://localhost:8080/scrum/rest/groups/2/members/" + $("#invUserField").val(),
+            contentType: "application/json",
+            data:JSON.stringify({
+                "email": $("#invUserField").val()
+            }),
+            statusCode: {
+                200: function () {
+                    window.location.href = "Navbars.html";
+                },
+                500: function () {
+                    console.log("Internal Server Error");
+                }
+            }
+
+        })
+
+    })
 
 });
 

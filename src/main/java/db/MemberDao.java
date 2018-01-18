@@ -2,6 +2,7 @@ package db;
 
 import data.Group;
 import data.Member;
+import data.User;
 import util.Logger;
 
 import java.sql.Connection;
@@ -22,6 +23,14 @@ public class MemberDao {
     private static Connection connection;
     private static PreparedStatement ps;
     private static ResultSet rs;
+    private static UserDao userDao;
+
+    /**
+     * Gets the members of a given group
+     * @param groupId Id of the group.
+     * @return Returns ArrayList of Members in the group.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
 
     public static ArrayList<Member> getMembers(int groupId) throws SQLException {
         String partyId = ""+groupId;
@@ -54,6 +63,14 @@ public class MemberDao {
         }
     }
 
+    /**
+     * Retrieves all the groups a user is a part of.
+     *
+     * @param email Email of the user.
+     * @return ArrayList of groups.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
+
     public static ArrayList<Group> getGroupsByMember(String email) throws SQLException {
         connection = Db.instance().getConnection();
         try {
@@ -78,6 +95,14 @@ public class MemberDao {
             Db.close(connection);
         }
     }
+
+    /**
+     * Retrieves all the requests from a user to join a group.
+     *
+     * @param email Email of the user.
+     * @return ArrayList of groups.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
 
     public static ArrayList<Group> getGroupInvites(String email) throws SQLException{
         connection = Db.instance().getConnection();
@@ -104,17 +129,31 @@ public class MemberDao {
         }
     }
 
+    /**
+     * Invites a user to join the group.
+     *
+     * @param email Email of user.
+     * @param groupId Group to join.
+     * @return A boolean which indicates the outcome.True->success, false-> failed.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
+
     public static boolean inviteUser(String email, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            ps = connection.prepareStatement("INSERT INTO user_party (user_email,party_id,balance,status) VALUES(?,?,?,?)");
-            ps.setString(1, email);
-            ps.setString(2, String.valueOf(groupId));
-            ps.setString(3, "0");
-            ps.setString(4, String.valueOf(Member.PENDING_STATUS));
-            int result = ps.executeUpdate();
-            log.info("Invite user " + (result == 1 ? "ok" : "failed"));
-            return result == 1;
+            User user = userDao.getUser(email);
+            if(user != null){
+                ps = connection.prepareStatement("INSERT INTO user_party (user_email,party_id,balance,status) VALUES(?,?,?,?)");
+                ps.setString(1, email);
+                ps.setString(2, String.valueOf(groupId));
+                ps.setString(3, "0");
+                ps.setString(4, String.valueOf(Member.PENDING_STATUS));
+                int result = ps.executeUpdate();
+                log.info("Invite user " + (result == 1 ? "ok" : "failed"));
+                return result == 1;
+            } else {
+                return false;
+            }
         }catch (SQLException e){
             return false;
         } finally {
@@ -123,6 +162,14 @@ public class MemberDao {
             Db.close(connection);
         }
     }
+
+    /**
+     * Updates a member of a group. One could update the balance or status of a member in a group.
+     * @param member Member object with new values.
+     * @param groupId Id of the group.
+     * @return A boolean which indicates the outcome. True->success, false-> failed.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
 
     public static boolean updateUser(Member member, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
@@ -141,6 +188,14 @@ public class MemberDao {
             Db.close(connection);;
         }
     }
+
+    /**
+     * Deletes a member from the group.
+     * @param email Email of the member.
+     * @param groupId Id of the group.
+     * @return A boolean which indicates the outcome. True->success, false-> failed.
+     * @throws SQLException Throws exception when the connection is not successful.
+     */
 
     public static boolean deleteMember(String email, int groupId) throws SQLException {
         connection = Db.instance().getConnection();

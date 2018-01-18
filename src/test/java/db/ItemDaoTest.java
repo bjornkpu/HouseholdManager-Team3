@@ -1,9 +1,6 @@
 package db;
 
-import data.Group;
-import data.Item;
-import data.ShoppingList;
-import data.User;
+import data.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +41,7 @@ public class ItemDaoTest {
         UserDao.addUser(u);
         groupId = GroupDao.addGroup(g);
         Disbursement disbursement = new Disbursement(0,"name",new Date(),u);
-        disbursementId = DisbursementDao.addDisbursement(disbursement,groupId);
+        DisbursementDao.addDisbursement(disbursement,groupId);
 
         shoppingListTest = new ShoppingList(shoppingListId, "ItemTest",groupId, null, userList);
 
