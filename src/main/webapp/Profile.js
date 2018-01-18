@@ -10,7 +10,9 @@ $(document).ready(function() {
 
     getLoggedOnUser(setData);
     var sessionEmail;
-    //getEmail;
+    //getEmail();
+
+
 
     function setData(user) {
         console.log("name: " + user.name);
@@ -19,6 +21,18 @@ $(document).ready(function() {
         $('#nameReadOnly').attr('value', user.name);
         $('#emailReadOnly').attr('value', user.email);
         $('#phoneReadOnly').attr('value', user.phone);
+        var lists;
+        var url='http://localhost:8080/scrum/rest/groups/'+ user.email +'/invites';
+        $.get(url, function(data,status){
+            lists=data;
+            renderInvites(data,user);
+            if(status === "success"){
+                console.log("members content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading members");
+            }
+        });
     }
 
     function getEmail () {
@@ -28,7 +42,7 @@ $(document).ready(function() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
-                sessionEmail=data;
+                sessionEmail=data.email;
                 getInfo(data.email);
 
             }
@@ -154,25 +168,6 @@ $(document).ready(function() {
                 'admin':$("#emailReadOnly").val(),
                 'members':null
             }),
-            /*
-            error: function() {
-                window.location.href = "error.html";
-            },
-            complete: function(jqXHR,textStatus) {
-                switch (jqXHR.status) {
-                    case 200:
-                        console.log("creating group");
-                        window.location.href = "Navbar.html";
-                        break;
-                    case 404:
-                        console.log("Group not created");
-                        break;
-                    default:
-                        window.location.href="error.html";
-                        break;
-                }
-            }
-            */
             statusCode: {
                 404: function () {
                     console.log("404 - Not Found");
@@ -180,10 +175,54 @@ $(document).ready(function() {
                 200: function () {
                     console.log("Group Added");
                     window.location.href = "Navbars.html";
-
                 }
             }
         })
 
     })
+
+    function getInvites(user) {
+        $.ajax({
+            type:"GET",
+            url: "http://localhost:8080/scrum/rest/groups/" + user.email + "/invites",
+            contentType: "application/json",
+            dataType:"json",
+            success: function (data) {
+                renderInvites(data);
+            }
+        })
+    }
+
+
 });
+
+
+//TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
+
+function renderInvites(data,user) {
+    var len = data.length;
+    console.log(user.email + " render invites.");
+    for (var i = 0; i < len;i++ ) {
+        var s = "inviteGroupButton"+i;
+        $('#profileInvites').append('<tr id=\"" + s + "\"> <td>' + data[i].name + "  " + ' </td>');
+        var $li = $("<td><button type=\"button\"  class=\"joinGroup\" title=\"joinGroup\">Join</button></td>");
+        (function (i) {
+            $li.click(function() {
+                $.ajax({
+                    type:"PUT",
+                    url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email,
+                    contentType: "application/json",
+                    dataType:"json",
+                    success: function (jqXHR,textStatus) {
+                        $(("#" + s)).hide("slow");
+                    }
+                })
+            });
+        }(i));
+        $("#profileInvites").append($li);
+        $("#profileInvites").append("</tr>");
+    }
+
+}
+
+

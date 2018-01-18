@@ -174,11 +174,20 @@ public class MemberDao {
     public static boolean updateUser(Member member, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
+            if (member.getBalance() == 0){
+                ps = connection.prepareStatement("UPDATE user_party set status = ? where user_email=? AND party_id = ?");
+                ps.setInt(1,member.getStatus());
+                ps.setString(2,member.getEmail());
+                ps.setInt(3,groupId);
+                int result = ps.executeUpdate();
+                log.info("Update member status " + (result == 1?"ok":"failed"));
+                return result == 1;
+            }
             ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where user_email=? AND party_id = ?");
-            ps.setString(1,String.valueOf(member.getBalance()));
-            ps.setString(2,String.valueOf(member.getStatus()));
+            ps.setDouble(1,member.getBalance());
+            ps.setInt(2,member.getStatus());
             ps.setString(3,member.getEmail());
-            ps.setString(4,String.valueOf(groupId));
+            ps.setInt(4,groupId);
             int result = ps.executeUpdate();
             log.info("Update member " + (result == 1?"ok":"failed"));
             return result == 1;

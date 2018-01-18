@@ -9,6 +9,7 @@ import util.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,7 +54,6 @@ public class MemberService {
      * @param email Email of the user.
      * @return An ArrayList of groups.
      *
-     * TODO: Change url. Should be individual from groups.
      */
     @GET
     @Produces("application/json")
@@ -68,24 +68,6 @@ public class MemberService {
         }
     }
 
-    /**
-     * Retrieves all the groups a user is invited to join.
-     *
-     * @param email Email of user.
-     * @return ArrayList of groups which the user is invited to join.
-     */
-    @GET
-    @Path("/{email}/invites")
-    @Produces("application/json")
-    public ArrayList<Group> getGroupInvites(@PathParam("email") String email){
-        try{
-            log.info("Retrieving group invites for member " + email);
-            return memberDao.getGroupInvites(email);
-        } catch (SQLException e){
-            log.info("Failed to retrieve invites for member " + email);
-            throw new ServerErrorException("Failed to retrieve invites",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }
-    }
 
     /**
      * Invites a user to become a member of a group.
@@ -112,7 +94,7 @@ public class MemberService {
     /**
      * Updates a member of the group.
      *
-     * @param member The member to be updated.
+     * @param email The member to be updated.
      * @param groupId Id of the group.
      * @return Returns HTTP status 200 if successful, else HTTP status 500.
      */
@@ -120,10 +102,11 @@ public class MemberService {
 
     @PUT
     @Produces("application/json")
-    @Path("(/{email}")
-    public Response updateToMember(Member member, @PathParam("groupId") int groupId){
+    @Path("/{email}")
+    public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId){
         try{
-            log.info("Updating user" + member.getEmail());
+            log.info("Updating user " + email);
+            Member member = new Member(email,null,null,null,null,0.0,1);
             return  Response.status(200).entity(memberDao.updateUser(member,groupId)).build();
         } catch (SQLException e){
             log.info("Failed to update to member");
