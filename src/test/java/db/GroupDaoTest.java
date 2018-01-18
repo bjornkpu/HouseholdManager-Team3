@@ -43,6 +43,11 @@ public class GroupDaoTest {
         }
         newGroup.setId(ok);
         assertTrue(ok!=-1&&ok!=0);
+        try {
+            gr.deleteGroup(ok);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -77,7 +82,7 @@ public class GroupDaoTest {
     public void getGroupTest() throws SQLException {
         Group group = new Group();
         try {
-            group = gr.getGroup(1);
+            group = gr.getGroup(2);
         } catch (SQLException e){
             e.printStackTrace();
         }
