@@ -41,6 +41,7 @@ public class GroupDaoTest {
             ok = addGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         newGroup.setId(ok);
         assertTrue(ok!=-1&&ok!=0);
@@ -48,6 +49,7 @@ public class GroupDaoTest {
             gr.deleteGroup(ok);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
     }
 
@@ -61,6 +63,7 @@ public class GroupDaoTest {
             addGroup(group);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         boolean ok = false;
         Group gr1 = new Group();
@@ -68,6 +71,7 @@ public class GroupDaoTest {
             gr1 = gr.getGroupByName(nam).get(0);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertEquals(gr1.getName(),nam);
         try {
@@ -75,6 +79,7 @@ public class GroupDaoTest {
             gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
     }
 
@@ -86,6 +91,7 @@ public class GroupDaoTest {
             group = gr.getGroup(2);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertTrue(group!=null);
 
@@ -97,12 +103,13 @@ public class GroupDaoTest {
         try {
             groupList = gr.getAllGroups();
             List<Member> members1=groupList.get(0).getMembers();
-            System.out.println("members: "+members1.size());
+            //System.out.println("members: "+members1.size());
             for(Member e: members1){
                 System.out.println("memberemail = " + e.getEmail());
             }
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         int amountCollected = groupList.size();
         assertTrue(amountCollected > 0);
@@ -120,18 +127,21 @@ public class GroupDaoTest {
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         boolean ok = false;
         try {
             ok = gr.updateName(s,newName);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertTrue(ok);
         try {
             gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
 
     }
@@ -148,6 +158,7 @@ public class GroupDaoTest {
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         Group newGroup = new Group();
         boolean ok = false;
@@ -158,12 +169,15 @@ public class GroupDaoTest {
             ok = gr.updateGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
+
         }
         assertTrue(ok);
         try {
             gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
     }
     @Test
@@ -174,6 +188,7 @@ public class GroupDaoTest {
             groups = gr.getGroups(amount);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertTrue(groups.size() <= amount);
     }
@@ -189,6 +204,7 @@ public class GroupDaoTest {
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         boolean ok = false;
         Group group = new Group();
@@ -198,6 +214,7 @@ public class GroupDaoTest {
             ok = gr.deleteGroup(group);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertTrue(ok);
     }
@@ -214,12 +231,14 @@ public class GroupDaoTest {
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         boolean ok = false;
         try {
             ok = gr.deleteGroup(s);
         } catch (SQLException e){
             e.printStackTrace();
+            assertTrue(false);
         }
         assertTrue(ok);
     }
