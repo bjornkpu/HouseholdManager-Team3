@@ -41,6 +41,8 @@ $(document).ready(function() {
                 console.log(xhr, resp, text);
             }
         });
+
+        renderShoppingListInformation(currentShoppingList);
     });
 
     $('#deleteItems').click(function() {
