@@ -21,10 +21,16 @@ function getLoggedOnUser(success) {
         }
     });
 };
+
 function logOut(){
+    console.log("logout");
     $.ajax({
         url: 'rest/session',
-        type: 'DELETE'
+        type: 'DELETE',
+        dataType: 'json',
+        success: function(session){
+            window.location.href="Login.html";
+        }
     });
 }
 
@@ -55,4 +61,33 @@ function hex(buffer) {
 
     // Join all the hex strings into one
     return hexCodes.join("");
+}
+
+function getCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    }
+    else {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+            end = dc.length;
+        }
+    }
+    return decodeURI(dc.substring(begin + prefix.length, end));
+}
+
+function getGroup(groupId, success){
+    $.ajax({
+        url: 'rest/groups/'+groupId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data){
+            success(data);
+        }
+    });
 }

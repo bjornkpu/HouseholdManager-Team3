@@ -41,7 +41,7 @@ public class ItemDaoTest {
         UserDao.addUser(u);
         groupId = GroupDao.addGroup(g);
         Disbursement disbursement = new Disbursement(0,"name",new Date(),u);
-        DisbursementDao.addDisbursement(disbursement,groupId);  // removed var
+        DisbursementDao.addDisbursement(disbursement,groupId);
 
         shoppingListTest = new ShoppingList(shoppingListId, "ItemTest",groupId, null, userList);
 

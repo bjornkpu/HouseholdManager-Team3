@@ -118,22 +118,29 @@ public class GroupDao {
                 g.setId(rs.getInt("id"));
                 g.setName(rs.getString("name"));
                 List<Member> members = new ArrayList<Member>();
+                PreparedStatement preparedStatement = null;
+                ResultSet resultSets=null;
                 try {
-                    PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM user_party WHERE party_id = ? AND status = ?");
+                    preparedStatement = connection.prepareStatement("SELECT * FROM user_party WHERE party_id = ? AND( status = ? OR status=?)");
                     preparedStatement.setInt(1,g.getId());
                     preparedStatement.setInt(2,Member.ACCEPTED_STATUS);
-                    ResultSet resultSets = preparedStatement.executeQuery();
+                    preparedStatement.setInt(3,Member.ADMIN_STATUS);
+                    resultSets = preparedStatement.executeQuery();
 
                     while (resultSets.next()) {
                         Member member = new Member();
                         member.setBalance(resultSets.getDouble("balance"));
                         member.setStatus(resultSets.getInt("status"));
                         member.setEmail(resultSets.getString("user_email"));
+                        if(member.getStatus()==Member.ADMIN_STATUS){
+                            g.setAdmin(member.getEmail());
+                        }
                         members.add(member);
                     }
-                    preparedStatement.close();
-                    resultSets.close();
-                } finally { }
+                } finally {
+                    Db.close(resultSets);
+                    Db.close(preparedStatement);
+                }
                 g.setMembers(members);
                 groups.add(g);
             }

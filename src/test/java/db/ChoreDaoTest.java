@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import static db.ChoreDao.*;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
@@ -103,7 +105,9 @@ public class ChoreDaoTest {
             System.out.println("Connection opened after");
 
             //Deleting wallpost test-data
-            PreparedStatement st = connection.prepareStatement("DELETE FROM chore WHERE id = 200");
+            PreparedStatement st = connection.prepareStatement("DELETE FROM chore_log WHERE user_email='m@m.no'");
+            st.executeUpdate();
+            st = connection.prepareStatement("DELETE FROM chore WHERE id = 200");
             st.executeUpdate();
             st = connection.prepareStatement("DELETE FROM chore WHERE id = 201");
             st.executeUpdate();
@@ -203,22 +207,18 @@ public class ChoreDaoTest {
         assertNotEquals(email1,email2);
     }
 
-    //TODO: lage testen når setChore er laget i ChoreDao. mats lager den.
-    //getting who compleated the chore
     @Test
-	public void testCompletedBy() throws Exception {
-	    System.out.println("Testing compleatedBy()");
-	    Chore chore = getChore(204);
-	    ArrayList<String> result = chore.getCompletedBy()
-			    ;
-	    String expResult = list1.get(0).getDescription();
-	    assertEquals(result,expResult);
+    public void testSetCompletedBy() throws  Exception{
+        System.out.println("Testing setCompletedBy");
+        ArrayList<String> brukere = getCompletedBy(200);
+        ArrayList<String> brukere1 = new ArrayList<>();
+        brukere1.add("m@m.no");
+        brukere1.add("k@k.no");
+        setCompletedBy(200,brukere1);
+        ArrayList<String> brukere2 = getCompletedBy(200);
+        setCompletedBy(200,brukere); //Resets completed by.
+        assertEquals(brukere1.size(),brukere2.size());
+        assertTrue(brukere.size()<brukere2.size());
 
-
-
-	    System.out.println("Testing compleatedBy()");
-	    c6.setCompletedBy(compledetBy);
-
-	    assertEquals(compledetBy,c6.getCompletedBy());
     }
 }

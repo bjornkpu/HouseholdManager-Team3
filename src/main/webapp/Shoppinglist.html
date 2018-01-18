@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>ShoppingList</h1>
+<h1>Dine shoppinglister</h1>
 <br>
 <br>
 
@@ -15,7 +15,8 @@
 <!--dropdown shoppinglist -->
 <div class="container" id="dropdownShoppinglist" style ="display:block;">
     <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">ShoppingList
+        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+            Dine Shoppinglister
             <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
             <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>-->
@@ -78,7 +79,7 @@
 <!-- Shoppinglist-->
 <div class="container" id="shoppinglist" style="display:block;">
     <div class = "row">
-        <h2>Shoppinglist "name" </h2>
+        <h2 id="shoppinglistName"></h2>
     </div>
     <div class="row">
 
@@ -86,33 +87,13 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>item</th>
+                <th>Item name</th>
                 <th>status</th>
                 <th></th>
 
             </tr>
             </thead>
             <tbody id="tableShoppinglist">
-            <tr>
-                <th scope="row">1</th>
-                <td>Dopapir</td>
-                <td>unassigned</td>
-                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
-
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>søppelposer</td>
-                <td>assigned to Eirik</td>
-                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
-
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Zalo</td>
-                <td>Purchased by Eirik</td>
-                <td> <button type="button"  class="removeItemButton" title="Remove this row">Delete</button></td>
-            </tr>
             </tbody>
         </table>
     </div>
@@ -122,6 +103,20 @@
         <div class="col-sm">
             <button class = "button" id="addItem"> Add item</button>
         </div>
+        <div class="col-sm">
+            <button class = "button" id="toBeBought"> Mark as bought</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="unmarked"> Unmark</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="deleteItems"> Delete <items></items></button>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+    </div>
+    <div class="row">
         <div class="col-sm">
             <button class = "button" id="createDisbursementButton" style="display: block;"> Create Disbursement</button>
         </div>
@@ -162,7 +157,7 @@
     </tr>
     <tr>
         <td>Confirm</td>
-        <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td>
+        <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td><td > <button class="backToShoppinglist" id ="cancelDisbursement"> Cancel</button> </td>
     </tr>
 </table>
 </div>

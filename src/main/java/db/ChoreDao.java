@@ -19,13 +19,14 @@ public class ChoreDao {
     private static PreparedStatement ps;
     private static ResultSet rs;
     private static ResultSet res;
+    private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
     /** Find what user completed the chore
      * @param choreID id of the chore you want to check
      * @return the email of teh user who is on the chore
      * @throws SQLException if the query fails
      */
-    private static ArrayList<String> findCompletedBy(int choreID) throws SQLException{
+    static ArrayList<String> getCompletedBy(int choreID) throws SQLException{
         connection = Db.instance().getConnection();
         try{
             ps= connection.prepareStatement("SELECT user_email FROM chore_log WHERE chore_id=?");
@@ -33,7 +34,7 @@ public class ChoreDao {
             res = ps.executeQuery();
             ArrayList<String> result = new ArrayList<>();
             while(res.next()){
-                result.add(res.getString("user_id"));
+                result.add(res.getString("user_email"));
             }
             return result;
         }
@@ -67,7 +68,7 @@ public class ChoreDao {
                 }
                 chore.setChoreId(rs.getInt("id"));
                 chore.setDescription(rs.getString("name"));
-                ArrayList<String> completedBy = findCompletedBy(choreId);
+                ArrayList<String> completedBy = getCompletedBy(choreId);
                 chore.setCompletedBy(completedBy);
                 chore.setAssignedTo(rs.getString("user_email"));
                 chore.setDeadline(rs.getDate("deadline"));
@@ -85,6 +86,42 @@ public class ChoreDao {
         }
     }
 
+    /**
+     * This method is called upon when a chore is completed and is to be logged.
+     * @param choreId  Id of the chore wich is completed
+     * @param users Wich members of the group completed this task
+     * @return Boolean telling if the method was successful
+     * @throws SQLException in case of error when connection to database.
+     */
+    public static boolean setCompletedBy(int choreId, ArrayList<String> users) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            //Removes all previous data on completed by for this chore.
+            ps = connection.prepareStatement("DELETE FROM chore_log WHERE chore_id=?");
+            ps.setInt(1,choreId);
+            ps.executeUpdate();
+            for (String user : users) {
+                ps = connection.prepareStatement("INSERT INTO chore_log(user_email,chore_id,done) VALUES (?,?,?)");
+                ps.setString(1, user);
+                ps.setInt(2, choreId);
+                ps.setTimestamp(3, timestamp);
+                int result = ps.executeUpdate();
+                if (result != 1) return false;
+            }
+            return true;
+        }
+        finally {
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
+
+    /**
+     * This method is called uppon when someone wants to display chores registered to a group.
+     * @param partyId The id of the groups, who the chores are registered to.
+     * @return List of the chores registered to the group
+     * @throws SQLException in case of error when connection to database.
+     */
     public static ArrayList<Chore> getChores(int partyId) throws SQLException{
         connection = Db.instance().getConnection();
         try{
@@ -116,6 +153,12 @@ public class ChoreDao {
         }
     }
 
+    /**
+     * When adding a chore to a groups To-Do list
+     * @param chore wich needs to be done.
+     * @return boolean to tell if the registration was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
     public static boolean addChore(Chore chore) throws SQLException{
         connection = Db.instance().getConnection();
         try {
@@ -154,6 +197,13 @@ public class ChoreDao {
             Db.close(connection);
         }
     }
+
+    /**
+     *  When a chore is completed and no longer is needed to be stored
+     * @param id of the chore
+     * @return boolean to tell if the deletion was successful.
+     * @throws SQLException in case of error when connection to database.
+     */
 
     public static boolean deleteChore(int id) throws SQLException{
         connection = Db.instance().getConnection();
