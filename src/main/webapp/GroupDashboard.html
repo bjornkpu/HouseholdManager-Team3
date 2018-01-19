@@ -29,9 +29,8 @@
         </div>
 
         <!-- Middle items-->
-        <div class="navbar-nav">
-            <div class="nav-item dropdown">
-                <div class="dropdown">
+        <div class="navbar-nav d-flex flex row">
+            <div class="nav-item dropdown d-flex flex-row">
                     <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons md-24 groupicon">supervisor_account</i>
                     </a>
@@ -47,7 +46,6 @@
                     <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
                     <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
                 </ul>
-                </div>
             </div>
         </div>
 
@@ -99,6 +97,12 @@
                 <p>Statistics</p>
             </a>
         </div>
+        <div class="sidebar-list-items">
+            <a id="loadSettings" href="#settings">
+                <i class="material-icons md-36">settings</i>
+                <p>Settings</p>
+            </a>
+        </div>
         <div class="sidebar-list-items aboutlink">
             <a id="loadAbout" href="#about">
                 <p>About</p>
@@ -123,5 +127,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="GroupDashboard.js"></script>
+<script src="Statistics.js"></script>
 </body>
 </html>

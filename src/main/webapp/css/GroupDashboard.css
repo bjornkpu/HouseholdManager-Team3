@@ -116,7 +116,7 @@
         top: 0px;
         position: relative;
         background-color: lightgrey;
-        height: 100vh;
+        height: 100%;
     }
 
 
@@ -199,7 +199,7 @@
         padding-top: 3px;
         padding-bottom: 3px;
         position: relative;
-        height: 100vh;
+        height: 100%;
     }
 
     /*

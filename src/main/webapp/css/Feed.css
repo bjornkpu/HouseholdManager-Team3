@@ -1,0 +1,59 @@
+.feedGrid{
+    display: grid;
+    grid-template-columns: [col1-start] 55% [col1-end col2-start] 45% [col2-end];
+    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100vh [row2-end row3-start];
+    grid-template-areas:
+            "leftheader rightheader"
+            "wallposts events";
+    justify-items: stretch;
+}
+
+.writePost{
+    display: grid;
+    grid-area: leftheader;
+    background-color: lightsalmon;
+    justify-items: center;
+}
+.post-input{
+    width: 80%;
+    height: 70%;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    resize: none;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.post-button{
+    width: 30%;
+    height: 60%;
+}
+
+.wall{
+    display: grid;
+    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 90% [wallRow2-end];
+    grid-area: wallposts;
+    background-color: lightgreen;
+    justify-items: center;
+}
+
+.textPosts{
+    display: grid;
+    height: 100%;
+    width: 80%;
+    background-color: gray;
+}
+
+.groupEvents{
+    display: grid;
+    grid-area: events;
+    background-color: blueviolet;
+    background-color: lightblue;
+}
