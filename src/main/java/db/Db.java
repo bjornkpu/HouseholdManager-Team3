@@ -5,6 +5,7 @@ import util.Logger;
 import java.sql.*;
 
 /** This is a class to establish a connection pool
+ *
  * @author BK
  */
 public class Db {
