@@ -6,6 +6,11 @@
     .navbar-light{
         background-color: #3d3b3b;
     }
+    .scrollable-menu {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+    }
 
     .navbarcontainer{
         width: 100%;
