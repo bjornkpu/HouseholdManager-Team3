@@ -2,6 +2,7 @@
 SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='root' AND info = 'SELECT * FROM processlist';
 
 -- Sletter tabeller
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS item_shoppinglist;
 DROP TABLE IF EXISTS user_disbursement;
@@ -16,6 +17,7 @@ DROP TABLE IF EXISTS disbursement;
 DROP TABLE IF EXISTS party;
 DROP TABLE IF EXISTS user;
 
+SET FOREIGN_KEY_CHECKS = 1;
 
 -- Oppretter tabeller med entitetsintegritet (primærnøkkel)
 
@@ -165,7 +167,7 @@ INSERT INTO user(name, email, password, salt ,phone) VALUES( 'PW: qwe', 'abcqwe'
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'geir', 'fire@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',123456);
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'ove', 'fem@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'lisa', 'seks@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
-INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@g.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 
 
 INSERT INTO party(name) VALUES ('Frex');
