@@ -15,6 +15,7 @@ public class Db {
     private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
     private static final String DB_USER_NAME = "g_tdat2003_t3";
     private static final String DB_PW = "Xq6ksy8X";
+    private static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 
 
 	/**
@@ -23,19 +24,20 @@ public class Db {
 	 */
     private Db() {
         try {
-            cpds = new ComboPooledDataSource();
-            cpds.setDriverClass("com.mysql.jdbc.Driver"); //loads the jdbc driver
-            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
-            cpds.setUser(DB_USER_NAME);
-            cpds.setPassword(DB_PW);
-
-            // the settings below are optional -- c3p0 can work with defaults
-            cpds.setInitialPoolSize(1);
-            cpds.setMinPoolSize(1);
-            cpds.setAcquireIncrement(2);
-            cpds.setMaxPoolSize(6);
-            cpds.setMaxIdleTimeExcessConnections(120);
-            cpds.setMaxStatements(180);
+            Class.forName(DB_DRIVER);
+//            cpds = new ComboPooledDataSource();
+//            cpds.setDriverClass(DB_DRIVER); //loads the jdbc driver
+//            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
+//            cpds.setUser(DB_USER_NAME);
+//            cpds.setPassword(DB_PW);
+//
+//            // the settings below are optional -- c3p0 can work with defaults
+//            cpds.setInitialPoolSize(1);
+//            cpds.setMinPoolSize(1);
+//            cpds.setAcquireIncrement(2);
+//            cpds.setMaxPoolSize(6);
+//            cpds.setMaxIdleTimeExcessConnections(120);
+//            cpds.setMaxStatements(180);
 
             log.info("DB initialized!");
 
@@ -63,7 +65,8 @@ public class Db {
 	 * @throws SQLException
 	 */
     public Connection getConnection() throws SQLException {
-        return this.cpds.getConnection();
+//        return this.cpds.getConnection();
+        return DriverManager.getConnection(DB_URL, DB_USER_NAME,DB_PW);
     }
     /** Closes a {@linkplain Connection}.
      *
