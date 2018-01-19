@@ -4,7 +4,7 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(session){
-            // window.location.href="Navbars.html";
+            // window.location.href="GroupDashboard.html";
         }
     });
 
@@ -25,7 +25,7 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            window.location.href = "Navbars.html";
+                            window.location.href = "GroupDashboard.html";
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");

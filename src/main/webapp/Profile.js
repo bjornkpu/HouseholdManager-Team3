@@ -148,7 +148,7 @@ $(document).ready(function() {
                 },
                 200: function () {
                     console.log("Group Added");
-                    window.location.href = "Navbars.html";
+                    window.location.href = "GroupDashboard.html";
 
                 }
             }

@@ -1,37 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
     <meta charset="UTF-8">
-    <title>"Gruppens tittel"</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="css/GroupDashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <title>Dashboard</title>
 </head>
 <body>
 
-<h1>Templateside</h1>
-<br>
-<br>
+<!-- Top navbar-->
+<nav class="navbar navbar-light fixed-top">
+    <div class="navbarbarcontainer d-flex flex-row justify-content-between">
+        <!-- Left items-->
+        <div class="navbar-nav flex-row">
+            <div class="navbar-brand logo" href="#">
+                <img class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
+            </div>
+            <div class="navbar-brand text">
+                <strong>Household Manager</strong>
+            </div>
+        </div>
 
-<!-- NavBar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Middle items-->
+        <div class="navbar-nav">
+            <div class="nav-item dropdown">
+                <div class="dropdown">
+                    <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="material-icons md-24 groupicon">supervisor_account</i>
+                    </a>
+                <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
+                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 5</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
+                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
+                </ul>
+                </div>
+            </div>
+        </div>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="GroupDashboard.html">My Group</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Profile.html">Profile</a>
-            </li>
-        </ul>
+        <!-- Right items -->
+        <div class="navbar-nav d-flex flex-row">
+            <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="account d-flex flex-row">
+                    <div class="username">
+                        <strong>Username</strong>
+                    </div>
+                    <i class="username material-icons md-24">account_circle</i>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink2">
+                <a class="dropdown-item" href="Profile.html">Profile</a>
+                <a class="dropdown-item" href="#">Settings</a>
+                <div class="dropdown-divider"></div>
+                <a id="logout" class="dropdown-item" href="#">Log out</a>
+            </div>
+        </div>
     </div>
 </nav>
-<!--End of navBar -->
+<!--End of Top navBar -->
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<!-- Sidebar -->
+<div class="sidebar-wrapper">
+    <div class="sidebar-list">
+        <div class="sidebar-list-items">
+            <a id="loadFeed" href="#feed">
+                <i class="material-icons md-36">insert_comment</i>
+                <p>Feed</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadShoppingList" href="#shopping">
+                <i class="material-icons md-36">attach_money</i>
+                <p>Shopping</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadTasks" href="#tasks">
+                <i class="material-icons md-36">work</i>
+                <p>Tasks</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items">
+            <a id="loadStatistics" href="#stats">
+                <i class="material-icons md-36">pie_chart</i>
+                <p>Statistics</p>
+            </a>
+        </div>
+        <div class="sidebar-list-items aboutlink">
+            <a id="loadAbout" href="#about">
+                <p>About</p>
+            </a>
+        </div>
+    </div>
+</div>
 
+<!-- Middle of page: Group pages with sidebar are loaded into this div -->
+<div id="page-content">
+    <p>Text test <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><br><br><br><br><br><br><br><br><br><br> Scroll</p>
+</div>
+
+
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<!-- Bootstrap Js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="GroupDashboard.js"></script>
 </body>
 </html>
