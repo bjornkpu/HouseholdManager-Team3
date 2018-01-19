@@ -22,7 +22,7 @@ $(document).ready(function() {
         $('#emailReadOnly').attr('value', user.email);
         $('#phoneReadOnly').attr('value', user.phone);
         var lists;
-        var url='http://localhost:8080/scrum/rest/groups/'+ user.email +'/invites';
+        var url='rest/groups/'+ user.email +'/invites';
         $.get(url, function(data,status){
             lists=data;
             renderInvites(data,user);
@@ -38,7 +38,7 @@ $(document).ready(function() {
     function getEmail () {
         $.ajax({
             type: 'GET',
-            url:'http://localhost:8080/scrum/rest/session',
+            url:'rest/session',
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
@@ -52,7 +52,7 @@ $(document).ready(function() {
     function getInfo(email){
         $.ajax({
             type: 'GET',
-            url: '/scrum/rest/user/' + email,
+            url: 'rest/user/' + email,
             dataType: 'json',
             success: function (data) {
                 console.log( "data: " + data);
@@ -86,7 +86,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'PUT',
-                url: 'http://localhost:8080/scrum/rest/user/'+ sessionEmail, //test
+                url: 'rest/user/'+ sessionEmail, //test
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
@@ -120,7 +120,7 @@ $(document).ready(function() {
     $('#changePassword').click(function () {
         $.ajax({
             type: 'PUT',
-            url: 'http://localhost:8080/scrum/rest/user/tre@h.no' /**+ sessionEmail()*/, //test
+            url: 'rest/user/tre@h.no' /**+ sessionEmail()*/, //test
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
@@ -159,7 +159,7 @@ $(document).ready(function() {
         //console.log("Click");
         $.ajax({
             type:'POST',
-            url:'http://localhost:8080/scrum/rest/groups/',
+            url:'rest/groups/',
             contentType: 'application/json; charset=utf-8',
             dataType:'json',
             data: JSON.stringify({
@@ -184,7 +184,7 @@ $(document).ready(function() {
     function getInvites(user) {
         $.ajax({
             type:"GET",
-            url: "http://localhost:8080/scrum/rest/groups/" + user.email + "/invites",
+            url: "rest/groups/" + user.email + "/invites",
             contentType: "application/json",
             dataType:"json",
             success: function (data) {
@@ -211,7 +211,7 @@ function renderInvites(data,user) {
             $li.click(function() {
                 $.ajax({
                     type:"PUT",
-                    url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email+"/"+1,
+                    url:"rest/groups/" + data[i].id + "/members/" + user.email+"/"+1,
                     contentType: "application/json",
                     dataType:"json",
                     success: function (jqXHR,textStatus) {
@@ -222,7 +222,7 @@ function renderInvites(data,user) {
             $fjern.click(function () {
                 $.ajax({
                     type:"DELETE",
-                    url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email,
+                    url:"rest/groups/" + data[i].id + "/members/" + user.email,
                     contentType: "application/json",
                     dataType:"json",
                     success: function (jqXHR,textStatus) {

@@ -1,7 +1,7 @@
-
 $(document).ready(function(){
 
-    findAllGroups();
+    getLoggedOnUser(setData);
+
 
     var groups;
     var currentGroup;
@@ -11,16 +11,15 @@ $(document).ready(function(){
         $("#page-content").load("Shoppinglist.html");
     }
 
-
-    //finds all groups
-    function findAllGroups() {
-        console.log('findGroups');
+    function setData(user) {
         $.ajax({
             type: 'GET',
-            url: '/scrum/rest/groups',
+            url: '/scrum/rest/groups/list/' + user.email,
             dataType: "json",
             success: renderGroupDropdown
         });
+        console.log(getCookie("currentGroup"));
+
     }
 
     //function which lists out the different groups into the dropdown menu
@@ -32,6 +31,9 @@ $(document).ready(function(){
         groups=data;
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
+            if (i == 0){
+                checkCookie(data[0].id);
+            }
             var groupname= data[i].name;
             var id='';
             id+=i;
@@ -50,9 +52,9 @@ $(document).ready(function(){
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
     });
 
-
+    var y = getCookie("currentGroup");
     var lists;
-    var url='http://localhost:8080/scrum/rest/groups/'+2+'/members';
+    var url='rest/groups/'+y+'/members';
     $.get(url, function(data, status){
         lists=data;
         renderMembers(data)
@@ -102,10 +104,11 @@ $(document).ready(function(){
 
     //TODO: remove 2 from url. Get group from cookies or something.
     $("#invUserButton").click(function () {
+        var x = getCookie("currentGroup");
         $.ajax({
             type:"POST",
             dataType:"json",
-            url:"http://localhost:8080/scrum/rest/groups/2/members/" + $("#invUserField").val(),
+            url:"rest/groups/"+x+"/members/" + $("#invUserField").val(),
             contentType: "application/json",
             data:JSON.stringify({
                 "email": $("#invUserField").val()
@@ -123,6 +126,30 @@ $(document).ready(function(){
 
     })
 
+    function getLoggedOnUser(success) {
+        $.ajax({
+            url: 'rest/session',
+            type: 'GET',
+            dataType: 'json',
+            success: function(session) {
+                $.ajax({
+                    url: 'rest/user/' + session.email,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(user) {
+                        success(user);
+                    },
+                    error: function() {
+                        window.location.href = "error.html";
+                    }
+                });
+            },
+            error: function() {
+                window.location.href = "error.html";
+            }
+        });
+    };
+
 });
 
 function renderMembers(data) {
@@ -131,4 +158,28 @@ function renderMembers(data) {
         $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
     }
 }
+
+function checkCookie(id) {
+    var username = getCookie("currentGroup");
+    if (username == "") {
+        document.cookie = "currentGroup=" + id;
+    }
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 
