@@ -3,7 +3,10 @@ $(document).ready(function() {
     var disbursementList = [];
     var lists;
     var items;
-    var currentShoppingList = 1;
+    var currentShoppingList = 0;
+    var currentGroup = getCookie("groupId");
+
+    loadShoppingListsFromGroup(currentGroup);
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -42,7 +45,7 @@ $(document).ready(function() {
             }
         });
 
-        renderShoppingListInformation(currentShoppingList);
+        getItemsInShoppingList(1);
     });
 
     $('#deleteItems').click(function() {
@@ -233,25 +236,40 @@ $(document).ready(function() {
         }
     }
 
-    $(document).ready(function () {
-        // console.log("menu1 pressed")
+    function loadShoppingListsFromGroup(groupId){
+        console.log("Loading from group " + groupId + "...");
         $('#shoppinglistdropdown').empty();
-        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
+        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/shoppingLists';
         $.get(url, function(data, status){
-            lists = data;
-
             if(status === "success"){
-                console.log("ShoppingList content loaded successfully!");
+                console.log("ShoppingList content from group " + groupId + " loaded successfully!");
+                lists = data;
                 //Here to prevent undefined variables and methods out of order
-                renderShoppingListDropdownMenu(data);
                 $("#shoppinglistName").text(data[0].name);
-                getItemsInShoppingList(data[0].id);
+                renderShoppingListDropdownMenu(data);
+                getItemsInShoppingList(groupId);
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
             }
         });
-    });
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 
     //When clicking
     $("#shoppinglistdropdown").on("click", "a.link", function(){
@@ -262,15 +280,14 @@ $(document).ready(function() {
     function renderShoppingListInformation(id){
         $("#tableShoppinglist").empty();
 
-        getItemsInShoppingList(lists[id].id);
-
-        console.log("bitch boy");
+        getItemsInShoppingList(1);
 
         $("#shoppinglistName").text(lists[id].name);
     }
 
     function getItemsInShoppingList(id){
-        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists/'+id+'/items';
+        console.log('http://localhost:8080/scrum/rest/groups/' + id+ '/shoppingLists/' + lists[currentShoppingList].id + '/items');
+        var url='http://localhost:8080/scrum/rest/groups/'+id+'/shoppingLists/'+lists[currentShoppingList].id+'/items';
 
         $.get(url, function(data, status){
             if(status === "success"){

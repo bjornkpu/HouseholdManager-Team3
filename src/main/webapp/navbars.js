@@ -3,7 +3,7 @@ $(document).ready(function(){
 
     findAllGroups();
 
-    var groups;
+    var groups = [];
     var currentGroup;
 
     //Goes to correct page when reload
@@ -36,19 +36,28 @@ $(document).ready(function(){
             var id='';
             id+=i;
             id+='group';
-            $('#groupdropdown').append('<li><a class="dropdown-item" href="#" id="'+id+'">'+
+            $('#groupdropdown').append('<li><a class="dropdown-item group-link" href="#" id="'+id+'">'+
                 groupname+'</a></li>'
             );
             console.log("Added group: "+groupname);
         }
+
+        setCookie(groups[0].id);
     }
 
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
-        document.cookie="groupId="+currentGroup.id;
-        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
+        setCookie(currentGroup.id);
+        console.log("Cookier er satt");
+        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email);
     });
+
+    function setCookie(data){
+        var domain = document.domain;
+        document.cookie = "groupId="+data+" " + ((domain !== "localhost") ? ";domain="+domain : "");
+        console.log("Cookie 'groupId': " + data);
+    }
 
 
     var lists;
