@@ -67,7 +67,7 @@ public class Db {
 	 */
     public Connection getConnection() throws SQLException {
 //        return this.cpds.getConnection();
-        return DriverManager.getConnection(DB_URL, DB_USER_NAME,DB_PW);
+        return DriverManager.getConnection(DB_URL+DB_USER_NAME, DB_USER_NAME,DB_PW);
     }
     /** Closes a {@linkplain Connection}.
      *
