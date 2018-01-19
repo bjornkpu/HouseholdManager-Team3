@@ -239,8 +239,6 @@ $(document).ready(function() {
         var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
         $.get(url, function(data, status){
             lists = data;
-            // renderShoppingListDropdownMenu(data);
-            // getItemsInShoppingList(data[0].id);
 
             if(status === "success"){
                 console.log("ShoppingList content loaded successfully!");
@@ -257,14 +255,16 @@ $(document).ready(function() {
 
     //When clicking
     $("#shoppinglistdropdown").on("click", "a.link", function(){
-        currentShoppingList = lists[this.id].id;
-        renderShoppingListInformation(currentShoppingList);
+        currentShoppingList = this.id;
+        renderShoppingListInformation(this.id);
     });
 
     function renderShoppingListInformation(id){
         $("#tableShoppinglist").empty();
 
-        getItemsInShoppingList(id);
+        getItemsInShoppingList(lists[id].id);
+
+        console.log("bitch boy");
 
         $("#shoppinglistName").text(lists[id].name);
     }
