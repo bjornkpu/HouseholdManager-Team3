@@ -1,8 +1,6 @@
 $(document).ready(function(){
 
     getLoggedOnUser(setData);
-
-
     var groups;
     var currentGroup;
 
@@ -26,11 +24,6 @@ $(document).ready(function(){
         var test=prompt("test: ");
     })*/
 
-   $("#newGroup1").click(function () {
-       createNewGroup();
-       window.location.reload();
-
-   });
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
@@ -133,7 +126,7 @@ $(document).ready(function(){
 
         })
 
-    })
+    });
 
     function getLoggedOnUser(success) {
         $.ajax({
@@ -190,5 +183,12 @@ function getCookie(cname) {
     }
     return "";
 }
+
+$("#newGroup1").click(function () {
+    createNewGroup();
+    window.location.reload();
+
+});
+
 
 
