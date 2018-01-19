@@ -50,26 +50,6 @@ public class MemberService {
     }
 
     /**
-     * Retrieves all the groups a user is a member of.
-     * @param email Email of the user.
-     * @return An ArrayList of groups.
-     *
-     */
-    @GET
-    @Produces("application/json")
-    @Path("/{email}")
-    public ArrayList<Group> getGroupsConnectedToMember(@PathParam("email") String email){
-        try {
-            log.info("Retrieving groups by member.");
-            return memberDao.getGroupsByMember(email);
-        } catch (SQLException e){
-            log.info("Could not get groups");
-            throw new ServerErrorException("Failed to get groups.",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }
-    }
-
-
-    /**
      * Invites a user to become a member of a group.
      *
      *
@@ -102,11 +82,11 @@ public class MemberService {
 
     @PUT
     @Produces("application/json")
-    @Path("/{email}")
-    public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId){
+    @Path("/{email}/{status}")
+    public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId,@PathParam("status") int status){
         try{
             log.info("Updating user " + email);
-            Member member = new Member(email,null,null,null,null,0.0,1);
+            Member member = new Member(email,null,null,null,null,-1,status);
             return  Response.status(200).entity(memberDao.updateUser(member,groupId)).build();
         } catch (SQLException e){
             log.info("Failed to update to member");

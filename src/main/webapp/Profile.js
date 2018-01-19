@@ -22,7 +22,7 @@ $(document).ready(function() {
         $('#emailReadOnly').attr('value', user.email);
         $('#phoneReadOnly').attr('value', user.phone);
         var lists;
-        var url='http://localhost:8080/scrum/rest/groups/'+ user.email +'/invites';
+        var url='rest/groups/'+ user.email +'/invites';
         $.get(url, function(data,status){
             lists=data;
             renderInvites(data,user);
@@ -38,7 +38,7 @@ $(document).ready(function() {
     function getEmail () {
         $.ajax({
             type: 'GET',
-            url:'http://localhost:8080/scrum/rest/session',
+            url:'rest/session',
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             success: function (data) {
@@ -52,7 +52,7 @@ $(document).ready(function() {
     function getInfo(email){
         $.ajax({
             type: 'GET',
-            url: '/scrum/rest/user/' + email,
+            url: 'rest/user/' + email,
             dataType: 'json',
             success: function (data) {
                 console.log( "data: " + data);
@@ -86,7 +86,7 @@ $(document).ready(function() {
 
             $.ajax({
                 type: 'PUT',
-                url: 'http://localhost:8080/scrum/rest/user/'+ sessionEmail, //test
+                url: 'rest/user/'+ sessionEmail, //test
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
@@ -120,7 +120,7 @@ $(document).ready(function() {
     $('#changePassword').click(function () {
         $.ajax({
             type: 'PUT',
-            url: 'http://localhost:8080/scrum/rest/user/tre@h.no' /**+ sessionEmail()*/, //test
+            url: 'rest/user/' + sessionEmail, //test
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
@@ -155,36 +155,14 @@ $(document).ready(function() {
     }*/
 
 
-    $("#createGroupButton").click(function () {
-        //console.log("Click");
-        $.ajax({
-            type:'POST',
-            url:'http://localhost:8080/scrum/rest/groups/',
-            contentType: 'application/json; charset=utf-8',
-            dataType:'json',
-            data: JSON.stringify({
-                'name': $("#nameGroup").val(),
-                'description':null,
-                'admin':$("#emailReadOnly").val(),
-                'members':null
-            }),
-            statusCode: {
-                404: function () {
-                    console.log("404 - Not Found");
-                },
-                200: function () {
-                    console.log("Group Added");
-                    window.location.href = "Navbars.html";
-                }
-            }
-        })
-
-    })
+    $("#createGroup").click(function () {
+        createNewGroup();
+    });
 
     function getInvites(user) {
         $.ajax({
             type:"GET",
-            url: "http://localhost:8080/scrum/rest/groups/" + user.email + "/invites",
+            url: "rest/groups/" + user.email + "/invites",
             contentType: "application/json",
             dataType:"json",
             success: function (data) {
@@ -206,23 +184,67 @@ function renderInvites(data,user) {
         var s = "inviteGroupButton"+i;
         $('#profileInvites').append('<tr id=\"" + s + "\"> <td>' + data[i].name + "  " + ' </td>');
         var $li = $("<td><button type=\"button\"  class=\"joinGroup\" title=\"joinGroup\">Join</button></td>");
+        var $fjern = $("<td><button type=\"button\" class=\"joinGroup\" title=\"joinGroup\">Remove</button></td>");
         (function (i) {
             $li.click(function() {
                 $.ajax({
                     type:"PUT",
-                    url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email,
+                    url:"rest/groups/" + data[i].id + "/members/" + user.email+"/"+1,
                     contentType: "application/json",
                     dataType:"json",
                     success: function (jqXHR,textStatus) {
-                        $(("#" + s)).hide("slow");
+                        window.location.href = "Profile.html";
+                    }
+                })
+            });
+            $fjern.click(function () {
+                $.ajax({
+                    type:"DELETE",
+                    url:"rest/groups/" + data[i].id + "/members/" + user.email,
+                    contentType: "application/json",
+                    dataType:"json",
+                    success: function (jqXHR,textStatus) {
+                        window.location.href = "Profile.html";
                     }
                 })
             });
         }(i));
         $("#profileInvites").append($li);
+        $("#profileInvites").append($fjern);
         $("#profileInvites").append("</tr>");
     }
 
 }
+
+function createNewGroup() {
+    //console.log("Click");
+    var Groupname=prompt("Group name: ");
+    if(Groupname == null) {
+        return;
+    }else
+    {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/scrum/rest/groups/',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                'name': Groupname,
+                'description': null,
+                'admin': $("#emailReadOnly").val(),
+                'members': null
+            }),
+            statusCode: {
+                404: function () {
+                    console.log("404 - Not Found");
+                },
+                200: function () {
+                    console.log("Group Added");
+                    window.location.href = "Navbars.html";
+                }
+            }
+        })
+    }
+};
 
 
