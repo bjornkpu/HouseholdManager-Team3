@@ -245,10 +245,15 @@ $(document).ready(function() {
                 console.log("ShoppingList content from group " + groupId + " loaded successfully!");
                 lists = data;
                 //Here to prevent undefined variables and methods out of order
-                $("#shoppinglistName").text(data[0].name);
-                renderShoppingListDropdownMenu(data);
-                getItemsInShoppingList(groupId);
-                $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupName"));
+                if(data.size === null || data.size === 0){
+                    $("#shoppinglistName").text("No shoppinglists available");
+                } else {
+                    console.log("Data[0]");
+                    $("#shoppinglistName").text(data[0].name);
+                    renderShoppingListDropdownMenu(data);
+                    getItemsInShoppingList(groupId);
+                    $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupName"));
+                }
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
