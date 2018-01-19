@@ -50,26 +50,6 @@ public class MemberService {
     }
 
     /**
-     * Retrieves all the groups a user is a member of.
-     * @param email Email of the user.
-     * @return An ArrayList of groups.
-     *
-     */
-    @GET
-    @Produces("application/json")
-    @Path("/{email}")
-    public ArrayList<Group> getGroupsConnectedToMember(@PathParam("email") String email){
-        try {
-            log.info("Retrieving groups by member.");
-            return memberDao.getGroupsByMember(email);
-        } catch (SQLException e){
-            log.info("Could not get groups");
-            throw new ServerErrorException("Failed to get groups.",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }
-    }
-
-
-    /**
      * Invites a user to become a member of a group.
      *
      *
