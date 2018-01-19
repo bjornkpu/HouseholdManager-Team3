@@ -38,7 +38,7 @@
 
 .wall{
     display: grid;
-    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 90% [wallRow2-end];
+    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 85% [wallRow2-end];
     grid-area: wallposts;
     background-color: lightgreen;
     justify-items: center;
