@@ -174,7 +174,7 @@ public class MemberDao {
     public static boolean updateUser(Member member, int groupId) throws SQLException {
         connection = Db.instance().getConnection();
         try {
-            if (member.getBalance() == 0){
+            if (member.getBalance() == -1 && member.getName() == null && member.getPassword() == null){
                 ps = connection.prepareStatement("UPDATE user_party set status = ? where user_email=? AND party_id = ?");
                 ps.setInt(1,member.getStatus());
                 ps.setString(2,member.getEmail());

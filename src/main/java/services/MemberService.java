@@ -102,11 +102,11 @@ public class MemberService {
 
     @PUT
     @Produces("application/json")
-    @Path("/{email}")
-    public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId){
+    @Path("/{email}/{status}")
+    public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId,@PathParam("status") int status){
         try{
             log.info("Updating user " + email);
-            Member member = new Member(email,null,null,null,null,0.0,1);
+            Member member = new Member(email,null,null,null,null,-1,status);
             return  Response.status(200).entity(memberDao.updateUser(member,groupId)).build();
         } catch (SQLException e){
             log.info("Failed to update to member");

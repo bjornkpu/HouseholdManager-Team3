@@ -206,20 +206,33 @@ function renderInvites(data,user) {
         var s = "inviteGroupButton"+i;
         $('#profileInvites').append('<tr id=\"" + s + "\"> <td>' + data[i].name + "  " + ' </td>');
         var $li = $("<td><button type=\"button\"  class=\"joinGroup\" title=\"joinGroup\">Join</button></td>");
+        var $fjern = $("<td><button type=\"button\" class=\"joinGroup\" title=\"joinGroup\">Remove</button></td>");
         (function (i) {
             $li.click(function() {
                 $.ajax({
                     type:"PUT",
+                    url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email+"/"+1,
+                    contentType: "application/json",
+                    dataType:"json",
+                    success: function (jqXHR,textStatus) {
+                        window.location.href = "Profile.html";
+                    }
+                })
+            });
+            $fjern.click(function () {
+                $.ajax({
+                    type:"DELETE",
                     url:"http://localhost:8080/scrum/rest/groups/" + data[i].id + "/members/" + user.email,
                     contentType: "application/json",
                     dataType:"json",
                     success: function (jqXHR,textStatus) {
-                        $(("#" + s)).hide("slow");
+                        window.location.href = "Profile.html";
                     }
                 })
             });
         }(i));
         $("#profileInvites").append($li);
+        $("#profileInvites").append($fjern);
         $("#profileInvites").append("</tr>");
     }
 
