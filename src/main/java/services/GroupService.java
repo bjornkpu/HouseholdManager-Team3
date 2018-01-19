@@ -1,6 +1,7 @@
 package services;
 import data.Group;
 import db.GroupDao;
+import db.MemberDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 /**
  *
@@ -23,6 +25,7 @@ public class GroupService {
 
     private static final Logger log = Logger.getLogger();
     private static GroupDao groupDao = new GroupDao();
+    private static MemberDao memberDao = new MemberDao();
 
     @Context
     private HttpServletRequest request;
@@ -63,6 +66,24 @@ public class GroupService {
         } catch (SQLException e) {
             log.info("Unable to get all groups");
             throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+    /**
+     * Retrieves all the groups a user is invited to join.
+     *
+     * @param email Email of user.
+     * @return ArrayList of groups which the user is invited to join.
+     */
+    @GET
+    @Path("/{email}/invites")
+    @Produces("application/json")
+    public ArrayList<Group> getGroupInvites(@PathParam("email") String email){
+        try{
+            log.info("Retrieving group invites for member " + email);
+            return memberDao.getGroupInvites(email);
+        } catch (SQLException e){
+            log.info("Failed to retrieve invites for member " + email);
+            throw new ServerErrorException("Failed to retrieve invites",Response.Status.INTERNAL_SERVER_ERROR,e);
         }
     }
 
