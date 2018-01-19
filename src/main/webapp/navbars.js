@@ -22,6 +22,16 @@ $(document).ready(function(){
 
     }
 
+   /** $('#newGroup1').click(function () {
+        var test=prompt("test: ");
+    })*/
+
+   $("#newGroup1").click(function () {
+       createNewGroup();
+       window.location.reload();
+
+   });
+
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
         // console.log("data:");
@@ -102,7 +112,6 @@ $(document).ready(function(){
 
 
 
-    //TODO: remove 2 from url. Get group from cookies or something.
     $("#invUserButton").click(function () {
         var x = getCookie("currentGroup");
         $.ajax({

@@ -120,7 +120,7 @@ $(document).ready(function() {
     $('#changePassword').click(function () {
         $.ajax({
             type: 'PUT',
-            url: 'rest/user/tre@h.no' /**+ sessionEmail()*/, //test
+            url: 'rest/user/' + sessionEmail, //test
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
@@ -155,31 +155,9 @@ $(document).ready(function() {
     }*/
 
 
-    $("#createGroupButton").click(function () {
-        //console.log("Click");
-        $.ajax({
-            type:'POST',
-            url:'rest/groups/',
-            contentType: 'application/json; charset=utf-8',
-            dataType:'json',
-            data: JSON.stringify({
-                'name': $("#nameGroup").val(),
-                'description':null,
-                'admin':$("#emailReadOnly").val(),
-                'members':null
-            }),
-            statusCode: {
-                404: function () {
-                    console.log("404 - Not Found");
-                },
-                200: function () {
-                    console.log("Group Added");
-                    window.location.href = "Navbars.html";
-                }
-            }
-        })
-
-    })
+    $("#createGroup").click(function () {
+        createNewGroup();
+    });
 
     function getInvites(user) {
         $.ajax({
@@ -195,6 +173,7 @@ $(document).ready(function() {
 
 
 });
+
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -237,5 +216,36 @@ function renderInvites(data,user) {
     }
 
 }
+
+function createNewGroup() {
+    //console.log("Click");
+    var Groupname=prompt("Group name: ");
+    if(Groupname == null) {
+        return;
+    }else
+    {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/scrum/rest/groups/',
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                'name': Groupname,
+                'description': null,
+                'admin': $("#emailReadOnly").val(),
+                'members': null
+            }),
+            statusCode: {
+                404: function () {
+                    console.log("404 - Not Found");
+                },
+                200: function () {
+                    console.log("Group Added");
+                    window.location.href = "Navbars.html";
+                }
+            }
+        })
+    }
+};
 
 
