@@ -193,7 +193,7 @@ public class InputChecker {
 	public static String removeExtraWhitespace(String s) {
 		if (s == null) return null;
 		s = s.trim();
-		s = s.replaceAll("[\\s&&[^ ]]+", " ");
+		s = s.replaceAll("[\\s&&[^ ]]+", "");
 		s = s.replaceAll(" +", " ");
 		return s;
 	}
