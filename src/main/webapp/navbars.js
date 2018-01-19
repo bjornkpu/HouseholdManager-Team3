@@ -48,15 +48,15 @@ $(document).ready(function(){
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
-        setCookie(currentGroup.id);
-        console.log("Cookier er satt");
+        setCookie(currentGroup);
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email);
     });
 
     function setCookie(data){
         var domain = document.domain;
-        document.cookie = "groupId="+data+" " + ((domain !== "localhost") ? ";domain="+domain : "");
-        console.log("Cookie 'groupId': " + data);
+        document.cookie = "groupId="+data.id+" " + ((domain !== "localhost") ? ";domain="+domain : "");
+        document.cookie = "groupName="+data.name+" " + ((domain !== "localhost") ? ";domain="+domain : "");
+        console.log("Cookie 'groupId': " + data.id + ", groupName: " + data.name);
     }
 
 

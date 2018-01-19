@@ -248,6 +248,7 @@ $(document).ready(function() {
                 $("#shoppinglistName").text(data[0].name);
                 renderShoppingListDropdownMenu(data);
                 getItemsInShoppingList(groupId);
+                $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupName"));
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
@@ -321,35 +322,6 @@ $(document).ready(function() {
         }
         console.log("Added Items");
     }
-
-    //function which lists out information on the choosen shoppinglist
-    // function renderShoppingListInfo(data) {
-    //     var list = data == null ? [] : (data instanceof Array ? data : [data]);
-    //     shoppingListArray = [];
-    //     var itemArray = [];
-    //     $.each(list, function(index, Shoppinglist) {
-    //         itemArray.push({
-    //             "name": Item.name,
-    //             "status": Item.status,
-    //         });
-    //     });
-    //     console.log(shoppingListArray);
-    //
-    //     $.each(itemArray, function (index, Shoppinglist) {
-    //         var scopeNr = 1; //itemNr
-    //
-    //             //iteme i shoppingarray og alle item
-    //             $('#tableShoppinglist').append(
-    //                 '<tr>' +
-    //                 '<th scope="row">' + scopeNr + ' </th>' +
-    //                 '<td>' + Shoppinglist.name + '</td>' +
-    //                 '<td >' + Shoppinglist.status + '</td>' +
-    //                 '</tr>');
-    //
-    //             console.log("koden kom til bunnen av render info about each shoppinglist");
-    //             scopeNr++; //disbursementNr increment on each new list
-    //         });
-    //     }
 });
 
 function getChecked(){
