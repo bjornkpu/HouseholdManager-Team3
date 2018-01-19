@@ -9,6 +9,7 @@ import java.sql.*;
  */
 public class Db {
     private static Db datasource;
+    private static Logger logger= new Logger();
     private ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
     private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
@@ -29,9 +30,11 @@ public class Db {
             cpds.setPassword(DB_PW);
 
             // the settings below are optional -- c3p0 can work with defaults
-            cpds.setMinPoolSize(0);
-            cpds.setAcquireIncrement(5);
-            cpds.setMaxPoolSize(20);
+            cpds.setInitialPoolSize(1);
+            cpds.setMinPoolSize(1);
+            cpds.setAcquireIncrement(2);
+            cpds.setMaxPoolSize(6);
+            cpds.setMaxIdleTimeExcessConnections(120);
             cpds.setMaxStatements(180);
 
             log.info("DB initialized!");
@@ -55,7 +58,8 @@ public class Db {
     }
 
 	/** Method to get a connection from the connection pool.
-	 * @return a connection ready for use.
+     *
+	 * @return A {@link Connection}.
 	 * @throws SQLException
 	 */
     public Connection getConnection() throws SQLException {

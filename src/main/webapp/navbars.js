@@ -80,9 +80,6 @@ $(document).ready(function(){
     $("#logout").click(function(){
         logOut();
     });
-    if (window.location.hash == "#shopping"){
-        $("#page-content").load("Shoppinglist.html");
-    };
 
     //Loads content when clicking sidebar.
     $("#loadShoppingList").click(function(){
