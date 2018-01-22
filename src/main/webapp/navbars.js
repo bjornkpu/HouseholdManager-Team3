@@ -1,9 +1,9 @@
+
 $(document).ready(function(){
 
-    getLoggedOnUser(setData);
+    findAllGroups();
 
-
-    var groups;
+    var groups = [];
     var currentGroup;
 
     //Goes to correct page when reload
@@ -11,26 +11,17 @@ $(document).ready(function(){
         $("#page-content").load("Shoppinglist.html");
     }
 
-    function setData(user) {
+
+    //finds all groups
+    function findAllGroups() {
+        console.log('findGroups');
         $.ajax({
             type: 'GET',
-            url: '/scrum/rest/groups/list/' + user.email,
+            url: '/scrum/rest/groups',
             dataType: "json",
             success: renderGroupDropdown
         });
-        console.log(getCookie("currentGroup"));
-
     }
-
-   /** $('#newGroup1').click(function () {
-        var test=prompt("test: ");
-    })*/
-
-   $("#newGroup1").click(function () {
-       createNewGroup();
-       window.location.reload();
-
-   });
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
@@ -41,30 +32,36 @@ $(document).ready(function(){
         groups=data;
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
-            if (i == 0){
-                checkCookie(data[0].id);
-            }
             var groupname= data[i].name;
             var id='';
             id+=i;
             id+='group';
-            $('#groupdropdown').append('<li><a class="dropdown-item" href="#" id="'+id+'">'+
+            $('#groupdropdown').append('<li><a class="dropdown-item group-link" href="#" id="'+id+'">'+
                 groupname+'</a></li>'
             );
             console.log("Added group: "+groupname);
         }
+
+        setCookie(groups[0].id);
     }
 
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
-        document.cookie="groupId="+currentGroup.id;
-        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
+        setCookie(currentGroup);
+        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email);
     });
 
-    var y = getCookie("currentGroup");
+    function setCookie(data){
+        var domain = document.domain;
+        document.cookie = "groupId="+data.id+" " + ((domain !== "localhost") ? ";domain="+domain : "");
+        document.cookie = "groupName="+data.name+" " + ((domain !== "localhost") ? ";domain="+domain : "");
+        console.log("Cookie 'groupId': " + data.id + ", groupName: " + data.name);
+    }
+
+
     var lists;
-    var url='rest/groups/'+y+'/members';
+    var url='http://localhost:8080/scrum/rest/groups/'+2+'/members';
     $.get(url, function(data, status){
         lists=data;
         renderMembers(data)
@@ -92,6 +89,9 @@ $(document).ready(function(){
     $("#logout").click(function(){
         logOut();
     });
+    if (window.location.hash == "#shopping"){
+        $("#page-content").load("Shoppinglist.html");
+    };
 
     //Loads content when clicking sidebar.
     $("#loadShoppingList").click(function(){
@@ -112,12 +112,12 @@ $(document).ready(function(){
 
 
 
+    //TODO: remove 2 from url. Get group from cookies or something.
     $("#invUserButton").click(function () {
-        var x = getCookie("currentGroup");
         $.ajax({
             type:"POST",
             dataType:"json",
-            url:"rest/groups/"+x+"/members/" + $("#invUserField").val(),
+            url:"http://localhost:8080/scrum/rest/groups/2/members/" + $("#invUserField").val(),
             contentType: "application/json",
             data:JSON.stringify({
                 "email": $("#invUserField").val()
@@ -135,30 +135,6 @@ $(document).ready(function(){
 
     })
 
-    function getLoggedOnUser(success) {
-        $.ajax({
-            url: 'rest/session',
-            type: 'GET',
-            dataType: 'json',
-            success: function(session) {
-                $.ajax({
-                    url: 'rest/user/' + session.email,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(user) {
-                        success(user);
-                    },
-                    error: function() {
-                        window.location.href = "error.html";
-                    }
-                });
-            },
-            error: function() {
-                window.location.href = "error.html";
-            }
-        });
-    };
-
 });
 
 function renderMembers(data) {
@@ -167,28 +143,4 @@ function renderMembers(data) {
         $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
     }
 }
-
-function checkCookie(id) {
-    var username = getCookie("currentGroup");
-    if (username == "") {
-        document.cookie = "currentGroup=" + id;
-    }
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
-}
-
 
