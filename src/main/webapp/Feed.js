@@ -1,23 +1,18 @@
 $(document).ready(function() {
 
-    $("#post-button").click(function(){
-        var text = document.getElementsByClassName("post-input").value();
-        //var name = getLoggedInUser() lel
 
-            $("#textPosts").prepend('<div class="post">"text"</div>');
+    // Submit-button creates a div with the text from the text area
+    $(".post-button").click(function(){
+        var text = $("textarea.post-input").val();
 
-            jQuery('<div/>', {
-                class: 'post',
-                text: text
-            }).appendTo('#textPosts');
-
-            $("#post").prepend('<p>"" + text</p>');
-
-            $("#textPosts").createElement('div');
-        };
+        if(text.length !== 0) {
+            var $newdiv1 = $("<div class='post'><p>" + text + "</p></div>");
 
 
-
+            $(".textPosts").prepend($newdiv1);
+        }else{
+            alert("You must type something to post!")
+        }
 
     });
 
