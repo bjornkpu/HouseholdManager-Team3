@@ -174,7 +174,6 @@ $(document).ready(function() {
 });
 
 
-
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
 
 function renderInvites(data,user) {
