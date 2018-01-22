@@ -210,7 +210,7 @@ $(document).ready(function() {
         });
 
 
-        console.log(bordliste);
+        // console.log(bordliste);
         var scopeNr = 1; //disbursementNr
         $.each(disbursementList, function (index, Shoppinglist) {
             $('#tableDisbursements').append('<tr>' +
@@ -239,13 +239,13 @@ $(document).ready(function() {
     function loadShoppingListsFromGroup(groupId){
         console.log("Loading from group " + groupId + "...");
         $('#shoppinglistdropdown').empty();
-        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/shoppingLists';
+        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/shoppingLists/user';
         $.get(url, function(data, status){
             if(status === "success"){
-                console.log("ShoppingList content from group " + groupId + " loaded successfully!");
+                console.log("ShoppingList content from user in group " + groupId + " loaded successfully!");
                 lists = data;
                 //Here to prevent undefined variables and methods out of order
-                if(data.size === null || data.size === 0){
+                if(data === null || data.size === 0){
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
                     console.log("Data[0]");

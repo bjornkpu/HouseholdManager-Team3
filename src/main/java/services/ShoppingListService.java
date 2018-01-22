@@ -10,6 +10,7 @@ import db.UserDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -44,6 +45,20 @@ public class ShoppingListService {
 		try {
 			return shoppingListDao.getShoppingListByGroupid(groupId);
 		} catch(SQLException e) {
+			log.error("Failed to get shopping list array", e);
+			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}
+	}
+
+	@GET
+	@Path("/user")
+	@Produces("application/json")
+	public ArrayList<ShoppingList> getShoppingListByUserInGroup(@PathParam("groupId") int groupId){
+		Session session = (Session) request.getSession().getAttribute("session");
+		log.info("Session: = " + session.getEmail());
+		try {
+			return ShoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
+		} catch (SQLException e) {
 			log.error("Failed to get shopping list array", e);
 			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
