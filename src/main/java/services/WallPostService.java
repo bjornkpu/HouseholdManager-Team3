@@ -1,8 +1,7 @@
 package services;
 
 import data.WallPost;
-import db.GroupDao;
-import db.MemberDao;
+import db.Db;
 import db.WallpostDao;
 import util.Logger;
 
@@ -10,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,34 +21,98 @@ import java.util.ArrayList;
  * @version 0.1
  */
 
-@Path("/wallposts")
+@Path("/wallposts/")
 public class WallPostService {
 
     private static final Logger log = Logger.getLogger();
-    private static final WallpostDao wallpostDao = new WallpostDao();
+    private static WallpostDao wallpostDao;
+    private Connection connection;
+
+
+    public WallPostService(){
+        try{
+            connection = Db.instance().getConnection();
+            this.wallpostDao = new WallpostDao(connection);
+        }catch(SQLException e){
+            log.error("Failed to get connection", e);
+        }
+    }
 
     @Context
     private HttpServletRequest request;
 
+    /**
+     * Gets all the {@code Wallposts} posted in a {@code Group}.
+     *
+     * @param groupId Id of the {@code Group}.
+     * @return Returns an {@code ArrayList} of {@code WallPost} objects if successful, else returns HTTP status code 500.
+     */
+
     @GET
     @Path("/{groupId}")
     @Produces("application/json")
-    public static ArrayList<WallPost> getWallPostForGroup(@PathParam("groupId") int groupId){
+    public ArrayList<WallPost> getWallPostForGroup(@PathParam("groupId") int groupId){
         try {
             return wallpostDao.getWallposts(groupId);
         } catch (SQLException e){
-            e.printStackTrace();
             throw new ServerErrorException("Failed to get wallposts from group" + groupId, Response.Status.INTERNAL_SERVER_ERROR,e);
+        } finally {
+            Db.close(connection);
         }
     }
+
+    /**
+     * Gets all the {@code WallPosts} from a {@code user} in a {@code Group}.
+     * @param groupId Id of the {@code Group}.
+     * @param email {@code email} of the {@code User}.
+     * @return Returns an {@code ArrayList} of {@code WallPost} objects if successful, else returns HTTP status code 500.
+     */
     @GET
     @Path("/{groupId}/{email}")
-    public static ArrayList<WallPost> getWallPostsForUser(@PathParam("groupId") int groupId,@PathParam("email") String email){
+    @Produces("application/json")
+    public ArrayList<WallPost> getWallPostsForUser(@PathParam("groupId") int groupId,@PathParam("email") String email){
         try {
             return wallpostDao.getWallposts(email,groupId);
         } catch (SQLException e){
-            e.printStackTrace();
             throw new ServerErrorException("Failed to get wallposts for user", Response.Status.INTERNAL_SERVER_ERROR,e);
+        } finally {
+            Db.close(connection);
         }
+    }
+
+    /**
+     * Posts a new {@code WallPost} to the database.
+     * @param wallPost The {@code Wallpost} object to be added.
+     * @return {@code Response Code 200} if successful, else returns {@code Respons Code 500} if not.
+     */
+    @POST
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response postWallPost(WallPost wallPost){
+        try {
+            return  Response.status(201).entity(wallpostDao.postWallpost(wallPost)).build();
+        } catch (SQLException e){
+            throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR,e);
+        } finally {
+            Db.close(connection);
+        }
+    }
+
+    /**
+     * Deletes a {@code WallPost} from the database.
+     * @param wallPost The {@code Wallpost} object to be added.
+     * @return {@code Response Code 200} if successful, else returns {@code Respons Code 500} if not.
+     */
+    @DELETE
+    @Produces("application/json")
+    public Response deleteWallPost(WallPost wallPost){
+        try {
+            return Response.status(200).entity(wallpostDao.deleteWallpost(wallPost.getId())).build();
+        } catch (SQLException e){
+            throw new ServerErrorException("Failed to delete wallpost", Response.Status.INTERNAL_SERVER_ERROR,e);
+        } finally {
+            Db.close(connection);
+        }
+
     }
 }
