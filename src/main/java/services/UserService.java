@@ -2,9 +2,8 @@ package services;
 import data.Session;
 import data.User;
 import db.UserDao;
-import java.sql.SQLException;
-
 import util.ForgottenPassword;
+import util.InputChecker;
 import util.Logger;
 import util.LoginCheck;
 
@@ -119,5 +118,10 @@ public class UserService {
         }
     }
 
-
+    @GET
+	@Path("/emailCheck/{email}")
+    @Produces("application/json")
+	public boolean checkEmail(@PathParam("email") String email){
+    	return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
+    }
 }
