@@ -25,17 +25,21 @@ public class UserDao {
 
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
+    private Connection connection;
+    private PreparedStatement ps;
+    private ResultSet rs;
+
+    public UserDao(Connection connection) {
+        this.connection=connection;
+    }
 
     /** Method that gets a user given an email.
      * @param email The email of the user that is to be returned.
      * @return A User with the information relative to the email entered.
      * @throws SQLException when failing to get User.
      */
-    public static User getUser(String email) throws SQLException {
-        connection = Db.instance().getConnection();
+    public User getUser(String email) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM user WHERE email=?");
             ps.setString(1,email);
@@ -56,7 +60,7 @@ public class UserDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -65,8 +69,8 @@ public class UserDao {
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
-    public static boolean addUser(User user) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean addUser(User user) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO user (email,name,phone,password,salt) VALUES(?,?,?,?,?)");
             ps.setString(1,user.getEmail());
@@ -79,7 +83,7 @@ public class UserDao {
             return result == 1;
         } finally {
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -88,8 +92,8 @@ public class UserDao {
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
-    public static boolean updateUser(User user) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean updateUser(User user) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE user set name=?, phone=?, password=?, salt=? where email=?");
             ps.setString(1,user.getName());
@@ -102,7 +106,7 @@ public class UserDao {
             return result == 1;
         } finally {
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -112,8 +116,8 @@ public class UserDao {
 	 * @return true if the query succeeds
 	 * @throws SQLException if the query fails
 	 */
-    public static boolean delUser(String email) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean delUser(String email) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM user where email=?");
             ps.setString(1,email);
@@ -122,7 +126,7 @@ public class UserDao {
             return result == 1;
         } finally {
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -131,8 +135,8 @@ public class UserDao {
 	 * @return an ArrayList of users that is in the shopping list with the given id
 	 * @throws SQLException if the query fails
 	 */
-    public static ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
-	    connection = Db.instance().getConnection();
+    public ArrayList<User> getUsersInShoppingList(int shoppingListId) throws SQLException{
+//	    connection = Db.instance().getConnection();
 	    try {
 		    ps = connection.prepareStatement("SELECT *" +
                     "FROM user " +
@@ -156,7 +160,7 @@ public class UserDao {
 	    } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
 	    }
     }
 
@@ -166,8 +170,8 @@ public class UserDao {
      * @return an {@linkplain ArrayList} with {@linkplain User}s
      * @throws SQLException if the query errors
      */
-    public static ArrayList<User> getUsersInDisbursement (int disbursementId) throws SQLException{
-        connection = Db.instance().getConnection();
+    public ArrayList<User> getUsersInDisbursement (int disbursementId) throws SQLException{
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT *" +
                     "FROM user " +
@@ -194,11 +198,11 @@ public class UserDao {
                 log.info("Could not find any users in disbursement: "+disbursementId);
             }
 
-            rs.close();
-            ps.close();
             return userList;
         } finally {
-            connection.close();
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
         }
     }
 

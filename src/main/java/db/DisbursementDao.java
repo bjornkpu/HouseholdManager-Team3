@@ -16,10 +16,14 @@ import java.util.ArrayList;
 public class DisbursementDao {
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static Statement statement;
-    private static ResultSet rs;
+    private Connection connection;
+    private PreparedStatement ps;
+    private Statement statement;
+    private ResultSet rs;
+
+    public DisbursementDao(Connection connection) {
+        this.connection = connection;
+    }
 
     /**Fetches a list of disbursements in a group, where the user is a participant of the disbursement
      *
@@ -28,8 +32,8 @@ public class DisbursementDao {
      * @return An {@link ArrayList} of {@link Disbursement}s, without participants or items.
      * @throws SQLException
      */
-    public static ArrayList<Disbursement> getDisbursementsInGroup(int groupId, String email) throws SQLException{
-        connection = Db.instance().getConnection();
+    public ArrayList<Disbursement> getDisbursementsInGroup(int groupId, String email) throws SQLException{
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM disbursement d JOIN user_disbursement ud ON d.id = ud.disp_id WHERE d.party_id=? AND ud.user_email=?");
             ps.setInt(1,groupId);
@@ -56,7 +60,7 @@ public class DisbursementDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -68,8 +72,10 @@ public class DisbursementDao {
      * @return The {@link Disbursement}, with complete data including items and participants.
      * @throws SQLException
      */
-    public static  Disbursement getDisbursementDetails(int disbursementId, String email)throws SQLException{
-        connection = Db.instance().getConnection();
+    public  Disbursement getDisbursementDetails(int disbursementId, String email)throws SQLException{
+//        connection = Db.instance().getConnection();
+        UserDao userDao= new UserDao(connection);
+        ItemDao itemDao= new ItemDao(connection);
         try {
             ps = connection.prepareStatement("SELECT * FROM disbursement d JOIN user_disbursement ud ON d.id = ud.disp_id WHERE d.id=? AND ud.user_email=?");
             ps.setInt(1,disbursementId);
@@ -87,8 +93,8 @@ public class DisbursementDao {
                     disbursement.setDisbursement(rs.getDouble("price"));
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
-                    disbursement.setParticipants(UserDao.getUsersInDisbursement(disbursementId));
-                    disbursement.setItems(ItemDao.getItemsInDisbursement(disbursementId));
+                    disbursement.setParticipants(userDao.getUsersInDisbursement(disbursementId));
+                    disbursement.setItems(itemDao.getItemsInDisbursement(disbursementId));
                 }while(rs.next());
             } else {
                 log.info("Could not find any disbursement with id: "+disbursementId);
@@ -97,7 +103,7 @@ public class DisbursementDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -110,8 +116,8 @@ public class DisbursementDao {
      * @return {@code true} if successful, @{code false} if not successful.
      * @throws SQLException in case of error in statements or connection.
      */
-    public static boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
-        connection = Db.instance().getConnection();
+    public boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
+//        connection = Db.instance().getConnection();
         connection.setAutoCommit(false);
         try {
             if(makeDisbursement(disbursement,groupid)){
@@ -128,13 +134,13 @@ public class DisbursementDao {
             if(connection!=null){
                 connection.rollback();
                 connection.setAutoCommit(true);
-                connection.close();
+//                connection.close();
             }
         }
         return false;
     }
 
-    private static int lastId()throws SQLException{
+    private int lastId()throws SQLException{
         try{
             ps = connection.prepareStatement("SELECT LAST_INSERT_ID()");
             rs = ps.executeQuery();
@@ -147,7 +153,7 @@ public class DisbursementDao {
         }
     }
 
-    private static boolean addParticipantsToDisbursement(Disbursement disbursement) throws SQLException {
+    private boolean addParticipantsToDisbursement(Disbursement disbursement) throws SQLException {
         try{
             ps = connection.prepareStatement("INSERT INTO user_disbursement " +
                     "(user_email,disp_id)" +
@@ -172,7 +178,7 @@ public class DisbursementDao {
             Db.close(ps);
         }
     }
-    private static boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
+    private boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
         try{
             statement = connection.createStatement();
             String sql= "UPDATE item SET shoppinglist_id=NULL ,disbursement_id="+disbursement.getId()+" WHERE ";
@@ -195,7 +201,7 @@ public class DisbursementDao {
         }
     }
 
-    private static boolean makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
+    private boolean makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
         try{
             ps = connection.prepareStatement("INSERT INTO disbursement " +
                     "(price, name, date, payer_id, party_id) " +

@@ -4,6 +4,7 @@ import data.Item;
 import data.Session;
 import data.ShoppingList;
 import data.User;
+import db.Db;
 import db.ItemDao;
 import db.ShoppingListDao;
 import db.UserDao;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -25,11 +27,23 @@ import java.util.ArrayList;
 public class ShoppingListService {
     private static final Logger log = Logger.getLogger();
 
-    private ShoppingListDao shoppingListDao = new ShoppingListDao();
-    private ItemDao itemDao = new ItemDao();
-    private UserDao userDao = new UserDao();
+    private ShoppingListDao shoppingListDao;
+    private ItemDao itemDao;
+    private UserDao userDao;
+    private Connection connection;
 
-    @Context
+	public ShoppingListService() {
+		try{
+			connection= Db.instance().getConnection();
+			shoppingListDao = new ShoppingListDao(connection);
+			itemDao = new ItemDao(connection);
+			userDao = new UserDao(connection);
+		}catch(SQLException e){
+			log.error("Failed to get connection", e);
+		}
+	}
+
+	@Context
     private HttpServletRequest request;
 
 	/** Method that gets an ArrayList of shoppingLists for the given group.
@@ -46,6 +60,8 @@ public class ShoppingListService {
 		} catch(SQLException e) {
 			log.error("Failed to get shopping list array", e);
 			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -57,12 +73,14 @@ public class ShoppingListService {
     @Consumes("application/json")
     public void addShoppingList(ShoppingList shoppingList) {
         try {
-            ShoppingListDao.addShoppingList(shoppingList);
+            shoppingListDao.addShoppingList(shoppingList);
             log.info("Added shopping list!");
         } catch(SQLException e) {
             log.error("Failed to Add shopping list", e);
             throw new ServerErrorException("Failed to Add shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }
+        }finally {
+			Db.close(connection);
+		}
     }
 
     /** Method that updates the name and/or party_id of a shopping list. NOT the item/user-array.
@@ -78,7 +96,9 @@ public class ShoppingListService {
         } catch(SQLException e) {
             log.error("Failed to update shopping list", e);
             throw new ServerErrorException("Failed to update shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }
+        }finally {
+			Db.close(connection);
+		}
     }
 
 	/** Method that gets a shopping list given the shopping list.
@@ -96,6 +116,8 @@ public class ShoppingListService {
 		} catch(SQLException e) {
 			log.error("Failed to get shopping list", e);
 			throw new ServerErrorException("Failed to get shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -113,7 +135,9 @@ public class ShoppingListService {
         } catch(SQLException e) {
             log.error("Failed to Delete shopping list", e);
             throw new ServerErrorException("Failed to Delete shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }
+        }finally {
+			Db.close(connection);
+		}
     }
 
     /** Lists all items in a shopping list.
@@ -130,6 +154,8 @@ public class ShoppingListService {
 		} catch(SQLException e){
 			log.error("Failed to get item list", e);
 			throw new ServerErrorException("Failed to get item list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -147,6 +173,8 @@ public class ShoppingListService {
 		} catch (SQLException e){
 			log.error("Failed to add item to shopping list", e);
 			throw new ServerErrorException("Failed to add item to shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -165,6 +193,8 @@ public class ShoppingListService {
 		} catch(SQLException e){
 			log.error("Failed to get item by id", e);
 			throw new ServerErrorException("Failed to get item by id", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -181,6 +211,8 @@ public class ShoppingListService {
 		} catch(SQLException e){
 			log.error("Failed to update item", e);
 			throw new ServerErrorException("Failed to update item", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -199,6 +231,8 @@ public class ShoppingListService {
 		} catch(SQLException e){
 			log.error("Failed to delete item", e);
 			throw new ServerErrorException("Failed to delete item", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -216,6 +250,8 @@ public class ShoppingListService {
 		} catch(SQLException e){
 			log.error("Failed to get user list", e);
 			throw new ServerErrorException("Failed to get user list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -234,6 +270,8 @@ public class ShoppingListService {
 		} catch (SQLException e){
 			log.error("Failed to add user to shopping list", e);
 			throw new ServerErrorException("Failed to add user to shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -248,10 +286,12 @@ public class ShoppingListService {
 	public void addUserToShoppingList(@PathParam("shoppingListId") int shoppingListId,
 	                                  @PathParam("userId") String userId){
 		try {
-			ShoppingListDao.addUserToShoppingList(userId, shoppingListId);
+			shoppingListDao.addUserToShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {
 			log.error("Failed to add user to shopping list", e);
 			throw new ServerErrorException("Failed to add user to shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 
@@ -266,10 +306,12 @@ public class ShoppingListService {
 	public void removeUserFromShoppingList(@PathParam("shoppingListId") int shoppingListId,
 	                                  @PathParam("userId") String userId){
 		try {
-			ShoppingListDao.removeUserFromShoppingList(userId, shoppingListId);
+			shoppingListDao.removeUserFromShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {
 			log.error("Failed to remove user from shopping list", e);
 			throw new ServerErrorException("Failed to remove user from shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
+		}finally {
+			Db.close(connection);
 		}
 	}
 }

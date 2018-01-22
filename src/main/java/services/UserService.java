@@ -1,7 +1,10 @@
 package services;
 import data.Session;
 import data.User;
+import db.Db;
 import db.UserDao;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 
 import util.ForgottenPassword;
@@ -24,7 +27,17 @@ public class UserService {
 
     private static final Logger log = Logger.getLogger();
 
-    private UserDao userDao = new UserDao();
+    private UserDao userDao;
+    private Connection connection;
+
+    public UserService() {
+        try{
+            connection= Db.instance().getConnection();
+            this.userDao = new UserDao(connection);
+        }catch(SQLException e){
+            log.error("Failed to get connection", e);
+        }
+    }
 
     @Context
     private HttpServletRequest request;
@@ -38,6 +51,8 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to get user", e);
             throw new ServerErrorException("Failed to get user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -55,6 +70,8 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to Add user", e);
             throw new ServerErrorException("Failed to Add user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -80,6 +97,8 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to update user", e);
             throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
     @PUT
@@ -88,7 +107,7 @@ public class UserService {
             String newPassword = null;
             log.info("Reset password request recieved!");
         try {
-            User user = UserDao.getUser(toEmail);
+            User user = userDao.getUser(toEmail);
             if(user!=null){
                 newPassword = ForgottenPassword.generateNewPassword(toEmail);
                 newPassword = LoginCheck.getHash(newPassword);
@@ -103,6 +122,8 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to update user", e);
             throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -116,6 +137,8 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to Delete user", e);
             throw new ServerErrorException("Failed to Delete user", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
 

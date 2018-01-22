@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import static db.MemberDao.getMembers;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -26,6 +25,8 @@ public class MemberDaoTest {
     private static final Logger log = Logger.getLogger();
     private static Connection connection;
     private static PreparedStatement ps;
+    private static MemberDao memberDao;
+
     private static String name1 = "Vennegjengen";
     private static String email1 = "en@test1.no";
     private static String email2 = "to@test1.no";
@@ -37,12 +38,13 @@ public class MemberDaoTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
+        connection = Db.instance().getConnection();
+        memberDao = new MemberDao(connection);
 
         Group group1 = new Group();
         group1.setId(groupId1);
         group1.setName(name1);
 
-        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO party(id,name) VALUES(1001,'testgroup');");
             int result = ps.executeUpdate();
@@ -93,14 +95,13 @@ public class MemberDaoTest {
             log.info("Added member " + (result == 1?"ok":"failed"));
         } finally {
             Db.close(ps);
-            Db.close(connection);
         }
     }
 
 
     @Test
     public void getMembersTest() throws SQLException {
-        ArrayList<Member> members = getMembers(groupId1);
+        ArrayList<Member> members = memberDao.getMembers(groupId1);
         String gMember1 = members.get(0).getEmail();
         String gMember2 = members.get(1).getEmail();
         log.info("Test run");
@@ -116,7 +117,7 @@ public class MemberDaoTest {
 
     @Test
     public void getGroupsByMember() throws SQLException{
-        ArrayList<Group> groups = MemberDao.getGroupsByMember(email3);
+        ArrayList<Group> groups = memberDao.getGroupsByMember(email3);
         Boolean ok = false;
         if(groups.get(0).getId()==groupId1&&groups.get(1).getId()==groupId2){
             ok=true;
@@ -128,22 +129,22 @@ public class MemberDaoTest {
 
     @Test
     public void getGroupInvitesTest() throws SQLException{
-        ArrayList<Group> groups = MemberDao.getGroupInvites(email1);
+        ArrayList<Group> groups = memberDao.getGroupInvites(email1);
         assertTrue(groups.get(0).getId()==1001);
     }
 
     @Test
     public void inviteUserTest() throws SQLException{
-        MemberDao.inviteUser(email4,groupId2);
-        ArrayList<Group> invites = MemberDao.getGroupInvites(email4);
+        memberDao.inviteUser(email4,groupId2);
+        ArrayList<Group> invites = memberDao.getGroupInvites(email4);
         assertTrue(invites.get(0).getId()==groupId2);
     }
 
     @Test
     public void updateUserTest()throws SQLException{
         Member mem1 = new Member(email1, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
-        MemberDao.updateUser(mem1,groupId2);
-        ArrayList<Member> members = MemberDao.getMembers(groupId2);
+        memberDao.updateUser(mem1,groupId2);
+        ArrayList<Member> members = memberDao.getMembers(groupId2);
         Boolean ok = false;
         for(Member memb : members){
             if(memb.getEmail().equalsIgnoreCase(email1)){
@@ -158,17 +159,17 @@ public class MemberDaoTest {
         Boolean test = false;
         Boolean test2 = false;
         Member mem2 = new Member(email2, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
-        MemberDao.inviteUser(email2,groupId2);
-        MemberDao.updateUser(mem2,groupId2);
-        ArrayList<Member> members = MemberDao.getMembers(groupId2);
+        memberDao.inviteUser(email2,groupId2);
+        memberDao.updateUser(mem2,groupId2);
+        ArrayList<Member> members = memberDao.getMembers(groupId2);
         for(Member memb : members){
             if(memb.getEmail().equalsIgnoreCase(email2)){
                 test=true;
-                MemberDao.deleteMember(email2,groupId2);
+                memberDao.deleteMember(email2,groupId2);
                 break;
             }
         }
-        members = MemberDao.getMembers(groupId2);
+        members = memberDao.getMembers(groupId2);
         for(Member memb : members){
             if(memb.getEmail().equalsIgnoreCase(email2)){
                 test2=true;
@@ -180,7 +181,6 @@ public class MemberDaoTest {
 
     @AfterClass
     public static void tearDown() throws SQLException {
-        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id=1001;");
             int result = ps.executeUpdate();
@@ -216,7 +216,6 @@ public class MemberDaoTest {
         } finally {
             Db.close(ps);
             Db.close(connection);
-
         }
     }
 }
