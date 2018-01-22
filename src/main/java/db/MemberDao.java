@@ -222,29 +222,4 @@ public class MemberDao {
             Db.close(connection);
         }
     }
-
-    public static int getMemberStatus(String email, int groupId) throws SQLException{
-        String partyId = ""+groupId;
-        connection = Db.instance().getConnection();
-        try {
-            ps = connection.prepareStatement(
-                    "SELECT status FROM user_party where user_email=? AND party_id = ?");
-            ps.setString(1,email);
-            ps.setString(2,partyId);
-            rs = ps.executeQuery();
-
-           // Member memberStatus = new Member();
-            int status = -1;
-            while(rs.next()) {
-               // memberStatus.setStatus(Integer.parseInt(rs.getString("status")));
-                status = Integer.parseInt(rs.getString("status"));
-            }
-            return status;
-        } finally {
-            Db.close(rs);
-            Db.close(ps);
-            Db.close(connection);
-        }
-    }
-
 }

@@ -68,34 +68,19 @@ $(document).ready(function() {
     });
 
 
-    // TODO:fikse data.email, få til å få ut status på hvert medlem, service/dao/js
-    function getUserStatus(data) {
-        console.log("current group: " +y)
-        var url ='rest/groups/'+ y + '/members/' + 'tre@h.no';
-        console.log(data.email);
-        $.get(url, function (data,status) {
-            if(status === "success"){
-                console.log("member status loaded successfully");
-                console.log()
-            }
-            if(status === "error"){
-                console.log("error in loading status");
-            }
-        });
-    }
-
 
     function renderMembers(data) {
         var len = data.length;
-        var memberStatus = getUserStatus(data);
+        //var memberStatus = getUserStatus(data);
         console.log(data);
-        console.log("Status på brukere er: ");
-        console.log(memberStatus);
+        //console.log("Status på brukere er: ");
+       // console.log(memberStatus);
         var statusText;
 
         for (var i = 0; i < len; i++) {
             var id= data[i].email;
-            if (memberStatus === 1){
+            console.log(data[i].status);
+            if (data[i].status === 1){
                 statusText="member";
             }else{
                 statusText="Admin";
@@ -110,11 +95,11 @@ $(document).ready(function() {
     }
 
     /**Remove member fungerer nå, eneste er at email er hardcordet inn, får vi opp en generell mail er alt klart */
-    $('#removeMember').click(function() {
+    $('#removeMember').click(function(data) {
         var checked=getChecked();
         // AJAX Request
         $.ajax({
-            url: 'rest/groups/'+ y + '/members/' + 'knut', //testemail
+            url: 'rest/groups/'+ y + '/members/' + data.email, //testemail
             type: 'DELETE',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",

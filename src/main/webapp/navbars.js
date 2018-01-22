@@ -65,18 +65,6 @@ $(document).ready(function(){
     */
 
     var y = getCookie(curGroup);
-    var lists;
-    var url='rest/groups/'+y+'/members';
-    $.get(url, function(data, status){
-        lists=data;
-        renderMembers(data)
-        if(status === "success"){
-            console.log("members content loaded successfully!");
-        }
-        if(status === "error"){
-            console.log("Error in loading members");
-        }
-    });
 
     /*
      * Changing the dropdown arrow to go upwards when clicked
@@ -116,30 +104,6 @@ $(document).ready(function(){
         $("#page-content").load("GroupSetting.html");
     });
 
-
-
-    $("#invUserButton").click(function () {
-        var x = getCookie(curGroup);
-        $.ajax({
-            type:"POST",
-            dataType:"json",
-            url:"rest/groups/"+x+"/members/" + $("#invUserField").val(),
-            contentType: "application/json",
-            data:JSON.stringify({
-                "email": $("#invUserField").val()
-            }),
-            statusCode: {
-                200: function () {
-                    window.location.href = "Navbars.html";
-                },
-                500: function () {
-                    console.log("Internal Server Error");
-                }
-            }
-
-        })
-
-    });
 
     function getLoggedOnUser(success) {
         $.ajax({
@@ -192,11 +156,6 @@ function getCookie(cname) {
     return "";
 }
 
-$("#newGroup1").click(function () {
-    createNewGroup();
-    window.location.reload();
-
-});
 
 function checkIfCook(data,id) {
     var s = false;

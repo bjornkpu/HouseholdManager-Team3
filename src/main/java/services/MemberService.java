@@ -49,17 +49,6 @@ public class MemberService {
 
     }
 
-    @GET
-    @Path("/{email}")
-    @Produces("application/json")
-    public int getStatusByUser(@PathParam("email") String email,@PathParam("groupId") int groupId){
-        try{
-            return memberDao.getMemberStatus(email,groupId);
-        }catch (SQLException e){
-            log.info("could not fetch status");
-            throw new ServerErrorException("Failed to get status from member in " + groupId, Response.Status.INTERNAL_SERVER_ERROR,e);
-        }
-    }
 
     /**
      * Invites a user to become a member of a group.
