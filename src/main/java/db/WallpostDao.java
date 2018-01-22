@@ -18,6 +18,7 @@ public class WallpostDao {
     private Connection connection;
     private PreparedStatement ps;
     private ResultSet rs;
+    public WallpostDao(){}
 
     public WallpostDao(Connection connection) {
         this.connection=connection;
