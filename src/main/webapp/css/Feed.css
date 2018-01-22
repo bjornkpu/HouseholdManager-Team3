@@ -1,0 +1,85 @@
+.feedGrid{
+    display: grid;
+    grid-template-columns: [col1-start] 55% [col1-end col2-start] 45% [col2-end];
+    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100% ;
+    grid-template-areas:
+            "leftheader rightheader"
+            "wallposts events";
+    justify-items: stretch;
+
+}
+
+.writePost{
+    display: grid;
+    grid-area: leftheader;
+    background-color: lightsteelblue;
+    justify-items: center;
+}
+.post-input{
+    width: 80%;
+    height: 70%;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    background-color: navajowhite;
+    resize: none;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+.post-button{
+    width: 30%;
+    height: 60%;
+}
+
+.wall{
+    display: grid;
+    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100vh [wallRow2-end];
+    grid-area: wallposts;
+    background-color: lightgreen;
+    justify-items: center;
+}
+
+.textPosts{
+    display: grid;
+    height: 80%;
+    width: 80%;
+    background-color: lightgreen;
+    align-content: start;
+    overflow-y: scroll;
+    border: 1px solid black;
+    resize: none;
+
+}
+.post{
+    width: 37vw;
+    min-height: 50px;
+    max-height: 130px;
+    background-color: navajowhite;
+    margin: 5px;
+    font-size: 15px;
+
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+
+.groupEvents{
+    display: grid;
+    grid-area: events;
+    background-color: blueviolet;
+    background-color: lightblue;
+}

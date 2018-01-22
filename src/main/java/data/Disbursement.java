@@ -8,7 +8,7 @@ public class Disbursement {
     private double disbursement;
     private String name;
     private Date date;
-    private Member payer;
+    private User payer;
 
 
     private ArrayList<User> participants;
@@ -40,7 +40,7 @@ public class Disbursement {
         return payer;
     }
 
-    public void setPayer(Member payer) {
+    public void setPayer(User payer) {
         this.payer = payer;
     }
 

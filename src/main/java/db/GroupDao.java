@@ -16,10 +16,14 @@ public class GroupDao {
 
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
-    private static UserDao userDao;
+    private Connection connection;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    private UserDao userDao;
+
+    public GroupDao(Connection connection) {
+        this.connection=connection;
+    }
 
     /**
      * Retrieves a group object with groupname,groupId and the id of the administrator from database
@@ -28,8 +32,8 @@ public class GroupDao {
      * @return Returns the group if found, else null.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static Group getGroup(int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
+    public Group getGroup(int groupId) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT party.id,party.name,user_party.user_email FROM party,user_party WHERE party.id = ? AND user_party.party_id = party.id AND user_party.status = ?");
             ps.setInt(1,groupId);
@@ -69,7 +73,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -80,8 +84,8 @@ public class GroupDao {
      * @return A List of groups with same name as argument. Null if no groups with the name exists in database.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static List<Group> getGroupByName(String name) throws SQLException {
-        connection = Db.instance().getConnection();
+    public List<Group> getGroupByName(String name) throws SQLException {
+//        connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT * FROM party WHERE name = ?");
             ps.setString(1,name);
@@ -98,7 +102,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -107,8 +111,8 @@ public class GroupDao {
      * @return Returns a List of groups if found. Null if empty.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static List<Group> getAllGroups() throws SQLException {
-        connection = Db.instance().getConnection();
+    public List<Group> getAllGroups() throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM party");
             rs = ps.executeQuery();
@@ -149,7 +153,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -159,9 +163,9 @@ public class GroupDao {
      * @return A list of X amount of groups from database. Null if no groups exist in database.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static List<Group> getGroups(int amountOfGroups) throws SQLException {
+    public List<Group> getGroups(int amountOfGroups) throws SQLException {
         if (amountOfGroups > 0) {
-            connection = Db.instance().getConnection();
+//            connection = Db.instance().getConnection();
             try {
                 ps = connection.prepareStatement("SELECT * FROM party ORDER BY id LIMIT ?");
                 ps.setInt(1,amountOfGroups);
@@ -178,7 +182,7 @@ public class GroupDao {
             } finally {
                 Db.close(rs);
                 Db.close(ps);
-                Db.close(connection);
+//                Db.close(connection);
             }
         }
         return null;
@@ -190,10 +194,10 @@ public class GroupDao {
      * @return Returns true if adding a group was successful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static int addGroup(Group group) throws SQLException {
+    public int addGroup(Group group) throws SQLException {
+//        connection = Db.instance().getConnection();
         int auto_id = -1;
-        connection = Db.instance().getConnection();
-        userDao = new UserDao();
+        userDao = new UserDao(connection);
         if (group.getName() == null){
             log.info("Name missing. Group not added.");
             return -1;
@@ -216,7 +220,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
 
     }
@@ -227,8 +231,8 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static boolean deleteGroup(int groupId) throws SQLException {
-        connection = Db.instance().getConnection(); // heu
+    public boolean deleteGroup(int groupId) throws SQLException {
+//        connection = Db.instance().getConnection(); // heu
         try{
             ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id = ?");
             ps.setInt(1, groupId);
@@ -244,7 +248,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -254,8 +258,8 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static boolean deleteGroup(Group group) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean deleteGroup(Group group) throws SQLException {
+//        connection = Db.instance().getConnection();
         try{
 //          deletes a user_party dependency
             ps = connection.prepareStatement("DELETE FROM user_party WHERE party_id = ?");
@@ -274,7 +278,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -287,11 +291,11 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static boolean updateGroup(Group group) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean updateGroup(Group group) throws SQLException {
+//        connection = Db.instance().getConnection();
         int result = 0;
         int upUser = 0;
-        userDao = new UserDao();
+        userDao = new UserDao(connection);
         try {
             if(group.getName() != null || !group.getName().equals("")) {
                 ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
@@ -320,7 +324,7 @@ public class GroupDao {
         } finally {
             Db.close(ps);
             Db.close(rs);
-            connection.close();
+//            connection.close();
         }
     }
 
@@ -332,8 +336,8 @@ public class GroupDao {
      * @return Returns true if the deletion was succesful, else false.
      * @throws SQLException Throws SQLException if connection is not successful.
      */
-    public static boolean updateName(int groupid,String newName) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean updateName(int groupid,String newName) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE party set name=? WHERE id = ?");
             ps.setString(1,newName);
@@ -344,7 +348,7 @@ public class GroupDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 }

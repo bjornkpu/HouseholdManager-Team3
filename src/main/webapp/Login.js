@@ -4,20 +4,21 @@ $(document).ready(function(){
         type: 'GET',
         dataType: 'json',
         success: function(session){
-            // window.location.href="Navbars.html";
+            // window.location.href="GroupDashboard.html";
         }
     });
 
     // Log in
     $("#loginButton").click(function() {
         var passPromise = sha256($("#passwordField").val());
+        var email=$("#emailField").val();
         passPromise.then(function(pass){
             // console.log(pass);
             $.ajax({
                 url: 'rest/session',
                 type: 'POST',
                 data: JSON.stringify({
-                    email: $("#emailField").val(),
+                    email: email,
                     password: pass
                 }),
                 contentType: 'application/json; charset=utf-8',
@@ -25,7 +26,8 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            window.location.href = "Navbars.html";
+                            window.location.href = "GroupDashboard.html";
+                            document.cookie ="userLoggedOn =" + email;
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");
@@ -61,7 +63,28 @@ $(document).ready(function(){
         $("#div_reg").show();
     })
 
+    $('#cancelBtn').click(function () {
+        $("#div_reg").hide();
+        $("#div_for_login").show();
+    })
+
+
     $('#confirmReg').click(function () {
+
+        if(!$("#name_of_user_field").val() || !$("#emailRegField").val() ||
+            !$("#passwordRegField").val() || !$("#passwordConfirmField").val()){
+            alert("All fields must be filled in");
+            return;
+        }
+
+        $.get("rest/user/emailCheck/"+$("#emailRegField").val(), function(data, status){
+            if(!data){
+                alert("Not a valid email");
+                return;
+            }
+        });
+
+
         if($("#passwordRegField").val()==$("#passwordConfirmField").val()){
             sha256($("#passwordRegField").val()).then(function (value) {
                 $.ajax({
