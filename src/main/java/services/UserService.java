@@ -142,10 +142,17 @@ public class UserService {
         }
     }
 
+
+    //TODO: Shouldnt make a connection, but does since were doing that in constructor.
     @GET
 	@Path("/emailCheck/{email}")
     @Produces("application/json")
 	public boolean checkEmail(@PathParam("email") String email){
-    	return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
+    	try{
+    	    return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
+        }finally {
+    	    Db.close(connection);
+        }
+
     }
 }
