@@ -59,6 +59,8 @@
 }
 .post{
     width: 37vw;
+    min-height: 50px;
+    max-height: 130px;
     background-color: navajowhite;
     margin: 5px;
     font-size: 15px;
