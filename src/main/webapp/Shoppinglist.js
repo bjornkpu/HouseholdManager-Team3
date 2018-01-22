@@ -130,30 +130,108 @@ $(document).ready(function() {
     });
 
 
-    $('.backToShoppinglist').click(function () {
-        var listOfDisbursements = document.getElementById('listOfDisbursements');
-        var shoppinglist = document.getElementById('shoppinglist');
-        var creatingShoppinglist =document.getElementById('creatingShoppinglist');
-        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-        var creatingDisbursement =document.getElementById('creatingDisbursement');
+    // $('.backToShoppinglist').click(function () {
+    //     var listOfDisbursements = document.getElementById('listOfDisbursements');
+    //     var shoppinglist = document.getElementById('shoppinglist');
+    //     var creatingShoppinglist =document.getElementById('creatingShoppinglist');
+    //     var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+    //     var creatingDisbursement =document.getElementById('creatingDisbursement');
+    //
+    //     listOfDisbursements.style.display ="none";
+    //     shoppinglist.style.display="block";
+    //     creatingShoppinglist.style.display="none";
+    //     dropdownShoppinglist.style.display="block";
+    //     creatingDisbursement.style.display="none";
+    //
+    // });
 
-        listOfDisbursements.style.display ="none";
-        shoppinglist.style.display="block";
-        creatingShoppinglist.style.display="none";
-        dropdownShoppinglist.style.display="block";
-        creatingDisbursement.style.display="none";
-
-    })
+    function getUsers(){
+        var users = [];
+        var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/members';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(json){
+                users = json;
+            },
+            async: false
+        });
+        return users;
+    }
 
     $('#createShoppinglistButton').click(function () {
-        var creatingShoppinglist =document.getElementById('creatingShoppinglist');
+        var creatingShoppinglist = document.getElementById('creatingShoppinglist');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+
+        var usersInGroup = getUsers();
+
+        var selectedUsers = [];
+        var index = 0;
+
+        $('.ui.search')
+            .search({
+                source: usersInGroup,
+                searchFields: [
+                    'email',
+                    'name'
+                ],
+                fields:{
+                    title: 'email',
+                    description: 'name'
+                }
+            })
+        ;
+
+        $("#addUserButton").click(function(){
+            var user = $(".ui.search").search('get value');
+            selectedUsers[index] = user;
+            $("#addedUser").text("Added user with email " + user);
+            index++;
+        });
+
+        $('#confirmShoppinglist').click(function(){createShoppingList($("#nameOfShoppinglist").val(), selectedUsers)});
 
         creatingShoppinglist.style.display="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
-    })
+
+    });
+
+    function createShoppingList(name, participants){
+        var userList = [];
+        for(var i = 0; i < participants.length; i++){
+            userList[i] = {
+                email: participants[i],
+                name: null,
+                phone: null,
+                password: null,
+                salt: null
+            }
+        }
+        console.log("Shoppinglist name: " + name);
+        for(var i = 0; i < userList.length; i++){
+            console.log("Adding user: " + userList[i].email);
+        }
+
+        // TODO fix this
+        // $.ajax({
+        //     url: '/scrum/groups/' + currentGroup + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
+        //     type: 'POST',
+        //     data: {
+        //         name: name,
+        //         groupId: currentGroup,
+        //         itemList: null,
+        //         userList: userList
+        //     },
+        //     success: function(response){
+        //
+        //     },
+        //     error: function(){
+        //
+        //     }
+        // });
+    }
 
     $('#createDisbursementButton').click(function () {
         var creatingDisbursement =document.getElementById('creatingDisbursement');

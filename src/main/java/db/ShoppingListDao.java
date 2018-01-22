@@ -220,13 +220,24 @@ public class ShoppingListDao {
 
 //          creates new shoppinglist object in shoppinglist table
             ps = connection.prepareStatement("INSERT INTO " +
-                    "shoppinglist(id, name, party_id) VALUES (?,?,?)");
-            ps.setInt(1, shoppingList.getId());
-            ps.setString(2, shoppingList.getName());
-            ps.setInt(3, shoppingList.getGroupId());
+                    "shoppinglist(name, party_id) VALUES (?,?)");
+            ps.setString(1, shoppingList.getName());
+            ps.setInt(2, shoppingList.getGroupId());
             int createShoppingListResult = ps.executeUpdate();
             log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
-            ps.close();
+
+            ps = connection.prepareStatement("SELECT shoppinglist.id \n" +
+                    "FROM shoppinglist \n" +
+                    "WHERE shoppinglist.id NOT IN (\n" +
+                    "    SELECT shoppinglist_user.shoppinglist_id \n" +
+                    "    FROM shoppinglist_user)");
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                for(int i = 0; i < shoppingList.getUserList().size(); i++){
+
+                }
+            }
 
             //creates new connection between created shoppinglist and creator (User)
             ps = connection.prepareStatement("INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
