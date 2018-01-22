@@ -132,12 +132,12 @@ $(document).ready(function(){
                         success(user);
                     },
                     error: function() {
-                        window.location.href = "error.html";
+                        window.location.href = "Login.html";
                     }
                 });
             },
             error: function() {
-                window.location.href = "error.html";
+                window.location.href = "Login.html";
             }
         });
     };

@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+
+    var sessionEmail;
     $('#editGroupName').click(function () {
         var readOnlyField = document.getElementById('groupName');
         var buttonEdit = document.getElementById('editGroupName');
@@ -14,12 +16,13 @@ $(document).ready(function() {
 
     var y = getCookie("currentGroup");
     console.log("y: " + y);
-    var lists;
 
+    var lists;
     var url='rest/groups/'+ y +'/members';
     $.get(url, function(data, status){
         lists=data;
-        renderMembers(data)
+        renderMembers(data);
+        checkAdmin(data);
         if(status === "success"){
             console.log("members content loaded successfully!");
         }
@@ -27,6 +30,19 @@ $(document).ready(function() {
             console.log("Error in loading members");
         }
     });
+
+    function getGroupName() {
+        $.ajax({
+            type:'GET',
+            url:'rest/groups/'+y,
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            success: function (data) {
+                $('#groupName').attr('value', data.name);
+            }
+        });
+    }
+    getGroupName();
 
     //TODO: fikse groupservice og dao slik at man kan update name
     $('#confirmNewName').click(function () {
@@ -69,6 +85,32 @@ $(document).ready(function() {
 
 
 
+
+    function checkAdmin(data) {
+        sessionEmail;
+        getLoggedOnUser(function(user){
+            sessionEmail=user.email;
+        });
+        console.log("session email: " + sessionEmail);
+        console.log("cookie" + getCookie("userLoggedOn"));
+        var len= data.length;
+            for(var i=0;i<len;i++){
+                console.log("status på brukere: " + data[i].status);
+                if(data[i].status===2 && data[i].email === getCookie("userLoggedOn")){
+                    $('#adminButtons').append(
+                        '<tr> ' +
+                        '<td> <button class="button">Promote</button></td>' +
+                        '<td><button class="button">Delete group</button></td>' +
+                        '</tr>');
+                }
+            }
+        if(status === "error"){
+            console.log("Error in loading adminbuttons");
+        }
+    }
+
+
+
     function renderMembers(data) {
         var len = data.length;
         //var memberStatus = getUserStatus(data);
@@ -90,36 +132,36 @@ $(document).ready(function() {
                 '<td>' + statusText +'</td>' +
                 "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
                 '</tr>');
-            //console.log("id: "+id);
+
+            /**eneste som ikke funker er at det kan kun slettes en om gangen */
+            $('#removeMember').click(function() {
+                if (confirm("You are about to remove a member from your group, do you want to continue?")) {
+                    var checked = getChecked();
+                    // AJAX Request
+                    $.ajax({
+                        url: 'rest/groups/' + y + '/members/' + id, //testemail
+                        type: 'DELETE',
+                        data: JSON.stringify(checked),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        success: function (response) {
+                            var table_length = $('#tabForUsersInGroup tr').length;
+                            for (var i = 0; i < table_length; i++) {
+                                if ($("#checkbox" + i).is(':checked')) {
+                                    $("#checkbox" + i).closest('tr').remove();
+                                }
+                            }
+                            //alert("member(s) removed from group");
+                        },
+                        error: function () {
+                            console.log("member could not be removed");
+                        }
+                    });
+                }
+            });
         }
     }
-
-    /**Remove member fungerer nå, eneste er at email er hardcordet inn, får vi opp en generell mail er alt klart */
-    $('#removeMember').click(function(data) {
-        var checked=getChecked();
-        // AJAX Request
-        $.ajax({
-            url: 'rest/groups/'+ y + '/members/' + data.email, //testemail
-            type: 'DELETE',
-            data: JSON.stringify(checked),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-
-            success: function(response){
-                var table_length = $('#tabForUsersInGroup tr').length;
-                for (var i =0; i<table_length;i++){
-                    if($("#checkbox"+i).is(':checked')){
-                        $("#checkbox"+i).closest('tr').remove();
-                    }
-                }
-                alert("member(s) removed from group");
-            },
-            error: function(){
-                console.log("member could not be removed");
-            }
-        });
-    });
-
 
     $("#invUserButton").click(function () {
         $.ajax({
@@ -154,5 +196,9 @@ function getChecked(){
         }
     }//console.log(checked);
     return checked;
-
 }
+
+
+
+
+

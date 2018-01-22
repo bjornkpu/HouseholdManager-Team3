@@ -11,13 +11,14 @@ $(document).ready(function(){
     // Log in
     $("#loginButton").click(function() {
         var passPromise = sha256($("#passwordField").val());
+        var email=$("#emailField").val();
         passPromise.then(function(pass){
             // console.log(pass);
             $.ajax({
                 url: 'rest/session',
                 type: 'POST',
                 data: JSON.stringify({
-                    email: $("#emailField").val(),
+                    email: email,
                     password: pass
                 }),
                 contentType: 'application/json; charset=utf-8',
@@ -26,6 +27,7 @@ $(document).ready(function(){
                     switch (jqXHR.status) {
                         case 200:
                             window.location.href = "Navbars.html";
+                            document.cookie ="userLoggedOn =" + email;
                             break;
                         case 401:
                             $("#wrongPasswordAlert").removeClass("hide");

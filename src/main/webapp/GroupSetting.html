@@ -3,45 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Settings</title>
+    <link rel="stylesheet" href="css/navbars.css">
 </head>
 <body>
+<div class="center">
+<h2 class="center">Group settings</h2>
 
-<h2>Group settings</h2>
-<br>
-<table>
+
+    <br>
+<table class="center">
     <tr>
-        <td> <input id="groupName" readonly value="klæbuveien"></td>
+        <td> <input id="groupName" readonly value=""></td>
         <td><input type="text" id="newNameField" placeholder="Edit" style="display: none"></td>
         <td> <button class="button" id="editGroupName">Edit </button></td>
         <td> <button class="button" id="confirmNewName" style="display: none">Confirm</button></td>
     </tr>
 </table>
-<br><br><br><br><br>
-<table>
+<br>
+<table class="center">
     <tr>
         <td><h5>Invite users to group</h5></td>
     </tr>
     <tr>
         <td><input type="text" id="invUserField" placeholder="insert username"> </td>
-        <td> <button id="invUserButton">Invite</button></td>
+        <td> <button id="invUserButton" class="button">Invite</button></td>
     </tr>
-    <table id="tabForUsersInGroup">
+    <table id="tabForUsersInGroup" class="center">
         <th> Members</th>
         <th>Status</th>
 
     </table>
     <tr>
-        <td><button id="removeMember" class="button">Remove member</button></td>
+        <td><button id="removeMember" class="button ">Remove member</button></td>
     </tr>
 </table>
+    <br><br>
+    <table id="adminButtons" class="center">
+
+    </table>
 
 
 
 
-
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="GroupSetting.js"></script>
+
 </body>
 </html>
