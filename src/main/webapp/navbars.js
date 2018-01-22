@@ -30,6 +30,9 @@ $(document).ready(function(){
         // console.log(data.length);
         console.log("render grouplist");
         groups=data;
+        if(data === null || data.size === 0){
+            console.log("Data er null ved renderDropdown");
+        }
         var len = data.length;
         for (var i = 0; i < len;i++ ) {
             var groupname= data[i].name;
@@ -138,6 +141,9 @@ $(document).ready(function(){
 });
 
 function renderMembers(data) {
+    if(data === null || data.size === 0 || data[0] === undefined){
+        console.log("Data er null ved renderMembers");
+    }
     var len = data.length;
     for (var i = 0; i < len;i++ ) {
         $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');

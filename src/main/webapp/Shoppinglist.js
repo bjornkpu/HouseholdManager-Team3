@@ -245,14 +245,15 @@ $(document).ready(function() {
                 console.log("ShoppingList content from user in group " + groupId + " loaded successfully!");
                 lists = data;
                 //Here to prevent undefined variables and methods out of order
-                if(data === null || data.size === 0){
+                if(data === null || data.size === 0 || data[0] === undefined){
+                    $("#you_shoppinglists").text("You have no shoppinglists for group " + getCookie("groupId"));
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
                     console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     renderShoppingListDropdownMenu(data);
                     getItemsInShoppingList(groupId);
-                    $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupName"));
+                    $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupId"));
                 }
             }
             if(status === "error"){
