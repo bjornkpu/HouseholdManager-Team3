@@ -11,6 +11,9 @@ $(document).ready(function(){
     if (window.location.hash == "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }
+    if (window.location.hash == "#feed"){
+        $("#page-content").load("Feed.html");
+    }
 
     function setData(user) {
         $.ajax({
@@ -56,12 +59,16 @@ $(document).ready(function(){
         }
     }
 
+    /*
+
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
         document.cookie="groupId="+currentGroup.id;
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
     });
+
+    */
 
     var y = getCookie("currentGroup");
     var lists;
