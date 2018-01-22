@@ -14,17 +14,21 @@ import java.util.ArrayList;
 public class ItemDao {
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
+    private Connection connection;
+    private PreparedStatement ps;
+    private ResultSet rs;
+
+    public ItemDao(Connection connection) {
+        this.connection = connection;
+    }
 
     /** Method that gets an Item given an id.
      * @param id The id of the item that is to be returned.
      * @return An item with information relative to the id given.
      * @throws SQLException when failing to get Item.
      */
-    public static Item getItem(int id) throws SQLException {
-        connection = Db.instance().getConnection();
+    public Item getItem(int id) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM item WHERE id=?");
             ps.setInt(1,id);
@@ -46,7 +50,7 @@ public class ItemDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -55,7 +59,7 @@ public class ItemDao {
 //     * @return An ArrayList of items connected to the given ShoppingList.
 //     * @throws SQLException when failing to get Item.
 //     */
-//    public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
+//    public ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
 //        connection = Db.instance().getConnection();
 //        try{
 //	        return getItemsInShoppingListMethod(id, connection);
@@ -69,7 +73,7 @@ public class ItemDao {
 //     * @return An ArrayList of items connected to the given ShoppingList.
 //     * @throws SQLException when failing to get Item.
 //     */
-//    public static ArrayList<Item> getItemsInShoppingList(int id, Connection connection) throws SQLException {
+//    public ArrayList<Item> getItemsInShoppingList(int id, Connection connection) throws SQLException {
 //	    return getItemsInShoppingListMethod(id, connection);
 //    }
 
@@ -79,8 +83,8 @@ public class ItemDao {
      * @return
      * @throws SQLException
      */
-    public static ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
-        connection = Db.instance().getConnection();
+    public ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
+//        connection = Db.instance().getConnection();
 	    try {
 		    ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
 		    ps.setInt(1,id);
@@ -106,7 +110,7 @@ public class ItemDao {
 	    } finally {
 		    Db.close(rs);
 		    Db.close(ps);
-		    Db.close(connection);
+//		    Db.close(connection);
 	    }
     }
 
@@ -115,8 +119,8 @@ public class ItemDao {
      * @return An ArrayList of items connected to the given Disbursement.
      * @throws SQLException when failing to get Item.
      */
-    public static ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
-        connection = Db.instance().getConnection();
+    public ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM item WHERE disbursement_id=?");
             ps.setInt(1,id);
@@ -147,7 +151,7 @@ public class ItemDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -155,8 +159,8 @@ public class ItemDao {
      * @param item The item that is to be added to the database.
      * @throws SQLException when failing to add Item.
      */
-    public static Boolean addItem(Item item) throws SQLException {
-        connection = Db.instance().getConnection();
+    public Boolean addItem(Item item) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("INSERT INTO `item`(`name`, `status`, `shoppinglist_id`, `disbursement_id`,id) " +
                     "VALUES (?,?,?,?,?)");
@@ -182,7 +186,7 @@ public class ItemDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -190,8 +194,8 @@ public class ItemDao {
      * @param item The item with an id of the item that is to be updated, as well as any information to be updated.
      * @throws SQLException when failing to update Item.
      */
-    public static Boolean updateItem(Item item) throws SQLException {
-        connection = Db.instance().getConnection();
+    public Boolean updateItem(Item item) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("UPDATE item set id=?, name=?, status=?, shoppinglist_id=?, disbursement_id=? where id=?");
             ps.setInt(1,item.getId());
@@ -213,7 +217,7 @@ public class ItemDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -221,8 +225,8 @@ public class ItemDao {
      * @param id The id of the item that is to be deleted.
      * @throws SQLException when failing to delete Item.
      */
-    public static boolean delItem(int id) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean delItem(int id) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM item where id=?");
             ps.setInt(1, id);
@@ -232,7 +236,7 @@ public class ItemDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 }

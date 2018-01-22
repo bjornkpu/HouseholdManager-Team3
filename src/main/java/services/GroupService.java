@@ -1,7 +1,9 @@
 package services;
 import data.Group;
+import db.Db;
 import db.GroupDao;
 import db.MemberDao;
+import db.UserDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +27,19 @@ import java.util.List;
 public class GroupService {
 
     private static final Logger log = Logger.getLogger();
-    private static GroupDao groupDao = new GroupDao();
-    private static MemberDao memberDao = new MemberDao();
+    private Connection connection;
+    private GroupDao groupDao;
+    private MemberDao memberDao;
+
+    public GroupService() {
+        try{
+            connection= Db.instance().getConnection();
+            this.groupDao = new GroupDao(connection);
+            this.memberDao = new MemberDao(connection);
+        }catch(SQLException e){
+            log.error("Failed to get connection", e);
+        }
+    }
 
     @Context
     private HttpServletRequest request;
@@ -47,6 +61,8 @@ public class GroupService {
         } catch (SQLException e) {
             log.info("Could not find group #" + groupid);
             throw new ServerErrorException("Failed to get group", Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -66,6 +82,8 @@ public class GroupService {
         } catch (SQLException e) {
             log.info("Unable to get all groups");
             throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
     /**
@@ -84,6 +102,8 @@ public class GroupService {
         } catch (SQLException e){
             log.info("Failed to retrieve invites for member " + email);
             throw new ServerErrorException("Failed to retrieve invites",Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
     /**
@@ -102,6 +122,8 @@ public class GroupService {
         } catch (SQLException e){
             log.info("Could not get groups");
             throw new ServerErrorException("Failed to get groups.",Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -129,6 +151,8 @@ public class GroupService {
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -150,6 +174,8 @@ public class GroupService {
         } catch (SQLException e){
             log.info("Deleting group failed. Check constraints in database");
             throw new ServerErrorException("Failed to delete group", Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -173,6 +199,8 @@ public class GroupService {
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
             throw new ServerErrorException("Failed to update group",Response.Status.INTERNAL_SERVER_ERROR);
+        }finally {
+            Db.close(connection);
         }
 
     }

@@ -5,6 +5,7 @@ import org.junit.*;
 
 import org.junit.runners.MethodSorters;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,26 +20,35 @@ import static org.junit.Assert.assertTrue;
  */
 @FixMethodOrder(MethodSorters.DEFAULT)
 public class GroupDaoTest {
+    private static Connection connection;
     private static GroupDao gr;
     private static UserDao userDao;
-    private static String name1 = "Vennegjengen";
-    private static String name2 = "Kollektiv";
-    private static String adminnavn = "tre@h.no";
-    private static String newAdmin = "to@h.no";
+
+
+    private static final String name1 = "Vennegjengen";
+    private static final String name2 = "Kollektiv";
+    private static final String adminnavn = "tre@h.no";
+    private static final String newAdmin = "to@h.no";
     private static Group newGroup = new Group();
 
 
     @BeforeClass
     public static void setUp() throws Exception {
-        gr = new GroupDao();
+        connection=Db.instance().getConnection();
+        gr = new GroupDao(connection);
         newGroup.setName(name1);
         newGroup.setAdmin(adminnavn);
+    }
+
+    @AfterClass
+    public static void tearDown() throws Exception{
+        Db.close(connection);
     }
     @Test
     public void addGroupUsingObjectTest() throws SQLException {
         int ok = 0;
         try {
-            ok = addGroup(newGroup);
+            ok = gr.addGroup(newGroup);
         } catch (SQLException e){
             e.printStackTrace();
             assertTrue(false);
@@ -60,7 +70,7 @@ public class GroupDaoTest {
         group.setName(nam);
         group.setAdmin(adminnavn);
         try{
-            addGroup(group);
+            gr.addGroup(group);
         } catch (SQLException e){
             e.printStackTrace();
             assertTrue(false);
@@ -123,7 +133,7 @@ public class GroupDaoTest {
         g.setAdmin(adminnavn);
         int s = 0;
         try{
-            addGroup(g);
+            gr.addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -154,7 +164,7 @@ public class GroupDaoTest {
         g.setName(nam);
         g.setAdmin(adminnavn);
         try{
-            addGroup(g);
+            gr.addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -200,7 +210,7 @@ public class GroupDaoTest {
         g.setAdmin(adminnavn);
         int s = 0;
         try{
-            addGroup(g);
+            gr.addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();
@@ -227,7 +237,7 @@ public class GroupDaoTest {
         g.setName(nam);
         g.setAdmin(adminnavn);
         try{
-            addGroup(g);
+            gr.addGroup(g);
             s = gr.getGroupByName(nam).get(0).getId();
         } catch (SQLException e){
             e.printStackTrace();

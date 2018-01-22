@@ -5,6 +5,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import util.LoginCheck;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -15,6 +16,9 @@ import static org.junit.Assert.assertEquals;
  * @author enoseber
  */
 public class UserDaoTest {
+    private static Connection connection;
+    private static UserDao userDao;
+
     private static User user;
     private static String salt = LoginCheck.getSalt();
     private static final String email="LoginTestEmailATemailDOTcom";
@@ -22,15 +26,18 @@ public class UserDaoTest {
 
     @BeforeClass
     public static void setUp() throws SQLException {
+        connection = Db.instance().getConnection();
+        userDao = new UserDao(connection);
+
         user = new User(email, "User1", "90706060", "123", salt);
-        UserDao.addUser(user);
+        userDao.addUser(user);
     }
 
     @Test
     public void get_user(){
         User uu = new User();
         try{
-            uu = UserDao.getUser(email);
+            uu = userDao.getUser(email);
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -43,7 +50,7 @@ public class UserDaoTest {
         ArrayList<User> ulist = new ArrayList<User>();
 
         try {
-            ulist = UserDao.getUsersInShoppingList(2);
+            ulist = userDao.getUsersInShoppingList(2);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,7 +65,7 @@ public class UserDaoTest {
         user.setPassword("newpw");
 
         try {
-            UserDao.updateUser(user);
+            userDao.updateUser(user);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -66,7 +73,7 @@ public class UserDaoTest {
         User test = new User();
 
         try {
-            test = UserDao.getUser(email);
+            test = userDao.getUser(email);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,6 +101,10 @@ public class UserDaoTest {
      */
     @AfterClass
     public static void tearDown() throws SQLException {
-        UserDao.delUser(email);
+        try{
+            userDao.delUser(email);
+        }finally {
+            Db.close(connection);
+        }
     }
 }

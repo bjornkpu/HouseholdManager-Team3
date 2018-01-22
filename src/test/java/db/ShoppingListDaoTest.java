@@ -1,5 +1,6 @@
 package db;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import data.Group;
 import data.Item;
 import data.ShoppingList;
@@ -7,8 +8,10 @@ import data.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import util.Logger;
 import util.LoginCheck;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -22,6 +25,12 @@ import static org.junit.Assert.assertTrue;
  * @author bk
  */
 public class ShoppingListDaoTest {
+    private static final Logger logger = new Logger();
+    private static Connection connection;
+    private static ShoppingListDao shoppingListDao;
+    private static UserDao userDao;
+    private static GroupDao groupDao;
+
     private static int slId;
     private static int groupId;
     private static User testUser;
@@ -30,37 +39,51 @@ public class ShoppingListDaoTest {
     private static ArrayList<User> userList;
 
     @BeforeClass
-    public static void setUp() throws SQLException{
+    public static void setUp(){
+        try{
+            connection=Db.instance().getConnection();
+        }catch(SQLException e){
+            logger.error("Could not get connection", e);
+        }
+        shoppingListDao= new ShoppingListDao(connection);
+        userDao= new UserDao(connection);
+        groupDao = new GroupDao(connection);
+
         slId = 45;
         groupId = 1;
 
+        try{
+            testUser = new User("shoppinglistTest@user.no", "shoppinglistTestUser", "", "", LoginCheck.getSalt());
+            testGroup = new Group(groupId, "shoppingListTestGroup", "", testUser.getEmail());
 
-        testUser = new User("shoppinglistTest@user.no", "shoppinglistTestUser", "", "", LoginCheck.getSalt());
-        testGroup = new Group(groupId, "shoppingListTestGroup", "", testUser.getEmail());
+            userDao.addUser(testUser);
+            groupDao.addGroup(testGroup);
 
-        UserDao.addUser(testUser);
-        GroupDao.addGroup(testGroup);
+            groupId = groupDao.getGroupByName("shoppingListTestGroup").get(0).getId();
+            testGroup.setId(groupId);
 
-        groupId = GroupDao.getGroupByName("shoppingListTestGroup").get(0).getId();
-        testGroup.setId(groupId);
+            userList = new ArrayList<User>();
+            userList.add(testUser);
 
-        userList = new ArrayList<User>();
-        userList.add(testUser);
+            shoppingListTest = new ShoppingList(slId, "shoppingListTest",
+                    groupId, null, userList);
 
-        shoppingListTest = new ShoppingList(slId, "shoppingListTest",
-                groupId, null, userList);
+            testSmallShoppingList = new ShoppingList(46, "shoppingListTest");
 
-	    testSmallShoppingList = new ShoppingList(46, "shoppingListTest");
-
-        ShoppingListDao.addShoppingList(shoppingListTest);
-        ShoppingListDao.addShoppingList(testSmallShoppingList);
+            shoppingListDao.addShoppingList(shoppingListTest);
+            shoppingListDao.addShoppingList(testSmallShoppingList);
+        }catch(MySQLIntegrityConstraintViolationException e) {
+            logger.error("Constraint error", e);
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void addShoppingList() throws SQLException{
         ShoppingList sl = new ShoppingList();
         sl.setId(slId);
-        ShoppingListDao.addShoppingList(sl);
+        shoppingListDao.addShoppingList(sl);
     }
 
     @Test
@@ -68,7 +91,7 @@ public class ShoppingListDaoTest {
         ShoppingList sl = new ShoppingList();
 
         try {
-            sl = ShoppingListDao.getShoppingList(slId, testUser.getEmail());
+            sl = shoppingListDao.getShoppingList(slId, testUser.getEmail());
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -83,21 +106,21 @@ public class ShoppingListDaoTest {
 
 //        adds new shoppinglist to database
         try {
-            ShoppingListDao.addShoppingList(testGetByGroup);
+            shoppingListDao.addShoppingList(testGetByGroup);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 //      gets both shoppinglists from database connected to groupId
         try {
-            slList = ShoppingListDao.getShoppingListByGroupid(groupId);
+            slList = shoppingListDao.getShoppingListByGroupid(groupId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
 //      deletes extra added shoppinglist from database
         try {
-            ShoppingListDao.delShoppingList(testGetByGroup.getId());
+            shoppingListDao.delShoppingList(testGetByGroup.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,7 +137,7 @@ public class ShoppingListDaoTest {
         ArrayList<ShoppingList> slList = new ArrayList<ShoppingList>();
 
         try {
-            slList = ShoppingListDao.getShoppingListByUser(testUser);
+            slList = shoppingListDao.getShoppingListByUser(testUser);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,13 +152,13 @@ public class ShoppingListDaoTest {
         ShoppingList updateTest = new ShoppingList();
 
         try {
-            ShoppingListDao.updateShoppingList(updatedSl);
+            shoppingListDao.updateShoppingList(updatedSl);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         try {
-            updateTest = ShoppingListDao.getShoppingList(slId, testUser.getEmail());
+            updateTest = shoppingListDao.getShoppingList(slId, testUser.getEmail());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -172,8 +195,6 @@ public class ShoppingListDaoTest {
 	    testSmallShoppingList.removeItem(smallItem);
 	    testSmallShoppingList.removeItem(mediumItem);
 	    testSmallShoppingList.removeItem(itemId+2);
-
-
     }
 
     @Test
@@ -187,7 +208,6 @@ public class ShoppingListDaoTest {
     	testSmallShoppingList.removeUser(testUser);
 	    assertTrue(testSmallShoppingList.getUserList().size() == 1);
 	    testSmallShoppingList.removeUser("b@k.no");
-
     }
 
     @Test
@@ -220,11 +240,13 @@ public class ShoppingListDaoTest {
 
     @AfterClass
     public static void tearDown() throws SQLException{
-
-
-        ShoppingListDao.delShoppingList(slId);
-        GroupDao.deleteGroup(testGroup);
-        UserDao.delUser(testUser.getEmail());
+        try{
+            shoppingListDao.delShoppingList(slId);
+            groupDao.deleteGroup(testGroup);
+            userDao.delUser(testUser.getEmail());
+        }finally {
+            Db.close(connection);
+        }
     }
 
 }

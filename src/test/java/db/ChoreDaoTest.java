@@ -30,6 +30,10 @@ import static org.junit.Assert.assertNotEquals;
 
 public class ChoreDaoTest {
 
+    private static Connection connection;
+    private static ChoreDao choreDao;
+    private static PreparedStatement st;
+
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private static User user1 = new User("m@m.no", "Mats", "90807060", "password1","123");
     private static User user2 = new User("k@k.no", "Knut", "90805050", "password2","123");
@@ -42,13 +46,16 @@ public class ChoreDaoTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        connection = Db.instance().getConnection();
+        choreDao = new ChoreDao(connection);
+
         user1.setSalt("123");
         user2.setSalt("321");
         java.util.Date myDate = new java.util.Date(System.currentTimeMillis());
         currDate = new java.sql.Date(myDate.getTime());
 
 
-	    compledetBy.add("Mats");
+        compledetBy.add("Mats");
         Chore c1=new Chore(200,"desc1",compledetBy,"m@m.no", currDate, 100);
         Chore c2=new Chore(201,"desc2",compledetBy,"k@k.no", currDate,100);
         Chore c3=new Chore(202,"desc3",compledetBy,"m@m.no", currDate,100);
@@ -58,13 +65,11 @@ public class ChoreDaoTest {
         list1.add(c2);
         list1.add(c3);
         list2.add(c4);
-        Connection connection = Db.instance().getConnection();
         System.out.println("Connection opened before");
         //Deleting wallpost test-data
 
         //Inserting test-data into database for usage in the tests
 
-        PreparedStatement st = null;
         try{
             st = connection.prepareStatement("INSERT INTO user (name,email,password,salt,phone) VALUES ('Mats','m@m.no','password','123','90807060')");
             st.executeUpdate();
@@ -106,7 +111,7 @@ public class ChoreDaoTest {
             st.executeUpdate();
         }finally{
             close(st);
-            close(connection);
+//            close(connection);
         }
 
         System.out.println("Connection closed before, testdata inserted");
@@ -115,10 +120,7 @@ public class ChoreDaoTest {
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        Connection connection= null;
-        PreparedStatement st=null;
         try {
-            connection = Db.instance().getConnection();
             System.out.println("Connection opened after");
 
             //Deleting wallpost test-data
@@ -179,7 +181,7 @@ public class ChoreDaoTest {
     @Test
     public void testGetChore() throws Exception{
         System.out.println("Testing getChore() nr 1");
-        Chore chore = getChore(200);
+        Chore chore = choreDao.getChore(200);
         String result = chore.getDescription();
         String expResult = list1.get(0).getDescription();
         assertEquals(result,expResult);
@@ -189,8 +191,8 @@ public class ChoreDaoTest {
     @Test
     public void testGetChore2() throws Exception{
         System.out.println("Tester getChore() nr 2");
-        Chore chore1 = getChore(202);
-        Chore chore2 = getChore(200);
+        Chore chore1 = choreDao.getChore(202);
+        Chore chore2 = choreDao.getChore(200);
         boolean resultat1 = chore1 instanceof RepeatedChore;
         assertTrue(resultat1);
         boolean resultat2 = chore2 instanceof RepeatedChore;
@@ -202,7 +204,7 @@ public class ChoreDaoTest {
     @Test
     public void testGetChores() throws Exception{
         System.out.println("Tester getChores()");
-        ArrayList<Chore> chores = getChores(100);
+        ArrayList<Chore> chores = choreDao.getChores(100);
         int resultat = chores.size();
         assertTrue(resultat>0);
     }
@@ -211,17 +213,17 @@ public class ChoreDaoTest {
     @Test
     public void testAddAndDeleteChore() throws Exception{
         System.out.println("Tester addChore() and deleteChore()");
-        addChore(c5);
-        ArrayList<Chore> chores = getChores(101);
+        choreDao.addChore(c5);
+        ArrayList<Chore> chores = choreDao.getChores(101);
         int sizeAfterAdd= chores.size();
         Chore last = chores.get(sizeAfterAdd-1);
         String result = last.getDescription();
         String expResult = c5.getDescription();
         System.out.println(last.getChoreId());
-        deleteChore(last.getChoreId());
+        choreDao.deleteChore(last.getChoreId());
         assertEquals(result,expResult);
 
-        chores = getChores(101);
+        chores = choreDao.getChores(101);
         int sizeAfterDelete = chores.size();
         assertEquals(sizeAfterAdd-1,sizeAfterDelete);
 
@@ -231,22 +233,22 @@ public class ChoreDaoTest {
     @Test
     public void testAssignChore() throws Exception{
         System.out.println("Testing assignChore()");
-        String email1 = getChore(200).getAssignedTo();
-        assignChore("k@k.no",200);
-        String email2 = getChore(200).getAssignedTo();
+        String email1 = choreDao.getChore(200).getAssignedTo();
+        choreDao.assignChore("k@k.no",200);
+        String email2 = choreDao.getChore(200).getAssignedTo();
         assertNotEquals(email1,email2);
     }
 
     @Test
     public void testSetCompletedBy() throws  Exception{
         System.out.println("Testing setCompletedBy");
-        ArrayList<String> brukere = getCompletedBy(200);
+        ArrayList<String> brukere = choreDao.getCompletedBy(200);
         ArrayList<String> brukere1 = new ArrayList<>();
         brukere1.add("m@m.no");
         brukere1.add("k@k.no");
-        setCompletedBy(200,brukere1);
-        ArrayList<String> brukere2 = getCompletedBy(200);
-        setCompletedBy(200,brukere); //Resets completed by.
+        choreDao.setCompletedBy(200,brukere1);
+        ArrayList<String> brukere2 = choreDao.getCompletedBy(200);
+        choreDao.setCompletedBy(200,brukere); //Resets completed by.
         assertEquals(brukere1.size(),brukere2.size());
         assertTrue(brukere.size()<brukere2.size());
 

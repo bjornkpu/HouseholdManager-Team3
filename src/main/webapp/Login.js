@@ -61,7 +61,28 @@ $(document).ready(function(){
         $("#div_reg").show();
     })
 
+    $('#cancelBtn').click(function () {
+        $("#div_reg").hide();
+        $("#div_for_login").show();
+    })
+
+
     $('#confirmReg').click(function () {
+
+        if(!$("#name_of_user_field").val() || !$("#emailRegField").val() ||
+            !$("#passwordRegField").val() || !$("#passwordConfirmField").val()){
+            alert("All fields must be filled in");
+            return;
+        }
+
+        $.get("rest/user/emailCheck/"+$("#emailRegField").val(), function(data, status){
+            if(!data){
+                alert("Not a valid email");
+                return;
+            }
+        });
+
+
         if($("#passwordRegField").val()==$("#passwordConfirmField").val()){
             sha256($("#passwordRegField").val()).then(function (value) {
                 $.ajax({
