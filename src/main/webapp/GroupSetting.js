@@ -71,7 +71,7 @@ $(document).ready(function() {
     // TODO:fikse data.email, få til å få ut status på hvert medlem, service/dao/js
     function getUserStatus(data) {
         console.log("current group: " +y)
-        var url ='rest/groups/'+ y + '/members/' + 'abcqwe';
+        var url ='rest/groups/'+ y + '/members/' + 'tre@h.no';
         console.log(data.email);
         $.get(url, function (data,status) {
             if(status === "success"){
