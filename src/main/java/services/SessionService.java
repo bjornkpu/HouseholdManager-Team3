@@ -2,7 +2,10 @@ package services;
 import data.LoginData;
 import data.Session;
 import data.User;
+import db.Db;
 import db.UserDao;
+
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import util.Logger;
@@ -30,7 +33,17 @@ public class SessionService {
 
     private static final Logger log = Logger.getLogger();
 
-    private UserDao userDao = new UserDao();
+    private UserDao userDao;
+    private Connection connection;
+
+    public SessionService() {
+        try{
+            connection= Db.instance().getConnection();
+            userDao= new UserDao(connection);
+        }catch(SQLException e){
+            log.error("Failed to get connection", e);
+        }
+    }
 
     @Context
     private HttpServletRequest request;
@@ -49,6 +62,8 @@ public class SessionService {
         } catch(SQLException e) {
             log.error("Failed to check user", e);
             throw new ServerErrorException("DB error", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }finally {
+            Db.close(connection);
         }
         Session session = new Session();
         session.setEmail(data.getEmail());

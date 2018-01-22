@@ -2,8 +2,10 @@ package services;
 
 import data.Group;
 import data.Member;
+import db.Db;
 import db.GroupDao;
 import db.MemberDao;
+import db.UserDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -26,7 +29,17 @@ import java.util.ArrayList;
 @Path("/groups/{groupId}/members")
 public class MemberService {
     private static final Logger log = Logger.getLogger();
-    private static MemberDao memberDao = new MemberDao();
+    private static MemberDao memberDao;
+    private Connection connection;
+
+    public MemberService() {
+        try{
+            connection= Db.instance().getConnection();
+            this.memberDao = new MemberDao(connection);
+        }catch(SQLException e){
+            log.error("Failed to get connection", e);
+        }
+    }
 
     @Context
     private HttpServletRequest request;
@@ -45,9 +58,12 @@ public class MemberService {
         } catch (SQLException e){
             log.info("Could not fetch members.");
             throw new ServerErrorException("Failed to get members of group " + groupId, Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
 
     }
+
 
     /**
      * Invites a user to become a member of a group.
@@ -68,6 +84,8 @@ public class MemberService {
         } catch (SQLException e){
             log.info("Could not invite user " + email);
             throw new ServerErrorException("Failed to invite user", Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -91,6 +109,8 @@ public class MemberService {
         } catch (SQLException e){
             log.info("Failed to update to member");
             throw new ServerErrorException("Failed to upgrade user",Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 
@@ -110,6 +130,8 @@ public class MemberService {
         } catch (SQLException e){
             log.info("Failed to delete user");
             throw new ServerErrorException("Failed to delete user",Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
         }
     }
 }

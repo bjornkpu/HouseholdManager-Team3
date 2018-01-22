@@ -20,10 +20,14 @@ import java.util.ArrayList;
 public class MemberDao {
     private static final Logger log = Logger.getLogger();
 
-    private static Connection connection;
-    private static PreparedStatement ps;
-    private static ResultSet rs;
-    private static UserDao userDao;
+    private Connection connection;
+    private PreparedStatement ps;
+    private ResultSet rs;
+    private UserDao userDao;
+
+    public MemberDao(Connection connection) {
+        this.connection=connection;
+    }
 
     /**
      * Gets the members of a given group
@@ -32,9 +36,9 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static ArrayList<Member> getMembers(int groupId) throws SQLException {
+    public ArrayList<Member> getMembers(int groupId) throws SQLException {
+//        connection = Db.instance().getConnection();
         String partyId = ""+groupId;
-        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM user LEFT JOIN user_party ON user.email = user_party.user_email WHERE party_id=? AND (status=? OR status=?);");
             ps.setString(1,partyId);
@@ -52,6 +56,7 @@ public class MemberDao {
                 member.setPhone(rs.getString("phone"));
                 member.setName(rs.getString("name"));
                 member.setBalance(rs.getDouble("balance"));
+                member.setStatus(rs.getInt("status"));
                 members.add(member);
             }
 
@@ -59,7 +64,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -71,8 +76,8 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static ArrayList<Group> getGroupsByMember(String email) throws SQLException {
-        connection = Db.instance().getConnection();
+    public ArrayList<Group> getGroupsByMember(String email) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT id,name FROM party LEFT JOIN user_party ON party.id = user_party.party_id WHERE user_email=? AND (status=? OR status=?);");
             ps.setString(1, email);
@@ -92,7 +97,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -104,8 +109,8 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static ArrayList<Group> getGroupInvites(String email) throws SQLException{
-        connection = Db.instance().getConnection();
+    public ArrayList<Group> getGroupInvites(String email) throws SQLException{
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement(
                     "SELECT name,party_id FROM user_party LEFT JOIN party ON party.id= user_party.party_id WHERE user_email=? AND status=?");
@@ -125,7 +130,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -138,8 +143,9 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static boolean inviteUser(String email, int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean inviteUser(String email, int groupId) throws SQLException {
+//        connection = Db.instance().getConnection();
+        userDao= new UserDao(connection);
         try {
             User user = userDao.getUser(email);
             if(user != null){
@@ -159,7 +165,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -171,8 +177,8 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static boolean updateUser(Member member, int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean updateUser(Member member, int groupId) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             if (member.getBalance() == -1 && member.getName() == null && member.getPassword() == null){
                 ps = connection.prepareStatement("UPDATE user_party set status = ? where user_email=? AND party_id = ?");
@@ -194,7 +200,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);;
+//            Db.close(connection);
         }
     }
 
@@ -206,8 +212,8 @@ public class MemberDao {
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public static boolean deleteMember(String email, int groupId) throws SQLException {
-        connection = Db.instance().getConnection();
+    public boolean deleteMember(String email, int groupId) throws SQLException {
+//        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("DELETE FROM user_party where user_email=? AND party_id = ?");
             ps.setString(1,email);
@@ -218,8 +224,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
-
 }
