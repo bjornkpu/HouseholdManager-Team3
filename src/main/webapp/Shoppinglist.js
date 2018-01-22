@@ -3,7 +3,10 @@ $(document).ready(function() {
     var disbursementList = [];
     var lists;
     var items;
-    var currentShoppingList = 1;
+    var currentShoppingList = 0;
+    var currentGroup = getCookie("groupId");
+
+    loadShoppingListsFromGroup(currentGroup);
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -28,7 +31,7 @@ $(document).ready(function() {
                 {
                     name: name,
                     status: 1,
-                    shoppingListId: 1,
+                    shoppingListId: currentShoppingList,
                     id: 0,
                     disbursementId: -1
                 }),
@@ -42,7 +45,7 @@ $(document).ready(function() {
             }
         });
 
-        renderShoppingListInformation(currentShoppingList);
+        getItemsInShoppingList(1);
     });
 
     $('#deleteItems').click(function() {
@@ -72,58 +75,54 @@ $(document).ready(function() {
 
     $('#toBeBought').click(function() {
         var checked=getChecked();
+
         // AJAX Request
         $.ajax({
-            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/2 ',
-            type: 'PUT',
+            type: "Put",
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+2+'/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
-            success: function(response){
+            success: function(){
                 var table_length = $('#shoppingTable tr').length;
                 for (var i =0; i<table_length;i++){
                     if($("#checkbox"+i).is(':checked')){
                         $("#checkbox"+i).closest('tr').addClass('boughtMarked');
                     }
                 }
-                alert("Items deleted from shoppinglist");
+                alert("Items marked");
             },
             error: function(){
-                console.log(item.value);
+                console.log(items.valueOf());
             }
         });
     });
 
     $('#unmarked').click(function() {
         var checked=getChecked();
+
         // AJAX Request
-        var table_length = $('#shoppingTable tr').length;
-        for (var i =0; i<table_length;i++){
-            if($("#checkbox"+i).is(':checked')){
-                $("#checkbox"+i).closest('tr').removeClass("boughtMarked");
-            }
-        }
-        /*$.ajax({
-            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/1',
-            type: 'PUT',
+        $.ajax({
+            type: "Put",
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+1+'/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
-            success: function(response){
+            success: function(){
                 var table_length = $('#shoppingTable tr').length;
                 for (var i =0; i<table_length;i++){
                     if($("#checkbox"+i).is(':checked')){
-                        $("#checkbox"+i).closest('tr').css('background-color', '#00ff04');
+                        $("#checkbox"+i).closest('tr').removeClass('boughtMarked');
                     }
                 }
-                alert("Items deleted from shoppinglist");
+                alert("Items unmarked");
             },
             error: function(){
-                console.log(item.value);
+                console.log(items.valueOf());
             }
-        });*/
+        });
     });
 
 
@@ -153,6 +152,7 @@ $(document).ready(function() {
     })
 
     $('#createDisbursementButton').click(function () {
+        renderCreateDisbursemen();
         var creatingDisbursement =document.getElementById('creatingDisbursement');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
@@ -160,24 +160,6 @@ $(document).ready(function() {
         creatingDisbursement.style.display="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
-    });
-
-    $(".removeItemButton").click(function () {
-        // AJAX Request
-        alert("klikk");
-        $.ajax({
-            url: '/scrum/groups/' +1 + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
-            type: 'POST',
-            data: { id:id },
-            success: function(response){
-                alert("Item deleted from shoppinglist");
-                console.log(this.value);
-                $(this).closest('tr').remove();
-            },
-            error: function(){
-                console.log(this.value);
-            }
-        });
     });
 
     //finds all disbursements
@@ -207,7 +189,7 @@ $(document).ready(function() {
         });
 
 
-        console.log(bordliste);
+        // console.log(bordliste);
         var scopeNr = 1; //disbursementNr
         $.each(disbursementList, function (index, Shoppinglist) {
             $('#tableDisbursements').append('<tr>' +
@@ -223,6 +205,49 @@ $(document).ready(function() {
         });
     }
 
+
+    //function to set memberlist for createDisbursement
+    function renderCreateDisbursemen() {
+        console.log("Rendering Create Disbursement ShoppingListId: "+currentShoppingList);
+        $.ajax({
+            type: "GET",
+            url: "rest/groups/1/shoppingLists/" + 1 + "/users/",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $('#shoppinglistMembers').replaceWith(" <tr id=\"shoppinglistMembers\"></tr>");
+                console.log(data.length);
+                for (var i = 0; i < data.length; i++) {
+                    $('#shoppinglistMembers').append("<tr><td>" + data[i].name + "</td><td><input id='memberCheckbox'"+i
+                        +" value='" + data[i].email + "' type='checkbox' checked </td></tr>")
+                }
+            }
+        });
+    }
+    
+    //function for creating disbursement
+    $('#confirmDisbursement').click( function () {
+        var checked=getChecked();
+
+        // AJAX Request
+        $.ajax({
+            type: "Put",                                //         \ 3 means disburesed /
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+3+'/',
+            data: JSON.stringify(checked),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function(){
+
+                setItemsInTable();
+            },
+            error: function(){
+                console.log(items.valueOf());
+            }
+        });
+
+    });
+
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
         var len = data.length;
@@ -233,32 +258,52 @@ $(document).ready(function() {
         }
     }
 
-    $(document).ready(function () {
-        // console.log("menu1 pressed")
+    function loadShoppingListsFromGroup(groupId){
+        console.log("Loading from group " + groupId + "...");
         $('#shoppinglistdropdown').empty();
-        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists';
+        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/shoppingLists/user';
         $.get(url, function(data, status){
-            lists = data;
-            // renderShoppingListDropdownMenu(data);
-            // getItemsInShoppingList(data[0].id);
-
             if(status === "success"){
-                console.log("ShoppingList content loaded successfully!");
+                console.log("ShoppingList content from user in group " + groupId + " loaded successfully!");
+                lists = data;
                 //Here to prevent undefined variables and methods out of order
-                renderShoppingListDropdownMenu(data);
-                $("#shoppinglistName").text(data[0].name);
-                getItemsInShoppingList(data[0].id);
+                if(data === null || data.size === 0 || data[0] === undefined){
+                    $("#you_shoppinglists").text("You have no shoppinglists for group " + getCookie("groupId"));
+                    $("#shoppinglistName").text("No shoppinglists available");
+                } else {
+                    console.log("Data[0]");
+                    $("#shoppinglistName").text(data[0].name);
+                    renderShoppingListDropdownMenu(data);
+                    getItemsInShoppingList(groupId);
+                    $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupId"));
+                }
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
             }
         });
-    });
+    }
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for(var i = 0; i <ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 
     //When clicking
     $("#shoppinglistdropdown").on("click", "a.link", function(){
-        currentShoppingList = lists[this.id].id;
-        renderShoppingListInformation(currentShoppingList);
+        currentShoppingList = this.id;
+        renderShoppingListInformation(this.id);
     });
 
     function renderShoppingListInformation(id){
@@ -270,7 +315,9 @@ $(document).ready(function() {
     }
 
     function getItemsInShoppingList(id){
-        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists/'+id+'/items';
+        console.log('http://localhost:8080/scrum/rest/groups/' + id+ '/shoppingLists/' + lists[currentShoppingList].id + '/items');
+//        var url='http://localhost:8080/scrum/rest/groups/'+id+'/shoppingLists/'+lists[currentShoppingList].id+'/items';
+        var url='http://localhost:8080/scrum/rest/groups/'+1+'/shoppingLists/'+1+'/items';
 
         $.get(url, function(data, status){
             if(status === "success"){
@@ -294,45 +341,19 @@ $(document).ready(function() {
         for(var i = 0; i < len; i++){
             var id = items[i].id;
             $("#tableShoppinglist").append(
-                "<tr>" +
+                "<tr id='row"+i+"'>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
                 "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
                 "</tr>"
             );
+            if(items[i].status===2){
+                $("#row"+i).addClass('boughtMarked');
+            }
         }
         console.log("Added Items");
     }
-
-    //function which lists out information on the choosen shoppinglist
-    // function renderShoppingListInfo(data) {
-    //     var list = data == null ? [] : (data instanceof Array ? data : [data]);
-    //     shoppingListArray = [];
-    //     var itemArray = [];
-    //     $.each(list, function(index, Shoppinglist) {
-    //         itemArray.push({
-    //             "name": Item.name,
-    //             "status": Item.status,
-    //         });
-    //     });
-    //     console.log(shoppingListArray);
-    //
-    //     $.each(itemArray, function (index, Shoppinglist) {
-    //         var scopeNr = 1; //itemNr
-    //
-    //             //iteme i shoppingarray og alle item
-    //             $('#tableShoppinglist').append(
-    //                 '<tr>' +
-    //                 '<th scope="row">' + scopeNr + ' </th>' +
-    //                 '<td>' + Shoppinglist.name + '</td>' +
-    //                 '<td >' + Shoppinglist.status + '</td>' +
-    //                 '</tr>');
-    //
-    //             console.log("koden kom til bunnen av render info about each shoppinglist");
-    //             scopeNr++; //disbursementNr increment on each new list
-    //         });
-    //     }
 });
 
 function getChecked(){

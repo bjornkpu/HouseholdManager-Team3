@@ -199,15 +199,24 @@ public class ShoppingListService {
 	}
 
 	/** update the item with the given id.
-	 * @param item the id to the item you are trying to update.
+	 * @param items the item you are trying to update.
 	 * @throws ServerErrorException when failing to get the item.
 	 */
 	@PUT
-	@Path("/{shoppingListId}/items/{itemId}")
+	@Path("/items/{status}")
 	@Consumes("application/json")
-	public void updateItemById(Item item){
+	public void updateItems(@PathParam("status") int status, int[] items){
 		try{
-			 itemDao.updateItem(item);
+			if(status==2||status==1) {
+				for (int i = 0; i < items.length; i++) {
+					Item item = itemDao.getItem(items[i]);
+					item.setStatus(status);
+					itemDao.updateItem(item);
+				}
+			}
+			else if(status==3){
+
+			}
 		} catch(SQLException e){
 			log.error("Failed to update item", e);
 			throw new ServerErrorException("Failed to update item", Response.Status.INTERNAL_SERVER_ERROR, e);

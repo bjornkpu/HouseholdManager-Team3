@@ -1,4 +1,4 @@
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#editUser').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
