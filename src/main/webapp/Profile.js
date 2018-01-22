@@ -35,19 +35,6 @@ $(document).ready(function() {
         });
     }
 
-    function getEmail () {
-        $.ajax({
-            type: 'GET',
-            url:'rest/session',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                sessionEmail=data.email;
-                getInfo(data.email);
-
-            }
-        })
-    }
 
     function getInfo(email){
         $.ajax({
@@ -170,7 +157,6 @@ $(document).ready(function() {
             }
         })
     }
-
 
 });
 

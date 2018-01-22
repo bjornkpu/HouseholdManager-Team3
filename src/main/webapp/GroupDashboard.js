@@ -2,10 +2,8 @@
 $(document).ready(function(){
 
     getLoggedOnUser(setData);
-
-
     var groups;
-    var currentGroup;
+
 
     //Goes to correct page when reload
     if (window.location.hash == "#shopping"){
@@ -19,51 +17,55 @@ $(document).ready(function(){
             dataType: "json",
             success: renderGroupDropdown
         });
-        console.log(getCookie("currentGroup"));
-
+        //console.log(getCookie(curGroup));
     }
 
    /** $('#newGroup1').click(function () {
         var test=prompt("test: ");
     })*/
 
-   $("#newGroup1").click(function () {
-       createNewGroup();
-       window.location.reload();
-
-   });
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
-        // console.log("data:");
-        // console.log(data);
-        // console.log(data.length);
         console.log("render grouplist");
         groups=data;
         var len = data.length;
-        for (var i = 0; i < len;i++ ) {
-            if (i == 0){
-                checkCookie(data[0].id);
+        if (len === 0){
+            document.cookie = curGroup +"=0";
+        } else {
+            if (getCookie(curGroup) < len || !checkIfCook(data,getCookie(curGroup))){
+                document.cookie = curGroup+"="+ data[0].id;
             }
-            var groupname= data[i].name;
-            var id='';
-            id+=i;
-            id+='group';
-            $('#groupdropdown').append('<li><a class="dropdown-item" href="#" id="'+id+'">'+
-                groupname+'</a></li>'
-            );
-            console.log("Added group: "+groupname);
+            for (var i = 0; i < len;i++ ) {
+                var groupname= data[i].name;
+                var id='';
+                id+=i;
+                id+='group';
+                var $x = $('<li><a class="dropdown-item" href="#" id="'+id+'">'+
+                    groupname +'</a></li>'
+                );
+                (function (i) {
+                    $x.click(function () {
+                        document.cookie = curGroup + "=" + data[i].id;
+                        window.location.reload();
+                    })
+                }(i));
+                $('#groupdropdown').append($x);
+                console.log("Added group: "+groupname);
+            }
         }
-    }
 
+    }
+    /*
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
         document.cookie="groupId="+currentGroup.id;
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
     });
+    */
 
-    var y = getCookie("currentGroup");
+    var y = getCookie(curGroup);
     var lists;
     var url='rest/groups/'+y+'/members';
     $.get(url, function(data, status){
@@ -112,29 +114,11 @@ $(document).ready(function(){
     });
 
 
+    $("#loadSettings").click(function(){
+        $("#page-content").load("GroupSetting.html");
+    });
 
-    $("#invUserButton").click(function () {
-        var x = getCookie("currentGroup");
-        $.ajax({
-            type:"POST",
-            dataType:"json",
-            url:"rest/groups/"+x+"/members/" + $("#invUserField").val(),
-            contentType: "application/json",
-            data:JSON.stringify({
-                "email": $("#invUserField").val()
-            }),
-            statusCode: {
-                200: function () {
-                    window.location.href = "Navbars.html";
-                },
-                500: function () {
-                    console.log("Internal Server Error");
-                }
-            }
 
-        })
-
-    })
 
     function getLoggedOnUser(success) {
         $.ajax({
@@ -150,29 +134,24 @@ $(document).ready(function(){
                         success(user);
                     },
                     error: function() {
-                        window.location.href = "error.html";
+                        window.location.href = "Login.html";
                     }
                 });
             },
             error: function() {
-                window.location.href = "error.html";
+                window.location.href = "Login.html";
             }
         });
     };
-
 });
 
-function renderMembers(data) {
-    var len = data.length;
-    for (var i = 0; i < len;i++ ) {
-        $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
-    }
-}
+var curGroup = "currentGroup";
+
 
 function checkCookie(id) {
-    var username = getCookie("currentGroup");
+    var username = getCookie(curGroup);
     if (username == "") {
-        document.cookie = "currentGroup=" + id;
+        document.cookie = curGroup + "=" + id;
     }
 }
 
@@ -192,4 +171,21 @@ function getCookie(cname) {
     return "";
 }
 
+$("#newGroup1").click(function () {
+    createNewGroup();
+    window.location.reload();
+
+});
+
+function checkIfCook(data,id) {
+    var s = false;
+    var len = data.length;
+    for(var i = 0; i <len;i++){
+        if (id === data[i].id){
+            s = true;
+        }
+    }
+    return s;
+
+}
 
