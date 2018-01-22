@@ -80,10 +80,15 @@ public class WallpostDao {
             ps = connection.prepareStatement("SELECT * FROM wallpost WHERE party_id=? AND user_email=?");
             ps.setInt(1,partyId);
             ps.setString(2,email);
-            ArrayList<WallPost> resultat = new ArrayList<>();
+            ArrayList<WallPost> resultat = new ArrayList<WallPost>();
             rs = ps.executeQuery();
             while(rs.next()){
-                WallPost wallPost = new WallPost(rs.getInt("id"),rs.getTimestamp("time"),rs.getString("message"),rs.getString("user_email"),rs.getInt("party_id"));
+                WallPost wallPost = new WallPost();
+                wallPost.setMessage(rs.getString("message"));
+                wallPost.setDatePosted(rs.getTimestamp("time"));
+                wallPost.setId(rs.getInt("id"));
+                wallPost.setPostedBy(rs.getString("user_email"));
+                wallPost.setPostedTo(rs.getInt("party_id"));
                 resultat.add(wallPost);
             } return resultat;
         }
