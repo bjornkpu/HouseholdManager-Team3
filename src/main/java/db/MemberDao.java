@@ -52,6 +52,7 @@ public class MemberDao {
                 member.setPhone(rs.getString("phone"));
                 member.setName(rs.getString("name"));
                 member.setBalance(rs.getDouble("balance"));
+                member.setStatus(rs.getInt("status"));
                 members.add(member);
             }
 
@@ -233,10 +234,10 @@ public class MemberDao {
             rs = ps.executeQuery();
 
            // Member memberStatus = new Member();
-            int status =0;
+            int status = -1;
             while(rs.next()) {
                // memberStatus.setStatus(Integer.parseInt(rs.getString("status")));
-                status = Integer.parseInt(rs.getString("Status"));
+                status = Integer.parseInt(rs.getString("status"));
             }
             return status;
         } finally {
