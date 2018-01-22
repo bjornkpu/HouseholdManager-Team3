@@ -65,6 +65,18 @@ $(document).ready(function(){
     */
 
     var y = getCookie(curGroup);
+    var lists;
+    var url='rest/groups/'+y+'/members';
+    $.get(url, function(data, status){
+        lists=data;
+        renderMembers(data)
+        if(status === "success"){
+            console.log("members content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading members");
+        }
+    });
 
     /*
      * Changing the dropdown arrow to go upwards when clicked
@@ -103,6 +115,7 @@ $(document).ready(function(){
     $("#loadSettings").click(function(){
         $("#page-content").load("GroupSetting.html");
     });
+
 
 
     function getLoggedOnUser(success) {
@@ -156,6 +169,11 @@ function getCookie(cname) {
     return "";
 }
 
+$("#newGroup1").click(function () {
+    createNewGroup();
+    window.location.reload();
+
+});
 
 function checkIfCook(data,id) {
     var s = false;

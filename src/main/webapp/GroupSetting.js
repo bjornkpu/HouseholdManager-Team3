@@ -119,6 +119,29 @@ $(document).ready(function() {
             }
         });
     });
+
+
+    $("#invUserButton").click(function () {
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"rest/groups/"+y+"/members/" + $("#invUserField").val(),
+            contentType: "application/json",
+            data:JSON.stringify({
+                "email": $("#invUserField").val()
+            }),
+            statusCode: {
+                200: function () {
+                    window.location.href = "Navbars.html";
+                },
+                500: function () {
+                    console.log("Internal Server Error");
+                }
+            }
+
+        })
+
+    });
 });
 
 function getChecked(){
