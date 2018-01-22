@@ -61,7 +61,7 @@ public class InputCheckerTest {
 
 	@Test
 	public void removeExtraWhitespaceTest() {
-		String testString = " \t nam   \n   \t nam kosegutt\n  <3  ";
+		String testString = " \t nam   \n   \t nam kose\ngutt\n  <3  ";
 		String expected   = "nam nam kosegutt <3";
 
 		assertEquals("Whitespace removal",expected, InputChecker.removeExtraWhitespace(testString));

@@ -199,7 +199,7 @@ public class MemberDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-//            Db.close(connection);;
+//            Db.close(connection);
         }
     }
 

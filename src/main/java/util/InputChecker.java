@@ -77,7 +77,7 @@ public class InputChecker {
 
 	/**
 	 * Determines wether the {@code String} follows the format of an e-mail.
-	 *
+	 * Format: *@*.**
 	 *
 	 * @param s the {@code String}
 	 * @return {@code true} if the {@code String} follows the format of an e-mail, {@code false} otherwise
@@ -193,7 +193,7 @@ public class InputChecker {
 	public static String removeExtraWhitespace(String s) {
 		if (s == null) return null;
 		s = s.trim();
-		s = s.replaceAll("[\\s&&[^ ]]+", " ");
+		s = s.replaceAll("[\\s&&[^ ]]+", "");
 		s = s.replaceAll(" +", " ");
 		return s;
 	}

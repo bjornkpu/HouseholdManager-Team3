@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import util.ForgottenPassword;
+import util.InputChecker;
 import util.Logger;
 import util.LoginCheck;
 
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
-import java.sql.SQLException;
 /**
  * Service that handles reading, making, updating and deleting user information.
  *
@@ -142,5 +142,10 @@ public class UserService {
         }
     }
 
-
+    @GET
+	@Path("/emailCheck/{email}")
+    @Produces("application/json")
+	public boolean checkEmail(@PathParam("email") String email){
+    	return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
+    }
 }

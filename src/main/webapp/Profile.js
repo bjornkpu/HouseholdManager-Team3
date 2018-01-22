@@ -234,13 +234,33 @@ function createNewGroup() {
                 'admin': $("#emailReadOnly").val(),
                 'members': null
             }),
+            /*
+            error: function() {
+                window.location.href = "error.html";
+            },
+            complete: function(jqXHR,textStatus) {
+                switch (jqXHR.status) {
+                    case 200:
+                        console.log("creating group");
+                        window.location.href = "Navbar.html";
+                        break;
+                    case 404:
+                        console.log("Group not created");
+                        break;
+                    default:
+                        window.location.href="error.html";
+                        break;
+                }
+            }
+            */
             statusCode: {
                 404: function () {
                     console.log("404 - Not Found");
                 },
                 200: function () {
                     console.log("Group Added");
-                    window.location.href = "Navbars.html";
+                    window.location.href = "GroupDashboard.html";
+
                 }
             }
         })

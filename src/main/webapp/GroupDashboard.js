@@ -1,3 +1,4 @@
+
 $(document).ready(function(){
 
     getLoggedOnUser(setData);
@@ -79,21 +80,13 @@ $(document).ready(function(){
     /*
      * Changing the dropdown arrow to go upwards when clicked
      */
-    $(".dropdown").on("hide.bs.dropdown", function(){
-        $(".btn").html('My groups <span class="caret"></span>');
-    });
-
-    $(".dropdown").on("show.bs.dropdown", function(){
-        $(".btn").html('My groups <span class="caret caret-up"></span>');
-    });
-
 
     //Assigns logout to logout button
     $("#logout").click(function(){
         logOut();
     });
 
-    //Loads content when clicking sidebar.
+    //Loads pages into the content div when clicking sidebar items.
     $("#loadShoppingList").click(function(){
         $("#page-content").load("Shoppinglist.html");
     });
@@ -108,6 +101,14 @@ $(document).ready(function(){
 
     $("#loadTasks").click(function(){
         $("#page-content").load("Tasks.html");
+    });
+
+    $("#loadSettings").click(function(){
+        $("#page-content").load("Settings.html");
+    });
+
+    $("#loadAbout").click(function(){
+        $("#page-content").load("About.html");
     });
 
 
