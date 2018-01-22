@@ -112,6 +112,10 @@ $(document).ready(function(){
         $("#page-content").load("Tasks.html");
     });
 
+    $("#loadSettings").click(function(){
+        $("#page-content").load("GroupSetting.html");
+    });
+
 
 
     $("#invUserButton").click(function () {
@@ -164,12 +168,6 @@ $(document).ready(function(){
 
 var curGroup = "currentGroup";
 
-function renderMembers(data) {
-    var len = data.length;
-    for (var i = 0; i < len;i++ ) {
-        $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
-    }
-}
 
 function checkCookie(id) {
     var username = getCookie(curGroup);
