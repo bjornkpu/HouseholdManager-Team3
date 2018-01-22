@@ -2,7 +2,7 @@ $(document).ready(function(){
 
     getLoggedOnUser(setData);
     var groups;
-    var currentGroup;
+
 
     //Goes to correct page when reload
     if (window.location.hash == "#shopping"){
@@ -16,8 +16,7 @@ $(document).ready(function(){
             dataType: "json",
             success: renderGroupDropdown
         });
-        console.log(getCookie("currentGroup"));
-
+        //console.log(getCookie(curGroup));
     }
 
    /** $('#newGroup1').click(function () {
@@ -27,35 +26,45 @@ $(document).ready(function(){
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
-        // console.log("data:");
-        // console.log(data);
-        // console.log(data.length);
         console.log("render grouplist");
         groups=data;
         var len = data.length;
-        for (var i = 0; i < len;i++ ) {
-            if (i == 0){
-                checkCookie(data[0].id);
+        if (len === 0){
+            document.cookie = curGroup +"=0";
+        } else {
+            if (getCookie(curGroup) < len || !checkIfCook(data,getCookie(curGroup))){
+                document.cookie = curGroup+"="+ data[0].id;
             }
-            var groupname= data[i].name;
-            var id='';
-            id+=i;
-            id+='group';
-            $('#groupdropdown').append('<li><a class="dropdown-item" href="#" id="'+id+'">'+
-                groupname+'</a></li>'
-            );
-            console.log("Added group: "+groupname);
+            for (var i = 0; i < len;i++ ) {
+                var groupname= data[i].name;
+                var id='';
+                id+=i;
+                id+='group';
+                var $x = $('<li><a class="dropdown-item" href="#" id="'+id+'">'+
+                    groupname +'</a></li>'
+                );
+                (function (i) {
+                    $x.click(function () {
+                        document.cookie = curGroup + "=" + data[i].id;
+                        window.location.reload();
+                    })
+                }(i));
+                $('#groupdropdown').append($x);
+                console.log("Added group: "+groupname);
+            }
         }
-    }
 
+    }
+    /*
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
         document.cookie="groupId="+currentGroup.id;
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
     });
+    */
 
-    var y = getCookie("currentGroup");
+    var y = getCookie(curGroup);
     var lists;
     var url='rest/groups/'+y+'/members';
     $.get(url, function(data, status){
@@ -106,7 +115,7 @@ $(document).ready(function(){
 
 
     $("#invUserButton").click(function () {
-        var x = getCookie("currentGroup");
+        var x = getCookie(curGroup);
         $.ajax({
             type:"POST",
             dataType:"json",
@@ -151,8 +160,9 @@ $(document).ready(function(){
             }
         });
     };
-
 });
+
+var curGroup = "currentGroup";
 
 function renderMembers(data) {
     var len = data.length;
@@ -162,9 +172,9 @@ function renderMembers(data) {
 }
 
 function checkCookie(id) {
-    var username = getCookie("currentGroup");
+    var username = getCookie(curGroup);
     if (username == "") {
-        document.cookie = "currentGroup=" + id;
+        document.cookie = curGroup + "=" + id;
     }
 }
 
@@ -190,5 +200,16 @@ $("#newGroup1").click(function () {
 
 });
 
+function checkIfCook(data,id) {
+    var s = false;
+    var len = data.length;
+    for(var i = 0; i <len;i++){
+        if (id === data[i].id){
+            s = true;
+        }
+    }
+    return s;
+
+}
 
 
