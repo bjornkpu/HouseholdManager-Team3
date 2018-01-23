@@ -21,7 +21,7 @@ import java.util.ArrayList;
  * @version 0.1
  */
 
-@Path("/wallposts/")
+@Path("/wallposts")
 public class WallPostService {
 
     private static final Logger log = Logger.getLogger();
@@ -79,14 +79,16 @@ public class WallPostService {
      */
     @POST
     @Produces("application/json")
-    @Consumes("application/json")
     public Response postWallPost(WallPost wallPost){
-        try (Connection connection= Db.instance().getConnection()){
+        try (Connection connection= Db.instance().getConnection()) {
             WallpostDao wallpostDao = new WallpostDao(connection);
 
-            return  Response.status(201).entity(wallpostDao.postWallpost(wallPost)).build();
-        } catch (SQLException e){
-            throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR,e);
+            return Response.status(201).entity(wallpostDao.postWallpost(wallPost)).build();
+            try {
+                return Response.status(200).entity(wallpostDao.postWallpost(wallPost)).build();
+            } catch (SQLException e) {
+                throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR, e);
+            }
         }
     }
 

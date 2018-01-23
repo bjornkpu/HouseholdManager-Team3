@@ -23,6 +23,7 @@
         $('#emailReadOnly').attr('value', user.email);
         $('#phoneReadOnly').attr('value', user.phone);
         var lists;
+
         var url='rest/groups/'+ user.email +'/invites';
         $.get(url, function(data,status){
             lists=data;
