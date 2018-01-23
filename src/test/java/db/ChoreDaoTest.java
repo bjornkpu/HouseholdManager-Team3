@@ -7,17 +7,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import static db.ChoreDao.*;
 import static db.Db.close;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
@@ -39,7 +36,7 @@ public class ChoreDaoTest {
     private static User user2 = new User("k@k.no", "Knut", "90805050", "password2","123");
     private static ArrayList<Chore> list1 = new ArrayList<>();
     private static ArrayList<Chore> list2 = new ArrayList<>();
-    static private java.sql.Date currDate;
+    static private java.sql.Timestamp currDate;
     static Chore c5=new Chore("desc4", currDate,101);
 	static Chore c6=new Chore(204,"desc5");
 	static ArrayList<String> compledetBy = new ArrayList<>();
@@ -52,7 +49,7 @@ public class ChoreDaoTest {
         user1.setSalt("123");
         user2.setSalt("321");
         java.util.Date myDate = new java.util.Date(System.currentTimeMillis());
-        currDate = new java.sql.Date(myDate.getTime());
+        currDate = new java.sql.Timestamp(myDate.getTime());
 
 
         compledetBy.add("Mats");
@@ -91,23 +88,23 @@ public class ChoreDaoTest {
 
             close(st);
             st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (200,'desc1',0,?,100,'m@m.no')");
-            st.setDate(1, currDate);
+            st.setTimestamp(1, currDate);
             st.executeUpdate();
             close(st);
             st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (201,'desc2',0,?,100,'k@k.no')");
-            st.setDate(1, currDate);
+            st.setTimestamp(1, currDate);
             st.executeUpdate();
             close(st);
             st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (202,'desc3',7,?,100,'m@m.no')");
-            st.setDate(1, currDate);
+            st.setTimestamp(1, currDate);
             st.executeUpdate();
             close(st);
             st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (203,'desc4',0,?,101,'m@m.no')");
-            st.setDate(1, currDate);
+            st.setTimestamp(1, currDate);
             st.executeUpdate();
             close(st);
             st = connection.prepareStatement("INSERT INTO chore (id,name,regularity,deadline,party_id, user_email) VALUES (204,'desc5',0,?,101,'m@m.no')");
-            st.setDate(1, currDate);
+            st.setTimestamp(1, currDate);
             st.executeUpdate();
         }finally{
             close(st);
