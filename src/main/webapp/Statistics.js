@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-    var chart = new CanvasJS.Chart("chartContainer", {
+    /*var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
             text: "Desktop Search Engine Market Share - 2016"
@@ -19,7 +19,7 @@ $(document).ready(function() {
             ]
         }]
     });
-    chart.render();
+    chart.render();*/
     var choreList;
 
     console.log("fert");
