@@ -21,6 +21,7 @@ $(document).ready(function(){
             success: renderGroupDropdown
         });
         //console.log(getCookie(curGroup));
+        $("#navUsername").html(""+user.name);
     }
 
    /** $('#newGroup1').click(function () {
@@ -30,33 +31,34 @@ $(document).ready(function(){
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
-        console.log("render grouplist");
-        groups=data;
-        var len = data.length;
-        if (len === 0){
-            document.cookie = curGroup +"=0";
-        } else {
-            if (getCookie(curGroup) < len || !checkIfCook(data,getCookie(curGroup))){
-                document.cookie = curGroup+"="+ data[0].id;
-            }
-            for (var i = 0; i < len;i++ ) {
-                var groupname= data[i].name;
-                var id='';
-                id+=i;
-                id+='group';
-                var $x = $('<li><a class="dropdown-item" href="#" id="'+id+'">'+
-                    groupname +'</a></li>'
-                );
-                (function (i) {
-                    $x.click(function () {
-                        document.cookie = curGroup + "=" + data[i].id;
-                        window.location.reload();
-                    })
-                }(i));
-                $('#groupdropdown').append($x);
-                console.log("Added group: "+groupname);
-            }
-        }
+       console.log("render grouplist");
+       groups = data;
+       var len = data.length;
+       if (len === 0) {
+           document.cookie = curGroup + "=0";
+       } else {
+           if (getCookie(curGroup) < len || !checkIfCook(data, getCookie(curGroup))) {
+               document.cookie = curGroup + "=" + data[0].id;
+           }
+           for (var i = 0; i < len; i++) {
+               var groupname = data[i].name;
+               var id = '';
+               id += i;
+               id += 'group';
+               var $x = $('<li><a class="dropdown-item" href="#" id="' + id + '">' +
+                   groupname + '</a></li>'
+               );
+               (function (i) {
+                   $x.click(function () {
+                       document.cookie = curGroup + "=" + data[i].id;
+                       window.location.reload();
+                   })
+               }(i));
+               $('#groupdropdown').append($x);
+               console.log("Added group: " + groupname);
+           }
+       }
+    }
         /*
             $("#groupdropdown").on("click", "a.dropdown-item", function(){
                 var i=this.id.charAt(0);

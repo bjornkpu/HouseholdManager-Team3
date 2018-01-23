@@ -28,28 +28,18 @@
             </div>
         </div>
 
+
         <!-- Middle items-->
-        <div class="navbar-nav d-flex flex-row">
-                    <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="groupName d-flex flex-row">
-                            <div class="someName">
-                                <strong id="currentGroupName"></strong>
-                            </div>
-                            <i class="material-icons md-24 groupicon">supervisor_account</i>
-                        </div>
-                    </a>
-                <div class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1">
-                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 5</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
-                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
-                    <a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a>
-                </div>
+        <div class="navbar-nav d-flex flex row">
+            <div class="nav-item dropdown d-flex flex-row">
+                <div class="groupName"><strong></strong></div>
+                <a class="nav-link dropdown d-flex flex-row" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons md-24 groupicon">supervisor_account</i>
+                </a>
+                <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
+                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
+                </ul>
+            </div>
         </div>
 
         <!-- Right items -->
