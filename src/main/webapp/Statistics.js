@@ -42,39 +42,20 @@ $(document).ready(function() {
     }
     function setItemsInTable(){
         console.log("lager tab");
-        /*
-        var table = document.getElementsByClassName("bar-graph");
-        while(table.rows.length > 0) {
-            table.deleteRow(0);
-        }*/
-        var totalChores=0;
+        var maxValue=0;
         for(var j=0;j<choreList.length;j++){
-            totalChores+=choreList[j].value;
+            if(choreList[j].value>maxValue){
+                maxValue=choreList[j].value;
+            }
         }
         for(var i=0; i<choreList.length;i++){
            var count =  choreList[i].value;
            var name = choreList[i].key;
-            var height = (count/totalChores)*200;
+            var height = (count/maxValue)*100;
             $(".bar-graph").append(
             "<li class='bar primary' style='height: "+height+"%;' title='10'>"
             + "<div class='percent'>"+ count + "<span>chors</span></div>"
             +  "<div class='description'>" + name +"</div> </li>");
         }
-
-
-
-        /*
-        for(var i = 0; i < len; i++){
-            var id = items[i].id;
-            $("#tableShoppinglist").append(
-                "<tr>" +
-                "<th scope=\"row\">"+(i+1)+"</th>" +
-                "<td>" + items[i].name + "</td>" +
-                "<td>" + items[i].status + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
-                "</tr>"
-            );
-        }
-        console.log("Added Items");*/
     }
 });
