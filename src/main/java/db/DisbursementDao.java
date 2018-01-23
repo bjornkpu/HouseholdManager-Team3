@@ -9,6 +9,7 @@ import util.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * -Description of the class-
@@ -22,10 +23,43 @@ public class DisbursementDao {
     private PreparedStatement ps;
     private Statement statement;
     private ResultSet rs;
+    private ResultSet res;
 
     public DisbursementDao(Connection connection) {
         this.connection = connection;
     }
+
+    public ArrayList<User> getParticipants(int disbursementID) throws SQLException{
+//        connection = Db.instance().getConnection();
+        try{
+            ps= connection.prepareStatement("SELECT * FROM user_disbursement ud JOIN user u ON ud.user_email = u.email WHERE disp_id=?");
+            ps.setInt(1,disbursementID);
+            res = ps.executeQuery();
+            ArrayList<User> result = new ArrayList<>();
+            while(res.next()){
+                User user = new User();
+                user.setEmail(res.getString("user_email"));
+                user.setName(res.getString("name"));
+                result.add(user);
+            }
+            return result;
+        }
+        finally {
+            Db.close(res);
+            Db.close(ps);
+//            Db.close(connection);
+        }
+    }
+
+    private int getBuyer(ArrayList<User> users, String email){
+        for(int i=0; i<users.size();i++){
+            if(users.get(i).getEmail().equals(email)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     /**Fetches a list of disbursements in a group, where the user is a participant of the disbursement
      *
@@ -54,6 +88,10 @@ public class DisbursementDao {
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
                     disbursement.setPayer(new User(rs.getString("payer_id")));
+                    ArrayList<User> users = getParticipants(rs.getInt("id"));
+                    disbursement.setParticipants(users);
+                    int index = getBuyer(users,rs.getString("payer_id"));
+                    if(index>=0) disbursement.setPayer(users.get(index));
                     disbursements.add(disbursement);
                 }while(rs.next());
             } else {
@@ -63,11 +101,8 @@ public class DisbursementDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-//            Db.close(connection);
+//            Db.close(connection);g_tdat2003_t3@mysql.stud.iie.ntnu.no
         }
-    }
-    public void testmethod(){
-        return;
     }
 
     /**Fetches the participants and items in a given disbursement, if the user
@@ -305,7 +340,11 @@ public class DisbursementDao {
                     "VALUES (?,?,?,?,?)");
             ps.setDouble(1,disbursement.getDisbursement());
             ps.setString(2,disbursement.getName());
-            ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            try{
+                ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            }catch (Exception e){
+                ps.setTimestamp(3,new Timestamp(System.currentTimeMillis()));
+            }
             ps.setString(4,disbursement.getPayer().getEmail());
             ps.setInt(5,groupid);
             int result = ps.executeUpdate();

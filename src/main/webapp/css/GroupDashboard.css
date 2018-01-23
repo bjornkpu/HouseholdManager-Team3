@@ -138,6 +138,10 @@ buttons
         font-size: 14px;
     }
 
+    .activePage{
+        background-color: lightgrey;
+    }
+
 
 @media screen and (orientation: landscape) {
     /* Move down content because we have a fixed navbar that is 50px tall */
@@ -257,10 +261,13 @@ buttons
 
     .leftsidebar-list-items {
         float: left;
-        margin-left: 5%;
-        margin-right: 5%;
+        margin-left: 3%;
+        margin-right: 3%;
         position: relative;
         color: cadetblue;
+    }
+    .leftsidebar-list-items p{
+        font-size: 14px;
     }
     .leftsidebar-list-items.aboutlink{
         display: none;
@@ -287,7 +294,7 @@ buttons
     /* Rules for sizing the icon. */
     .material-icons.md-18 { font-size: 18px; }
     .material-icons.md-24 { font-size: 24px; }
-    .material-icons.md-36 { font-size: 22px; }
+    .material-icons.md-36 { font-size: 20px; }
     .material-icons.md-48 { font-size: 48px; }
 
     /* Rules for using icons as black on a light background. */
