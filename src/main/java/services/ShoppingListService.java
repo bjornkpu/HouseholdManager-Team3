@@ -207,6 +207,7 @@ public class ShoppingListService {
 			ItemDao itemDao = new ItemDao(connection);
 			if(status==2||status==1) {
 				for (Item item : items) {
+					item = itemDao.getItem(item.getId());
 					item.setStatus(status);
 					itemDao.updateItem(item);
 				}
@@ -228,9 +229,9 @@ public class ShoppingListService {
 	public void delItemById(ArrayList<Item> items){
 		try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
-            for(Item item : items){
-                itemDao.delItem(item.getId());
-            }
+			for(Item item : items){
+				itemDao.delItem(item.getId());
+			}
 		} catch(SQLException e){
 			log.error("Failed to delete item", e);
 			throw new ServerErrorException("Failed to delete item", Response.Status.INTERNAL_SERVER_ERROR, e);

@@ -103,9 +103,6 @@ public class DisbursementDao {
 //            Db.close(connection);g_tdat2003_t3@mysql.stud.iie.ntnu.no
         }
     }
-    public void testmethod(){
-        return;
-    }
 
     /**Fetches the participants and items in a given disbursement, if the user
      * is one of the participants.

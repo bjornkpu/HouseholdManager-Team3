@@ -475,8 +475,8 @@ $(document).ready(function() {
                 $('#shoppinglistMembers').replaceWith(" <tr id=\"shoppinglistMembers\"></tr>");
                 numberOfMembers = data.length;
                 for (var i = 0; i < data.length; i++) {
-                    $('#shoppinglistMembers').append("<tr><td>" + data[i].name + "</td><td><input id='memberCheckbox'"+i
-                        +" value='" + data[i].email + "' type='checkbox' checked </td></tr>")
+                    $('#shoppinglistMembers').append("<tr><td>" + data[i].name + "</td><td><input id='memberCheckbox"+i
+                        +"' value='" + data[i].email + "' type='checkbox' checked </td></tr>")
                 }
             }
         });
@@ -488,16 +488,14 @@ $(document).ready(function() {
         // AJAX Request
         $.ajax({
             type: "POST",
-            url: '/scrum/rest/groups/' +currentGroup + '/disbursement/',
-            data: JSON.stringify({
-                items: {
-                   id: getCheckedItems()
-                },
-                payerEmail: getCookie("userLoggedOn"),
-                participants: getCheckedMembers(),
-                groupId: currentGroup,
-                name: $('#nameOfDisbursement').valueOf(),
-                disbursement: $('#totalAmount').valueOf()
+            url: 'rest/groups/' +currentGroup + '/disbursement/',
+            data: JSON.stringify(
+                {
+                    items: getCheckedItems(),
+                    payer: {email: getCookie("userLoggedOn")},
+                    participants: getCheckedMembers(),
+                    name: $('#nameOfDisbursement').val(),
+                    disbursement: $('#totalAmount').val()
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -517,7 +515,6 @@ $(document).ready(function() {
                 console.log(disb.valueOf())
             }
         });
-
     });
 
     //function which lists out the different shoppinglist into the dropdown menu
@@ -638,17 +635,17 @@ $(document).ready(function() {
         var checked = [];
         for (var i =0; i<table_length;i++){
             if($("#checkbox"+i).is(':checked')){
-                //checked.add($("#checkbox"+i).value)
                 var item = {id: $("#checkbox"+i)[0].value};
                 checked.push(item);
             }
         }return checked;
-
     }
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){
-            members.push({email: $('#memberCheckbox'+i).value});
+            if($("#memberCheckbox"+i).is(':checked')) {
+                members.push({email: $("#memberCheckbox"+i)[0].value});
+            }
         }
         return members;
     }

@@ -96,7 +96,7 @@ public class ItemDao {
 		    Item item = new Item();
 		    ArrayList<Item> itemList = new ArrayList<Item>();
 		    while(rs.next()) {
-			    log.info("Found item in shoppinglist" + id + " while index: " + i);
+			    //log.info("Found item in shoppinglist" + id + " while index: " + i);
 			    item = new Item();
 			    item.setId(rs.getInt("id"));
 			    item.setName(rs.getString("name"));
