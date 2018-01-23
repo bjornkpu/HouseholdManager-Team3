@@ -6,10 +6,56 @@
     <title>"Gruppens tittel"</title>
 </head>
 <body>
-<div class="tasksGrid">
-    Tasks<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-    tasks
+
+<h1>Your Tasks</h1>
+<br>
+<br>
+
+<div class="container">
+    <div class="row">
+        <!--dropdown tasks -->
+        <div class="container" id="dropdownTasks" style ="display:block;">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                    One Time Tasks
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="taskdropdown">
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >One Time Tasks</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="#" >Repeating Tasks</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
+<!--end of dropdown tasks -->
+<br>
+
+<!-- Tasks-->
+<div class="container" id="task" style="display:block;">
+    <div class = "row">
+        <h2 id="TaskName"></h2>
+    </div>
+    <div class="row">
+
+        <table class="table table-hover", id="taskTable">
+            <thead>
+            <tr>
+                <th>Task Description</th>
+                <th>Status</th>
+                <th>Deadline</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody id="tableTask">
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- End of tasks-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="Tasks.js"></script>
+
 </body>
 </html>
