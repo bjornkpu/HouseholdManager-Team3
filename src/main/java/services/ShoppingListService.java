@@ -23,6 +23,7 @@ import java.util.ArrayList;
  * @author BK
  * @author johanmsk
  * @author Martin Wangen
+ * @author enoseber
  */
 @Path("/groups/{groupId}/shoppingLists/")
 public class ShoppingListService {

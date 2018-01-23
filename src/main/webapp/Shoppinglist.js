@@ -190,6 +190,11 @@ $(document).ready(function() {
                     isUser = true;
                     break;
                 }
+                if(usersInGroup[i].name.toLowerCase() === user.toLowerCase()){
+                    user = usersInGroup[i].email;
+                    isUser = true;
+                    break;
+                }
             }
             if(!isUser){
                 $("#addedUser").text(user + " is not a member!");
@@ -391,6 +396,11 @@ $(document).ready(function() {
     //function which lists out the different shoppinglist into the dropdown menu
     function renderShoppingListDropdownMenu(data) {
         var len = data.length;
+        if(len === 0){
+            $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation" style="text-align: center">' +
+                'Empty</li>');
+            return;
+        }
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
                 data[i].name + '</aclass></li>'
@@ -408,22 +418,21 @@ $(document).ready(function() {
                 lists = data;
                 //Here to prevent undefined variables and methods out of order
                 if(data === null || data.size === 0 || data[0] === undefined){
-                    $("#you_shoppinglists").text("You have no shoppinglists for group " + currentGroup);
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
                     console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
-                    renderShoppingListDropdownMenu(data);
                     getItemsInShoppingList(groupId);
-                    $("#you_shoppinglists").text("Shoppinglists for groupId " + currentGroup);
                 }
+                $("#you_shoppinglists").text("Shoppinglists for groupId " + currentGroup);
+                renderShoppingListDropdownMenu(data);
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
             }
-            if(status === undefined){
-                console.log("Hva faen");
-            }
+            // if(status === undefined){
+            //     console.log("Hva faen");
+            // }
         });
     }
 
@@ -452,7 +461,7 @@ $(document).ready(function() {
     function renderShoppingListInformation(id){
         $("#tableShoppinglist").empty();
 
-        getItemsInShoppingList(1);
+        getItemsInShoppingList(currentGroup);
 
         $("#shoppinglistName").text(lists[id].name);
     }
