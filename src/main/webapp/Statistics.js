@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    var currentGroup = getCookie("currentGroup");
 
     /*var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -25,7 +26,7 @@ $(document).ready(function() {
     console.log("fert");
     getStatistics();
     function getStatistics(){
-        var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/statistics/';
+        var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/';
 
         $.get(url, function(data, status){
             console.log("bertt");
