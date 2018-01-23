@@ -109,14 +109,24 @@
     </div>
 </div>
 <!--Alert for successful personal info update -->
-<div class="alert alert-success" id="alertSuccessEditProfile">
+<div class="alert alert-success" id="alertSuccessEditProfile" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
     <strong>Success!</strong> Profile Updated
 </div>
 <!--Alert for successful password update -->
-<div class="alert alert-success" id="alertPassword">
+<div class="alert alert-success" id="alertPassword" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
     <strong>Success!</strong> Password Updated
+</div>
+<!--Alert for missing namefield -->
+<div class="alert alert-info" id="alertNameField" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Ops!</strong> Please fill out name
+</div>
+<!--Alert for missing phonefield-->
+<div class="alert alert-info" id="alertPhoneField" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Ops!</strong> Please fill out phonenumber
 </div>
 <h2>User profile</h2>
 <div class="container">
