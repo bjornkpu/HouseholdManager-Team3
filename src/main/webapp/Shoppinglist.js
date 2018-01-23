@@ -3,7 +3,7 @@ $(document).ready(function() {
     var disbursementList;
     var lists;
     var items;
-    var currentShoppingList = 0;
+    var currentShoppingList = 1;
     var currentGroup = getCookie("groupId");
     var numberOfMembers = 0;
     var balanceList=0;
@@ -426,30 +426,36 @@ $(document).ready(function() {
     //function for creating disbursement
     $('#confirmDisbursement').click( function () {
 
-        var checked=getCheckedItems();
-        var disbursement;
-        disbursement.items=checked;
-        disbursement.payerEmail=getCookie("userLoggedOn");
-        disbursement.participants=getCheckedMembers();
-        disbursement.groupId = currentGroup;
-        disbursement.name = $('#nameOfDisbursement').valueOf();
-        disbursement.disbursement = $('#totalAmount').valueOf();
-
-
         // AJAX Request
         $.ajax({
-            type: "Put",
-            url: '/scrum/rest/groups/' +currentGroup + '/disbursements/',
-            data: JSON.stringify(checked),
+            type: "POST",
+            url: '/scrum/rest/groups/' +currentGroup + '/disbursement/',
+            data: JSON.stringify({
+                items: {
+                   id: getCheckedItems()
+                },
+                payerEmail: getCookie("userLoggedOn"),
+                participants: getCheckedMembers(),
+                groupId: currentGroup,
+                name: $('#nameOfDisbursement').valueOf(),
+                disbursement: $('#totalAmount').valueOf()
+            }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
             success: function(){
-
-                setItemsInTable();
+                alert('Success!')
             },
             error: function(){
-                console.log(items.valueOf());
+                var disb = {
+                    items: getCheckedItems(),
+                    payerEmail: getCookie("userLoggedOn"),
+                    participants: getCheckedMembers(),
+                    groupId: currentGroup,
+                    name: $('#nameOfDisbursement').valueOf(),
+                    disbursement: $('#totalAmount').valueOf()
+                };
+                console.log(disb.valueOf())
             }
         });
 
@@ -567,8 +573,8 @@ $(document).ready(function() {
         for (var i =0; i<table_length;i++){
             if($("#checkbox"+i).is(':checked')){
                 //checked.add($("#checkbox"+i).value)
-                var id = $("#checkbox"+i)[0].value;
-                checked.push(id);
+                var item = {id: $("#checkbox"+i)[0].value};
+                checked.push(item);
             }
         }return checked;
 
@@ -576,7 +582,7 @@ $(document).ready(function() {
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){
-            members.push($('#memberCheckbox'+i).value);
+            members.push({email: $('#memberCheckbox'+i).value});
         }
         return members;
     }

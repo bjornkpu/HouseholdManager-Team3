@@ -36,4 +36,16 @@ public class DisbursementService {
             throw new ServerErrorException("Failed to get Disbursement", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
+    @POST
+    @Consumes("application/json")
+    public void addDisbursement(@PathParam("groupId") int groupId, Disbursement disbursement){
+        try (Connection connection = Db.instance().getConnection()){
+            DisbursementDao dDao = new DisbursementDao(connection);
+            dDao.addDisbursement(disbursement,groupId);
+        } catch (SQLException e) {
+            log.error("Failed to get Statistics", e);
+            throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
 }
