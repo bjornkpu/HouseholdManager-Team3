@@ -131,9 +131,11 @@ $(document).ready(function() {
                 '<td>' + data[i].name + '</td>' +
                 '<td>' + statusText +'</td>' +
                 "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
+                /**'<td><button id="removeMember'+i+'" type="button" value="Delete Row" value="'+id+'" onclick="DeleteRowFunction(this)" class="btn btn-default btn-sm">\n' +
+                '<span class="glyphicon glyphicon-remove"></span>' +
+                '</button></td>' + */
                 '</tr>');
 
-            /**eneste som ikke funker er at det kan kun slettes en om gangen */
             $('#removeMember').click(function() {
                 if (confirm("You are about to remove a member from your group, do you want to continue?")) {
                     var checked = getChecked();
@@ -198,7 +200,28 @@ function getChecked(){
     return checked;
 }
 
+/**
+function getCheckedButton(){
+    var table_length = $('#tabForUsersInGroup tr').length;
+    var checked = [];
+    for (var i =0; i<table_length;i++){
+        if($("#removeMember"+i).is(':checked')){
+            var id = $("#removeMember"+i)[0].value;
+            checked.push(id);
+        }
+    }//console.log(checked);
+    return checked;
+}
 
+function DeleteRowFunction(btndel) {
+    if (typeof(btndel) == "object") {
+        $(btndel).closest("tr").remove();
+    } else {
+        return false;
+    }
+}
+
+*/
 
 
 

@@ -100,7 +100,7 @@ public class ShoppingListDao {
         }
     }
 
-    public  ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
+    public ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
 //        connection = Db.instance().getConnection();
         itemDao = new ItemDao(connection);
         userDao = new UserDao(connection);
@@ -133,7 +133,7 @@ public class ShoppingListDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -323,7 +323,7 @@ public class ShoppingListDao {
             return result == 1;
         } finally {
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -332,7 +332,7 @@ public class ShoppingListDao {
 	 * @throws SQLException when failing to delete shopping list.
 	 */
     public boolean delShoppingList(int id) throws SQLException {
-        connection = Db.instance().getConnection();
+//        connection = Db.instance().getConnection();
 
         try {
 //          deletes user_shoppinglist dependency
@@ -356,7 +356,7 @@ public class ShoppingListDao {
         } finally {
 
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
@@ -426,7 +426,7 @@ public class ShoppingListDao {
 	    } finally {
 
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
 	    }
     }
 
@@ -448,7 +448,7 @@ public class ShoppingListDao {
 			return result == 1;
 		} finally {
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
 		}
 	}
 }
