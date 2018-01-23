@@ -9,6 +9,7 @@
     });
 
     getLoggedOnUser(setData);
+    getLoggedOnUser(getGroups);
     var sessionEmail;
     //getEmail();
 
@@ -158,7 +159,30 @@
         })
     }
 
-});
+        function getGroups(user) {
+            $.ajax({
+                type: 'GET',
+                url: '/scrum/rest/groups/list/' + user.email,
+                dataType: "json",
+                success: homeButtonForOldUsers
+            });
+            //console.log(getCookie(curGroup));
+        }
+
+        //Users who are connected to a group can press the logo to go the the dashboard while
+        //new users cant
+        function homeButtonForOldUsers(data) {
+            groups=data;
+            var len = data.length;
+            if(len>=1){
+                $('#houseHoldManagerLogo').click(function () {
+                    window.location.href = "GroupDashboard.html"
+                })
+            }
+        }
+
+
+    });
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -252,5 +276,4 @@ function createNewGroup() {
         })
     }
 };
-
 
