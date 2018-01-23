@@ -1,7 +1,5 @@
     $(document).ready(function() {
 
-        $("#alertSuccessEditProfile").hide();
-        $("#alertPassword").hide();
 
         $('#editUser').click(function () {
             var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
@@ -69,12 +67,18 @@
         var nameField = $('#nameProfileField1').val();
         var phoneField = $('#phoneField1').val();
         if(nameField == ""){
-            alert("please fill out namefield");
+            //alert("please fill out namefield");
+            $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alertNameField").slideUp(500);
+            });
             $('#nameProfileField1').css({
                 "background-color": "yellow",
             });
         }else if(phoneField ==""){
-            alert("please fill out phonefield");
+            //alert("please fill out phonefield");
+            $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alertPhoneField").slideUp(500);
+            });
             $('#phoneField1').css({
                 "background-color": "yellow",
             });

@@ -65,15 +65,19 @@ public class MemberService {
     @POST
     @Path("/{email}")
     @Produces("application/json")
-    public Response inviteAMember(@PathParam("email") String email,@PathParam("groupId") int groupId){
-        try (Connection connection= Db.instance().getConnection()){
+    public Response inviteAMember(@PathParam("email") String email,@PathParam("groupId") int groupId) {
+        try (Connection connection = Db.instance().getConnection()) {
             MemberDao memberDao = new MemberDao(connection);
-            return Response.status(200).entity(memberDao.inviteUser(email,groupId)).build();
-        } catch (SQLException e){
+            boolean ok = memberDao.inviteUser(email, groupId);
+            if (ok) return Response.status(200).entity(ok).build();
+            return Response.status(404).entity(ok).build();
+
+        } catch (SQLException e) {
             log.info("Could not invite user " + email);
-            throw new ServerErrorException("Failed to invite user", Response.Status.INTERNAL_SERVER_ERROR,e);
+            throw new ServerErrorException("Failed to invite user", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
 
     /**
      * Updates a member of the group.

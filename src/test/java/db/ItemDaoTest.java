@@ -8,6 +8,7 @@ import util.LoginCheck;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -55,7 +56,7 @@ public class ItemDaoTest {
         g.setName("testgroup");
         g.setAdmin(userId);
         Disbursement disbursement = new Disbursement();
-        disbursement.setDate(new Date(System.currentTimeMillis()));
+        disbursement.setDate(new Timestamp(System.currentTimeMillis()));
         disbursement.setName("name");
         disbursement.setDisbursement(0);
         disbursement.setPayer(u);

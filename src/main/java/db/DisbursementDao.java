@@ -2,7 +2,9 @@ package db;
 
 import data.Disbursement;
 import data.Item;
+import data.Member;
 import data.User;
+import util.DebtCalculator;
 import util.Logger;
 
 import java.sql.*;
@@ -84,6 +86,7 @@ public class DisbursementDao {
                     disbursement.setDisbursement(rs.getDouble("price"));
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
+                    disbursement.setPayer(new User(rs.getString("payer_id")));
                     ArrayList<User> users = getParticipants(rs.getInt("id"));
                     disbursement.setParticipants(users);
                     int index = getBuyer(users,rs.getString("payer_id"));
@@ -99,9 +102,6 @@ public class DisbursementDao {
             Db.close(ps);
 //            Db.close(connection);g_tdat2003_t3@mysql.stud.iie.ntnu.no
         }
-    }
-    public void testmethod(){
-        return;
     }
 
     /**Fetches the participants and items in a given disbursement, if the user
@@ -163,9 +163,11 @@ public class DisbursementDao {
             if(makeDisbursement(disbursement,groupid)){
                 disbursement.setId(lastId());
                 if(addParticipantsToDisbursement(disbursement)){
-                    if(addItemsToDisbursement(disbursement)){
-                        connection.commit();
-                        return true;
+                    if(updateBalances(disbursement,groupid)){
+                        if(addItemsToDisbursement(disbursement)){
+                            connection.commit();
+                            return true;
+                        }
                     }
                 }
             }
@@ -190,6 +192,95 @@ public class DisbursementDao {
         }finally {
             Db.close(rs);
             Db.close(ps);
+        }
+    }
+
+    private boolean updateBalances(Disbursement disbursement, int groupid) throws SQLException {
+        ArrayList<Member> members = new ArrayList<>();
+        Member payer = null;
+        try{
+            //get the participants old balance and lock the table rows.
+
+            //Make the sql for selecting all participants
+            String sql ="SELECT user_email, balance FROM user_party WHERE (user_email=?";
+            for(int i=1; i<disbursement.getParticipants().size();i++){
+                sql+=" OR user_email=?";
+            }
+            sql+= ") AND party_id=? FOR UPDATE";
+
+            ps=connection.prepareStatement(sql);
+
+            //Input the emails into the preparedstatement
+            int i;
+            for(i =0;i<disbursement.getParticipants().size();i++){
+                User u = disbursement.getParticipants().get(i);
+                ps.setString(i,u.getEmail());
+            }ps.setInt(i,groupid);
+
+            //Execute and add the participants into an arraylist
+            rs=ps.executeQuery();
+            if(rs.next()){
+                Member m = new Member();
+                do{
+                    m.setEmail(rs.getString("user_email"));
+                    m.setBalance(rs.getDouble("balance"));
+                    members.add(m);
+                    if(disbursement.getPayer().getEmail().equals(m.getEmail())){
+                        payer=m;
+                    }
+                }while(rs.next());
+            }
+            Db.close(rs);
+            Db.close(ps);
+            //Make sure we have the payer
+            if(payer==null){
+                sql="SELECT user_email, balance FROM user_party WHERE user_email=? AND party_id=?";
+                ps=connection.prepareStatement(sql);
+                ps.setString(1,disbursement.getPayer().getEmail());
+                ps.setInt(2,groupid);
+                rs=ps.executeQuery();
+                if(rs.next()){
+                    payer= new Member();
+                    payer.setEmail(rs.getString("user_email"));
+                    payer.setBalance(rs.getDouble("balance"));
+                }
+                Db.close(rs);
+                Db.close(ps);
+            }
+            //Give them new balances
+            if(payer!=null){
+                DebtCalculator.calculateReceipt(payer,members,disbursement.getDisbursement());
+            }else{
+                log.error("Payer is null, should not reach this", new NullPointerException());
+            }
+            //Add payer to members. We're done with updating balances, no longer need to keep track of who is paying.
+            if(!members.contains(payer)){
+                members.add(payer);
+            }
+
+            ps = connection.prepareStatement("UPDATE user_party set balance = ? " +
+                    "where user_email=? AND party_id = ?");
+            i=0;
+            for(Member m: members){
+                ps.setDouble(1,m.getBalance());
+                ps.setString(2,m.getEmail());
+                ps.setInt(3,groupid);
+                ps.addBatch();
+                if(i % 1000 == 0 || i == members.size()){
+                    int[] result =ps.executeBatch();
+                    for(int r : result){
+                        if(r==Statement.EXECUTE_FAILED){
+                            return false;
+                        }
+                    }
+                }
+            }return true;
+
+
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+
         }
     }
 

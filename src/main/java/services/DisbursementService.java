@@ -40,6 +40,7 @@ public class DisbursementService {
     @POST
     @Consumes("application/json")
     public void addDisbursement(@PathParam("groupId") int groupId, Disbursement disbursement){
+        log.info(disbursement.getName()+" to be added.");
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
             dDao.addDisbursement(disbursement,groupId);

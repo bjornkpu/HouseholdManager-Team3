@@ -19,6 +19,7 @@ public class DebtCalculator {
         return true;
     }
 
+    //@sulfax: Burde vært void siden du aldri returnerer noe annet en true
     public static boolean calculateReceipt(Member payer, ArrayList<Member> participants, double total){
         double subtotal = total/participants.size();
         payer.setBalance(payer.getBalance()+total);
