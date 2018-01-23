@@ -27,16 +27,7 @@ public class UserService {
 
     private static final Logger log = Logger.getLogger();
 
-    private UserDao userDao;
-    private Connection connection;
-
     public UserService() {
-        try{
-            connection= Db.instance().getConnection();
-            this.userDao = new UserDao(connection);
-        }catch(SQLException e){
-            log.error("Failed to get connection", e);
-        }
     }
 
     @Context
@@ -46,13 +37,12 @@ public class UserService {
     @Path("/{email}")
     @Produces("application/json")
     public User get(@PathParam("email") String currentUserEmail) {
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao = new UserDao(connection);
             return userDao.getUser(currentUserEmail);
         } catch(SQLException e) {
             log.error("Failed to get user", e);
             throw new ServerErrorException("Failed to get user", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -64,14 +54,13 @@ public class UserService {
         String pw=LoginCheck.getHash(user.getPassword()+salt);
         user.setPassword(pw);
         log.info("Salt: "+salt+" PW: "+pw);
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao = new UserDao(connection);
             userDao.addUser(user);
             log.info("Added user!");
         } catch(SQLException e) {
             log.error("Failed to Add user", e);
             throw new ServerErrorException("Failed to Add user", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -82,7 +71,8 @@ public class UserService {
         Session session = (Session)request.getSession().getAttribute("session");
         String currentUserEmail = session.getEmail();
         System.out.println(currentUserEmail);
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao = new UserDao(connection);
             User oldUser = userDao.getUser(currentUserEmail);
             if(user.getPassword()==null || user.getPassword().equals("")){
                 user.setPassword(oldUser.getPassword());
@@ -90,6 +80,11 @@ public class UserService {
             }if(user.getName()==null || user.getName().equals("")){
                 user.setName(oldUser.getName());
                 user.setPhone(oldUser.getPhone());
+                String salt = LoginCheck.getSalt();
+                user.setSalt(salt);
+                String pw=LoginCheck.getHash(user.getPassword()+salt);
+                user.setPassword(pw);
+                log.info("Salt: "+salt+" PW: "+pw);
             }
             user.setEmail(currentUserEmail);
             userDao.updateUser(user);
@@ -97,8 +92,6 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to update user", e);
             throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
     @PUT
@@ -106,7 +99,8 @@ public class UserService {
     public void genNewPassword(@PathParam("toEmail") String toEmail) {
             String newPassword = null;
             log.info("Reset password request recieved!");
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao = new UserDao(connection);
             User user = userDao.getUser(toEmail);
             if(user!=null){
                 newPassword = ForgottenPassword.generateNewPassword(toEmail);
@@ -122,8 +116,6 @@ public class UserService {
         } catch(SQLException e) {
             log.error("Failed to update user", e);
             throw new ServerErrorException("Failed to update user", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -131,28 +123,22 @@ public class UserService {
     @Path("/{email}")
     @Consumes("application/json")
     public void delete(String email) {
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao = new UserDao(connection);
+
             userDao.delUser(email);
             log.info("Deleted user!");
         } catch(SQLException e) {
             log.error("Failed to Delete user", e);
             throw new ServerErrorException("Failed to Delete user", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
 
 
-    //TODO: Shouldnt make a connection, but does since were doing that in constructor.
     @GET
 	@Path("/emailCheck/{email}")
     @Produces("application/json")
 	public boolean checkEmail(@PathParam("email") String email){
-    	try{
-    	    return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
-        }finally {
-    	    Db.close(connection);
-        }
-
+        return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
     }
 }

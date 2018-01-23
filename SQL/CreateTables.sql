@@ -1,5 +1,10 @@
--- Kill all connections
-SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='root' AND info = 'SELECT * FROM processlist';
+/*Viser alle prosessene startet av brukeren vår
+SHOW PROCESSLIST ;
+
+Kopier resultatet av denne spørringa for å drepe alle connections som ikke utfører spørringer.
+SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='g_tdat2003_t3' AND info IS NULL ORDER BY id;
+ */
+
 
 -- Sletter tabeller
 SET FOREIGN_KEY_CHECKS = 0;
@@ -95,7 +100,7 @@ CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
-  date TIMESTAMP NOT NULL,
+  date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   CONSTRAINT disbursement_pk PRIMARY KEY(id));
@@ -168,10 +173,12 @@ INSERT INTO user(name, email, password, salt, phone) VALUES( 'geir', 'fire@h.no'
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'ove', 'fem@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'lisa', 'seks@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt ,phone) VALUES( 'bjorn', 'bk@p.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 
 
 INSERT INTO party(name) VALUES ('Frex');
 INSERT INTO party(name) VALUES ('Brummun');
+INSERT INTO party(name) VALUES ('BKs Hi');
 
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,0.2,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-2000.1,0);
@@ -181,6 +188,7 @@ INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fire@h.no',2
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fem@h.no',2,-2000.1,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('seks@h.no',2,0,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('sju@h.no',2,0,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('bk@p.no',3,0,1);
 
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Husk å dra ned i do, Murtin',1,'en@h.no');
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Kommer ikke hjem før onsdag',1,'to@h.no');
@@ -192,11 +200,13 @@ INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Le
 INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Kjedelig å legge inn testdata',0,'10-02-18',1, 'tre@h.no');
 INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Male vinduet',0,'12-03-18',1, NULL);
 INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Tømme badekaret',0,'29-08-18',1, NULL);
+INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Spise Nachos',0,'29-08-18',3, NULL);
 
 INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('Kino', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 2);
-INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
+
+INSERT INTO disbursement(price,name,payer_id,party_id) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1);
 
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 1, 1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Tacokrydder', 1,1,1);

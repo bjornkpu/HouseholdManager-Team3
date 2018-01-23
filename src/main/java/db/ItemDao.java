@@ -84,7 +84,7 @@ public class ItemDao {
      * @throws SQLException
      */
     public ArrayList<Item> getItemsInShoppingList(int id) throws SQLException {
-//        connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection();
 	    try {
 		    ps = connection.prepareStatement("SELECT * FROM item WHERE shoppinglist_id=?");
 		    ps.setInt(1,id);
@@ -110,7 +110,7 @@ public class ItemDao {
 	    } finally {
 		    Db.close(rs);
 		    Db.close(ps);
-//		    Db.close(connection);
+		    Db.close(connection);
 	    }
     }
 

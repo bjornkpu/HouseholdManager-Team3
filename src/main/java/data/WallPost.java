@@ -1,11 +1,12 @@
 package data;
+import java.io.Serializable;
 import java.util.Date;
 /**
  * -Description of the class-
  *
  * @author
  */
-public class WallPost {
+public class WallPost implements Serializable {
     private int id;
     private Date datePosted; //id
     private String message;

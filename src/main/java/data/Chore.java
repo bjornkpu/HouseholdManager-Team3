@@ -1,6 +1,5 @@
 package data;
 import java.util.ArrayList;
-import java.util.Date;
 /**
  * -Description of the class-
  *
@@ -11,8 +10,12 @@ public class Chore {
     private String description;
     private ArrayList<String> completedBy;
     private String assignedTo;
-    private Date deadline;
+    private java.sql.Timestamp deadline;
     private int partyId;
+
+    public static void main(String[] args) {
+
+    }
 
     public Chore() {
     }
@@ -22,7 +25,7 @@ public class Chore {
         this.description = description;
     }
 
-    public Chore(int choreID, String description, ArrayList<String> completedBy, String assignedTo, Date deadline, int partyId) {
+    public Chore(int choreID, String description, ArrayList<String> completedBy, String assignedTo, java.sql.Timestamp deadline, int partyId) {
         this.choreId = choreID;
         this.description = description;
         this.completedBy = completedBy;
@@ -31,7 +34,7 @@ public class Chore {
         this.partyId=partyId;
     }
 
-    public Chore(String description, Date deadline, int partyId) {
+    public Chore(String description, java.sql.Timestamp deadline, int partyId) {
         this.description = description;
         this.deadline = deadline;
         this.partyId=partyId;
@@ -69,12 +72,12 @@ public class Chore {
         return assignedTo;
     }
 
-    public Date getDeadline(){
+    public java.sql.Timestamp getDeadline(){
         return deadline;
     }
 
-    public void setDeadline(Date deadline){
-        this.deadline=deadline;
+    public void setDeadline(java.sql.Timestamp deadline) {
+        this.deadline = deadline;
     }
 
     public int getPartyId() {

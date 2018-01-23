@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/GroupDashboard.css">
     <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <meta charset="UTF-8">
     <title>My Profile</title>
 </head>
 <body>
@@ -19,7 +22,7 @@
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
         <!-- Left items-->
         <div class="navbar-nav flex-row">
-            <div class="navbar-brand logo" href="#">
+            <div class="navbar-brand logo" href="#" id="houseHoldManagerLogo">
                 <img class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
             </div>
             <div class="navbar-brand text">
@@ -45,7 +48,7 @@
             <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="account d-flex flex-row">
                     <div class="username">
-                        <strong>Username</strong>
+                        <strong id="navUsername"></strong>
                     </div>
                     <i class="username material-icons md-24">account_circle</i>
                 </div>
@@ -61,6 +64,60 @@
 </nav>
 <!--End of Top navBar -->
 
+
+<!-- Sidebar -->
+<div class="leftsidebar-wrapper" style="display: none;">
+    <div class="leftsidebar-list">
+        <div class="leftsidebar-list-items">
+            <a id="loadFeed" href="#feed">
+                <i class="material-icons md-36">insert_comment</i>
+                <p>Feed</p>
+            </a>
+        </div>
+        <div class="leftsidebar-list-items">
+            <a id="loadShoppingList" href="#">
+                <i class="material-icons md-36">attach_money</i>
+                <p>Shopping</p>
+            </a>
+        </div>
+        <div class="leftsidebar-list-items">
+            <a id="loadTasks" href="#tasks">
+                <i class="material-icons md-36">work</i>
+                <p>Tasks</p>
+            </a>
+        </div>
+        <div class="leftsidebar-list-items">
+            <a id="loadStatistics" href="#stats">
+                <i class="material-icons md-36">pie_chart</i>
+                <p>Statistics</p>
+            </a>
+        </div>
+        <div class="leftsidebar-list-items">
+            <a id="loadSettings" href="#Setting">
+                <i class="material-icons md-36">view_quilt
+                </i>
+                <p>Setting</p>
+            </a>
+        </div>
+        <div class="leftsidebar-list-items aboutlink">
+            <a id="loadAbout" href="#about">
+                <i class="material-icons md-36">help
+                </i>
+                <p>About</p>
+            </a>
+        </div>
+    </div>
+</div>
+<!--Alert for successful personal info update -->
+<div class="alert alert-success" id="alertSuccessEditProfile">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> Profile Updated
+</div>
+<!--Alert for successful password update -->
+<div class="alert alert-success" id="alertPassword">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> Password Updated
+</div>
 <h2>User profile</h2>
 <div class="container">
     <div class="row">
@@ -138,13 +195,20 @@
         </div>
     </div>
 </div>
+
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<!-- Bootstrap Js CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="GroupDashboard.js"></script>
 <script src="Authentication.js"></script>
+<script src="Statistics.js"></script>
 <script src="Profile.js"></script>
 <script src="GroupSetting.js"></script>
+
+
 </body>
 </html>

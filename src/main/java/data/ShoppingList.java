@@ -71,9 +71,7 @@ public class ShoppingList {
         return itemList.get(itemId);
     }
 
-    public void setItemList(ArrayList<Item> itemList) {
-        this.itemList = itemList;
-    }
+    public void setItemList(ArrayList<Item> itemList) { this.itemList = itemList; }
 
     public ArrayList<User> getUserList() {
         return userList;

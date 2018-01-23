@@ -1,6 +1,5 @@
 package data;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * -Description of the class-
@@ -22,7 +21,7 @@ public class RepeatedChore extends Chore {
         this.regularity = regularity;
     }
 
-    public RepeatedChore(int id, String description, ArrayList<String> completedBy, String assignedTo, Date deadline, int partyId, int regularity) {
+    public RepeatedChore(int id, String description, ArrayList<String> completedBy, String assignedTo, java.sql.Timestamp deadline, int partyId, int regularity) {
         super(id, description, completedBy, assignedTo, deadline, partyId);
         this.regularity = regularity;
     }

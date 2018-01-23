@@ -1,14 +1,21 @@
     $(document).ready(function() {
-    $('#editUser').click(function () {
-        var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
-        var tableEdit = document.getElementById("tableUserInfo");
 
-        tableReadOnly.style.display = "none";
-        tableEdit.style.display = "block";
+        $("#alertSuccessEditProfile").hide();
+        $("#alertPassword").hide();
 
-    });
+        $('#editUser').click(function () {
+            var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
+            var tableEdit = document.getElementById("tableUserInfo");
+
+            tableReadOnly.style.display = "none";
+            tableEdit.style.display = "block";
+
+        });
+
+
 
     getLoggedOnUser(setData);
+    getLoggedOnUser(getGroups);
     var sessionEmail;
     //getEmail();
 
@@ -22,6 +29,7 @@
         $('#emailReadOnly').attr('value', user.email);
         $('#phoneReadOnly').attr('value', user.phone);
         var lists;
+
         var url='rest/groups/'+ user.email +'/invites';
         $.get(url, function(data,status){
             lists=data;
@@ -56,6 +64,7 @@
     $('#Confirm').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
+        var alertSuccess = document.getElementById("alertSuccessEditProfile");
 
         var nameField = $('#nameProfileField1').val();
         var phoneField = $('#phoneField1').val();
@@ -83,20 +92,21 @@
                     "password":null
 
                 }),
-                success: function (jqXHR, textStatus) {
-                    switch (jqXHR.status) {
-                        case 204:
-                            console.log("ajax update user info");
-                            alert("Information updated");
-                            break;
-                        case 404:
-                            alert("Could not update");
-                            break;
-                        default:
-                            break;
-                    }
+                success: function () {
+                    //window.location.reload();
+                    getLoggedOnUser(setData);
+                   // alertSuccess.style.display="block";
+                    $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
+                        $("#alertSuccessEditProfile").slideUp(500);
+                    });
+
+                },
+                error: function () {
+                    alert("information did not update")
                 }
+
             });
+
             tableReadOnly.style.display = "block";
             tableEdit.style.display = "none";
             console.log("confirmknapp trykket")
@@ -105,27 +115,30 @@
 
     //Updating user password
     $('#changePassword').click(function () {
-        $.ajax({
-            type: 'PUT',
-            url: 'rest/user/' + sessionEmail, //test
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                "password": $('#confirmPasswordField').val(),
-            }),
-            success: function (jqXHR, textStatus) {
-                switch (jqXHR.status) {
-                    case 204:
-                        console.log("ajax update user info");
-                        alert("Information updated");
-                        break;
-                    case 404:
-                        alert("Could not update");
-                        break;
-                    default:
-                        break;
+        //var passwordField =$('#confirmPasswordField').val();
+        sha256($("#passwordRegField").val()).then(function (value) {
+            $.ajax({
+                type: 'PUT',
+                url: 'rest/user/' + sessionEmail, //test
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "name": null,
+                    "email": sessionEmail,
+                    "password": value
+                }),
+                success: function () {
+                    //window.location.reload();
+                    // alertSuccess.style.display="block";
+                    $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
+                        $("#alertPassword").slideUp(500);
+                    });
+
+                },
+                error: function () {
+                    alert("Password did not update")
                 }
-            }
+            });
         });
     });
 
@@ -158,7 +171,30 @@
         })
     }
 
-});
+        function getGroups(user) {
+            $.ajax({
+                type: 'GET',
+                url: '/scrum/rest/groups/list/' + user.email,
+                dataType: "json",
+                success: homeButtonForOldUsers
+            });
+            //console.log(getCookie(curGroup));
+        }
+
+        //Users who are connected to a group can press the logo to go the the dashboard while
+        //new users cant
+        function homeButtonForOldUsers(data) {
+            groups=data;
+            var len = data.length;
+            if(len>=1){
+                $('#houseHoldManagerLogo').click(function () {
+                    window.location.href = "GroupDashboard.html"
+                })
+            }
+        }
+
+
+    });
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -252,5 +288,4 @@ function createNewGroup() {
         })
     }
 };
-
 

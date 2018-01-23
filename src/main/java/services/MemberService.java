@@ -1,17 +1,13 @@
 package services;
 
-import data.Group;
 import data.Member;
 import db.Db;
-import db.GroupDao;
 import db.MemberDao;
-import db.UserDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -29,16 +25,8 @@ import java.util.ArrayList;
 @Path("/groups/{groupId}/members")
 public class MemberService {
     private static final Logger log = Logger.getLogger();
-    private static MemberDao memberDao;
-    private Connection connection;
 
     public MemberService() {
-        try{
-            connection= Db.instance().getConnection();
-            this.memberDao = new MemberDao(connection);
-        }catch(SQLException e){
-            log.error("Failed to get connection", e);
-        }
     }
 
     @Context
@@ -53,13 +41,12 @@ public class MemberService {
     @GET
     @Produces("application/json")
     public ArrayList<Member> getMemberByGroupId(@PathParam("groupId") int groupId) {
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            MemberDao memberDao = new MemberDao(connection);
             return memberDao.getMembers(groupId);
         } catch (SQLException e){
             log.info("Could not fetch members.");
             throw new ServerErrorException("Failed to get members of group " + groupId, Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
 
     }
@@ -79,13 +66,12 @@ public class MemberService {
     @Path("/{email}")
     @Produces("application/json")
     public Response inviteAMember(@PathParam("email") String email,@PathParam("groupId") int groupId){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            MemberDao memberDao = new MemberDao(connection);
             return Response.status(200).entity(memberDao.inviteUser(email,groupId)).build();
         } catch (SQLException e){
             log.info("Could not invite user " + email);
             throw new ServerErrorException("Failed to invite user", Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -102,15 +88,15 @@ public class MemberService {
     @Produces("application/json")
     @Path("/{email}/{status}")
     public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId,@PathParam("status") int status){
-        try{
+        try (Connection connection= Db.instance().getConnection()){
+            MemberDao memberDao = new MemberDao(connection);
+
             log.info("Updating user " + email);
             Member member = new Member(email,null,null,null,null,-1,status);
-            return  Response.status(200).entity(memberDao.updateUser(member,groupId)).build();
+            return  Response.status(200).entity(memberDao.updateMember(member,groupId)).build();
         } catch (SQLException e){
             log.info("Failed to update to member");
             throw new ServerErrorException("Failed to upgrade user",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -124,14 +110,13 @@ public class MemberService {
     @Produces("application/json")
     @Path("/{email}")
     public Response deleteMember(@PathParam("email") String email,@PathParam("groupId") int groupId){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            MemberDao memberDao = new MemberDao(connection);
             log.info("Deleting member " + email + " from group "  + groupId);
             return Response.status(200).entity(memberDao.deleteMember(email,groupId)).build();
         } catch (SQLException e){
             log.info("Failed to delete user");
             throw new ServerErrorException("Failed to delete user",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 }
