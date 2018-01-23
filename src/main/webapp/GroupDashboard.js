@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 
     //Goes to correct page when reload
-    if (window.location.hash == "#shopping"){
+    if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }
     if (window.location.hash == "#feed"){
