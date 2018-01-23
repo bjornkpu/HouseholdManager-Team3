@@ -3,10 +3,12 @@ $(document).ready(function() {
     var disbursementList;
     var lists;
     var items;
-    var currentShoppingList = 1;
-    var currentGroup = getCookie("groupId");
+    var currentShoppingList = 0;
+    var currentGroup = getCookie("currentGroup");
     var numberOfMembers = 0;
     var balanceList=0;
+
+    console.log(document.cookie);
 
     loadShoppingListsFromGroup(currentGroup);
 
@@ -302,37 +304,46 @@ $(document).ready(function() {
         ;
 
         $("#addUserButton").click(function(){
-            var user = $(".ui.search").search('get value');
+            var selected = $(".ui.search").search('get value');
+            var user;
             var isUser = false;
             for(var i = 0; i < usersInGroup.length; i++){
-                if(usersInGroup[i].email === user){
+                if(usersInGroup[i].email === selected){
+                    user ={
+                        email: usersInGroup[i].email,
+                        name: usersInGroup[i].name
+                    };
                     isUser = true;
                     break;
                 }
-                if(usersInGroup[i].name.toLowerCase() === user.toLowerCase()){
-                    user = usersInGroup[i].email;
+                if(usersInGroup[i].name.toLowerCase() === selected.toLowerCase()){
+                    user ={
+                        email: usersInGroup[i].email,
+                        name: usersInGroup[i].name
+                    };
                     isUser = true;
                     break;
                 }
             }
             if(!isUser){
-                $("#addedUser").text(user + " is not a member!");
+                $("#addedUser").text(selected + " is not a member!");
                 return;
             }
-            var selectedBefore = false;
+            var addedBefore = false;
             for(var i = 0; i < selectedUsers.length; i++){
-                if (selectedUsers[i] === user){
-                    selectedBefore = true;
+                if (selectedUsers[i].email === user.email){
+                    addedBefore = true;
                 }
             }
-            if(selectedBefore){
-                $("#addedUser").text(user + " already added!");
+            if(addedBefore){
+                $("#addedUser").text(user.name + " is already added!");
                 return;
             }
 
             selectedUsers[index] = user;
-            $("#addedUser").text("Added user with email " + user);
+            $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
             index++;
+            addUserToTable(user);
         });
 
         $('#confirmShoppinglist').click(function(){
@@ -345,7 +356,7 @@ $(document).ready(function() {
             console.log("Adding shoppinglist " + name + "...");
             for(var i = 0; i < selectedUsers.length; i++){
                 userList[i] = {
-                    email: selectedUsers[i],
+                    email: selectedUsers[i].email,
                     name: null,
                     phone: null,
                     password: null,
@@ -358,6 +369,10 @@ $(document).ready(function() {
             $("#page-content").load("Shoppinglist.html");
         });
     });
+
+    function addUserToTable(user){
+        $("addedUsers").append("<li><a> Dette er en test med " + user.name + "</a></li>");
+    }
 
     function createShoppingList(name, participants){
         $.ajax({
@@ -527,7 +542,7 @@ $(document).ready(function() {
         }
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
-                data[i].name + '</aclass></li>'
+                data[i].name + '</a></li>'
             );
         }
     }
@@ -544,7 +559,6 @@ $(document).ready(function() {
                 if(data === null || data.size === 0 || data[0] === undefined){
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
-                    console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     getItemsInShoppingList(groupId);
                 }
