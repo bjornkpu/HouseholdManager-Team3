@@ -24,30 +24,28 @@
         color: black;
     }
 
-    .groupicon{
+    .groupdropdown{
+        background-color: lightgrey;
+        left: 50%;
+        right: 50%;
+        transform: translateX(-30%);
+    }
+    .groupName{
         color: cadetblue;
     }
-
-    .groupicon:hover{
+    .groupName:hover {
         color: black;
     }
 
-    .groupdropdown{
-        background-color: lightgrey;
-        left: -50%;
-        right: -50%;
-        transform: translateX(-30%);
-    }
-
-.center{
+    .center{
     margin: auto;
     text-align: center;
-}
+    }
 
-.btn-group {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+    .btn-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 
 /*
 hover
@@ -134,7 +132,7 @@ buttons
 @media screen and (orientation: landscape) {
     /* Move down content because we have a fixed navbar that is 50px tall */
     body {
-        padding-top: 60px;
+        padding-top: 59px;
     }
 
     /*

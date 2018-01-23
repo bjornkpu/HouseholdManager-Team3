@@ -21,6 +21,7 @@ $(document).ready(function(){
             success: renderGroupDropdown
         });
         //console.log(getCookie(curGroup));
+        $("#navUsername").html(""+user.name);
     }
 
    /** $('#newGroup1').click(function () {
@@ -30,58 +31,56 @@ $(document).ready(function(){
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
-        console.log("render grouplist");
-        groups=data;
-        var len = data.length;
-        if (len === 0){
-            document.cookie = curGroup +"=0";
-        } else {
-            if (getCookie(curGroup) < len || !checkIfCook(data,getCookie(curGroup))){
-                document.cookie = curGroup+"="+ data[0].id;
-            }
-            for (var i = 0; i < len;i++ ) {
-                var groupname= data[i].name;
-                var id='';
-                id+=i;
-                id+='group';
-                var $x = $('<li><a class="dropdown-item" href="#" id="'+id+'">'+
-                    groupname +'</a></li>'
-                );
-                (function (i) {
-                    $x.click(function () {
-                        document.cookie = curGroup + "=" + data[i].id;
-                        window.location.reload();
-                    })
-                }(i));
-                $('#groupdropdown').append($x);
-                console.log("Added group: "+groupname);
-            }
-        }
+       console.log("render grouplist");
+       groups = data;
+       var len = data.length;
+       if (len === 0) {
+           document.cookie = curGroup + "=0";
+       } else {
+           if (getCookie(curGroup) < len || !checkIfCook(data, getCookie(curGroup))) {
+               document.cookie = curGroup + "=" + data[0].id;
+           }
+           for (var i = 0; i < len; i++) {
+               var groupname = data[i].name;
+               var id = '';
+               id += i;
+               id += 'group';
+               var $x = $('<li><a class="dropdown-item" href="#" id="' + id + '">' +
+                   groupname + '</a></li>'
+               );
+               (function (i) {
+                   $x.click(function () {
+                       document.cookie = curGroup + "=" + data[i].id;
+                       window.location.reload();
+                   })
+               }(i));
+               $('#groupdropdown').append($x);
+               console.log("Added group: " + groupname);
+           }
+       }
     }
-    /*
-    $("#groupdropdown").on("click", "a.dropdown-item", function(){
-        var i=this.id.charAt(0);
-        currentGroup=groups[i];
-        document.cookie="groupId="+currentGroup.id;
-        alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
-    });
-    */
+        /*
+            $("#groupdropdown").on("click", "a.dropdown-item", function(){
+                var i=this.id.charAt(0);
+                currentGroup=groups[i];
+                document.cookie="groupId="+currentGroup.id;
+                alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
+           });
+        */
 
-
-
-    var y = getCookie(curGroup);
-    var lists;
-    var url='rest/groups/'+y+'/members';
-    $.get(url, function(data, status){
-        lists=data;
-        renderMembers(data)
-        if(status === "success"){
-            console.log("members content loaded successfully!");
-        }
-        if(status === "error"){
-            console.log("Error in loading members");
-        }
-    });
+        var y = getCookie(curGroup);
+        var lists;
+        var url = 'rest/groups/' + y + '/members';
+        $.get(url, function (data, status) {
+            lists = data;
+            renderMembers(data)
+            if (status === "success") {
+                console.log("members content loaded successfully!");
+            }
+            if (status === "error") {
+                console.log("Error in loading members");
+            }
+        });
 
     /*
      * Changing the dropdown arrow to go upwards when clicked
@@ -109,6 +108,9 @@ $(document).ready(function(){
         $("#page-content").load("Tasks.html");
     });
 
+        $("#loadSettings").click(function () {
+            $("#page-content").load("Settings.html");
+        });
 
     $("#loadAbout").click(function(){
         $("#page-content").load("About.html");

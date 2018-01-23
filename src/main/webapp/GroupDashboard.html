@@ -28,14 +28,15 @@
             </div>
         </div>
 
+
         <!-- Middle items-->
         <div class="navbar-nav d-flex flex row">
             <div class="nav-item dropdown d-flex flex-row">
-                    <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons md-24 groupicon">supervisor_account</i>
-                    </a>
+                <div class="groupName"><strong></strong></div>
+                <a class="nav-link dropdown d-flex flex-row" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons md-24 groupicon">supervisor_account</i>
+                </a>
                 <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
-
                     <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
                 </ul>
             </div>
@@ -46,7 +47,7 @@
             <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="account d-flex flex-row">
                     <div class="username">
-                        <strong>Username</strong>
+                        <strong id="navUsername"></strong>
                     </div>
                     <i class="username material-icons md-24">account_circle</i>
                 </div>
@@ -91,9 +92,8 @@
         </div>
         <div class="sidebar-list-items">
             <a id="loadSettings" href="#Setting">
-                <i class="material-icons md-36">view_quilt
-                </i>
-                <p>Setting</p>
+                <i class="material-icons md-36">settings</i>
+                <p>Settings</p>
             </a>
         </div>
         <div class="sidebar-list-items aboutlink">

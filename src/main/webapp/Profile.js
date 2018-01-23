@@ -8,6 +8,8 @@
 
     });
 
+
+
     getLoggedOnUser(setData);
     getLoggedOnUser(getGroups);
     var sessionEmail;
