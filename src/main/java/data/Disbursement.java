@@ -1,5 +1,6 @@
 package data;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,28 +8,23 @@ public class Disbursement {
     private int id;
     private double disbursement;
     private String name;
-    private Date date;
+    private Timestamp date;
     private User payer;
     private ArrayList<User> participants;
     private ArrayList<Item> items;
 
     public Disbursement(){}
 
-    public Disbursement(double disbursement, String name, Date date, Member payer) {
+    public Disbursement(double disbursement, String name, Timestamp date, User payer) {
         this.disbursement = disbursement;
         this.name = name;
         this.date = date;
         this.payer = payer;
     }
 
-    public Disbursement(double disbursement, String name, Date date, User payer) {
-
-    }
-
     public int getId() {
         return id;
     }
-
 
     public void setId(int id) {
         this.id = id;
@@ -66,11 +62,11 @@ public class Disbursement {
         this.name = name;
     }
 
-    public Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

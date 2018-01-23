@@ -9,9 +9,9 @@ import java.sql.*;
  * @author BK
  */
 public class Db {
-    private static Db datasource;
-    private static Logger logger= new Logger();
+    private static Db ds;
     private static ComboPooledDataSource cpds;
+
     private static final Logger log = Logger.getLogger();
     private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
     private static final String DB_USER_NAME = "g_tdat2003_t3";
@@ -57,11 +57,11 @@ public class Db {
 	 * @return an instance of the datasource
 	 */
     public static Db instance() {
-        if (datasource == null) {
-            datasource = new Db();
-            return datasource;
+        if (ds == null) {
+            ds = new Db();
+            return ds;
         } else {
-            return datasource;
+            return ds;
         }
     }
 

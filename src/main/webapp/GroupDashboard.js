@@ -58,6 +58,7 @@ $(document).ready(function(){
                }(i));
                $('#groupdropdown').append($x);
                console.log("Added group: " + groupname);
+               $(".navGroupName").html(""+groupname);
            }
        }
     }

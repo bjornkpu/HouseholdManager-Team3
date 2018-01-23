@@ -8,9 +8,12 @@ package data;
 public class Item {
     private int id;
     private String name;
-    private int status;
+    private int status=STANDARD;
     private int shoppingListId = -1;
     private int disbursementId = -1;
+
+    public static final int GOING_TO_BE_BOUGHT = 2;
+    public static final int STANDARD = 1;
 
     public Item(){
     }
