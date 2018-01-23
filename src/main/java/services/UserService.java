@@ -3,10 +3,6 @@ import data.Session;
 import data.User;
 import db.Db;
 import db.UserDao;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-
 import util.ForgottenPassword;
 import util.InputChecker;
 import util.Logger;
@@ -16,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
+import java.sql.SQLException;
 /**
  * Service that handles reading, making, updating and deleting user information.
  *
@@ -149,6 +147,7 @@ public class UserService {
     @Produces("application/json")
 	public boolean checkEmail(@PathParam("email") String email){
     	try{
+    	    log.info(""+InputChecker.isEMail(email));
     	    return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
         }finally {
     	    Db.close(connection);
