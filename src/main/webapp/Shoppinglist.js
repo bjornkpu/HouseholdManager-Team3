@@ -4,7 +4,6 @@ $(document).ready(function() {
     var lists;
     var items;
     var currentShoppingList = 0;
-    var currentGroup = getCookie("currentGroup");
     var numberOfMembers = 0;
     var balanceList=0;
 
