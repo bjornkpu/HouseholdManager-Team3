@@ -57,9 +57,6 @@ $(document).ready(function(){
                 console.log("Added group: "+groupname);
             }
         }
-
-    /*
-
     }
     /*
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
