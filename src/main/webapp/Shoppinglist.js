@@ -14,6 +14,7 @@ $(document).ready(function() {
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
 
+
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
@@ -264,6 +265,22 @@ $(document).ready(function() {
                 "added": Shoppinglist.date,
             });
         });
+
+        function getDisbursementList(){
+            var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/disbursements/en@h.no';
+
+            $.get(url, function(data, status){
+                console.log("bertt");
+                if (status === "success") {
+                    choreList = data;
+                    console.log("Item content loaded successfully!");
+                    setItemsInTable();
+                }
+                if(status === "error"){
+                    console.log("Error in loading Item content");
+                }
+            });
+        }
 
 
         // console.log(bordliste);
