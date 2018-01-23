@@ -1,5 +1,6 @@
 package db;
 
+import data.StatisticsHelp;
 import data.User;
 
 import java.sql.*;

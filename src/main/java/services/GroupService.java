@@ -203,4 +203,32 @@ public class GroupService {
             throw new ServerErrorException("Failed to get balance.", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
+    @GET
+    @Path("/payment/{groupId}/{email}")
+    @Produces("application/json")
+    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId, @PathParam("email") String email){
+        try (Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+            log.info("Retrieving payments to member.");
+            return groupDao.getPayments(email,groupId);
+        } catch (SQLException e) {
+            log.info("Could not get payments");
+            throw new ServerErrorException("Failed to get payments.", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
+    @GET
+    @Path("/numberOfPayments/{groupId}/{email}")
+    @Produces("application/json")
+    public int getNumberOfPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
+        try (Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+            log.info("Retrieving number of payments requests to member.");
+            return groupDao.getNumberOfPaymentRequests(email,groupId);
+        } catch (SQLException e) {
+            log.info("Could not get number of payments requests");
+            throw new ServerErrorException("Failed to get number of payments requests.", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
 }
