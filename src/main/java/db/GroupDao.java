@@ -1,6 +1,7 @@
 package db;
 import data.Group;
 import data.Member;
+import data.StatisticsHelp;
 import util.Logger;
 
 import java.sql.*;
@@ -10,6 +11,7 @@ import java.util.List;
  * This class handles the database connections for the Group class.
  *
  * @author nybakk1
+ * @author matseda
  * @version 0.2
  */
 public class GroupDao {
@@ -346,6 +348,25 @@ public class GroupDao {
             log.info("Update group, result: " + (result == 1? "ok":"failed"));
             return result == 1;
         } finally {
+            Db.close(rs);
+            Db.close(ps);
+//            Db.close(connection);
+        }
+    }
+
+    public ArrayList<StatisticsHelp> getUserBalance(int groupId) throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT name, balance FROM user_party up JOIN user u ON up.user_email=u.email WHERE party_id=? AND status NOT LIKE 0");
+            ps.setInt(1,groupId);
+            rs = ps.executeQuery();
+            ArrayList<StatisticsHelp> result = new ArrayList<>();
+            while(rs.next()){
+                StatisticsHelp help = new StatisticsHelp(rs.getString("name"),rs.getInt("balance"));
+                result.add(help);
+            }
+            return result;
+        }
+        finally {
             Db.close(rs);
             Db.close(ps);
 //            Db.close(connection);

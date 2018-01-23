@@ -24,7 +24,7 @@ public class DisbursementService {
     private HttpServletRequest request;
 
     @GET
-    @Path("/{user_email}/")
+    @Path("/{user_email}/user")
     @Produces("application/json")
     public ArrayList<Disbursement> getDisbursementList(@PathParam("groupId") int groupId, @PathParam("user_email") String user_email) throws SQLException {
 //		Session session = (Session)request.getSession();
@@ -32,8 +32,8 @@ public class DisbursementService {
             DisbursementDao dDao = new DisbursementDao(connection);
             return dDao.getDisbursementsInGroup(groupId, user_email);
         } catch (SQLException e) {
-            log.error("Failed to get Statistics", e);
-            throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
+            log.error("Failed to get Disbursement", e);
+            throw new ServerErrorException("Failed to get Disbursement", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
 }

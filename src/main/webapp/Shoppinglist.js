@@ -1,13 +1,118 @@
 $(document).ready(function() {
 
-    var disbursementList = [];
+    var disbursementList;
     var lists;
     var items;
     var currentShoppingList = 0;
     var currentGroup = getCookie("groupId");
     var numberOfMembers = 0;
+    var balanceList=0;
 
     loadShoppingListsFromGroup(currentGroup);
+
+    function fixDisbursementTable(){
+        var len = disbursementList.length;
+        var table = document.getElementById("disbursementTable");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#disbursementTable").append(
+            "<tr>"+
+            "<th>#</th>"+
+            "<th>Reciet</th>"+
+            "<th>Participants</th>"+
+            "<th>Cost</th>"+
+            "<th>Day/Month/Year</th>"+
+            "<th>Buyer</th>"+
+            "</tr>"
+        );
+
+        for(var i = 0; i < len; i++){
+            var participantsList = disbursementList[i].participants;
+            var participantsString = "";
+            for(var j=0;j<participantsList.length;j++){
+                participantsString+=participantsList[j].name + ", ";
+            }
+            var dispDate = new Date(disbursementList[i].date);
+            var month = dispDate.getUTCMonth() + 1; //months from 1-12
+            var day = dispDate.getUTCDate();
+            var year = dispDate.getUTCFullYear();
+            var d = day + "/" + month + "/" + year;
+
+            $("#disbursementTable").append(
+                "<tr>"+
+                "<th scope=\"row\">"+(i+1)+"</th>"+
+                "<th>"+disbursementList[i].name+"</th>"+
+                "<th>"+participantsString+"</th>"+
+                "<th>"+disbursementList[i].disbursement+"</th>"+
+                "<th>"+d+"</th>"+
+                "<th>"+disbursementList[i].payer.name+"</th>"+
+                "</tr>"
+            );
+            /*if(items[i].status===2){
+                $("#row"+i).addClass('boughtMarked');
+            }*/
+        }
+        console.log("Added Items");
+    }
+
+    function getDisbursementList(){
+        var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/disbursement/'+'en@h.no' + '/user';
+
+        $.get(url, function(data, status){
+            console.log("skrrt");
+            if (status === "success") {
+                disbursementList = data;
+                fixDisbursementTable();
+                console.log("Item content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading Item content");
+            }
+        });
+    }
+
+    function getUserBalance(){
+        var url='http://localhost:8080/scrum/rest/groups/balance/'+1;
+
+        $.get(url, function(data, status){
+            console.log("skrrt");
+            if (status === "success") {
+                balanceList = data;
+                fixBalanceTable();
+                console.log("Item content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading Item content");
+            }
+        });
+    }
+
+    function fixBalanceTable(){
+        var len = balanceList.length;
+        var table = document.getElementById("balanceTable");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#balanceTable").append(
+            "<tr>"+
+            "<th>User</th>"+
+            "<th>Balance</th>"+
+            "</tr>"
+        );
+
+        for(var i = 0; i < len; i++){
+            $("#balanceTable").append(
+                "<tr>"+
+                "<th scope=\"row\">"+balanceList[i].key+"</th>"+
+                "<th>"+balanceList[i].value+"</th>"+
+                "</tr>"
+            );
+        }
+        console.log("Added Items");
+    }
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
@@ -18,6 +123,19 @@ $(document).ready(function() {
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
+        getDisbursementList();
+        getUserBalance();
+    });
+
+    $('#backToShoppinglist').click(function () {
+        var listOfDisbursements = document.getElementById('listOfDisbursements');
+        var shoppinglist = document.getElementById('shoppinglist');
+        var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+
+
+        listOfDisbursements.style.display ="none";
+        shoppinglist.style.display="block";
+        dropdownShoppinglist.style.display="block";
     });
 
     $('#addItem').click(function () {
@@ -241,6 +359,7 @@ $(document).ready(function() {
     });
 
     //finds all disbursements
+    /*
     function findAllDisbursements() {
         console.log('findDisbursements');
         $.ajax({
@@ -250,9 +369,10 @@ $(document).ready(function() {
             success: renderDisbursementsList(),
 
         });
-    }
+    }*/
 
     //function which lists out the different disbursements
+    /*
     function renderDisbursementsList(data) {
         var list = data == null ? [] : (data instanceof Array ? data : [data]);
         disbursementList = [];
@@ -265,22 +385,6 @@ $(document).ready(function() {
                 "added": Shoppinglist.date,
             });
         });
-
-        function getDisbursementList(){
-            var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/disbursements/en@h.no';
-
-            $.get(url, function(data, status){
-                console.log("bertt");
-                if (status === "success") {
-                    choreList = data;
-                    console.log("Item content loaded successfully!");
-                    setItemsInTable();
-                }
-                if(status === "error"){
-                    console.log("Error in loading Item content");
-                }
-            });
-        }
 
 
         // console.log(bordliste);
@@ -297,7 +401,7 @@ $(document).ready(function() {
             console.log("koden kom til bunnen av renderDisbursements");
             scopeNr ++; //disbursementNr increment on each new list
         });
-    }
+    }*/
 
 
     //function to set memberlist for createDisbursement

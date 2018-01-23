@@ -1,5 +1,6 @@
 package services;
 import data.Group;
+import data.StatisticsHelp;
 import db.Db;
 import db.GroupDao;
 import db.MemberDao;
@@ -203,5 +204,20 @@ public class GroupService {
             Db.close(connection);
         }
 
+    }
+
+    @GET
+    @Path("/balance/{groupId}")
+    @Produces("application/json")
+    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId){
+        try {
+            log.info("Retrieving balance by member.");
+            return groupDao.getUserBalance(groupId);
+        } catch (SQLException e){
+            log.info("Could not get balance");
+            throw new ServerErrorException("Failed to get balance.",Response.Status.INTERNAL_SERVER_ERROR,e);
+        }finally {
+            Db.close(connection);
+        }
     }
 }

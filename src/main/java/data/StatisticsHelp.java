@@ -2,9 +2,9 @@ package data;
 
 public class StatisticsHelp {
     private String key;
-    private int value;
+    private double value;
 
-    public StatisticsHelp(String key, int value){
+    public StatisticsHelp(String key, double value){
         this.key=key;
         this.value=value;
     }
@@ -13,7 +13,7 @@ public class StatisticsHelp {
         return key;
     }
 
-    public int getValue(){
+    public double getValue(){
         return value;
     }
 
