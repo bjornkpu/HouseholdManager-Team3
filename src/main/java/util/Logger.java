@@ -25,6 +25,10 @@ public class Logger {
         }
     }
 
+    public Logger(){
+
+    }
+
     public static Logger getLogger() {
         return instance;
     }

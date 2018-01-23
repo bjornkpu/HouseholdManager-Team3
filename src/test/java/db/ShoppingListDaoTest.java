@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
  * @author bk
  */
 public class ShoppingListDaoTest {
-    private static final Logger logger = new Logger();
+    private static final Logger log = Logger.getLogger();
     private static Connection connection;
     private static ShoppingListDao shoppingListDao;
     private static UserDao userDao;
@@ -43,7 +43,7 @@ public class ShoppingListDaoTest {
         try{
             connection=Db.instance().getConnection();
         }catch(SQLException e){
-            logger.error("Could not get connection", e);
+            log.error("Could not get connection", e);
         }
         shoppingListDao= new ShoppingListDao(connection);
         userDao= new UserDao(connection);
@@ -73,7 +73,7 @@ public class ShoppingListDaoTest {
             shoppingListDao.addShoppingList(shoppingListTest);
             shoppingListDao.addShoppingList(testSmallShoppingList);
         }catch(MySQLIntegrityConstraintViolationException e) {
-            logger.error("Constraint error", e);
+            log.error("Constraint error", e);
         }catch(SQLException e){
             e.printStackTrace();
         }
