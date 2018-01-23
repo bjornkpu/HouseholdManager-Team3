@@ -22,7 +22,7 @@ public class ShoppingListDao {
     private UserDao userDao;
     private ItemDao itemDao;
     private PreparedStatement ps;
-    private ResultSet rs,userRs;
+    private ResultSet rs;
 
     public ShoppingListDao(Connection connection) {
         this.connection = connection;
@@ -100,8 +100,10 @@ public class ShoppingListDao {
         }
     }
 
-    public static ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
-        connection = Db.instance().getConnection();
+    public  ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
+//        connection = Db.instance().getConnection();
+        itemDao = new ItemDao(connection);
+        userDao = new UserDao(connection);
         try {
             ps = connection.prepareStatement(
                     "SELECT * " +
@@ -123,8 +125,8 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
-                sl.setUserList(UserDao.getUsersInShoppingList(sl.getId()));
+                sl.setItemList(itemDao.getItemsInShoppingList(sl.getId()));
+                sl.setUserList(userDao.getUsersInShoppingList(sl.getId()));
                 shoppinglistList.add(sl);
             }
             return shoppinglistList;
@@ -223,6 +225,8 @@ public class ShoppingListDao {
 	 */
     public boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
 //        connection = Db.instance().getConnection();
+        itemDao = new ItemDao(connection);
+        userDao = new UserDao(connection);
         try {
 
             if(!groupCheck(shoppingList.getGroupId())){ //checks if the party-object exists
@@ -238,31 +242,56 @@ public class ShoppingListDao {
             int createShoppingListResult = ps.executeUpdate();
             log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
 
-            ps = connection.prepareStatement("SELECT shoppinglist.id \n" +
-                    "FROM shoppinglist \n" +
-                    "WHERE shoppinglist.id NOT IN (\n" +
-                    "    SELECT shoppinglist_user.shoppinglist_id \n" +
-                    "    FROM shoppinglist_user)");
+//          gets last inserted id in shoppinglist_table
+            ps = connection.prepareStatement("SELECT shoppinglist.id " +
+                    "FROM shoppinglist " +
+                    "ORDER BY shoppinglist.id  " +
+                    "DESC LIMIT 1");
             rs = ps.executeQuery();
+            log.info("Found last id in shoppinglist!");
 
+            int id = 0;
             if(rs.next()){
-                for(int i = 0; i < shoppingList.getUserList().size(); i++){
-
-                }
+                id = rs.getInt(1);
+            } else {
+                log.info("Nothing returned from prepared statement");
+                return false;
             }
 
-            //creates new connection between created shoppinglist and creator (User)
-            ps = connection.prepareStatement("INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");
-            ps.setInt(1, shoppingList.getId());
-            ps.setString(2, shoppingList.getUserList().get(0).getEmail());
-            int createDependancyResult = ps.executeUpdate();
-            log.info("Add shoppinglist_user dependancy " + (createDependancyResult == 1?"ok":"failed"));
+            ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
+                    "VALUES (?, ?)");
 
+            for(int i = 0; i < shoppingList.getUserList().size(); i++){
+                ps.setInt(1, id);
+                ps.setString(2, shoppingList.getUserList().get(i).getEmail());
+                ps.addBatch();
+            }
+
+            if(createShoppingListResult == 1){
+                ps.executeBatch();
+            }
+
+
+            boolean insertShoppingList = true;
+
+
+            boolean addedUsers = true;
+//            for(int i = 0; i < batch.length; i++){
+//                if(batch[i] != 1){
+//                    addedUsers = false;
+//                    break;
+//                }
+//            }
+
+            insertShoppingList = ((createShoppingListResult==1) && addedUsers);
+
+            log.info("Added shoppinglist with users " + insertShoppingList);
 
 //          TODO clean up
-            return createShoppingListResult == 1 && createDependancyResult == 1;
+            return insertShoppingList;
 
         } finally {
+            Db.close(rs);
             Db.close(ps);
 //            Db.close(connection);
         }
@@ -294,7 +323,7 @@ public class ShoppingListDao {
             return result == 1;
         } finally {
             Db.close(ps);
-//            Db.close(connection);
+            Db.close(connection);
         }
     }
 
@@ -303,7 +332,7 @@ public class ShoppingListDao {
 	 * @throws SQLException when failing to delete shopping list.
 	 */
     public boolean delShoppingList(int id) throws SQLException {
-//        connection = Db.instance().getConnection();
+        connection = Db.instance().getConnection();
 
         try {
 //          deletes user_shoppinglist dependency
@@ -327,7 +356,7 @@ public class ShoppingListDao {
         } finally {
 
             Db.close(ps);
-//            Db.close(connection);
+            Db.close(connection);
         }
     }
 
@@ -397,7 +426,7 @@ public class ShoppingListDao {
 	    } finally {
 
             Db.close(ps);
-//            Db.close(connection);
+            Db.close(connection);
 	    }
     }
 
@@ -419,7 +448,7 @@ public class ShoppingListDao {
 			return result == 1;
 		} finally {
             Db.close(ps);
-//            Db.close(connection);
+            Db.close(connection);
 		}
 	}
 }

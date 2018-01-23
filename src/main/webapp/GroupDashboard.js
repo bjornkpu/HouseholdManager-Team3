@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 
     //Goes to correct page when reload
-    if (window.location.hash == "#shopping"){
+    if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }
 
@@ -15,7 +15,9 @@ $(document).ready(function(){
             type: 'GET',
             url: '/scrum/rest/groups/list/' + user.email,
             dataType: "json",
-            success: renderGroupDropdown
+            success: function(data){
+                renderGroupDropdown(data);
+            }
         });
         //console.log(getCookie(curGroup));
     }
@@ -32,9 +34,11 @@ $(document).ready(function(){
         var len = data.length;
         if (len === 0){
             document.cookie = curGroup +"=0";
+            console.log("Out of if");
         } else {
             if (getCookie(curGroup) < len || !checkIfCook(data,getCookie(curGroup))){
                 document.cookie = curGroup+"="+ data[0].id;
+                console.log("Added cookie " + data[0].id);
             }
             for (var i = 0; i < len;i++ ) {
                 var groupname= data[i].name;
@@ -54,7 +58,6 @@ $(document).ready(function(){
                 console.log("Added group: "+groupname);
             }
         }
-
     }
     /*
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
@@ -70,7 +73,7 @@ $(document).ready(function(){
     var url='rest/groups/'+y+'/members';
     $.get(url, function(data, status){
         lists=data;
-        renderMembers(data)
+        // renderMembers(data)
         if(status === "success"){
             console.log("members content loaded successfully!");
         }

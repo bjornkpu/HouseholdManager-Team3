@@ -4,7 +4,7 @@ $(document).ready(function() {
     var lists;
     var items;
     var currentShoppingList = 0;
-    var currentGroup = getCookie("groupId");
+    var currentGroup = getCookie("currentGroup");
     var numberOfMembers = 0;
 
     loadShoppingListsFromGroup(currentGroup);
@@ -185,7 +185,22 @@ $(document).ready(function() {
             index++;
         });
 
-        $('#confirmShoppinglist').click(function(){createShoppingList($("#nameOfShoppinglist").val(), selectedUsers)});
+        $('#confirmShoppinglist').click(function(){
+            var userList = [];
+            console.log("Adding shoppinglist " + name + "...");
+            for(var i = 0; i < selectedUsers.length; i++){
+                userList[i] = {
+                    email: selectedUsers[i],
+                    name: null,
+                    phone: null,
+                    password: null,
+                    salt: null
+                };
+                console.log("Adding user: " + userList[i].email + "...");
+            }
+            createShoppingList($("#nameOfShoppinglist").val(), userList)
+
+        });
 
         creatingShoppinglist.style.display="block";
         shoppinglist.style.display="none";
@@ -194,38 +209,25 @@ $(document).ready(function() {
     });
 
     function createShoppingList(name, participants){
-        var userList = [];
-        for(var i = 0; i < participants.length; i++){
-            userList[i] = {
-                email: participants[i],
-                name: null,
-                phone: null,
-                password: null,
-                salt: null
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/scrum/rest/groups/'+currentGroup+'/shoppingLists/addShoppinglist',
+            data: JSON.stringify(
+                {
+                    name: name,
+                    groupId: currentGroup,
+                    itemList: null,
+                    userList: participants
+                }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(){
+                console.log("Shoppinglist added!");
+            },
+            error: function(){
+                console.log("Could not add shoppinglist");
             }
-        }
-        console.log("Shoppinglist name: " + name);
-        for(var i = 0; i < userList.length; i++){
-            console.log("Adding user: " + userList[i].email);
-        }
-
-        // TODO fix this
-        // $.ajax({
-        //     url: '/scrum/groups/' + currentGroup + '/shoppingLists/' +shoppingListId + '/items/' + this.value,
-        //     type: 'POST',
-        //     data: {
-        //         name: name,
-        //         groupId: currentGroup,
-        //         itemList: null,
-        //         userList: userList
-        //     },
-        //     success: function(response){
-        //
-        //     },
-        //     error: function(){
-        //
-        //     }
-        // });
+        });
     }
 
     $('#createDisbursementButton').click(function () {
@@ -354,18 +356,21 @@ $(document).ready(function() {
                 lists = data;
                 //Here to prevent undefined variables and methods out of order
                 if(data === null || data.size === 0 || data[0] === undefined){
-                    $("#you_shoppinglists").text("You have no shoppinglists for group " + getCookie("groupId"));
+                    $("#you_shoppinglists").text("You have no shoppinglists for group " + currentGroup);
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
                     console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     renderShoppingListDropdownMenu(data);
                     getItemsInShoppingList(groupId);
-                    $("#you_shoppinglists").text("Shoppinglists for " + getCookie("groupId"));
+                    $("#you_shoppinglists").text("Shoppinglists for groupId " + currentGroup);
                 }
             }
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
+            }
+            if(status === undefined){
+                console.log("Hva faen");
             }
         });
     }

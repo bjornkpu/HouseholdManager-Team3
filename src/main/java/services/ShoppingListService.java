@@ -73,7 +73,7 @@ public class ShoppingListService {
 		Session session = (Session) request.getSession().getAttribute("session");
 		log.info("Session: = " + session.getEmail());
 		try {
-			return ShoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
+			return shoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
 		} catch (SQLException e) {
 			log.error("Failed to get shopping list array", e);
 			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -85,11 +85,12 @@ public class ShoppingListService {
 	 * @throws ServerErrorException when failing to add shopping list.
 	 */
     @POST
+    @Path("/addShoppinglist")
     @Consumes("application/json")
     public void addShoppingList(ShoppingList shoppingList) {
+        log.info("Adding shoppinglist...");
         try {
             shoppingListDao.addShoppingList(shoppingList);
-            log.info("Added shopping list!");
         } catch(SQLException e) {
             log.error("Failed to Add shopping list", e);
             throw new ServerErrorException("Failed to Add shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
