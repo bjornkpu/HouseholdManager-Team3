@@ -211,6 +211,14 @@ INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Pepsi'
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('en@h.no','1');
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('to@h.no','1');
 
+INSERT INTO chore_log(user_email,chore_id) VALUE ('en@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('fire@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('fire@h.no',2);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',2);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',3);
+
 
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');
