@@ -80,6 +80,11 @@ public class UserService {
             }if(user.getName()==null || user.getName().equals("")){
                 user.setName(oldUser.getName());
                 user.setPhone(oldUser.getPhone());
+                String salt = LoginCheck.getSalt();
+                user.setSalt(salt);
+                String pw=LoginCheck.getHash(user.getPassword()+salt);
+                user.setPassword(pw);
+                log.info("Salt: "+salt+" PW: "+pw);
             }
             user.setEmail(currentUserEmail);
             userDao.updateUser(user);
