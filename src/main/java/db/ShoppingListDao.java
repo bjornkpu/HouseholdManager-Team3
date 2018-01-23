@@ -339,14 +339,12 @@ public class ShoppingListDao {
             ps = connection.prepareStatement("DELETE FROM shoppinglist_user where shoppinglist_id=?");
             ps.setInt(1,id);
             int deleteDependancyResult = ps.executeUpdate();
-            ps.close();
             log.info("Delete shoppinglist_user dependancy " + (deleteDependancyResult == 1 ? "ok":"failed"));
 
 //          deletes shopping list
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
-
             log.info("Delete shoppinglist_ " + (deleteShoppingListResult == 1 ? "ok":"failed"));
 
 //            TODO clean up

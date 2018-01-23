@@ -229,10 +229,9 @@ $(document).ready(function() {
                 };
                 console.log("Adding user: " + userList[i].email + "...");
             }
-            createShoppingList(name, userList)
+            createShoppingList(name, userList);
 
             $("#page-content").load("Shoppinglist.html");
-
         });
     });
 
@@ -257,6 +256,31 @@ $(document).ready(function() {
             }
         });
     }
+
+    $("#delete_shoppinglist").click(function(){
+        if(items.length !== 0){
+            alert("Shoppinglist must be empty before deleting");
+        } else {
+            var toBeDeleted = lists[currentShoppingList].id;
+            $.ajax({
+                url: '/scrum/rest/groups/' + currentGroup + '/shoppingLists/' + toBeDeleted,
+                type: 'DELETE',
+                data: toBeDeleted,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+
+                success: function(){
+                    currentShoppingList = 0;
+                    loadShoppingListsFromGroup(currentGroup);
+                    alert("Shoppinglist deleted!");
+                },
+                error: function(){
+                    console.log("Couldn't delete shoppinglist with id " + toBeDeleted);
+                }
+            });
+        }
+    });
+
 
     $('#createDisbursementButton').click(function () {
         renderCreateDisbursemen();
