@@ -15,11 +15,14 @@ import java.util.HashMap;
  */
 public class StatisticsDao {
 
-    private static Connection connection;
+    private Connection connection;
     private static PreparedStatement ps;
     private static ResultSet rs;
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+    public StatisticsDao(Connection connection) {
+        this.connection =connection;
+    }
     public ArrayList<StatisticsHelp> getChoresPerUser(int groupId) throws SQLException{
         connection = Db.instance().getConnection();
         try{

@@ -1,6 +1,7 @@
 package services;
 
 import data.StatisticsHelp;
+import db.Db;
 import db.StatisticsDao;
 import util.Logger;
 
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,6 @@ import java.util.HashMap;
 @Path("/groups/{groupId}/statistics/")
 public class StatisticsService {
         private final Logger log = Logger.getLogger();
-        StatisticsDao sDao = new StatisticsDao();
 
         @Context
         private HttpServletRequest request;
@@ -24,7 +25,8 @@ public class StatisticsService {
         @Produces("application/json")
         public ArrayList<StatisticsHelp> getChoresPerUser(@PathParam("groupId") int groupId) throws SQLException {
 //		Session session = (Session)request.getSession();
-            try {
+            try(Connection connection= Db.instance().getConnection()) {
+                StatisticsDao sDao = new StatisticsDao(connection);
                 System.out.println("fert");
                 return sDao.getChoresPerUser(groupId);
             } catch (SQLException e) {
