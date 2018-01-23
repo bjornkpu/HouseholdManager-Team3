@@ -42,6 +42,7 @@ $(document).ready(function(){
             });
         });
     });
+
     $('#forgottenPassword').hide();
     $('#forgottenPassword').click(function () {
         toEmail = $("#emailField").val();
