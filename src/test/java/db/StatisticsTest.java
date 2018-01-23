@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import static db.StatisticsDao.getChoresPerUser;
 import static junit.framework.TestCase.assertEquals;
 
 public class StatisticsTest {
@@ -26,6 +25,7 @@ public class StatisticsTest {
     private static User user2 = new User("k@k.no", "Knut", "90805050", "password2", "123");
     private static ArrayList<WallPost> list1 = new ArrayList<>();
     private static ArrayList<WallPost> list2 = new ArrayList<>();
+    private StatisticsDao statisticsDao = new StatisticsDao();
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -58,18 +58,6 @@ public class StatisticsTest {
 
         st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id,done) VALUES ('m@m.no',200,?)");
         st.setTimestamp(1,timestamp);
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id,done) VALUES ('m@m.no',200,?)");
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date = dateFormat.parse("23/12/2017");
-        long time = date.getTime();
-        st.setTimestamp(1,new Timestamp(time));
-        st.executeUpdate();
-        st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id,done) VALUES ('m@m.no',200,?)");
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        date = dateFormat.parse("31/12/2017");
-        time = date.getTime();
-        st.setTimestamp(1,new Timestamp(time));
         st.executeUpdate();
         st = connection.prepareStatement("INSERT INTO chore_log(user_email, chore_id,done) VALUES ('k@k.no',200,?)");
         st.setTimestamp(1,timestamp);
@@ -116,7 +104,7 @@ public class StatisticsTest {
 
     @Test
     public void testGetChoresPerUser() throws Exception{
-        ArrayList<StatisticsHelp> map = getChoresPerUser(100);
+        ArrayList<StatisticsHelp> map = statisticsDao.getChoresPerUser(100);
         int result =0;
         for (StatisticsHelp aMap : map) {
             if (aMap.getKey().equals("m@m.no")) {
@@ -124,6 +112,6 @@ public class StatisticsTest {
                 break;
             }
         }
-        assertEquals(3,result);
+        assertEquals(1,result);
     }
 }
