@@ -1,7 +1,7 @@
 .feedGrid{
     display: grid;
     grid-template-columns: [col1-start] 55% [col1-end col2-start] 45% [col2-end];
-    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100% ;
+    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100%;
     grid-template-areas:
             "leftheader rightheader"
             "wallposts events";
@@ -52,7 +52,7 @@
     width: 80%;
     background-color: lightgreen;
     align-content: start;
-    overflow-y: scroll;
+    overflow-y: auto;
     border: 1px solid black;
     resize: none;
 
@@ -80,6 +80,5 @@
 .groupEvents{
     display: grid;
     grid-area: events;
-    background-color: blueviolet;
     background-color: lightblue;
 }

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/GroupDashboard.css">
@@ -29,12 +28,16 @@
         </div>
 
         <!-- Middle items-->
-        <div class="navbar-nav d-flex flex row">
-            <div class="nav-item dropdown d-flex flex-row">
-                    <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons md-24 groupicon">supervisor_account</i>
+        <div class="navbar-nav d-flex flex-row">
+                    <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="groupName d-flex flex-row">
+                            <div class="someName">
+                                <strong id="currentGroupName"></strong>
+                            </div>
+                            <i class="material-icons md-24 groupicon">supervisor_account</i>
+                        </div>
                     </a>
-                <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
+                <div class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1">
                     <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
                     <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
                     <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
@@ -44,9 +47,8 @@
                     <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
                     <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
                     <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
-                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
-                </ul>
-            </div>
+                    <a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a>
+                </div>
         </div>
 
         <!-- Right items -->
@@ -54,7 +56,7 @@
             <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="account d-flex flex-row">
                     <div class="username">
-                        <strong>Username</strong>
+                        <strong id="navUsername"></strong>
                     </div>
                     <i class="username material-icons md-24">account_circle</i>
                 </div>

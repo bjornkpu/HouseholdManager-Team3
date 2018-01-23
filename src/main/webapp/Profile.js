@@ -8,6 +8,8 @@ $(document).ready(function() {
 
     });
 
+
+
     getLoggedOnUser(setData);
     var sessionEmail;
     //getEmail();

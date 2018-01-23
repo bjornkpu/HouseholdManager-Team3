@@ -2,6 +2,8 @@
 $(document).ready(function(){
 
     getLoggedOnUser(setData);
+
+
     var groups;
 
 
@@ -11,22 +13,31 @@ $(document).ready(function(){
     }
 
     function setData(user) {
+        $('#navUsername').html("" + user.name);
+        console.log("username: "+user.name);
         $.ajax({
             type: 'GET',
             url: '/scrum/rest/groups/list/' + user.email,
             dataType: "json",
             success: renderGroupDropdown
         });
-        //console.log(getCookie(curGroup));
+        console.log(getCookie("currentGroup"));
+
     }
 
    /** $('#newGroup1').click(function () {
         var test=prompt("test: ");
     })*/
 
+   $("#newGroup1").click(function () {
+       createNewGroup();
+       window.location.reload();
+
+   });
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
+
         console.log("render grouplist");
         groups=data;
         var len = data.length;
@@ -54,16 +65,14 @@ $(document).ready(function(){
                 console.log("Added group: "+groupname);
             }
         }
-
-    }
-    /*
+/*
     $("#groupdropdown").on("click", "a.dropdown-item", function(){
         var i=this.id.charAt(0);
         currentGroup=groups[i];
         document.cookie="groupId="+currentGroup.id;
         alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
-    });
-    */
+   });
+*/
 
     var y = getCookie(curGroup);
     var lists;
@@ -118,7 +127,28 @@ $(document).ready(function(){
         $("#page-content").load("GroupSetting.html");
     });
 
+    $("#invUserButton").click(function () {
+        var x = getCookie("currentGroup");
+        $.ajax({
+            type:"POST",
+            dataType:"json",
+            url:"rest/groups/"+x+"/members/" + $("#invUserField").val(),
+            contentType: "application/json",
+            data:JSON.stringify({
+                "email": $("#invUserField").val()
+            }),
+            statusCode: {
+                200: function () {
+                    window.location.href = "GroupDashboard.html";
+                },
+                500: function () {
+                    console.log("Internal Server Error");
+                }
+            }
 
+        })
+
+    })
 
     function getLoggedOnUser(success) {
         $.ajax({
@@ -143,10 +173,17 @@ $(document).ready(function(){
             }
         });
     };
+
 });
 
 var curGroup = "currentGroup";
 
+function renderMembers(data) {
+    var len = data.length;
+    for (var i = 0; i < len;i++ ) {
+        $('#tabForUsersInGroup').append('<tr> <td>' +data[i].name + '</td></tr>');
+    }
+}
 
 function checkCookie(id) {
     var username = getCookie(curGroup);
