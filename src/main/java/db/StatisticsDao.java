@@ -1,6 +1,9 @@
 package db;
 
+import data.StatisticsHelp;
+
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
@@ -17,17 +20,16 @@ public class StatisticsDao {
     private static ResultSet rs;
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-    static HashMap<String, Integer> getChoresPerUser(int groupId) throws SQLException{
+    public static ArrayList<StatisticsHelp> getChoresPerUser(int groupId) throws SQLException{
         connection = Db.instance().getConnection();
         try{
-            ps = connection.prepareStatement("SELECT COUNT(chore_log.chore_id), chore_log.user_email FROM chore NATURAL JOIN chore_log WHERE chore.party_id=? GROUP BY chore_log.user_email");
+            ps = connection.prepareStatement("SELECT COUNT(c1.chore_id), c1.user_email FROM chore c2 INNER JOIN chore_log c1 ON c2.id = c1.chore_id WHERE c2.party_id=? GROUP BY c1.user_email");
             ps.setInt(1,groupId);
             rs = ps.executeQuery();
-            HashMap<String, Integer> resultat = new HashMap<>();
+            ArrayList<StatisticsHelp> resultat = new ArrayList<>();
             while(rs.next()){
-                String email=rs.getString("user_email");
-                int num = rs.getInt("Count(chore_log.chore_id)");
-                resultat.put(email,num);
+                StatisticsHelp h = new StatisticsHelp(rs.getString("user_email"),rs.getInt("COUNT(c1.chore_id)"));
+                resultat.add(h);
             }
             return resultat;
         }
@@ -40,7 +42,7 @@ public class StatisticsDao {
 
 
     //Let you find number of chores for user during the "dayNr" recent days.
-    static HashMap<String, Integer> getChoresPerUser(int groupId, int dayNr) throws SQLException{
+    static ArrayList<StatisticsHelp> getChoresPerUser(int groupId, int dayNr) throws SQLException{
         connection = Db.instance().getConnection();
         Timestamp ts = timestamp;
         Calendar cal = Calendar.getInstance();
@@ -53,11 +55,10 @@ public class StatisticsDao {
             ps.setInt(1,groupId);
             ps.setTimestamp(2,ts);
             rs = ps.executeQuery();
-            HashMap<String, Integer> resultat = new HashMap<>();
+            ArrayList<StatisticsHelp> resultat = new ArrayList<>();
             while(rs.next()){
-                String email=rs.getString("user_email");
-                int num = rs.getInt("Count(chore_log.chore_id)");
-                resultat.put(email,num);
+                StatisticsHelp h = new StatisticsHelp(rs.getString("user_email"),rs.getInt("COUNT(chore_log.chore_id)"));
+                resultat.add(h);
             }
             return resultat;
         }
