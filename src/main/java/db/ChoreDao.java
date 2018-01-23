@@ -75,7 +75,7 @@ public class ChoreDao {
                 ArrayList<String> completedBy = getCompletedBy(choreId);
                 chore.setCompletedBy(completedBy);
                 chore.setAssignedTo(rs.getString("user_email"));
-                chore.setDeadline(rs.getDate("deadline"));
+                chore.setDeadline(rs.getTimestamp("deadline"));
                 chore.setPartyId(rs.getInt("party_id"));
             }
             else{
@@ -145,7 +145,7 @@ public class ChoreDao {
                 chore.setChoreId(res.getInt("id"));
                 chore.setDescription(res.getString("name"));
                 chore.setAssignedTo(res.getString("user_email"));
-                chore.setDeadline(res.getDate("deadline"));
+                chore.setDeadline(res.getTimestamp("deadline"));
                 resultat.add(chore);
             }
             return resultat;
@@ -168,7 +168,7 @@ public class ChoreDao {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO chore(name, regularity, deadline, party_id) VALUES (?,0,?,?)");
             ps.setString(1, chore.getDescription());
-            ps.setDate(2, (Date) chore.getDeadline());
+            ps.setTimestamp(2, (java.sql.Timestamp) chore.getDeadline());
             ps.setInt(3, chore.getPartyId());
             int result = ps.executeUpdate();
             return result == 1;

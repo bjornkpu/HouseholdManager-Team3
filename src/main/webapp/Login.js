@@ -69,21 +69,20 @@ $(document).ready(function(){
         $("#div_for_login").show();
     })
 
-
-    $('#confirmReg').click(function () {
+    $('#confirmReg').click(function click() {
 
         if(!$("#name_of_user_field").val() || !$("#emailRegField").val() ||
             !$("#passwordRegField").val() || !$("#passwordConfirmField").val()){
             alert("All fields must be filled in");
             return;
         }
-
-        $.get("rest/user/emailCheck/"+$("#emailRegField").val(), function(data, status){
-            if(!data){
-                alert("Not a valid email");
-                return;
-            }
-        });
+        /*//--Checks if the email is valid - Doesn't work, should tho...
+        var bool;
+        $.get("rest/user/emailCheck/"+$("#emailRegField").val(), function(data, status){ bool = data;});
+        if(!bool) {
+            alert("Not a valid email1");
+            return;
+        }*/
 
 
         if($("#passwordRegField").val()==$("#passwordConfirmField").val()){

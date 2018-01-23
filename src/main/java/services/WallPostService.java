@@ -83,12 +83,9 @@ public class WallPostService {
         try (Connection connection= Db.instance().getConnection()) {
             WallpostDao wallpostDao = new WallpostDao(connection);
 
-            return Response.status(201).entity(wallpostDao.postWallpost(wallPost)).build();
-            try {
-                return Response.status(200).entity(wallpostDao.postWallpost(wallPost)).build();
-            } catch (SQLException e) {
-                throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR, e);
-            }
+            return Response.status(200).entity(wallpostDao.postWallpost(wallPost)).build();
+        } catch (SQLException e) {
+            throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
 
