@@ -20,16 +20,8 @@ import java.util.ArrayList;
 public class TaskService {
 	private static final Logger log = Logger.getLogger();
 
-	private ChoreDao taskDao;
-	private Connection connection;
 
 	public TaskService() {
-		try{
-			connection= Db.instance().getConnection();
-			taskDao = new ChoreDao(connection);
-		}catch(SQLException e){
-			log.error("Failed to get connection", e);
-		}
 	}
 
 	@Context
@@ -43,13 +35,13 @@ public class TaskService {
 	@GET
 	@Produces("application/json")
 	public ArrayList<Chore> getChores(@PathParam("groupId") int groupId) {
-		try {
-			return taskDao.getChores(groupId);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+
+			return choreDao.getChores(groupId);
 		} catch (SQLException e) {
 			log.error("Failed to get chores", e);
 			throw new ServerErrorException("Failed to get chores", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -62,13 +54,12 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Produces("application/json")
 	public Chore getChore(@PathParam("choreId") int choreId) {
-		try {
-			return taskDao.getChore(choreId);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			return choreDao.getChore(choreId);
 		} catch (SQLException e) {
 			log.error("Failed to get chore", e);
 			throw new ServerErrorException("Failed to get chore", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -81,13 +72,12 @@ public class TaskService {
 	@Path("/CompletedBy/{choreId}")
 	@Produces("application/json")
 	public ArrayList<String> getCompletedBy(@PathParam("choreId") int choreId) {
-		try {
-			return taskDao.getCompletedBy(choreId);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			return choreDao.getCompletedBy(choreId);
 		} catch (SQLException e) {
 			log.error("Failed to get completed by array", e);
 			throw new ServerErrorException("Failed to get completed by array", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -97,14 +87,13 @@ public class TaskService {
 	@POST
 	@Consumes("application/json")
 	public void addChore(Chore task) {
-		try {
-			taskDao.addChore(task);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			choreDao.addChore(task);
 			log.info("Added task!");
 		} catch(SQLException e) {
 			log.error("Failed to Add task", e);
 			throw new ServerErrorException("Failed to Add task", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -117,14 +106,13 @@ public class TaskService {
 	@Path("/CompletedBy/{choreId}")
 	@Consumes("application/json")
 	public void setCompletedBy(@PathParam("choreId") int choreId, ArrayList<String> users) {
-		try {
-			taskDao.setCompletedBy(choreId, users);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			choreDao.setCompletedBy(choreId, users);
 			log.info("Updated task!");
 		} catch(SQLException e) {
 			log.error("Failed to update task", e);
 			throw new ServerErrorException("Failed to update task", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -137,14 +125,13 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Consumes("application/json")
 	public void assignChore(@PathParam("choreId") int choreId, String userEmail) {
-		try {
-			taskDao.assignChore(userEmail, choreId);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			choreDao.assignChore(userEmail, choreId);
 			log.info("Updated task!");
 		} catch(SQLException e) {
 			log.error("Failed to update task", e);
 			throw new ServerErrorException("Failed to update task", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 
@@ -156,14 +143,13 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Consumes("application/json")
 	public void deleteChore(@PathParam("choreId") int choreId) {
-		try {
-			taskDao.deleteChore(choreId);
+		try(Connection connection = Db.instance().getConnection()) {
+			ChoreDao choreDao = new ChoreDao(connection);
+			choreDao.deleteChore(choreId);
 			log.info("Deleted task!");
 		} catch(SQLException e) {
 			log.error("Failed to Delete task", e);
 			throw new ServerErrorException("Failed to Delete task", Response.Status.INTERNAL_SERVER_ERROR, e);
-		}finally {
-			Db.close(connection);
 		}
 	}
 }
