@@ -47,7 +47,7 @@ public class MemberDao {
             rs = ps.executeQuery();
 
             ArrayList<Member> members = new ArrayList<>();
-            Member member = null;
+            Member member = new Member();
             while(rs.next()) {
                 member = new Member();
                 member.setEmail(rs.getString("email"));

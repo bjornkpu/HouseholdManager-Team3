@@ -100,6 +100,43 @@ public class ShoppingListDao {
         }
     }
 
+    public ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
+//        connection = Db.instance().getConnection();
+        itemDao = new ItemDao(connection);
+        userDao = new UserDao(connection);
+        try {
+            ps = connection.prepareStatement(
+                    "SELECT * " +
+                            "FROM shoppinglist " +
+                            "JOIN shoppinglist_user " +
+                            "ON shoppinglist.id = shoppinglist_user.shoppinglist_id " +
+                            "AND shoppinglist.party_id = ? " +
+                            "AND shoppinglist_user.user_email = ?");
+            ps.setInt(1, groupId);
+            ps.setString(2,email);
+            rs = ps.executeQuery();
+
+            ShoppingList sl = new ShoppingList();
+            ArrayList<ShoppingList> shoppinglistList = new ArrayList<ShoppingList>();
+
+            while(rs.next()) {
+                log.info("Found shopping list(s) for user " + email + " in group " + groupId);
+                sl = new ShoppingList();
+                sl.setId(rs.getInt("id"));
+                sl.setName(rs.getString("name"));
+                sl.setGroupId(rs.getInt("party_id"));
+                sl.setItemList(itemDao.getItemsInShoppingList(sl.getId()));
+                sl.setUserList(userDao.getUsersInShoppingList(sl.getId()));
+                shoppinglistList.add(sl);
+            }
+            return shoppinglistList;
+        } finally {
+            Db.close(rs);
+            Db.close(ps);
+//            Db.close(connection);
+        }
+    }
+
 	/** Method that gets an ArrayList of shopping lists given a user.
 	 * @param u The user you are trying to get all shopping lists on.
 	 * @return an ArrayList of shopping lists on the given user
@@ -197,13 +234,24 @@ public class ShoppingListDao {
 
 //          creates new shoppinglist object in shoppinglist table
             ps = connection.prepareStatement("INSERT INTO " +
-                    "shoppinglist(id, name, party_id) VALUES (?,?,?)");
-            ps.setInt(1, shoppingList.getId());
-            ps.setString(2, shoppingList.getName());
-            ps.setInt(3, shoppingList.getGroupId());
+                    "shoppinglist(name, party_id) VALUES (?,?)");
+            ps.setString(1, shoppingList.getName());
+            ps.setInt(2, shoppingList.getGroupId());
             int createShoppingListResult = ps.executeUpdate();
             log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
-            ps.close();
+
+            ps = connection.prepareStatement("SELECT shoppinglist.id \n" +
+                    "FROM shoppinglist \n" +
+                    "WHERE shoppinglist.id NOT IN (\n" +
+                    "    SELECT shoppinglist_user.shoppinglist_id \n" +
+                    "    FROM shoppinglist_user)");
+            rs = ps.executeQuery();
+
+            if(rs.next()){
+                for(int i = 0; i < shoppingList.getUserList().size(); i++){
+
+                }
+            }
 
             //creates new connection between created shoppinglist and creator (User)
             ps = connection.prepareStatement("INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (?,?)");

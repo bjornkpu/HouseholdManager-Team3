@@ -19,7 +19,6 @@ public class ItemDaoTest {
     private static ItemDao itemDao;
     private static UserDao userDao;
     private static GroupDao groupDao;
-    private static DisbursementDao disbursementDao;
     private static ShoppingListDao shoppingListDao;
     private static MemberDao memberDao;
 
@@ -38,7 +37,6 @@ public class ItemDaoTest {
         itemDao = new ItemDao(connection);
         userDao = new UserDao(connection);
         groupDao = new GroupDao(connection);
-        disbursementDao = new DisbursementDao(connection);
         shoppingListDao = new ShoppingListDao(connection);
         memberDao = new MemberDao(connection);
 

@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Dine shoppinglister</h1>
+<h1><span id="you_shoppinglists">Your shoppinglists</span></h1>
 <br>
 <br>
 
@@ -16,7 +16,7 @@
 <div class="container" id="dropdownShoppinglist" style ="display:block;">
     <div class="dropdown">
         <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-            Dine Shoppinglister
+            <span id="nameSpan">Shoppinglists</span>
             <span class="caret"></span></button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
             <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>-->
@@ -141,16 +141,10 @@
         <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
     </tr>
     <tr>
-        <td>Participants</td>
-        <td><select id="participantsDisbursement">
-            <option value="None"></option>
-            <option value="participants1">ppl1</option>
-            <option value="participants2">ppl2</option>
-            <option value="participants3">ppl3</option>
-            <option value="participants4">ppl4</option>
-            <option value="participants5">ppl5</option>
-        </select></td>
+        <td>Participants:</td>
     </tr>
+        <tr id="shoppinglistMembers">
+        </tr>
     <tr>
         <td>Total amount</td>
         <td > <input id="totalAmount" type="text" name="totalAmount"></td>
@@ -165,27 +159,31 @@
 
 <!-- div for creating a shoppinglist-->
 <div id="creatingShoppinglist" style="display: none;">
-    <h1>Creating Shoppinglist</h1>
-
+    <h1>New shoppinglist</h1>
     <table>
         <tr>
-            <td>Name of Shoppinglist</td>
+            <td style="padding-right: 10px">Name of Shoppinglist</td>
             <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
         </tr>
         <tr>
-            <td>Participants</td>
-            <td><select id="participantsShoppinglist">
-                <option value="None"></option>
-                <option value="participants1">ppl1</option>
-                <option value="participants2">ppl2</option>
-                <option value="participants3">ppl3</option>
-                <option value="participants4">ppl4</option>
-                <option value="participants5">ppl5</option>
-            </select></td>
+            <td style="padding-right: 10px">Select users</td>
+            <td>
+                <div class="ui search">
+                    <input class="prompt" type="text" placeholder="Search users...">
+                    <div class="results"></div>
+                </div>
+            </td>
+            <td><button class="add" id="addUserButton">Add user</button></td>
         </tr>
         <tr>
-            <td>Confirm</td>
-            <td > <button class="backToShoppinglist" id ="confirmShoppinglist"> Confirm</button> </td>
+            <td></td>
+            <td>
+                <span id = "addedUser">Add users motherfucker</span>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td > <button class="backToShoppinglist" id ="confirmShoppinglist"> Create shoppinglist</button> </td>
         </tr>
     </table>
 </div>
@@ -194,5 +192,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Shoppinglist.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet"/>
 </body>
 </html>

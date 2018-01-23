@@ -95,6 +95,12 @@
             <version>0.9.5.2</version>
             <!--<scope>provided</scope>-->
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.webjars/Semantic-UI -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>Semantic-UI</artifactId>
+            <version>2.2.10</version>
+        </dependency>
     </dependencies>
 
 	

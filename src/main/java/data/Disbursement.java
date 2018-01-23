@@ -9,8 +9,6 @@ public class Disbursement {
     private String name;
     private Date date;
     private User payer;
-
-
     private ArrayList<User> participants;
     private ArrayList<Item> items;
 
