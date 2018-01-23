@@ -365,6 +365,7 @@ public class GroupDao {
                 result.add(help);
             }
             return result;
+
         }
         finally {
             Db.close(rs);
