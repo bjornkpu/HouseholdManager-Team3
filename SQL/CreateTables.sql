@@ -1,5 +1,10 @@
--- Kill all connections
-SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='root' AND info = 'SELECT * FROM processlist';
+/*Viser alle prosessene startet av brukeren vår
+SHOW PROCESSLIST ;
+
+Kopier resultatet av denne spørringa for å drepe alle connections som ikke utfører spørringer.
+SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='g_tdat2003_t3' AND info IS NULL ORDER BY id;
+ */
+
 
 -- Sletter tabeller
 SET FOREIGN_KEY_CHECKS = 0;
@@ -95,7 +100,7 @@ CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
-  date TIMESTAMP NOT NULL,
+  date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   CONSTRAINT disbursement_pk PRIMARY KEY(id));
@@ -200,7 +205,8 @@ INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Sp
 INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('Kino', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 2);
-INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
+
+INSERT INTO disbursement(price,name,payer_id,party_id) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1);
 
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 1, 1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Tacokrydder', 1,1,1);

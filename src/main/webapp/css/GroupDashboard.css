@@ -30,10 +30,10 @@
         right: 50%;
         transform: translateX(-30%);
     }
-    .groupName{
+    .groupicon{
         color: cadetblue;
     }
-    .groupName:hover {
+    .groupicon:hover {
         color: black;
     }
 
@@ -105,7 +105,7 @@ buttons
     /*
      * Sidebar general
      */
-    .sidebar-list-items a {
+    .leftsidebar-list-items a {
         color: cadetblue;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -114,17 +114,17 @@ buttons
         -ms-user-select: none;
         user-select: none;
     }
-    .sidebar-list-items a:visited{
+    .leftsidebar-list-items a:visited{
         color: cadetblue;
         cursor: default;
         text-decoration: none;
     }
 
-    .sidebar-list-items a:hover {
+    .leftsidebar-list-items a:hover {
         color: black;
     }
 
-    .sidebar-list p{
+    .leftsidebar-list p{
         font-size: 14px;
     }
 
@@ -152,13 +152,13 @@ buttons
     /*
      * SIDEBAR STYLING LANDSCAPE
      */
-    .sidebar-wrapper {
+    .leftsidebar-wrapper {
         display: flex;
         position: fixed;
     }
 
 
-    .sidebar-list {
+    .leftsidebar-list {
         padding-top: 30px;
         padding-bottom: 50px;
         background-color: #3d3b3b;
@@ -172,7 +172,7 @@ buttons
     }
 
 
-    .sidebar-list-items.aboutlink{
+    .leftsidebar-list-items.aboutlink{
         margin-top: auto;
     }
 
@@ -227,7 +227,7 @@ buttons
     /*
      * SIDEBAR STYLING PORTRAIT
      */
-    .sidebar-wrapper {
+    .leftsidebar-wrapper {
         position: fixed;
         background-color: #3d3b3b;
         bottom: 0px;
@@ -236,7 +236,7 @@ buttons
         z-index: 1;
     }
 
-    .sidebar-list {
+    .leftsidebar-list {
         padding: 10px;
         text-align: center;
         display: flex;
@@ -245,14 +245,14 @@ buttons
 
     }
 
-    .sidebar-list-items {
+    .leftsidebar-list-items {
         float: left;
         margin-left: 5%;
         margin-right: 5%;
         position: relative;
         color: cadetblue;
     }
-    .sidebar-list-items.aboutlink{
+    .leftsidebar-list-items.aboutlink{
         display: none;
     }
 

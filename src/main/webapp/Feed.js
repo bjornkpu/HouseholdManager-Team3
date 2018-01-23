@@ -66,7 +66,7 @@ $(document).ready(function() {
                     }),
                     success: function () {
                         console.log("Dette gikk bra. Nå få det inn i en tabell KRISTIAN!");
-                        window.location.reload();
+                        $("#page-content").load("Feed.html");
                         //$("#wallposts").reload();
                     },
                     error: function () {

@@ -73,12 +73,12 @@ public class ShoppingListService {
 	 * @throws ServerErrorException when failing to add shopping list.
 	 */
     @POST
+    @Path("/addShoppinglist")
     @Consumes("application/json")
     public void addShoppingList(ShoppingList shoppingList) {
         try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
             shoppingListDao.addShoppingList(shoppingList);
-            log.info("Added shopping list!");
         } catch(SQLException e) {
             log.error("Failed to Add shopping list", e);
             throw new ServerErrorException("Failed to Add shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);

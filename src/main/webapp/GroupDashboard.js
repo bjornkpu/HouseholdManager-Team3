@@ -6,7 +6,7 @@ $(document).ready(function(){
 
 
     //Goes to correct page when reload
-    if (window.location.hash == "#shopping"){
+    if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }
     if (window.location.hash == "#feed"){
@@ -36,6 +36,7 @@ $(document).ready(function(){
        var len = data.length;
        if (len === 0) {
            document.cookie = curGroup + "=0";
+           $("#page-content").load("Profile.html");
        } else {
            if (getCookie(curGroup) < len || !checkIfCook(data, getCookie(curGroup))) {
                document.cookie = curGroup + "=" + data[0].id;
@@ -51,7 +52,8 @@ $(document).ready(function(){
                (function (i) {
                    $x.click(function () {
                        document.cookie = curGroup + "=" + data[i].id;
-                       window.location.reload();
+                       //window.location.reload();
+                       $("#page-content").load("Feed.html");
                    })
                }(i));
                $('#groupdropdown').append($x);
@@ -67,21 +69,6 @@ $(document).ready(function(){
                 alert(groups[i].id + " Member 0: "+ currentGroup.members[0].email );
            });
         */
-
-        var y = getCookie(curGroup);
-        var lists;
-        var url = 'rest/groups/' + y + '/members';
-        $.get(url, function (data, status) {
-            lists = data;
-            renderMembers(data)
-            if (status === "success") {
-                console.log("members content loaded successfully!");
-            }
-            if (status === "error") {
-                console.log("Error in loading members");
-            }
-        });
-
     /*
      * Changing the dropdown arrow to go upwards when clicked
      */
