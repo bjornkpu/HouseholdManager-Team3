@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>"Gruppens tittel"</title>
     <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet">
 
 </head>
 <body>
@@ -128,6 +129,9 @@
         <div class="col-sm">
             <button class = "button" id="goToDisbursements"> Go to disbursements</button>
         </div>
+        <div class="col-sm">
+            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+        </div>
 
     </div>
     <!--end of buttons for shoppinglist -->
@@ -171,7 +175,10 @@
             <td style="padding-right: 10px">Select users</td>
             <td>
                 <div class="ui search">
-                    <input class="prompt" type="text" placeholder="Search users...">
+                    <div class="ui icon input">
+                        <input class="prompt" type="text" placeholder="Search users...">
+                        <i class="search icon"></i>
+                    </div>
                     <div class="results"></div>
                 </div>
             </td>

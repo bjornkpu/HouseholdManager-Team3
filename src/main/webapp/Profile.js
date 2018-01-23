@@ -1,12 +1,14 @@
     $(document).ready(function() {
-    $('#editUser').click(function () {
-        var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
-        var tableEdit = document.getElementById("tableUserInfo");
 
-        tableReadOnly.style.display = "none";
-        tableEdit.style.display = "block";
 
-    });
+        $('#editUser').click(function () {
+            var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
+            var tableEdit = document.getElementById("tableUserInfo");
+
+            tableReadOnly.style.display = "none";
+            tableEdit.style.display = "block";
+
+        });
 
 
 
@@ -60,16 +62,23 @@
     $('#Confirm').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
+        var alertSuccess = document.getElementById("alertSuccessEditProfile");
 
         var nameField = $('#nameProfileField1').val();
         var phoneField = $('#phoneField1').val();
         if(nameField == ""){
-            alert("please fill out namefield");
+            //alert("please fill out namefield");
+            $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alertNameField").slideUp(500);
+            });
             $('#nameProfileField1').css({
                 "background-color": "yellow",
             });
         }else if(phoneField ==""){
-            alert("please fill out phonefield");
+            //alert("please fill out phonefield");
+            $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
+                $("#alertPhoneField").slideUp(500);
+            });
             $('#phoneField1').css({
                 "background-color": "yellow",
             });
@@ -87,20 +96,21 @@
                     "password":null
 
                 }),
-                success: function (jqXHR, textStatus) {
-                    switch (jqXHR.status) {
-                        case 204:
-                            console.log("ajax update user info");
-                            alert("Information updated");
-                            break;
-                        case 404:
-                            alert("Could not update");
-                            break;
-                        default:
-                            break;
-                    }
+                success: function () {
+                    //window.location.reload();
+                    getLoggedOnUser(setData);
+                   // alertSuccess.style.display="block";
+                    $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
+                        $("#alertSuccessEditProfile").slideUp(500);
+                    });
+
+                },
+                error: function () {
+                    alert("information did not update")
                 }
+
             });
+
             tableReadOnly.style.display = "block";
             tableEdit.style.display = "none";
             console.log("confirmknapp trykket")
@@ -109,27 +119,30 @@
 
     //Updating user password
     $('#changePassword').click(function () {
-        $.ajax({
-            type: 'PUT',
-            url: 'rest/user/' + sessionEmail, //test
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({
-                "password": $('#confirmPasswordField').val(),
-            }),
-            success: function (jqXHR, textStatus) {
-                switch (jqXHR.status) {
-                    case 204:
-                        console.log("ajax update user info");
-                        alert("Information updated");
-                        break;
-                    case 404:
-                        alert("Could not update");
-                        break;
-                    default:
-                        break;
+        //var passwordField =$('#confirmPasswordField').val();
+        sha256($("#passwordRegField").val()).then(function (value) {
+            $.ajax({
+                type: 'PUT',
+                url: 'rest/user/' + sessionEmail, //test
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({
+                    "name": null,
+                    "email": sessionEmail,
+                    "password": value
+                }),
+                success: function () {
+                    //window.location.reload();
+                    // alertSuccess.style.display="block";
+                    $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
+                        $("#alertPassword").slideUp(500);
+                    });
+
+                },
+                error: function () {
+                    alert("Password did not update")
                 }
-            }
+            });
         });
     });
 

@@ -30,12 +30,22 @@
         right: 50%;
         transform: translateX(-30%);
     }
+
+
     .groupicon{
         color: cadetblue;
     }
-    .groupicon:hover {
+    .grouplink:hover .navGroupName{
         color: black;
     }
+    .grouplink:hover .groupicon{
+        color: black;
+    }
+    .navGroupName{
+        color: cadetblue;
+    }
+
+
 
     .center{
     margin: auto;
