@@ -47,7 +47,7 @@ public class MemberDao {
             rs = ps.executeQuery();
 
             ArrayList<Member> members = new ArrayList<>();
-            Member member = null;
+            Member member = new Member();
             while(rs.next()) {
                 member = new Member();
                 member.setEmail(rs.getString("email"));
@@ -56,6 +56,7 @@ public class MemberDao {
                 member.setPhone(rs.getString("phone"));
                 member.setName(rs.getString("name"));
                 member.setBalance(rs.getDouble("balance"));
+                member.setStatus(rs.getInt("status"));
                 members.add(member);
             }
 
@@ -226,5 +227,4 @@ public class MemberDao {
 //            Db.close(connection);
         }
     }
-
 }

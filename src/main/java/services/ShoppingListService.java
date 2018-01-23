@@ -11,6 +11,7 @@ import db.UserDao;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -62,6 +63,20 @@ public class ShoppingListService {
 			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
 		}finally {
 			Db.close(connection);
+		}
+	}
+
+	@GET
+	@Path("/user")
+	@Produces("application/json")
+	public ArrayList<ShoppingList> getShoppingListByUserInGroup(@PathParam("groupId") int groupId){
+		Session session = (Session) request.getSession().getAttribute("session");
+		log.info("Session: = " + session.getEmail());
+		try {
+			return shoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
+		} catch (SQLException e) {
+			log.error("Failed to get shopping list array", e);
+			throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 
@@ -199,15 +214,24 @@ public class ShoppingListService {
 	}
 
 	/** update the item with the given id.
-	 * @param item the id to the item you are trying to update.
+	 * @param items the item you are trying to update.
 	 * @throws ServerErrorException when failing to get the item.
 	 */
 	@PUT
-	@Path("/{shoppingListId}/items/{itemId}")
+	@Path("/items/{status}")
 	@Consumes("application/json")
-	public void updateItemById(Item item){
+	public void updateItems(@PathParam("status") int status, int[] items){
 		try{
-			 itemDao.updateItem(item);
+			if(status==2||status==1) {
+				for (int i = 0; i < items.length; i++) {
+					Item item = itemDao.getItem(items[i]);
+					item.setStatus(status);
+					itemDao.updateItem(item);
+				}
+			}
+			else if(status==3){
+
+			}
 		} catch(SQLException e){
 			log.error("Failed to update item", e);
 			throw new ServerErrorException("Failed to update item", Response.Status.INTERNAL_SERVER_ERROR, e);

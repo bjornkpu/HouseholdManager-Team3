@@ -39,6 +39,71 @@
         transform: translateX(-30%);
     }
 
+.center{
+    margin: auto;
+    text-align: center;
+}
+
+.btn-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/*
+hover
+ */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+/**
+buttons
+*/
+.button {
+    border: cadetblue;
+    color: white;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 2px 1px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+
+}
+.button {
+    background-color: white;
+    color: #565f60;
+    border: 1.5px solid #565f60;
+}
+
+.button:hover {
+    background-color: #565f60;
+    color: white;
+}
+
     /*
      * Sidebar general
      */

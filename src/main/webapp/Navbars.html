@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <link rel="stylesheet" href="css/GroupDashboard.css">
+    <link rel="stylesheet" href="css/navbars.css">
     <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
@@ -29,15 +29,25 @@
         </div>
 
         <!-- Middle items-->
-        <div class="navbar-nav d-flex flex row">
-            <div class="nav-item dropdown d-flex flex-row">
+        <div class="navbar-nav">
+            <div class="nav-item dropdown">
+                <div class="dropdown">
                     <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="material-icons md-24 groupicon">supervisor_account</i>
                     </a>
                 <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
-
-                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
+                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 5</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
+                    <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
+                    <li id="newGroup1"><a id="newGroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
                 </ul>
+                </div>
             </div>
         </div>
 
@@ -108,7 +118,8 @@
 
 <!-- Middle of page: Group pages with sidebar are loaded into this div -->
 <div id="page-content">
-    <p>Text test <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+    <p><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
         <br><br><br><br><br><br><br><br><br><br><br><br> Scroll</p>
 </div>
 
@@ -121,8 +132,10 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="GroupDashboard.js"></script>
 <script src="Authentication.js"></script>
-<script src="Statistics.js"></script>
+<script src="Profile.js"></script>
+<script src="GroupSetting.js"></script>
+<script src="navbars.js"></script>
+
 </body>
 </html>

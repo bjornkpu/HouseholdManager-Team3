@@ -1,4 +1,4 @@
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#editUser').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
@@ -9,6 +9,7 @@ $(document).ready(function() {
     });
 
     getLoggedOnUser(setData);
+    getLoggedOnUser(getGroups);
     var sessionEmail;
     //getEmail();
 
@@ -36,19 +37,6 @@ $(document).ready(function() {
         });
     }
 
-    function getEmail () {
-        $.ajax({
-            type: 'GET',
-            url:'rest/session',
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            success: function (data) {
-                sessionEmail=data.email;
-                getInfo(data.email);
-
-            }
-        })
-    }
 
     function getInfo(email){
         $.ajax({
@@ -172,8 +160,30 @@ $(document).ready(function() {
         })
     }
 
+        function getGroups(user) {
+            $.ajax({
+                type: 'GET',
+                url: '/scrum/rest/groups/list/' + user.email,
+                dataType: "json",
+                success: homeButtonForOldUsers
+            });
+            //console.log(getCookie(curGroup));
+        }
 
-});
+        //Users who are connected to a group can press the logo to go the the dashboard while
+        //new users cant
+        function homeButtonForOldUsers(data) {
+            groups=data;
+            var len = data.length;
+            if(len>=1){
+                $('#houseHoldManagerLogo').click(function () {
+                    window.location.href = "GroupDashboard.html"
+                })
+            }
+        }
+
+
+    });
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -267,5 +277,4 @@ function createNewGroup() {
         })
     }
 };
-
 

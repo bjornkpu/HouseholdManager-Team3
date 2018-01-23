@@ -12,12 +12,12 @@ function getLoggedOnUser(success) {
                     success(user);
                 },
                 error: function() {
-                    window.location.href = "error.html";
+                    window.location.href = "Login.html";
                 }
             });
         },
         error: function() {
-            window.location.href = "error.html";
+            window.location.href = "Login.html";
         }
     });
 };
@@ -30,6 +30,8 @@ function logOut(){
         dataType: 'json',
         success: function(session){
             window.location.href="Login.html";
+            document.cookie ="userLoggedOn =";
+
         }
     });
 }

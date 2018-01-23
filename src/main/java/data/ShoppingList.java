@@ -22,6 +22,14 @@ public class ShoppingList {
         userList = new ArrayList<>();
     }
 
+    public ShoppingList(String name, int groupId,
+                        ArrayList<User> userList) {
+        this.name = name;
+        this.groupId = groupId;
+        this.itemList = new ArrayList<Item>();
+        this.userList = userList;
+    }
+
     public ShoppingList(int id, String name, int groupId,
                         ArrayList<Item> itemList, ArrayList<User> userList) {
         this.id = id;

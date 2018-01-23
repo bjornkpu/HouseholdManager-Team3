@@ -195,7 +195,7 @@ INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('T�
 
 INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('Kino', 1);
-INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 1);
+INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 2);
 INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
 
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 1, 1,1);
@@ -204,11 +204,20 @@ INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Lefser
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Mais', 0,1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Saus', 1,1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Rømme', 1,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Fredrikstadpilsner', 2,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Cola', 2,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Fredrikstadpilsner', 2,2,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Cola', 2,3,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Pepsi', 2,3,1);
 
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('en@h.no','1');
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('to@h.no','1');
+
+INSERT INTO chore_log(user_email,chore_id) VALUE ('en@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('fire@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('fire@h.no',2);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',1);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',2);
+INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',3);
 
 
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
