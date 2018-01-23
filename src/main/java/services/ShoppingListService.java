@@ -202,17 +202,14 @@ public class ShoppingListService {
 	@PUT
 	@Path("/items/{status}")
 	@Consumes("application/json")
-	public void updateItems(@PathParam("status") int status, int[] items){
+	public void updateItems(@PathParam("status") int status, ArrayList<Item> items){
 		try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
 			if(status==2||status==1) {
-				for (int i = 0; i < items.length; i++) {
-					Item item = itemDao.getItem(items[i]);
+				for (Item item : items) {
 					item.setStatus(status);
 					itemDao.updateItem(item);
 				}
-			}
-			else if(status==3){
 
 			}
 		} catch(SQLException e){
@@ -222,18 +219,18 @@ public class ShoppingListService {
 	}
 
 	/** Delete the item with the given Id.
-	 * @param itemIds the id to the items you are trying to delete.
+	 * @param items items you are trying to delete.
 	 * @throws ServerErrorException when failing to get the item.
 	 */
 	@DELETE
 	@Path("/items/")
 	@Consumes("application/json")
-	public void delItemById(int[] itemIds){
+	public void delItemById(ArrayList<Item> items){
 		try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
-			for(int i = 0;i<itemIds.length;i++){
-				itemDao.delItem(itemIds[i]);
-			}
+            for(Item item : items){
+                itemDao.delItem(item.getId());
+            }
 		} catch(SQLException e){
 			log.error("Failed to delete item", e);
 			throw new ServerErrorException("Failed to delete item", Response.Status.INTERNAL_SERVER_ERROR, e);
