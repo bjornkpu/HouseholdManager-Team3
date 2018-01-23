@@ -59,7 +59,7 @@ public class DisbursementDaoTest {
         disbursement2.setParticipants(participants);
         try{
             connection = Db.instance().getConnection();
-//            connection.setAutoCommit(false);
+            connection.setAutoCommit(false);
             disbursementDao = new DisbursementDao(connection);
 
             int updatedrowcount=0;
