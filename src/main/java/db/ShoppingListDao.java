@@ -101,7 +101,9 @@ public class ShoppingListDao {
     }
 
     public ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
-        connection = Db.instance().getConnection();
+//        connection = Db.instance().getConnection();
+        itemDao = new ItemDao(connection);
+        userDao = new UserDao(connection);
         try {
             ps = connection.prepareStatement(
                     "SELECT * " +
@@ -131,7 +133,7 @@ public class ShoppingListDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+//            Db.close(connection);
         }
     }
 
