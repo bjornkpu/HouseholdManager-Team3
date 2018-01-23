@@ -105,9 +105,6 @@ $(document).ready(function(){
         $("#page-content").load("Tasks.html");
     });
 
-    $("#loadSettings").click(function(){
-        $("#page-content").load("Settings.html");
-    });
 
     $("#loadAbout").click(function(){
         $("#page-content").load("About.html");
