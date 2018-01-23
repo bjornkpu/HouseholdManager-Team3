@@ -11,7 +11,7 @@ import java.sql.*;
 public class Db {
     private static Db datasource;
     private static Logger logger= new Logger();
-    private ComboPooledDataSource cpds;
+    private static ComboPooledDataSource cpds;
     private static final Logger log = Logger.getLogger();
     private static final String DB_URL = "jdbc:mysql://mysql.stud.iie.ntnu.no:3306/";
     private static final String DB_USER_NAME = "g_tdat2003_t3";
@@ -25,20 +25,25 @@ public class Db {
 	 */
     private Db() {
         try {
-            Class.forName(DB_DRIVER);
-//            cpds = new ComboPooledDataSource();
-//            cpds.setDriverClass(DB_DRIVER); //loads the jdbc driver
-//            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
-//            cpds.setUser(DB_USER_NAME);
-//            cpds.setPassword(DB_PW);
-//
-//            // the settings below are optional -- c3p0 can work with defaults
-//            cpds.setInitialPoolSize(1);
-//            cpds.setMinPoolSize(1);
-//            cpds.setAcquireIncrement(2);
-//            cpds.setMaxPoolSize(6);
-//            cpds.setMaxIdleTimeExcessConnections(120);
-//            cpds.setMaxStatements(180);
+//            Class.forName(DB_DRIVER);
+            cpds = new ComboPooledDataSource();
+            cpds.setDriverClass(DB_DRIVER); //loads the jdbc driver
+            cpds.setJdbcUrl(DB_URL+DB_USER_NAME);
+            cpds.setUser(DB_USER_NAME);
+            cpds.setPassword(DB_PW);
+
+            // the settings below are optional -- c3p0 can work with defaults
+            cpds.setInitialPoolSize(1);
+            cpds.setMinPoolSize(1);
+            cpds.setAcquireIncrement(2);
+            cpds.setMaxPoolSize(4);
+            cpds.setMaxIdleTimeExcessConnections(120);
+            cpds.setMaxStatements(180);
+
+            cpds.setCheckoutTimeout(300000); //30sek
+            cpds.setTestConnectionOnCheckout(true);
+            cpds.setUnreturnedConnectionTimeout(20);
+            cpds.setDebugUnreturnedConnectionStackTraces(true);
 
             log.info("DB initialized!");
 
@@ -66,8 +71,8 @@ public class Db {
 	 * @throws SQLException
 	 */
     public Connection getConnection() throws SQLException {
-//        return this.cpds.getConnection();
-        return DriverManager.getConnection(DB_URL+DB_USER_NAME, DB_USER_NAME,DB_PW);
+        return this.cpds.getConnection();
+//        return DriverManager.getConnection(DB_URL+DB_USER_NAME, DB_USER_NAME,DB_PW);
     }
     /** Closes a {@linkplain Connection}.
      *
@@ -115,5 +120,9 @@ public class Db {
                 rs.close();
             } catch (SQLException e) { /* ignored */}
         }
+    }
+
+    public void destroy(){
+        cpds.close();
     }
 }

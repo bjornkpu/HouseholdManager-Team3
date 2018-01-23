@@ -25,20 +25,9 @@ import java.util.List;
  */
 @Path("/groups/")
 public class GroupService {
-
     private static final Logger log = Logger.getLogger();
-    private Connection connection;
-    private GroupDao groupDao;
-    private MemberDao memberDao;
 
     public GroupService() {
-        try{
-            connection= Db.instance().getConnection();
-            this.groupDao = new GroupDao(connection);
-            this.memberDao = new MemberDao(connection);
-        }catch(SQLException e){
-            log.error("Failed to get connection", e);
-        }
     }
 
     @Context
@@ -55,14 +44,13 @@ public class GroupService {
     @Produces(MediaType.APPLICATION_JSON)
     public Group getGroup(@PathParam("groupid") int groupid) {
         Group group = null;
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            GroupDao groupDao = new GroupDao(connection);
             log.info("Group #" + groupid + " found.");
             return groupDao.getGroup(groupid);
         } catch (SQLException e) {
             log.info("Could not find group #" + groupid);
             throw new ServerErrorException("Failed to get group", Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -75,15 +63,14 @@ public class GroupService {
     @Produces(MediaType.APPLICATION_JSON)
     public List<Group> getGroups() {
         List<Group> groups = null;
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving all groups");
             groups = groupDao.getAllGroups();
             return groups;
         } catch (SQLException e) {
             log.info("Unable to get all groups");
             throw new ServerErrorException("Failed to get groups", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
     /**
@@ -96,14 +83,13 @@ public class GroupService {
     @Path("/{email}/invites")
     @Produces("application/json")
     public ArrayList<Group> getGroupInvites(@PathParam("email") String email){
-        try{
+        try(Connection connection= Db.instance().getConnection()){
+            MemberDao memberDao = new MemberDao(connection);
             log.info("Retrieving group invites for member " + email);
             return memberDao.getGroupInvites(email);
         } catch (SQLException e){
             log.info("Failed to retrieve invites for member " + email);
             throw new ServerErrorException("Failed to retrieve invites",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
     /**
@@ -116,14 +102,14 @@ public class GroupService {
     @Path("/list/{email}")
     @Produces("application/json")
     public ArrayList<Group> getGroupsConnectedToMember(@PathParam("email") String email){
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            MemberDao memberDao = new MemberDao(connection);
+
             log.info("Retrieving groups by member.");
             return memberDao.getGroupsByMember(email);
         } catch (SQLException e){
             log.info("Could not get groups");
             throw new ServerErrorException("Failed to get groups.",Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -140,7 +126,9 @@ public class GroupService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGroup(Group group) {
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+
             log.info("Group added. ID: " + group.getId());
             int s = groupDao.addGroup(group);
             if (s != -1){
@@ -151,8 +139,6 @@ public class GroupService {
         } catch (SQLException e) {
             log.info("Add group failed. ID:"+group.getId());
             throw new ServerErrorException("Failed to create group", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -169,13 +155,12 @@ public class GroupService {
     @Path("/{groupid}")
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteGroup(@PathParam("groupid") int groupId){
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
             groupDao.deleteGroup(groupId);
         } catch (SQLException e){
             log.info("Deleting group failed. Check constraints in database");
             throw new ServerErrorException("Failed to delete group", Response.Status.INTERNAL_SERVER_ERROR,e);
-        }finally {
-            Db.close(connection);
         }
     }
 
@@ -193,14 +178,13 @@ public class GroupService {
     @Path("/{groupid}")
     @Produces(MediaType.APPLICATION_JSON)
     public void updateGroup(Group group){
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
             log.info("Updating group. ID: " + group.getId());
             groupDao.updateGroup(group);
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
             throw new ServerErrorException("Failed to update group",Response.Status.INTERNAL_SERVER_ERROR);
-        }finally {
-            Db.close(connection);
         }
 
     }

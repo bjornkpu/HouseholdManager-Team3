@@ -25,17 +25,9 @@ import java.util.ArrayList;
 public class WallPostService {
 
     private static final Logger log = Logger.getLogger();
-    private static WallpostDao wallpostDao;
-    private Connection connection;
 
 
     public WallPostService(){
-        try{
-            connection = Db.instance().getConnection();
-            this.wallpostDao = new WallpostDao(connection);
-        }catch(SQLException e){
-            log.error("Failed to get connection", e);
-        }
     }
 
     @Context
@@ -52,12 +44,12 @@ public class WallPostService {
     @Path("/{groupId}")
     @Produces("application/json")
     public ArrayList<WallPost> getWallPostForGroup(@PathParam("groupId") int groupId){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            WallpostDao wallpostDao = new WallpostDao(connection);
+
             return wallpostDao.getWallposts(groupId);
         } catch (SQLException e){
             throw new ServerErrorException("Failed to get wallposts from group" + groupId, Response.Status.INTERNAL_SERVER_ERROR,e);
-        } finally {
-            Db.close(connection);
         }
     }
 
@@ -71,12 +63,12 @@ public class WallPostService {
     @Path("/{groupId}/{email}")
     @Produces("application/json")
     public ArrayList<WallPost> getWallPostsForUser(@PathParam("groupId") int groupId,@PathParam("email") String email){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            WallpostDao wallpostDao = new WallpostDao(connection);
+
             return wallpostDao.getWallposts(email,groupId);
         } catch (SQLException e){
             throw new ServerErrorException("Failed to get wallposts for user", Response.Status.INTERNAL_SERVER_ERROR,e);
-        } finally {
-            Db.close(connection);
         }
     }
 
@@ -89,12 +81,12 @@ public class WallPostService {
     @Produces("application/json")
     @Consumes("application/json")
     public Response postWallPost(WallPost wallPost){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            WallpostDao wallpostDao = new WallpostDao(connection);
+
             return  Response.status(201).entity(wallpostDao.postWallpost(wallPost)).build();
         } catch (SQLException e){
             throw new ServerErrorException("Failed to post to wall", Response.Status.INTERNAL_SERVER_ERROR,e);
-        } finally {
-            Db.close(connection);
         }
     }
 
@@ -106,12 +98,11 @@ public class WallPostService {
     @DELETE
     @Produces("application/json")
     public Response deleteWallPost(WallPost wallPost){
-        try {
+        try (Connection connection= Db.instance().getConnection()){
+            WallpostDao wallpostDao = new WallpostDao(connection);
             return Response.status(200).entity(wallpostDao.deleteWallpost(wallPost.getId())).build();
         } catch (SQLException e){
             throw new ServerErrorException("Failed to delete wallpost", Response.Status.INTERNAL_SERVER_ERROR,e);
-        } finally {
-            Db.close(connection);
         }
 
     }

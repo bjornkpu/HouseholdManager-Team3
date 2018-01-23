@@ -33,16 +33,7 @@ public class SessionService {
 
     private static final Logger log = Logger.getLogger();
 
-    private UserDao userDao;
-    private Connection connection;
-
     public SessionService() {
-        try{
-            connection= Db.instance().getConnection();
-            userDao= new UserDao(connection);
-        }catch(SQLException e){
-            log.error("Failed to get connection", e);
-        }
     }
 
     @Context
@@ -53,7 +44,8 @@ public class SessionService {
     @Produces("application/json")
     public Session create(LoginData data) {
         log.info("Trying to logon");
-        try {
+        try(Connection connection= Db.instance().getConnection()) {
+            UserDao userDao= new UserDao(connection);
             User user = userDao.getUser(data.getEmail());
             if(!correctLogin(data,user)) {
                 log.info("Failed login. Username: "+ data.getEmail());
@@ -62,8 +54,6 @@ public class SessionService {
         } catch(SQLException e) {
             log.error("Failed to check user", e);
             throw new ServerErrorException("DB error", Response.Status.INTERNAL_SERVER_ERROR, e);
-        }finally {
-            Db.close(connection);
         }
         Session session = new Session();
         session.setEmail(data.getEmail());
