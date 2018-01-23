@@ -6,7 +6,8 @@ $(document).ready(function() {
     var currentShoppingList = 0;
     var numberOfMembers = 0;
     var balanceList=0;
-    var currentGroup = getCookie("currentGroup")
+    var currentGroup = getCookie("currentGroup");
+    var currentUser = getCookie("userLoggedOn");
 
     loadShoppingListsFromGroup(currentGroup);
 
@@ -58,7 +59,7 @@ $(document).ready(function() {
     }
 
     function getDisbursementList(){
-        var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/disbursement/'+'en@h.no' + '/user';
+        var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
 
         $.get(url, function(data, status){
             console.log("skrrt");
@@ -74,7 +75,7 @@ $(document).ready(function() {
     }
 
     function getUserBalance(){
-        var url='http://localhost:8080/scrum/rest/groups/balance/'+1;
+        var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
 
         $.get(url, function(data, status){
             console.log("skrrt");
