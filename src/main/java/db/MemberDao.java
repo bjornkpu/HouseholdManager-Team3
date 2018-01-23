@@ -171,13 +171,15 @@ public class MemberDao {
 
     /**
      * Updates a member of a group. One could update the balance or status of a member in a group.
-     * @param member Member object with new values.
+     *
+     * @param member Member object with new values. A member with balance == -1 updates the status only,
+     *               status == -1 updates balance only.
      * @param groupId Id of the group.
      * @return A boolean which indicates the outcome. True->success, false-> failed.
      * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public boolean updateUser(Member member, int groupId) throws SQLException {
+    public boolean updateMember(Member member, int groupId) throws SQLException {
 //        connection = Db.instance().getConnection();
         try {
             if (member.getBalance() == -1 && member.getName() == null && member.getPassword() == null){
@@ -188,6 +190,26 @@ public class MemberDao {
                 int result = ps.executeUpdate();
                 log.info("Update member status " + (result == 1?"ok":"failed"));
                 return result == 1;
+            }
+            if(member.getStatus() == -1){
+                int result = -1;
+                ps = connection.prepareStatement("SELECT user_email, balance FROM user_party WHERE user_email=? AND party_id=? FOR UPDATE");
+                ps.setString(1,member.getEmail());
+                ps.setInt(2,groupId);
+                rs = ps.executeQuery();
+                if(rs.next()){
+                    double oldBalance = rs.getDouble("balance");
+                    Db.close(rs);
+                    Db.close(ps);
+                    ps = connection.prepareStatement("UPDATE user_party set balance = ? where user_email=? AND party_id = ?");
+                    ps.setDouble(1,oldBalance+member.getBalance());
+                    ps.setString(2,member.getEmail());
+                    ps.setInt(3,groupId);
+                    result = ps.executeUpdate();
+                    log.info("Update member balance " + (result == 1?"ok":"failed"));
+                }
+                return result == 1;
+
             }
             ps = connection.prepareStatement("UPDATE user_party set balance=?, status = ? where user_email=? AND party_id = ?");
             ps.setDouble(1,member.getBalance());
