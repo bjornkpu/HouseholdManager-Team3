@@ -308,7 +308,7 @@ $(document).ready(function() {
         var checked=getCheckedItems();
         var disbursement;
         disbursement.items=checked;
-        disbursement.payerEmail=getCookie("email");
+        disbursement.payerEmail=getCookie("userLoggedOn");
         disbursement.participants=getCheckedMembers();
         disbursement.groupId = currentGroup;
         disbursement.name = $('#nameOfDisbursement').valueOf();
@@ -317,8 +317,8 @@ $(document).ready(function() {
 
         // AJAX Request
         $.ajax({
-            type: "Put",                                //         \ 3 means disburesed /
-            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+3+'/',
+            type: "Put",
+            url: '/scrum/rest/groups/' +currentGroup + '/disbursements/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
