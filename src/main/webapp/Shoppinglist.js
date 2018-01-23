@@ -6,7 +6,9 @@ $(document).ready(function() {
     var currentShoppingList = 0;
     var numberOfMembers = 0;
     var balanceList=0;
-    var currentGroup = getCookie("currentGroup")
+    var currentGroup = getCookie("currentGroup");
+    var currentUser = getCookie("userLoggedOn");
+    var paymentRequests;
 
     loadShoppingListsFromGroup(currentGroup);
 
@@ -58,7 +60,7 @@ $(document).ready(function() {
     }
 
     function getDisbursementList(){
-        var url='http://localhost:8080/scrum/rest/groups/' + 1 + '/disbursement/'+'en@h.no' + '/user';
+        var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
 
         $.get(url, function(data, status){
             console.log("skrrt");
@@ -74,7 +76,7 @@ $(document).ready(function() {
     }
 
     function getUserBalance(){
-        var url='http://localhost:8080/scrum/rest/groups/balance/'+1;
+        var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
 
         $.get(url, function(data, status){
             console.log("skrrt");
@@ -85,6 +87,23 @@ $(document).ready(function() {
             }
             if(status === "error"){
                 console.log("Error in loading Item content");
+            }
+        });
+    }
+
+    function getPaymentRequests(){
+        var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
+
+        $.get(url, function(data, status){
+            console.log("skrrt");
+            if (status === "success") {
+                paymentRequests = data;
+                fixPaymentRequestsTable();
+                console.log(paymentRequests);
+                console.log("Number of payments loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading number of payments content");
             }
         });
     }
@@ -114,6 +133,31 @@ $(document).ready(function() {
         console.log("Added Items");
     }
 
+    function fixPaymentRequestsTable(){
+        var len = paymentRequests.length;
+        var table = document.getElementById("paymentRequests");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#paymentRequests").append(
+            "<tr>"+
+            "<th>User</th>"+
+            "<th>Amount</th>"+
+            "</tr>"
+        );
+
+        for(var i = 0; i < len; i++){
+            $("#paymentRequests").append(
+                "<tr>"+
+                "<th scope=\"row\">"+paymentRequests[i].key+"</th>"+
+                "<th>"+paymentRequests[i].value+"</th>"+
+                "</tr>"
+            );
+        }
+        console.log("Added Items");
+    }
+
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
@@ -125,6 +169,8 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
         getDisbursementList();
         getUserBalance();
+        getPaymentRequests();
+        paymentRequests.innerHTML = 'Payment Requests';
     });
 
     $('#backToShoppinglist').click(function () {

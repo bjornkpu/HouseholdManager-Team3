@@ -5,11 +5,10 @@ Kopier resultatet av denne spørringa for å drepe alle connections som ikke utf
 SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='g_tdat2003_t3' AND info IS NULL ORDER BY id;
  */
 
--- Kill all connections
-SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='root' AND info = 'SELECT * FROM processlist';
-
 -- Sletter tabeller
+SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS item_shoppinglist;
 DROP TABLE IF EXISTS user_disbursement;
 DROP TABLE IF EXISTS wallpost;
@@ -23,11 +22,11 @@ DROP TABLE IF EXISTS disbursement;
 DROP TABLE IF EXISTS party;
 DROP TABLE IF EXISTS user;
 
-
+SET FOREIGN_KEY_CHECKS = 1;
 -- Oppretter tabeller med entitetsintegritet (primærnøkkel)
 
 CREATE TABLE user(
-  name VARCHAR(255),
+  name VARCHAR(600),
   email VARCHAR(255) NOT NULL,
   password CHAR(64)NOT NULL,
   salt VARCHAR(20) NOT NULL,
@@ -36,7 +35,7 @@ CREATE TABLE user(
 
 CREATE TABLE party(
   id INTEGER NOT NULL AUTO_INCREMENT,
-  name VARCHAR(30) NOT NULL,
+  name VARCHAR(255) NOT NULL,
   CONSTRAINT party_pk PRIMARY KEY(id));
 
 CREATE TABLE wallpost(
@@ -56,7 +55,7 @@ CREATE TABLE user_party(
 
 CREATE TABLE chore(
   id INTEGER NOT NULL AUTO_INCREMENT,
-  name VARCHAR(90),
+  name VARCHAR(255),
   regularity INTEGER (4),
   deadline TIMESTAMP,
   party_id INTEGER NOT NULL,
@@ -72,7 +71,7 @@ CREATE TABLE chore_log(
 
 CREATE TABLE item (
   id INTEGER(10) NOT NULL AUTO_INCREMENT,
-  name VARCHAR(30) NOT NULL ,
+  name VARCHAR(255) NOT NULL ,
   status INTEGER(1) NOT NULL,
   shoppinglist_id INTEGER(10),
   disbursement_id INTEGER(10),
@@ -80,7 +79,7 @@ CREATE TABLE item (
 
 CREATE TABLE shoppinglist(
   id INTEGER NOT NULL AUTO_INCREMENT,
-  name VARCHAR(30) NOT NULL,
+  name VARCHAR(255) NOT NULL,
   party_id INTEGER NOT NULL,
   CONSTRAINT shippinglist_pk PRIMARY KEY (id));
 
@@ -100,10 +99,18 @@ CREATE TABLE disbursement(
   id INTEGER(10) AUTO_INCREMENT,
   price DOUBLE,
   name VARCHAR(255),
-  date TIMESTAMP NOT NULL,
+  date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   payer_id VARCHAR(255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   CONSTRAINT disbursement_pk PRIMARY KEY(id));
+
+CREATE TABLE payment(
+  id INTEGER(10) AUTO_INCREMENT,
+  payer_id VARCHAR (255) NOT NULL,
+  receiver_id VARCHAR (255) NOT NULL,
+  party_id INTEGER(10) NOT NULL,
+  amount DOUBLE NOT NULL,
+  CONSTRAINT payment_pk PRIMARY KEY(id));
 
 
 
@@ -160,6 +167,15 @@ ALTER TABLE chore_log
 
 ALTER TABLE chore_log
   ADD CONSTRAINT chore_log_fk2 FOREIGN KEY (chore_id) REFERENCES chore(id);
+
+ALTER TABLE payment
+  ADD CONSTRAINT payment_fk1 FOREIGN KEY (payer_id) REFERENCES user(email);
+
+ALTER TABLE payment
+  ADD CONSTRAINT payment_fk2 FOREIGN KEY (receiver_id) REFERENCES user(email);
+
+ALter TABLE payment
+    ADD CONSTRAINT payment_fk3 FOREIGN KEY (party_id) REFERENCES party(id);
 
 
 #TESTDATA
@@ -233,7 +249,12 @@ INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',6);
 
 INSERT INTO user_party (user_email, party_id, balance, status) VALUEs ('abcqwe',1,0,1);
 INSERT INTO shoppinglist_user(user_email,shoppinglist_id) VALUEs ('abcqwe',1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('$(document).ready(function() {location.reload();});',1,1,-1);
+INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (1,'en@h.no');
+INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (3,'en@h.no');
+
+INSERT INTO payment(payer_id, receiver_id, party_id, amount) VALUES ('to@h.no','en@h.no', 1,50);
+INSERT INTO payment(payer_id, receiver_id, party_id, amount) VALUES ('tre@h.no','en@h.no', 1,100);
+INSERT INTO payment(payer_id, receiver_id, party_id, amount) VALUES ('to@h.no','en@h.no', 1, 50);
 
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');

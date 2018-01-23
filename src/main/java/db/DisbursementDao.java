@@ -134,6 +134,7 @@ public class DisbursementDao {
                     disbursement.setDisbursement(rs.getDouble("price"));
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
+                    disbursement.setPayer(new User(rs.getString("payer_id")));
                     disbursement.setParticipants(userDao.getUsersInDisbursement(disbursementId));
                     disbursement.setItems(itemDao.getItemsInDisbursement(disbursementId));
                 }while(rs.next());
@@ -158,15 +159,21 @@ public class DisbursementDao {
      * @throws SQLException in case of error in statements or connection.
      */
     public boolean addDisbursement(Disbursement disbursement, int groupid)throws SQLException{
-//        connection = Db.instance().getConnection();
-        connection.setAutoCommit(false);
+        boolean oldCommit=true;
+        if(connection.getAutoCommit()){
+            connection.setAutoCommit(false);
+        }else{
+            oldCommit=false;
+        }
         try {
             if(makeDisbursement(disbursement,groupid)){
                 disbursement.setId(lastId());
                 if(addParticipantsToDisbursement(disbursement)){
                     if(updateBalances(disbursement,groupid)){
                         if(addItemsToDisbursement(disbursement)){
-                            connection.commit();
+                            if(oldCommit){
+                                connection.commit();
+                            }
                             return true;
                         }
                     }
@@ -175,8 +182,10 @@ public class DisbursementDao {
 
         } finally {
             if(connection!=null){
-                connection.rollback();
-                connection.setAutoCommit(true);
+                if(oldCommit){
+                    connection.rollback();
+                    connection.setAutoCommit(true);
+                }
 //                connection.close();
             }
         }
@@ -197,6 +206,7 @@ public class DisbursementDao {
     }
 
     private boolean updateBalances(Disbursement disbursement, int groupid) throws SQLException {
+        boolean returnResult = true;
         ArrayList<Member> members = new ArrayList<>();
         Member payer = null;
         try{
@@ -208,27 +218,32 @@ public class DisbursementDao {
                 sql+=" OR user_email=?";
             }
             sql+= ") AND party_id=? FOR UPDATE";
-
+//            log.info("SQL for getting old balances:\n"+sql);
             ps=connection.prepareStatement(sql);
 
             //Input the emails into the preparedstatement
             int i;
-            for(i =0;i<disbursement.getParticipants().size();i++){
-                User u = disbursement.getParticipants().get(i);
+            for(i =1;i<=disbursement.getParticipants().size();i++){
+                User u = disbursement.getParticipants().get(i-1);
                 ps.setString(i,u.getEmail());
             }ps.setInt(i,groupid);
 
+            String participants="Participants: ";
             //Execute and add the participants into an arraylist
             rs=ps.executeQuery();
+            int updatednumber=0;
             if(rs.next()){
-                Member m = new Member();
                 do{
+                    Member m = new Member();
                     m.setEmail(rs.getString("user_email"));
                     m.setBalance(rs.getDouble("balance"));
+                    participants+=m.getEmail()+", ";
                     members.add(m);
                     if(disbursement.getPayer().getEmail().equals(m.getEmail())){
+                        log.info("payer: "+m.getEmail());
                         payer=m;
                     }
+                    updatednumber++;
                 }while(rs.next());
             }
             Db.close(rs);
@@ -244,16 +259,22 @@ public class DisbursementDao {
                     payer= new Member();
                     payer.setEmail(rs.getString("user_email"));
                     payer.setBalance(rs.getDouble("balance"));
+                    participants+=payer.getEmail()+", ";
+                    updatednumber++;
                 }
                 Db.close(rs);
                 Db.close(ps);
             }
+            log.info("updated balance for this many users: "+updatednumber);
+
+            log.info(participants);
             //Give them new balances
             if(payer!=null){
                 DebtCalculator.calculateReceipt(payer,members,disbursement.getDisbursement());
             }else{
                 log.error("Payer is null, should not reach this", new NullPointerException());
             }
+
             //Add payer to members. We're done with updating balances, no longer need to keep track of who is paying.
             if(!members.contains(payer)){
                 members.add(payer);
@@ -271,12 +292,13 @@ public class DisbursementDao {
                     int[] result =ps.executeBatch();
                     for(int r : result){
                         if(r==Statement.EXECUTE_FAILED){
-                            return false;
+                            returnResult= false;
                         }
                     }
                 }
-            }return true;
-
+            }
+            log.info("Updated balance " + (returnResult?"ok":"failed"));
+            return returnResult;
 
         }finally {
             Db.close(rs);
@@ -286,6 +308,7 @@ public class DisbursementDao {
     }
 
     private boolean addParticipantsToDisbursement(Disbursement disbursement) throws SQLException {
+        boolean returnResult = true;
         try{
             ps = connection.prepareStatement("INSERT INTO user_disbursement " +
                     "(user_email,disp_id)" +
@@ -300,12 +323,13 @@ public class DisbursementDao {
                     int[] result =ps.executeBatch();
                     for(int r : result){
                         if(r==Statement.EXECUTE_FAILED){
-                            return false;
+                            returnResult= false;
                         }
                     }
                 }
             }
-            return true;
+            log.info("Add users to disbursement " + (returnResult?"ok":"failed"));
+            return returnResult;
         }finally {
             Db.close(ps);
         }
@@ -324,9 +348,11 @@ public class DisbursementDao {
             }
             sql+=";";
             int result=-1;
-            if(i<0){
+            if(i>0){
                 result=statement.executeUpdate(sql);
             }
+            log.info("Add item to disbursement " +
+                    (result == disbursement.getItems().size()?"ok":"failed"));
             return result==disbursement.getItems().size();
         }finally {
             Db.close(statement);
@@ -348,7 +374,7 @@ public class DisbursementDao {
             ps.setString(4,disbursement.getPayer().getEmail());
             ps.setInt(5,groupid);
             int result = ps.executeUpdate();
-            log.info("Add user " + (result == 1?"ok":"failed"));
+            log.info("Add disbursement " + (result == 1?"ok":"failed"));
             return result==1;
         }finally {
             Db.close(ps);

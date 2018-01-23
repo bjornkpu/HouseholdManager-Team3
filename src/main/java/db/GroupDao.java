@@ -373,4 +373,41 @@ public class GroupDao {
 //            Db.close(connection);
         }
     }
+
+    public ArrayList<StatisticsHelp> getPayments(String email, int groupId) throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT payer_id,amount FROM payment WHERE receiver_id=? AND party_id=?");
+            ps.setString(1,email);
+            ps.setInt(2,groupId);
+            rs = ps.executeQuery();
+            ArrayList<StatisticsHelp> result = new ArrayList<>();
+            while(rs.next()){
+                StatisticsHelp help = new StatisticsHelp(rs.getString("payer_id"),rs.getDouble("amount"));
+                result.add(help);
+            }
+            return result;
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
+        }
+    }
+
+    public int getNumberOfPaymentRequests(String email, int groupId) throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT COUNT(*) FROM payment WHERE receiver_id=? AND party_id=?");
+            ps.setString(1,email);
+            ps.setInt(2,groupId);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                System.out.println("fant rs");
+                return rs.getInt("COUNT(*)");
+            }
+            return 0;
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
+        }
+    }
 }

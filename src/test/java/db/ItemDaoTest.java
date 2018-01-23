@@ -122,6 +122,8 @@ public class ItemDaoTest {
         assertNotNull(items);
         assertEquals(items.get(0).getId(), itemTest.getId());
     }
+
+    //Works thorugh disbursementDaoTest...
     @Test
     public void testGetItemsInDisbursment(){
         ArrayList<Item> items = new ArrayList<>();
@@ -129,7 +131,7 @@ public class ItemDaoTest {
 
         try {
             itemDao.updateItem(itemTest);
-            items = itemDao.getItemsInShoppingList(shoppingListId);
+            items = itemDao.getItemsInDisbursement(disbursementId);
         } catch (SQLException e) {
             e.printStackTrace();
         }
