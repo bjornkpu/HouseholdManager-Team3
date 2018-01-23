@@ -143,7 +143,7 @@ public class MemberDaoTest {
     @Test
     public void updateUserTest()throws SQLException{
         Member mem1 = new Member(email1, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
-        memberDao.updateUser(mem1,groupId2);
+        memberDao.updateMember(mem1,groupId2);
         ArrayList<Member> members = memberDao.getMembers(groupId2);
         Boolean ok = false;
         for(Member memb : members){
@@ -160,7 +160,7 @@ public class MemberDaoTest {
         Boolean test2 = false;
         Member mem2 = new Member(email2, "User1", "90706060", "123", LoginCheck.getSalt(),0,Member.ACCEPTED_STATUS);
         memberDao.inviteUser(email2,groupId2);
-        memberDao.updateUser(mem2,groupId2);
+        memberDao.updateMember(mem2,groupId2);
         ArrayList<Member> members = memberDao.getMembers(groupId2);
         for(Member memb : members){
             if(memb.getEmail().equalsIgnoreCase(email2)){
