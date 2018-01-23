@@ -521,11 +521,10 @@ $(document).ready(function() {
             error: function(){
                 var disb = {
                     items: getCheckedItems(),
-                    payerEmail: getCookie("userLoggedOn"),
+                    payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    groupId: currentGroup,
-                    name: $('#nameOfDisbursement').valueOf(),
-                    disbursement: $('#totalAmount').valueOf()
+                    name: $('#nameOfDisbursement').val(),
+                    disbursement: $('#totalAmount').val()
                 };
                 console.log(disb.valueOf())
             }
@@ -604,9 +603,9 @@ $(document).ready(function() {
         $("#shoppinglistName").text(lists[id].name);
     }
 
-    function getItemsInShoppingList(id){
-        console.log('http://localhost:8080/scrum/rest/groups/' + id+ '/shoppingLists/' + lists[currentShoppingList].id + '/items');
-        var url='http://localhost:8080/scrum/rest/groups/'+id+'/shoppingLists/'+lists[currentShoppingList].id+'/items';
+    function getItemsInShoppingList(){
+        var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/shoppingLists/'+lists[currentShoppingList].id+'/items';
+        //var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/shoppingLists/'+1+'/items';
 
         $.get(url, function(data, status){
             if(status === "success"){
@@ -654,6 +653,7 @@ $(document).ready(function() {
             }
         }return checked;
     }
+
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){

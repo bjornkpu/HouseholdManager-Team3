@@ -190,18 +190,17 @@ public class GroupService {
 
     }
 
-//    @GET
-//    @Path("/balance/{groupId}")
-//    @Produces("application/json")
-//    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId){
-//        try {
-//            log.info("Retrieving balance by member.");
-//            return groupDao.getUserBalance(groupId);
-//        } catch (SQLException e){
-//            log.info("Could not get balance");
-//            throw new ServerErrorException("Failed to get balance.",Response.Status.INTERNAL_SERVER_ERROR,e);
-//        }finally {
-//            Db.close(connection);
-//        }
-//    }
+    @GET
+    @Path("/balance/{groupId}")
+    @Produces("application/json")
+    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId){
+        try (Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+            log.info("Retrieving balance by member.");
+            return groupDao.getUserBalance(groupId);
+        } catch (SQLException e) {
+            log.info("Could not get balance");
+            throw new ServerErrorException("Failed to get balance.", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
 }
