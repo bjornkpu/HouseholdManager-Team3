@@ -140,6 +140,18 @@ buttons
 
     .activePage{
         background-color: lightgrey;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        -webkit-border-bottom-left-radius: 30px;
+        -webkit-border-top-left-radius: 30px;
+        -moz-border-radius-bottomleft: 30px;
+        -moz-border-radius-topleft: 30px;
+        border: none;
+        overflow: auto;
+        outline: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
     }
 
 
