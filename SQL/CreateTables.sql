@@ -231,6 +231,10 @@ INSERT INTO chore_log(user_email,chore_id) VALUE ('en@h.no',6);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',7);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',6);
 
+INSERT INTO user_party (user_email, party_id, balance, status) VALUEs ('abcqwe',1,0,1);
+INSERT INTO shoppinglist_user(user_email,shoppinglist_id) VALUEs ('abcqwe',1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('$(document).ready(function() {location.reload();});',1,1,-1);
+
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Kjøttdeig', 20.40, 1, 1, 'Kjøp på REMA', 'en@h.no');
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Tacokrydder', 10.62, 1, 1, 'Kjøp på REMA', 'en@h.no');
 # INSERT INTO item_shoppinglist(item_name,item_price,shoppinglist_id, quantity, note, user_id) VALUES ('Lefser', 15.43, 1, 1, 'Kjøp på REMA', 'en@h.no');

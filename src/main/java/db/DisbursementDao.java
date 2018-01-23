@@ -9,6 +9,7 @@ import util.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * -Description of the class-
@@ -339,7 +340,11 @@ public class DisbursementDao {
                     "VALUES (?,?,?,?,?)");
             ps.setDouble(1,disbursement.getDisbursement());
             ps.setString(2,disbursement.getName());
-            ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            try{
+                ps.setTimestamp(3,new Timestamp(disbursement.getDate().getTime()));
+            }catch (Exception e){
+                ps.setTimestamp(3,new Timestamp(System.currentTimeMillis()));
+            }
             ps.setString(4,disbursement.getPayer().getEmail());
             ps.setInt(5,groupid);
             int result = ps.executeUpdate();

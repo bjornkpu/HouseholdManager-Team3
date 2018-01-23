@@ -6,6 +6,7 @@ $(document).ready(function() {
     var currentShoppingList = 0;
     var numberOfMembers = 0;
     var balanceList=0;
+    var currentGroup = getCookie("currentGroup")
 
     loadShoppingListsFromGroup(currentGroup);
 
@@ -145,12 +146,12 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "rest/groups/1/shoppingLists/"+currentShoppingList+"/items",
+            url: "rest/groups/1/shoppingLists/"+lists[currentShoppingList].id+"/items",
             data: JSON.stringify(
                 {
                     name: name,
                     status: 1,
-                    shoppingListId: currentShoppingList,
+                    shoppingListId: lists[currentShoppingList].id,
                     id: 0,
                     disbursementId: -1
                 }),
@@ -406,7 +407,7 @@ $(document).ready(function() {
 
 
     $('#createDisbursementButton').click(function () {
-        renderCreateDisbursemen();
+        renderCreateDisbursement();
         var creatingDisbursement =document.getElementById('creatingDisbursement');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
@@ -463,11 +464,11 @@ $(document).ready(function() {
 
 
     //function to set memberlist for createDisbursement
-    function renderCreateDisbursemen() {
-        console.log("Rendering Create Disbursement ShoppingListId: "+currentShoppingList);
+    function renderCreateDisbursement() {
+        console.log("Rendering Create Disbursement ShoppingListId: "+lists[currentShoppingList].id);
         $.ajax({
             type: "GET",
-            url: "rest/groups/1/shoppingLists/" + 1 + "/users/",
+            url: "rest/groups/1/shoppingLists/" + lists[currentShoppingList].id + "/users/",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
