@@ -24,10 +24,6 @@
         color: black;
     }
 
-
-
-
-
     .groupdropdown{
         background-color: lightgrey;
         left: 50%;
@@ -41,15 +37,15 @@
         color: black;
     }
 
-.center{
+    .center{
     margin: auto;
     text-align: center;
-}
+    }
 
-.btn-group {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
+    .btn-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 
 /*
 hover
