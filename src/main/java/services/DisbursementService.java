@@ -73,7 +73,7 @@ public class DisbursementService {
         Session session = (Session) request.getSession().getAttribute("session");
         log.info("Session: = " + session.getEmail());
         try {
-            return ShoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
+            return shoppingListDao.getShoppingListByUserInGroup(groupId, session.getEmail());
         } catch (SQLException e) {
             log.error("Failed to get shopping list array", e);
             throw new ServerErrorException("Failed to get shopping list array", Response.Status.INTERNAL_SERVER_ERROR, e);

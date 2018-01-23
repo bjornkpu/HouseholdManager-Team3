@@ -100,7 +100,7 @@ public class ShoppingListDao {
         }
     }
 
-    public static ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
+    public ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
         connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement(
@@ -123,8 +123,8 @@ public class ShoppingListDao {
                 sl.setId(rs.getInt("id"));
                 sl.setName(rs.getString("name"));
                 sl.setGroupId(rs.getInt("party_id"));
-                sl.setItemList(ItemDao.getItemsInShoppingList(sl.getId()));
-                sl.setUserList(UserDao.getUsersInShoppingList(sl.getId()));
+                sl.setItemList(itemDao.getItemsInShoppingList(sl.getId()));
+                sl.setUserList(userDao.getUsersInShoppingList(sl.getId()));
                 shoppinglistList.add(sl);
             }
             return shoppinglistList;
