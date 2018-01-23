@@ -10,12 +10,13 @@ function initTable() {
             var id = 0, postedTo = 0;
             var message = "", postedBy = "";
             var datePosted="";
-            for (var i = 0; i < data.length; i++) {
+            for (var i = data.length-1; i >= 0; i--) {
                 id = data[i].id;
                 datePosted = new Date(data[i].datePosted);
                 message = data[i].message;
                 postedBy = data[i].postedBy;
                 postedTo = data[i].postedTo;
+                /*
                 $("#wallposts").append(
                     "<tr>" +
                     "<td>" + id + "</td>" +
@@ -25,18 +26,12 @@ function initTable() {
                     "<td>" + postedTo + "</td>" +
                     "</tr>"
                 );
+                */
+                $("#wallposts").append("<div class='post'><h6>" +
+                    message + "</h6><div id='postedByAndDate'><p>"+ postedBy +
+                    "</p><p>" + datePosted.toLocaleDateString() + " " +
+                    datePosted.toLocaleTimeString() +"</p></div></div>");
             }
-
-            /*
-            table.row.add([
-                id,
-                datePosted.toLocaleDateString() + " " + datePosted.toLocaleTimeString(),
-                message,
-                postedBy,
-                postedTo
-            ]);
-            table.draw();
-            */
         },
         error: function () {
             //TODO: fix, do something else then return error.html.
@@ -72,6 +67,7 @@ $(document).ready(function() {
                     success: function () {
                         console.log("Dette gikk bra. Nå få det inn i en tabell KRISTIAN!");
                         window.location.reload();
+                        //$("#wallposts").reload();
                     },
                     error: function () {
                         console.log("Hmm, prøv igjen du kristian.");

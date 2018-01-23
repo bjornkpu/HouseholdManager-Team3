@@ -42,7 +42,7 @@
     display: grid;
     grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100vh [wallRow2-end];
     grid-area: wallposts;
-    background-color: lightgreen;
+    background-color: lightgrey;
     justify-items: center;
 }
 
