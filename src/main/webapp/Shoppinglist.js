@@ -159,6 +159,10 @@ $(document).ready(function() {
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
 
+        creatingShoppinglist.style.display="block";
+        shoppinglist.style.display="none";
+        dropdownShoppinglist.style.display="none";
+
         var usersInGroup = getUsers();
 
         var selectedUsers = [];
@@ -180,12 +184,39 @@ $(document).ready(function() {
 
         $("#addUserButton").click(function(){
             var user = $(".ui.search").search('get value');
+            var isUser = false;
+            for(var i = 0; i < usersInGroup.length; i++){
+                if(usersInGroup[i].email === user){
+                    isUser = true;
+                    break;
+                }
+            }
+            if(!isUser){
+                $("#addedUser").text(user + " is not a member!");
+                return;
+            }
+            var selectedBefore = false;
+            for(var i = 0; i < selectedUsers.length; i++){
+                if (selectedUsers[i] === user){
+                    selectedBefore = true;
+                }
+            }
+            if(selectedBefore){
+                $("#addedUser").text(user + " already added!");
+                return;
+            }
+
             selectedUsers[index] = user;
             $("#addedUser").text("Added user with email " + user);
             index++;
         });
 
         $('#confirmShoppinglist').click(function(){
+            var name = $("#nameOfShoppinglist").val();
+            if(name === '' || name === undefined || name === null){
+                alert("You have to give the shoppinglist a name");
+                return;
+            }
             var userList = [];
             console.log("Adding shoppinglist " + name + "...");
             for(var i = 0; i < selectedUsers.length; i++){
@@ -198,14 +229,11 @@ $(document).ready(function() {
                 };
                 console.log("Adding user: " + userList[i].email + "...");
             }
-            createShoppingList($("#nameOfShoppinglist").val(), userList)
+            createShoppingList(name, userList)
+
+            $("#page-content").load("Shoppinglist.html");
 
         });
-
-        creatingShoppinglist.style.display="block";
-        shoppinglist.style.display="none";
-        dropdownShoppinglist.style.display="none";
-
     });
 
     function createShoppingList(name, participants){
