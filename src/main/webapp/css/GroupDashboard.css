@@ -44,6 +44,11 @@
     text-align: center;
 }
 
+.btn-group {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 /*
 hover
  */
@@ -75,7 +80,6 @@ hover
 buttons
 */
 .button {
-
     border: cadetblue;
     color: white;
     padding: 8px 12px;

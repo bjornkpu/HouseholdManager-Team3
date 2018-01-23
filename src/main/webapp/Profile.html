@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
-    <link rel="stylesheet" href="css/profile.css">
-    <link rel="stylesheet" href="css/navbars.css">
+    <link rel="stylesheet" href="css/GroupDashboard.css">
+    <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <meta charset="UTF-8">
     <title>My Profile</title>
 </head>
 <body>
 
-<h1>My Profile</h1>
-<br>
 <br>
 
 
-<!-- Top navbar-->
 <nav class="navbar navbar-light fixed-top">
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
         <!-- Left items-->
@@ -30,25 +28,15 @@
         </div>
 
         <!-- Middle items-->
-        <div class="navbar-nav">
-            <div class="nav-item dropdown">
-                <div class="dropdown">
-                    <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="material-icons md-24 groupicon">supervisor_account</i>
-                    </a>
-                    <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
-                        <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 5</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 1</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 2</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 3</a></li>-->
-                        <!--<li><a class="dropdown-item" href="#">Group 4</a></li>-->
-                        <li id="newGroup1"><a id="newGroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
-                    </ul>
-                </div>
+        <div class="navbar-nav d-flex flex row">
+            <div class="nav-item dropdown d-flex flex-row">
+                <a class="nav-link dropdown" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons md-24 groupicon">supervisor_account</i>
+                </a>
+                <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
+
+                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
+                </ul>
             </div>
         </div>
 
@@ -69,18 +57,6 @@
                 <a id="logout" class="dropdown-item" href="#">Log out</a>
             </div>
         </div>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="GroupDashboard.html">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="Profile.html">Profile</a>
-            </li>
-        </ul>
     </div>
 </nav>
 <!--End of Top navBar -->
@@ -166,9 +142,9 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="GroupDashboard.js"></script>
 <script src="Authentication.js"></script>
 <script src="Profile.js"></script>
 <script src="GroupSetting.js"></script>
-<script src="navbars.js"></script>
 </body>
 </html>
