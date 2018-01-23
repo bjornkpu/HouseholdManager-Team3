@@ -7,6 +7,36 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
+<!--Alert for successful invite -->
+<div class="alert alert-success" id="alertInvSuccess" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> User invited
+</div>
+
+<!--Alert for fail invite -->
+<div class="alert alert-danger" id="alertInvFail" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> User was not found, please try again
+</div>
+
+<!--Alert for successful removal -->
+<div class="alert alert-success" id="alertRemoveSuccess" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> User was removed
+</div>
+
+<!--Alert for failed removal -->
+<div class="alert alert-danger" id="alertRemoveFail" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> Promote another member to admin before removing the last admin
+</div>
+
+<!--Alert for failed removal -->
+<div class="alert alert-danger" id="alertRemoveFail2" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> Promote another member to admin before removing the last admin
+</div>
+
 <div class="center">
 <h2 class="center">Group settings</h2>
 
@@ -32,10 +62,11 @@
     <table id="tabForUsersInGroup" class="center">
         <th> Members</th>
         <th>Status</th>
+        <th>blabla</th>
 
     </table>
     <tr>
-        <td><button id="removeMember" class="button ">Remove member</button></td>
+       <!-- <td><button id="removeMember" class="button ">Remove member</button></td>-->
     </tr>
 </table>
     <br><br>

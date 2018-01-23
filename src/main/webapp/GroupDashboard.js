@@ -24,11 +24,6 @@ $(document).ready(function(){
         $("#navUsername").html(""+user.name);
     }
 
-   /** $('#newGroup1').click(function () {
-        var test=prompt("test: ");
-    })*/
-
-
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {
        console.log("render grouplist");
