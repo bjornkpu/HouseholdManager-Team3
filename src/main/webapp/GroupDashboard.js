@@ -1,23 +1,13 @@
-
+$(window).on('load', activePage)
 $(document).ready(function(){
 
     getLoggedOnUser(setData);
     var groups;
 
-    $(window).on('hashchange', function(){
-        var element;
-        var sidebarDivs = document.getElementsByClassName("leftsidebar-list-items");
-        var sidebarLinks = document.getElementsByClassName("sidelink");
-        for (var i = 0; i < sidebarLinks.length; i++) {
-            console.log("For loop in");
-            if (sidebarLinks[i].hash === window.location.hash) {
-                element = sidebarDivs[i];
-                console.log("element good");
-            }
-            sidebarDivs[i].className = 'leftsidebar-list-items';
-        }
-            element.className = 'leftsidebar-list-items activePage';
-        });
+    $(window).on('hashchange', activePage);
+
+
+    // $('#page-content').on('load', activePage());
 
 
     //Goes to correct page when reload
@@ -81,6 +71,7 @@ $(document).ready(function(){
                        $(".navGroupName").html(getCookie("groupName"));
                        //window.location.reload();
                        $("#page-content").load("Feed.html");
+                       window.location.hash = "#feed";
                    })
                }(i));
                $('#groupdropdown').append($x);
@@ -207,3 +198,15 @@ function checkIfCook(data,id) {
 
 }
 
+function activePage(){
+    var element;
+    var sidebarDivs = document.getElementsByClassName("leftsidebar-list-items");
+    var sidebarLinks = document.getElementsByClassName("sidelink");
+    for (var i = 0; i < sidebarLinks.length; i++) {
+        if (sidebarLinks[i].hash === window.location.hash) {
+            element = sidebarDivs[i];
+        }
+        sidebarDivs[i].className = 'leftsidebar-list-items';
+    }
+    element.className = 'leftsidebar-list-items activePage';
+}

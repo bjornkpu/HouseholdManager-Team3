@@ -61,6 +61,8 @@ public class DisbursementDao {
                     log.info("Found disbursement " + groupId + " in group: " +groupId+ " with user: "+email);
                     disbursement = new Disbursement();
                     disbursement.setId(rs.getInt("id"));
+                    disbursement.setAccepted(rs.getInt("accepted"));
+                    log.info("Accepted int:"+disbursement.getAccepted());
                     disbursement.setDisbursement(rs.getDouble("price"));
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
@@ -140,7 +142,7 @@ public class DisbursementDao {
         try{
             //Set foreign key in items to null
             try{
-                ps=connection.prepareStatement("UPDATE item SET disbursement_id=NULL WHERE disbursement_id=?");
+                ps=connection.prepareStatement("UPDATE item SET disbursement_id=NULL, status=2 WHERE disbursement_id=?");
                 ps.setInt(1,disbursement.getId());
                 rs=ps.executeUpdate();
                 if(rs!=disbursement.getItems().size()){
@@ -158,7 +160,12 @@ public class DisbursementDao {
                 ps.setInt(1,disbursement.getId());
                 rs=ps.executeUpdate();
                 if(rs==1){
-                    return true;
+                    if(oldCommit){
+                        log.info("Comitting disbursement deletion");
+                        connection.commit();
+                    }else{
+                        log.info("Old autocommit was false, leaving commit up to parent");
+                    }return true;
                 }
             }catch (SQLException e) {
                 throw new SQLException("Error on deleteDisbursement, delete disbursement",e);
@@ -173,6 +180,7 @@ public class DisbursementDao {
                 }
             }
         }
+        log.info("Should not reach, deleteDisbursement last return");
         return false;
     }
 
@@ -373,6 +381,7 @@ public class DisbursementDao {
                 i++;
             }
             sql+=";";
+            log.info("additemsSQL: "+sql);
             int result=-1;
             if(i>0){
                 result=statement.executeUpdate(sql);
@@ -414,7 +423,8 @@ public class DisbursementDao {
     public boolean respondToDisbursement(Disbursement disbursement,int groupId ,String email, int response) throws SQLException{
         try{
             if(response==2){
-                //deleteDisbursement(disbursement);
+                disbursement = getDisbursementDetails(disbursement.getId(),email);
+                deleteDisbursement(disbursement);
                 return true;
             }
             ps = connection.prepareStatement("UPDATE user_disbursement SET accepted=? WHERE user_email=? AND disp_id = ?");

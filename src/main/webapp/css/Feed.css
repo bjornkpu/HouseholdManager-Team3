@@ -68,7 +68,6 @@
                         "name date";
 
     width: 38vw;
-
     background-color: whitesmoke;
     margin: 5px;
     font-size: 15px;
@@ -83,21 +82,34 @@
     box-shadow: none;
 }
 .message{
+    display: grid;
     grid-area: message;
+    justify-self: stretch;
     overflow: auto;
     height: 100%;
-    border-bottom: 1px groove black;
+    border-bottom: 2px groove #0596c6;
 }
+.message p{
+    font-size: 18px;
+}
+
 .postedBy{
+    display: grid;
     grid-area: name;
-    align-self: stretch;
-    justify-self: center;
+    justify-self: stretch;
+    justify-items: center;
+}
+.postedBy p{
+    font-size: 14px;
+    color: lightslategrey;
 }
 .datePosted{
+    display: grid;
     grid-area: date;
-    align-self: stretch;
-    justify-self: center;
-    border-left: 1px groove ;
+    justify-self: stretch;
+    justify-items: center;
+    align-content: center;
+    border-left: 2px groove #0596c6;
 }
 
 .rightHeader{

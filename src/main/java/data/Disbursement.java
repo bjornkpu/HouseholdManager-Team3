@@ -9,6 +9,7 @@ public class Disbursement {
     private double disbursement;
     private String name;
     private Timestamp date;
+    private int accepted;
     private User payer;
     private ArrayList<User> participants;
     private ArrayList<Item> items;
@@ -28,6 +29,14 @@ public class Disbursement {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(int accepted) {
+        this.accepted = accepted;
     }
 
     public User getPayer() {

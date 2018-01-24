@@ -118,7 +118,7 @@ CREATE TABLE payment(
 
 -- Legger på referanseintegritet (fremmednøkler)
 
-ALTER TABLE user_disbursement ADD COLUMN accepted BIT DEFAULT 0;
+ALTER TABLE user_disbursement ADD COLUMN accepted INTEGER DEFAULT 0;
 
 ALTER TABLE wallpost
   ADD CONSTRAINT wallpost_fk1 FOREIGN KEY(party_id)REFERENCES party(id);

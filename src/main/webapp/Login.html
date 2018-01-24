@@ -8,31 +8,136 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
     <link rel="stylesheet" href="css/logo.css">
     <link rel="stylesheet" href="css/GroupDashboard.css">
-
     <Link rel="stylesheet" type="text/css" href="css/logo.css">
+
+
 </head>
-<body>
+<body id="body">
+
+
 <!-- div for alert on login, hidden on load-->
 <div id="loginResult" style="display:none;">
 </div>
-
 <!-- Grid for logo-->
-<div class="container">
+<div>
+ <img src="images/hhm_logo.png" alt="Household Manager Logo" id="logo">
+    <img src="images/hhm_logo.png" alt="Household Manager Logo" id="logo2">
+</div>
+<!--
+<div class="container" class="center">
     <div class="row">
         <div class="col">
         </div>
-        <div class="col-6">
-            <img src="images/hhm_logo.png" alt="Household Manager Logo" class="hhm_logo">
+        <div class="col-6 center">
         </div>
         <div class="col">
         </div>
     </div>
+-->
 
-<!-- Grid layout for login with email and facebook, splitscreen-->
-    <div class="row" id="div_for_login">
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <h4 class="modal-title center notOp" id="myModalLabel" >Login</h4>
+            </div>
+            <div class="modal-body">
+                <table class="center" id="loginContent">
+                    <!--Alert for wrong username or password -->
+                    <div class="alert alert-warning" id="alertWrongUsernameOrPassword" style="display: none;">
+                        <strong>Ops!</strong> Wrong username or password
+                    </div>
+                    <!--Alert, user active-->
+                    <div class="alert alert-success" id="alertUserActive" style="display: none;">
+                        <strong>Success!</strong> User now active
+                    </div>
+                    <!--Alert, user active-->
+                    <div class="alert alert-success" id="alertEmailSent" style="display: none;">
+                        New Password is now sent to your email
+                    </div>
+                    <tr>
+                        <td id="email" class="notOp">Email: </td>
+                        <td > <input id="emailField" type="text" name="emailField" class="notOp"></td>
+                    </tr>
+                    <tr>
+                        <td id="password" class="notOp">Password: </td>
+                        <td > <input id="passwordField" type="password" name="passwordField" class="notOp"></td>
+                    </tr>
+                    <tr>
+                        <td> New user? </td>
+                        <td>Register down below</td>
+                    </tr>
+                    <tr>
+                        <td> <input type="submit" class = "button" id = "loginButton" value="Login"></td>
+                        <td><Button class = "button" id = "registerButton">Register new user</Button></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button id="forgottenPassword">Forgotten your password?</button></td>
+                    </tr>
+                </table>
+                <!-- Table for register new users -->
+                <div id="div_reg" style="display: none;">
+                    <h1>Register new user</h1>
+                    <table id="table_reg">
+                        <!--Alert, not all fields are filled in -->
+                        <div class="alert alert-warning" id="alertMissingInfo" style="display: none;">
+                            <strong>Ops!</strong> Please fill out all fields
+                        </div>
+                        <!--Alert, mismatching password-->
+                        <div class="alert alert-warning" id="alertMismatchingPassword" style="display: none;">
+                            <strong>Ops!</strong> Passwords did not match
+                        </div>
+                        <!--Alert, Invalid email-->
+                        <div class="alert alert-warning" id="alertInvalidEmail" style="display: none;">
+                            <strong>Ops!</strong> Invalid email or name(only letters in your name)
+                        </div>
+                        <tr id="name_of_user">
+                            <td>Name </td>
+                            <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
+                        </tr>
+                        <tr id="emailReg">
+                            <td>Email </td>
+                            <td > <input id="emailRegField" type="email" name="emailRegField"></td>
+                        </tr>
+                        <tr id="passwordReg">
+                            <td>Password: </td>
+                            <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
+                        </tr>
+                        <tr id="passwordConfirm">
+                            <td>Confirm Password: </td>
+                            <td > <input id="passwordConfirmField" type="password" name="passwordConfirmField"></td>
+                        </tr>
+                        <tr>
+                            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
+                        </tr>
+                        <tr>
+                            <td id = "cancelBtn"><button class = "button"> Cancel</button></td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Grid layout for login with email and facebook, splitscreen
+    <div class="row center" id="div_for_login" style="display: none;">
         <div class="col">
            <h2>Log in with email</h2>
-            <table>
+            <table class="center">
                 <tr>
                     <td id="email">Email: </td>
                     <td > <input id="emailField" type="text" name="emailField"></td>
@@ -59,7 +164,7 @@
             </table>
         </div>
 
-        <div class="col">
+        <div class="col" style="display: none;">
             <h2>Log in with facebook</h2>
             <table>
                 <tr>
@@ -74,7 +179,7 @@
                     </script>
                     <div class="container-fluid">
                         <div class="row">
-                            <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>-->
+                            <!--<fb:login-button scope="public_profile,email" onlogin="checkLoginState();"></fb:login-button>
 
                             <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
 
@@ -86,35 +191,7 @@
         </div>
     </div>
 </div>
-
-<!-- Table for register new users -->
-<div id="div_reg" style="display: none;">
-    <h1>Register new user</h1>
-    <table id="table_reg">
-        <tr id="name_of_user">
-            <td>Name </td>
-            <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
-        </tr>
-        <tr id="emailReg">
-            <td>Email </td>
-            <td > <input id="emailRegField" type="email" name="emailRegField"></td>
-        </tr>
-        <tr id="passwordReg">
-            <td>Password: </td>
-            <td > <input id="passwordRegField" type="password" name="passwordRegField"></td>
-        </tr>
-        <tr id="passwordConfirm">
-            <td>Confirm Password: </td>
-            <td > <input id="passwordConfirmField" type="password" name="passwordConfirmField"></td>
-        </tr>
-        <tr>
-            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
-        </tr>
-        <tr>
-            <td id = "cancelBtn"><button class = "button"> Cancel</button></td></td>
-        </tr>
-    </table>
-</div>
+-->
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

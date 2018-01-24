@@ -73,7 +73,7 @@ public class InputChecker {
 	/**
 	 * A private class field holding a {@code Pattern} for the {@link #isEMail(String)} method.
 	 */
-	private static Pattern eMailPattern;
+	private static Pattern eMailPattern, namePattern;
 
 	/**
 	 * Determines wether the {@code String} follows the format of an e-mail.
@@ -96,6 +96,19 @@ public class InputChecker {
 		}
 
 		Matcher matcher = eMailPattern.matcher(s);
+		return matcher.matches();
+	}
+
+	public static boolean isName(String name){
+		if (isEmpty(name)){
+			return false;
+		}
+		name = name.trim();
+		if (namePattern == null){
+			String regex = "[a-zA-Z]+";
+			namePattern = Pattern.compile(regex);
+		}
+		Matcher matcher = namePattern.matcher(name);
 		return matcher.matches();
 	}
 

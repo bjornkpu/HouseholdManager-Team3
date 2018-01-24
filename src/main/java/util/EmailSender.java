@@ -83,8 +83,8 @@ public class EmailSender {
 
     public static void sendConfirmationMail(String toMail){
         String confirmationText = "Welcome as a new user of Household Manager." +
-                "\n You can log in with "+toMail+ "and the password you chose." +
-                "If you've forgotten your password you can get a new one sent for our Login page.";
+                "\n You can log in with "+toMail+ " and the password you chose." +
+                "If you've forgotten your password you can get a new one sent from our Login page.";
         sendMail(toMail,confirmationText);
     }
     public static void sendInvitationMail(String toMail, Group group){

@@ -1,6 +1,7 @@
+var sessionEmail;
+var loggedOnUser;
 $(document).ready(function() {
-
-
+    //Assign click functions
     $('#editUser').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
@@ -9,138 +10,31 @@ $(document).ready(function() {
         tableEdit.style.display = "block";
 
     });
+    $("#createGroup").click(function () {
+        createNewGroup();
+    });
+    $('#Confirm').click(function(){
+        updateUserInformation()
+    });
 
-
-
-    getLoggedOnUser(setData);
-    getLoggedOnUser(getGroups);
-    var sessionEmail;
-    //getEmail();
-
-
-
-    function setData(user) {
-        console.log("name: " + user.name);
-        console.log("email: " + user.email);
-        sessionEmail = user.email;
-        $('#nameReadOnly').attr('value', user.name);
-        $('#emailReadOnly').attr('value', user.email);
-        $('#phoneReadOnly').attr('value', user.phone);
-        var lists;
-
-        var url='rest/groups/'+ user.email +'/invites';
-        $.get(url, function(data,status){
-            lists=data;
-            renderInvites(data,user);
-            if(status === "success"){
-                console.log("members content loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading members");
-            }
-        });
-    }
-
-
-    function getInfo(email){
-        $.ajax({
-            type: 'GET',
-            url: 'rest/user/' + email,
-            dataType: 'json',
-            success: function (data) {
-                console.log( "data: " + data);
-                console.log(email)
-                $('#nameReadOnly').attr('value', data.name);
-                $('#emailReadOnly').attr('value', email);
-                $('#phoneReadOnly').attr('value', data.phone);
-            }
-        })
-    }
-
-
-    //Updating user information
-    $('#Confirm').click(function () {
-        var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
-        var tableEdit = document.getElementById("tableUserInfo");
-        var alertSuccess = document.getElementById("alertSuccessEditProfile");
-
-        var nameField = $('#nameProfileField1').val();
-        var phoneField = $('#phoneField1').val();
-        if(nameField == ""){
-            //alert("please fill out namefield");
-            $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
-                $("#alertNameField").slideUp(500);
-            });
-            $('#nameProfileField1').css({
-                "background-color": "yellow",
-            });
-        }else if(phoneField ==""){
-            //alert("please fill out phonefield");
-            $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
-                $("#alertPhoneField").slideUp(500);
-            });
-            $('#phoneField1').css({
-                "background-color": "yellow",
-            });
-        }else {
-
-            $.ajax({
-                type: 'PUT',
-                url: 'rest/user/'+ sessionEmail, //test
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({
-                    "name": htmlEntities(nameField),
-                    "phone": htmlEntities(phoneField),
-                    "email": htmlEntities(sessionEmail),
-                    "password":null
-                }),
-                success: function () {
-                    //window.location.reload();
-                    getLoggedOnUser(setData);
-                    // alertSuccess.style.display="block";
-                    $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
-                        $("#alertSuccessEditProfile").slideUp(500);
-                    });
-
-                },
-                error: function () {
-                    alert("information did not update")
-                }
-
-            });
-
-            tableReadOnly.style.display = "block";
-            tableEdit.style.display = "none";
-            console.log("confirmknapp trykket")
-        }
+    getLoggedOnUser(function(user){
+        setData(user);
+        getGroups(user);
     });
 
     //Updating user password
     $('#changePassword').click(function () {
-        //Check if old password correct
-        var passPromise = sha256($("#passwordField").val());
-        passPromise.then(function(pass){
-            $.ajax({
-                url: 'rest/user/'+sessionEmail,
-                type: 'GET',
-                dataType: 'json',
-                complete: function (user) {
-                    sha256(pass+user.salt).then(function (saltedHashed) {
-                        console.log("Pass: "+pass+"\tSalt: "+user.salt+"\tSaltedHashed: "+saltedHashed)
-                        if(saltedHashed===(user.password)){
-                            //Change the password
-                            changePassword();
-                        }else{
-                            alert("Old password is wrong faggot");
-                        }
-                    })
-                }
-            });
+        passwordIsCorrect().then(function () {
+            changePassword();
+        }).catch(function (){
+            alert("Wrong pw");
         });
     });
+});
 
-    /**(function datatoJSONupdateInfo() {
+
+/*
+(function datatoJSONupdateInfo() {
         json = JSON.stringify({
             "name": $('#nameProfileField1').val(),
             "phone": $('#phoneField1').val(),
@@ -150,14 +44,8 @@ $(document).ready(function() {
         });
         console.log(json);
         return json;
-    }*/
-
-
-    $("#createGroup").click(function () {
-        createNewGroup();
-    });
-});
-
+}
+*/
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
 
@@ -200,7 +88,6 @@ function renderInvites(data,user) {
 }
 
 function createNewGroup() {
-    //console.log("Click");
     var Groupname=prompt("Group name: ");
     if(Groupname == null) {
         return;
@@ -230,6 +117,27 @@ function createNewGroup() {
     }
 }
 
+//Check if old password correct
+function passwordIsCorrect(){
+    return new Promise(function (resolve,reject){
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
+            sha256(pass + loggedOnUser.salt).then(function (saltedHashed) {
+                console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
+                    pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
+                if(saltedHashed===(loggedOnUser.password)){
+                    console.log("Old password is correct");
+                    resolve();
+                }else{
+                    console.log("Old password is wrong");
+                    reject();
+                }
+            })
+        });
+    });
+
+}
+
 //Change password
 function changePassword(){
     var passwordField =$('#confirmPasswordField').val();
@@ -244,14 +152,14 @@ function changePassword(){
             data: JSON.stringify({
                 "name": null,
                 "email": sessionEmail,
-                "password": htmlEntities(value)
+                "password": htmlEntities(pass)
             }),
             success: function () {
-                //window.location.reload();
-                // alertSuccess.style.display="block";
+                //Alert that password is changed
                 $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
                     $("#alertPassword").slideUp(500);
                 });
+                getLoggedOnUser(setData);
 
             },
             error: function () {
@@ -261,17 +169,17 @@ function changePassword(){
     });
 }
 
-function getInvites(user) {
-    $.ajax({
-        type:"GET",
-        url: "rest/groups/" + user.email + "/invites",
-        contentType: "application/json",
-        dataType:"json",
-        success: function (data) {
-            renderInvites(data);
-        }
-    })
-}
+// function getInvites(user) {
+//     $.ajax({
+//         type:"GET",
+//         url: "rest/groups/" + user.email + "/invites",
+//         contentType: "application/json",
+//         dataType:"json",
+//         success: function (data) {
+//             renderInvites(data);
+//         }
+//     })
+// }
 
 function getGroups(user) {
     $.ajax({
@@ -305,3 +213,105 @@ function homeButtonForOldUsers(data) {
         })
     }
 }
+
+//Sets the values of the fields to reflect current user information
+function setData(userObj) {
+    console.log("name: " + userObj.name);
+    console.log("email: " + userObj.email);
+    sessionEmail = userObj.email;
+    $('#nameReadOnly').attr('value', userObj.name);
+    $('#emailReadOnly').attr('value', userObj.email);
+    $('#phoneReadOnly').attr('value', userObj.phone);
+    $('#nameProfileField1').attr('value',userObj.name);
+    $('#phoneField1').attr('value',userObj.phone);
+    var lists;
+
+    var url='rest/groups/'+ userObj.email +'/invites';
+    $.get(url, function(data,status){
+        lists=data;
+        renderInvites(data,userObj);
+        if(status === "success"){
+            console.log("members content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading members");
+        }
+    });
+    loggedOnUser=userObj;
+}
+
+//Updating user information
+function updateUserInformation () {
+    var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
+    var tableEdit = document.getElementById("tableUserInfo");
+    var alertSuccess = document.getElementById("alertSuccessEditProfile");
+
+    var nameField = $('#nameProfileField1').val();
+    var phoneField = $('#phoneField1').val();
+    if(nameField == ""){
+        //alert("please fill out namefield");
+        $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
+            $("#alertNameField").slideUp(500);
+        });
+        $('#nameProfileField1').css({
+            "background-color": "yellow",
+        });
+    }else if(phoneField ==""){
+        //alert("please fill out phonefield");
+        $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
+            $("#alertPhoneField").slideUp(500);
+        });
+        $('#phoneField1').css({
+            "background-color": "yellow",
+        });
+    }else {
+
+        $.ajax({
+            type: 'PUT',
+            url: 'rest/user/'+ sessionEmail, //test
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                "name": htmlEntities(nameField),
+                "phone": htmlEntities(phoneField),
+                "email": htmlEntities(sessionEmail),
+                "password":null
+            }),
+            success: function () {
+                //window.location.reload();
+                getLoggedOnUser(setData);
+                // alertSuccess.style.display="block";
+                $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
+                    $("#alertSuccessEditProfile").slideUp(500);
+                });
+
+            },
+            error: function () {
+                alert("information did not update")
+            }
+
+        });
+
+        tableReadOnly.style.display = "block";
+        tableEdit.style.display = "none";
+        console.log("confirmknapp trykket")
+    }
+}
+
+//Brukes ikke???
+/*
+function getInfo(email){
+    $.ajax({
+        type: 'GET',
+        url: 'rest/user/' + email,
+        dataType: 'json',
+        success: function (data) {
+            console.log( "data: " + data);
+            console.log(email)
+            $('#nameReadOnly').attr('value', data.name);
+            $('#emailReadOnly').attr('value', email);
+            $('#phoneReadOnly').attr('value', data.phone);
+        }
+    })
+}
+*/
