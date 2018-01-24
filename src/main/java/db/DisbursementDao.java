@@ -140,7 +140,7 @@ public class DisbursementDao {
         try{
             //Set foreign key in items to null
             try{
-                ps=connection.prepareStatement("UPDATE item SET disbursement_id=NULL WHERE disbursement_id=?");
+                ps=connection.prepareStatement("UPDATE item SET disbursement_id=NULL, status=2 WHERE disbursement_id=?");
                 ps.setInt(1,disbursement.getId());
                 rs=ps.executeUpdate();
                 if(rs!=disbursement.getItems().size()){
@@ -158,7 +158,12 @@ public class DisbursementDao {
                 ps.setInt(1,disbursement.getId());
                 rs=ps.executeUpdate();
                 if(rs==1){
-                    return true;
+                    if(oldCommit){
+                        log.info("Comitting disbursement deletion");
+                        connection.commit();
+                    }else{
+                        log.info("Old autocommit was false, leaving commit up to parent");
+                    }return true;
                 }
             }catch (SQLException e) {
                 throw new SQLException("Error on deleteDisbursement, delete disbursement",e);
@@ -173,6 +178,7 @@ public class DisbursementDao {
                 }
             }
         }
+        log.info("Should not reach, deleteDisbursement last return");
         return false;
     }
 
@@ -373,6 +379,7 @@ public class DisbursementDao {
                 i++;
             }
             sql+=";";
+            log.info("additemsSQL: "+sql);
             int result=-1;
             if(i>0){
                 result=statement.executeUpdate(sql);
