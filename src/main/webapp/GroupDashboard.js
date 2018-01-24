@@ -49,7 +49,11 @@ $(document).ready(function(){
        if (len === 0) {
            document.cookie = curGroup + "=0";
            document.cookie = "currentGroup=null";
-           $("#page-content").load("Profile.html");
+           // $("#page-content").load("Profile.html");
+           //Doesnt reload when already on profile.
+           if(window.location.pathname!=="/scrum/Profile.html"){
+               window.location.href="Profile.html";
+           }
        } else {
            if (getCookie(curGroup) < len || !checkIfCook(data, getCookie(curGroup))) {
                document.cookie = curGroup + "=" + data[0].id;
@@ -114,9 +118,9 @@ $(document).ready(function(){
         $("#page-content").load("Tasks.html");
     });
 
-        $("#loadSettings").click(function () {
-            $("#page-content").load("GroupSetting.html");
-        });
+    $("#loadSettings").click(function () {
+        $("#page-content").load("GroupSetting.html");
+    });
 
     $("#loadAbout").click(function(){
         $("#page-content").load("About.html");
@@ -127,6 +131,11 @@ $(document).ready(function(){
         $("#page-content").load("GroupSetting.html");
     });
 
+    $("#newGroup1").click(function () {
+        createNewGroup();
+        // window.location.reload();
+
+    });
 
 
     function getLoggedOnUser(success) {
@@ -179,12 +188,6 @@ function getCookie(cname) {
     }
     return "";
 }
-
-$("#newGroup1").click(function () {
-    createNewGroup();
-    window.location.reload();
-
-});
 
 function checkIfCook(data,id) {
     var s = false;
