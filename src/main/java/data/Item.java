@@ -12,6 +12,7 @@ public class Item {
     private int shoppingListId = -1;
     private int disbursementId = -1;
 
+    public static final int PURCHASED = 3;
     public static final int GOING_TO_BE_BOUGHT = 2;
     public static final int STANDARD = 1;
 

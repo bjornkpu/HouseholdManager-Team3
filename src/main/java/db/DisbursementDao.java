@@ -332,7 +332,7 @@ public class DisbursementDao {
     private boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
         try{
             statement = connection.createStatement();
-            String sql= "UPDATE item SET shoppinglist_id=NULL ,disbursement_id="+disbursement.getId()+" WHERE ";
+            String sql= "UPDATE item SET status="+Item.PURCHASED+" ,disbursement_id="+disbursement.getId()+" WHERE ";
             int i=0;
             for (Item item : disbursement.getItems()) {
                 if(i==0){
