@@ -231,7 +231,7 @@ public class ChoreDaoTest {
     public void testAssignChore() throws Exception{
         System.out.println("Testing assignChore()");
         String email1 = choreDao.getChore(200).getAssignedTo();
-        choreDao.assignChore("k@k.no",200);
+        choreDao.assignChore(new User("k@k.no"),200);
         String email2 = choreDao.getChore(200).getAssignedTo();
         assertNotEquals(email1,email2);
     }

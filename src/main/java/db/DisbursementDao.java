@@ -61,6 +61,8 @@ public class DisbursementDao {
                     log.info("Found disbursement " + groupId + " in group: " +groupId+ " with user: "+email);
                     disbursement = new Disbursement();
                     disbursement.setId(rs.getInt("id"));
+                    disbursement.setAccepted(rs.getInt("accepted"));
+                    log.info("Accepted int:"+disbursement.getAccepted());
                     disbursement.setDisbursement(rs.getDouble("price"));
                     disbursement.setName(rs.getString("name"));
                     disbursement.setDate(rs.getTimestamp("date"));
@@ -421,7 +423,8 @@ public class DisbursementDao {
     public boolean respondToDisbursement(Disbursement disbursement,int groupId ,String email, int response) throws SQLException{
         try{
             if(response==2){
-                //deleteDisbursement(disbursement);
+                disbursement = getDisbursementDetails(disbursement.getId(),email);
+                deleteDisbursement(disbursement);
                 return true;
             }
             ps = connection.prepareStatement("UPDATE user_disbursement SET accepted=? WHERE user_email=? AND disp_id = ?");
