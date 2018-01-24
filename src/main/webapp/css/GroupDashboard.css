@@ -115,8 +115,9 @@ buttons
     /*
      * Sidebar general
      */
-    .leftsidebar-list-items a {
+    .leftsidebar-list-items a{
         color: cadetblue;
+        text-decoration: none;
         -webkit-touch-callout: none;
         -webkit-user-select: none;
         -khtml-user-select: none;
@@ -138,21 +139,24 @@ buttons
         font-size: 14px;
     }
 
-    .activePage{
-        background-color: lightgrey;
-        margin-top: 3%;
-        margin-bottom: 3%;
-        -webkit-border-bottom-left-radius: 30px;
-        -webkit-border-top-left-radius: 30px;
-        -moz-border-radius-bottomleft: 30px;
-        -moz-border-radius-topleft: 30px;
-        border: none;
-        overflow: auto;
-        outline: none;
-        -webkit-box-shadow: none;
-        -moz-box-shadow: none;
-        box-shadow: none;
-    }
+    .leftsidebar-list-items.activePage a{
+        color: red;
+        text-decoration-color: red;
+    /*
+    margin-top: 3%;
+    margin-bottom: 3%;
+    -webkit-border-bottom-left-radius: 30px;
+    -webkit-border-top-left-radius: 30px;
+    -moz-border-radius-bottomleft: 30px;
+    -moz-border-radius-topleft: 30px;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;*/
+}
+
 
 
 @media screen and (orientation: landscape) {
@@ -204,6 +208,7 @@ buttons
     .leftsidebar-list-items.aboutlink{
         margin-top: auto;
     }
+
 
     /*
      * PAGE CONTENT STYLING LANDSCAPE

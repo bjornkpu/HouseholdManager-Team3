@@ -394,17 +394,12 @@ public class GroupDao {
         }
     }
 
-    public int getNumberOfPaymentRequests(String email, int groupId) throws SQLException{
+    public boolean updatePayment(int paymentId) throws SQLException{
         try{
-            ps = connection.prepareStatement("SELECT COUNT(*) FROM payment WHERE receiver_id=? AND party_id=?");
-            ps.setString(1,email);
-            ps.setInt(2,groupId);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                System.out.println("fant rs");
-                return rs.getInt("COUNT(*)");
-            }
-            return 0;
+            ps = connection.prepareStatement("UPDATE payment SET active=1 WHERE id=?");
+            ps.setInt(1,paymentId);
+            int result = ps.executeUpdate();
+            return result==1;
         }finally {
             Db.close(rs);
             Db.close(ps);

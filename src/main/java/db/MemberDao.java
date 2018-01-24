@@ -3,6 +3,7 @@ package db;
 import data.Group;
 import data.Member;
 import data.User;
+import util.EmailSender;
 import util.Logger;
 
 import java.sql.Connection;
@@ -140,10 +141,9 @@ public class MemberDao {
      * @param email Email of user.
      * @param groupId Group to join.
      * @return A boolean which indicates the outcome.True->success, false-> failed.
-     * @throws SQLException Throws exception when the connection is not successful.
      */
 
-    public boolean inviteUser(String email, int groupId) throws SQLException {
+    public boolean inviteUser(String email, int groupId){
 //        connection = Db.instance().getConnection();
         userDao= new UserDao(connection);
         try {

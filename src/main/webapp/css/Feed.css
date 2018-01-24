@@ -42,7 +42,6 @@
     display: grid;
     grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100vh [wallRow2-end];
     grid-area: wallposts;
-    margin-top: 20px;
     background-color: lightgrey;
     justify-items: center;
 }
@@ -51,32 +50,54 @@
     display: grid;
     height: 80%;
     width: 80%;
+    margin-top: 20px;
     background-color: lightgreen;
     align-content: start;
     overflow-y: auto;
+    overflow-x: hidden;
     border: 1px solid black;
     resize: none;
 
 }
 .post{
+    display: grid;
+    grid-template-rows: [row1-start] auto [row1-end row2-start] auto;
+    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+    grid-template-areas:
+                        "message message"
+                        "name date";
+
     width: 37vw;
-    min-height: 50px;
-    max-height: 130px;
+
     background-color: navajowhite;
     margin: 5px;
     font-size: 15px;
-
+    height: auto;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: none;
-    overflow: auto;
     outline: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
 }
-
+.message{
+    grid-area: message;
+    overflow: auto;
+    height: 100%;
+    border-bottom: 1px solid black;
+}
+.postedBy{
+    grid-area: name;
+    align-self: stretch;
+    justify-self: center;
+}
+.datePosted{
+    grid-area: date;
+    align-self: stretch;
+    justify-self: center;
+}
 
 .groupEvents{
     display: grid;
