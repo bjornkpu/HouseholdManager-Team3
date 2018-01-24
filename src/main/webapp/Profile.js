@@ -90,9 +90,9 @@
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
-                    "name": nameField,
-                    "phone": phoneField,
-                    "email": sessionEmail,
+                    "name": htmlEntities(nameField),
+                    "phone": htmlEntities(phoneField),
+                    "email": htmlEntities(sessionEmail),
                     "password":null
 
                 }),
@@ -129,7 +129,7 @@
                 data: JSON.stringify({
                     "name": null,
                     "email": sessionEmail,
-                    "password": value
+                    "password": htmlEntities(value)
                 }),
                 success: function () {
                     //window.location.reload();
@@ -194,10 +194,11 @@
                 $('#houseHoldManagerLogo').click(function () {
                     window.location.href = "GroupDashboard.html"
                 })
+                $('#houseHoldManagerLogo2').click(function () {
+                    window.location.href = "GroupDashboard.html"
+                })
             }
         }
-
-
     });
 
 
@@ -255,30 +256,11 @@ function createNewGroup() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
-                'name': Groupname,
+                'name': htmlEntities(Groupname),
                 'description': null,
-                'admin': $("#emailReadOnly").val(),
+                'admin': htmlEntities($("#emailReadOnly").val()),
                 'members': null
             }),
-            /*
-            error: function() {
-                window.location.href = "error.html";
-            },
-            complete: function(jqXHR,textStatus) {
-                switch (jqXHR.status) {
-                    case 200:
-                        console.log("creating group");
-                        window.location.href = "Navbar.html";
-                        break;
-                    case 404:
-                        console.log("Group not created");
-                        break;
-                    default:
-                        window.location.href="error.html";
-                        break;
-                }
-            }
-            */
             statusCode: {
                 404: function () {
                     console.log("404 - Not Found");
@@ -286,7 +268,6 @@ function createNewGroup() {
                 200: function () {
                     console.log("Group Added");
                     window.location.href = "GroupDashboard.html";
-
                 }
             }
         })

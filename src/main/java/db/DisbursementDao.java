@@ -172,7 +172,10 @@ public class DisbursementDao {
                     if(updateBalances(disbursement,groupid)){
                         if(addItemsToDisbursement(disbursement)){
                             if(oldCommit){
+                                log.info("Comitting disbursement");
                                 connection.commit();
+                            }else{
+                                log.info("Old autocommit was false, leaving commit up to parent");
                             }
                             return true;
                         }
@@ -186,7 +189,6 @@ public class DisbursementDao {
                     connection.rollback();
                     connection.setAutoCommit(true);
                 }
-//                connection.close();
             }
         }
         return false;
@@ -228,26 +230,23 @@ public class DisbursementDao {
                 ps.setString(i,u.getEmail());
             }ps.setInt(i,groupid);
 
-            String participants="Participants: ";
             //Execute and add the participants into an arraylist
             rs=ps.executeQuery();
-            int updatednumber=0;
             if(rs.next()){
                 do{
                     Member m = new Member();
                     m.setEmail(rs.getString("user_email"));
                     m.setBalance(rs.getDouble("balance"));
-                    participants+=m.getEmail()+", ";
                     members.add(m);
                     if(disbursement.getPayer().getEmail().equals(m.getEmail())){
                         log.info("payer: "+m.getEmail());
                         payer=m;
                     }
-                    updatednumber++;
                 }while(rs.next());
             }
             Db.close(rs);
             Db.close(ps);
+
             //Make sure we have the payer
             if(payer==null){
                 sql="SELECT user_email, balance FROM user_party WHERE user_email=? AND party_id=?";
@@ -259,15 +258,11 @@ public class DisbursementDao {
                     payer= new Member();
                     payer.setEmail(rs.getString("user_email"));
                     payer.setBalance(rs.getDouble("balance"));
-                    participants+=payer.getEmail()+", ";
-                    updatednumber++;
                 }
                 Db.close(rs);
                 Db.close(ps);
             }
-            log.info("updated balance for this many users: "+updatednumber);
 
-            log.info(participants);
             //Give them new balances
             if(payer!=null){
                 DebtCalculator.calculateReceipt(payer,members,disbursement.getDisbursement());

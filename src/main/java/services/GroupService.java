@@ -1,5 +1,6 @@
 package services;
 import data.Group;
+import data.Payment;
 import data.StatisticsHelp;
 import db.Db;
 import db.GroupDao;
@@ -22,6 +23,7 @@ import java.util.List;
  * Javadoc for put,post and delete has curl commands for testing.
  *
  * @author nybakk1
+ * @author KnutWiig
  * @version 0.1
  */
 @Path("/groups/")
@@ -182,6 +184,7 @@ public class GroupService {
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Updating group. ID: " + group.getId());
+            log.info("Updating group. Name: " + group.getName());
             groupDao.updateGroup(group);
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
@@ -207,7 +210,7 @@ public class GroupService {
     @GET
     @Path("/payment/{groupId}/{email}")
     @Produces("application/json")
-    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId, @PathParam("email") String email){
+    public ArrayList<Payment> getPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving payments to member.");
@@ -218,17 +221,18 @@ public class GroupService {
         }
     }
 
-    @GET
-    @Path("/numberOfPayments/{groupId}/{email}")
-    @Produces("application/json")
-    public int getNumberOfPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
+    @PUT
+    @Path("/updatePayment/{payId}")
+    @Consumes("application/json")
+    public boolean updatePayment(@PathParam("payId") int payId){
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
-            log.info("Retrieving number of payments requests to member.");
-            return groupDao.getNumberOfPaymentRequests(email,groupId);
+            log.info("Updating payment.");
+            return groupDao.updatePayment(payId);
         } catch (SQLException e) {
-            log.info("Could not get number of payments requests");
-            throw new ServerErrorException("Failed to get number of payments requests.", Response.Status.INTERNAL_SERVER_ERROR, e);
+            log.info("Could not update payment");
+            throw new ServerErrorException("Failed to update payment.", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
 }

@@ -1,6 +1,7 @@
 package db;
 import data.Group;
 import data.Member;
+import data.Payment;
 import data.StatisticsHelp;
 import util.Logger;
 
@@ -374,15 +375,15 @@ public class GroupDao {
         }
     }
 
-    public ArrayList<StatisticsHelp> getPayments(String email, int groupId) throws SQLException{
+    public ArrayList<Payment> getPayments(String email, int groupId) throws SQLException{
         try{
-            ps = connection.prepareStatement("SELECT payer_id,amount FROM payment WHERE receiver_id=? AND party_id=?");
+            ps = connection.prepareStatement("SELECT p.id,p.payer_id,p.amount,u.name FROM payment p JOIN user u ON p.payer_id = u.email WHERE receiver_id=? AND party_id=?");
             ps.setString(1,email);
             ps.setInt(2,groupId);
             rs = ps.executeQuery();
-            ArrayList<StatisticsHelp> result = new ArrayList<>();
+            ArrayList<Payment> result = new ArrayList<>();
             while(rs.next()){
-                StatisticsHelp help = new StatisticsHelp(rs.getString("payer_id"),rs.getDouble("amount"));
+                Payment help = new Payment(rs.getInt("id"),rs.getString("payer_id"),email,rs.getDouble("amount"),groupId,rs.getString("name"));
                 result.add(help);
             }
             return result;
@@ -393,17 +394,12 @@ public class GroupDao {
         }
     }
 
-    public int getNumberOfPaymentRequests(String email, int groupId) throws SQLException{
+    public boolean updatePayment(int paymentId) throws SQLException{
         try{
-            ps = connection.prepareStatement("SELECT COUNT(*) FROM payment WHERE receiver_id=? AND party_id=?");
-            ps.setString(1,email);
-            ps.setInt(2,groupId);
-            rs = ps.executeQuery();
-            if(rs.next()){
-                System.out.println("fant rs");
-                return rs.getInt("COUNT(*)");
-            }
-            return 0;
+            ps = connection.prepareStatement("UPDATE payment SET active=1 WHERE id=?");
+            ps.setInt(1,paymentId);
+            int result = ps.executeUpdate();
+            return result==1;
         }finally {
             Db.close(rs);
             Db.close(ps);

@@ -46,10 +46,13 @@ $(document).ready(function(){
        var len = data.length;
        if (len === 0) {
            document.cookie = curGroup + "=0";
+           document.cookie = "currentGroup=null";
            $("#page-content").load("Profile.html");
        } else {
            if (getCookie(curGroup) < len || !checkIfCook(data, getCookie(curGroup))) {
                document.cookie = curGroup + "=" + data[0].id;
+               document.cookie = "groupName=" + data[0].name;
+               $(".navGroupName").html(getCookie("groupName"));
            }
            for (var i = 0; i < len; i++) {
                var groupname = data[i].name;
@@ -62,13 +65,15 @@ $(document).ready(function(){
                (function (i) {
                    $x.click(function () {
                        document.cookie = curGroup + "=" + data[i].id;
+                       document.cookie = "groupName=" + data[i].name;
+                       $(".navGroupName").html(getCookie("groupName"));
                        //window.location.reload();
                        $("#page-content").load("Feed.html");
                    })
                }(i));
                $('#groupdropdown').append($x);
                console.log("Added group: " + groupname);
-               $(".navGroupName").html(""+groupname);
+               //$(".navGroupName").html(""+groupname);
            }
        }
     }

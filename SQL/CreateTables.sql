@@ -26,7 +26,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Oppretter tabeller med entitetsintegritet (primærnøkkel)
 
 CREATE TABLE user(
-  name VARCHAR(600),
+  name VARCHAR(255),
   email VARCHAR(255) NOT NULL,
   password CHAR(64)NOT NULL,
   salt VARCHAR(20) NOT NULL,
@@ -110,6 +110,7 @@ CREATE TABLE payment(
   receiver_id VARCHAR (255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   amount DOUBLE NOT NULL,
+  active BIT NOT NULL DEFAULT 0,
   CONSTRAINT payment_pk PRIMARY KEY(id));
 
 

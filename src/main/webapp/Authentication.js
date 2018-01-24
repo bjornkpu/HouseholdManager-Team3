@@ -1,3 +1,6 @@
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')};
+
 function getLoggedOnUser(success) {
     $.ajax({
         url: 'rest/session',
@@ -93,3 +96,4 @@ function getGroup(groupId, success){
         }
     });
 }
+

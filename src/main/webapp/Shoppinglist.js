@@ -144,32 +144,57 @@ $(document).ready(function() {
             "<tr>"+
             "<th>User</th>"+
             "<th>Amount</th>"+
+            "<th></th>"+
             "</tr>"
         );
 
         for(var i = 0; i < len; i++){
             $("#paymentRequests").append(
                 "<tr>"+
-                "<th scope=\"row\">"+paymentRequests[i].key+"</th>"+
-                "<th>"+paymentRequests[i].value+"</th>"+
+                "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
+                "<th>"+paymentRequests[i].amount+"</th>"+
+                "<th><button class='acceptPayment' value="+paymentRequests[i].id+">Accept Payment</button></th>"+
                 "</tr>"
             );
         }
         console.log("Added Items");
     }
 
+    $('.acceptPayment').click(function(){
+        console.log("Hei");
+        var paymentId = $(this).value;
+    });
+
+    $('#viewPaymentRequests').click(function(){
+        var table = document.getElementById("paymentRequests");
+        var button = document.getElementById("viewPaymentRequests");
+        if(table.rows>0){
+            button.innerHTML = 'View Payment Requests';
+            while(table.rows.length > 0) {
+                table.deleteRow(0);
+            }
+        }
+        else{
+            button.innerHTML = 'Hide Payment Requests';
+            getPaymentRequests();
+        }
+    });
+
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-
+        var table = document.getElementById("paymentRequests");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
 
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
         getDisbursementList();
         getUserBalance();
-        getPaymentRequests();
         paymentRequests.innerHTML = 'Payment Requests';
     });
 
@@ -195,7 +220,7 @@ $(document).ready(function() {
             url: "rest/groups/1/shoppingLists/"+lists[currentShoppingList].id+"/items",
             data: JSON.stringify(
                 {
-                    name: name,
+                    name: htmlEntities(name),
                     status: 1,
                     shoppingListId: lists[currentShoppingList].id,
                     id: 0,
@@ -348,7 +373,7 @@ $(document).ready(function() {
         ;
 
         $("#addUserButton").click(function(){
-            var user = $(".ui.search").search('get value');
+            var user = htmlEntities($(".ui.search").search('get value'));
             var isUser = false;
             for(var i = 0; i < usersInGroup.length; i++){
                 if(usersInGroup[i].email === user){
@@ -382,7 +407,7 @@ $(document).ready(function() {
         });
 
         $('#confirmShoppinglist').click(function(){
-            var name = $("#nameOfShoppinglist").val();
+            var name = htmlEntities($("#nameOfShoppinglist").val());
             if(name === '' || name === undefined || name === null){
                 alert("You have to give the shoppinglist a name");
                 return;
@@ -540,8 +565,8 @@ $(document).ready(function() {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -554,8 +579,8 @@ $(document).ready(function() {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
                 };
                 console.log(disb.valueOf())
             }
