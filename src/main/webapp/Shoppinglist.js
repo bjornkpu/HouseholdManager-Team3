@@ -14,41 +14,7 @@ $(document).ready(function() {
 
 
     loadShoppingListsFromGroup(currentGroup);
-
-    $('#sendPaymentRequest').click(function () {
-        var amount1=prompt("Amount:");
-        if(amount1 == null){
-            return;
-        }
-        var receiverName=prompt("To:");
-        if(receiverName == null){
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/scrum/rest/groups/newPayment",
-            data: JSON.stringify(
-                {
-                    payer: currentUser,
-                    receiver: receiverName,
-                    amount: amount1,
-                    party: currentGroup
-                }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function () {
-                console.log("Payment sent");
-            },
-            error: function (xhr, resp, text) {
-                console.log(xhr, resp, text);
-            }
-        });
-    });
-
-
-
-    $('#viewPaymentRequests').click(function(){
+        $('#viewPaymentRequests').click(function(){
         var table = document.getElementById("paymentRequests");
         var button = document.getElementById("viewPaymentRequests");
         if(table.rows>0){
@@ -580,7 +546,7 @@ $(document).ready(function() {
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
+                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
             if(items[i].status===2){
@@ -610,6 +576,7 @@ $(document).ready(function() {
         }
         return members;
     }
+
 });
 function respondToDisbursement(data,response) {
     // AJAX Request
@@ -623,6 +590,7 @@ function respondToDisbursement(data,response) {
         dataType: "json",
 
         success: function () {
+            fixDisbursementTable();
         }
     });
 }
@@ -663,8 +631,8 @@ function acceptPaymentsClick(data){
         }
     })
 };
-
 function fixDisbursementTable(){
+    var acceptedString;
     var len = disbursementList.length;
     var table = document.getElementById("disbursementTable");
     console.log("found table");
@@ -683,6 +651,9 @@ function fixDisbursementTable(){
     );
 
     for(var i = 0; i < len; i++){
+        if(disbursementList[i].accepted === 0){
+            acceptedString = "<button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
+        } else {acceptedString =  "Accepted"}
         var participantsList = disbursementList[i].participants;
         var participantsString = "";
         for(var j=0;j<participantsList.length;j++){
@@ -696,14 +667,14 @@ function fixDisbursementTable(){
 
         $("#disbursementTable").append(
             "<tr>"+
-            "<th scope=\"row\">"+(i+1)+"</th>"+
-            "<th>"+disbursementList[i].name+"</th>"+
-            "<th>"+participantsString+"</th>"+
-            "<th>"+disbursementList[i].disbursement+"</th>"+
-            "<th>"+d+"</th>"+
-            "<th>"+disbursementList[i].payer.name+"</th>"+
-            "</tr>"
-        );
+            "<td scope=\"row\">"+(i+1)+"</td>"+
+            "<td>"+disbursementList[i].name+"</td>"+
+            "<td>"+participantsString+"</td>"+
+            "<td>"+disbursementList[i].disbursement+"</td>"+
+            "<td>"+d+"</td>"+
+            "<td>"+disbursementList[i].payer.name+"</td>"+
+            "<td>"+acceptedString+"</td>"+
+            "</tr>");
         /*if(items[i].status===2){
             $("#row"+i).addClass('boughtMarked');
         }*/
@@ -810,7 +781,7 @@ function fixPaymentRequestsTable(){
             "<tr>"+
             "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
             "<th>"+paymentRequests[i].amount+"</th>"+
-            "<th><button class='acceptPayment' value="+table1+" onclick='acceptPaymentsClick(this)'>Accept Payment</button></th>"+
+            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Accept Payment</button></th>"+
             "</tr>"
         );
     }
