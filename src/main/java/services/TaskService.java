@@ -1,6 +1,7 @@
 package services;
 
 import data.Chore;
+import data.User;
 import db.ChoreDao;
 import db.Db;
 import util.Logger;
@@ -86,11 +87,15 @@ public class TaskService {
 	 */
 	@POST
 	@Consumes("application/json")
-	public void addChore(Chore task) {
+	public Response addChore(Chore task) {
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
-			choreDao.addChore(task);
+			boolean s = choreDao.addChore(task);
 			log.info("Added task!");
+			if (s){
+				return Response.status(200).entity(s).build();
+			}
+			return Response.status(404).entity(s).build();
 		} catch(SQLException e) {
 			log.error("Failed to Add task", e);
 			throw new ServerErrorException("Failed to Add task", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -105,33 +110,41 @@ public class TaskService {
 	@PUT
 	@Path("/CompletedBy/{choreId}")
 	@Consumes("application/json")
-	public void setCompletedBy(@PathParam("choreId") int choreId, ArrayList<String> users) {
+	public Response setCompletedBy(@PathParam("choreId") int choreId, ArrayList<String> users) {
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
-			choreDao.setCompletedBy(choreId, users);
+			boolean s= choreDao.setCompletedBy(choreId, users);
 			log.info("Updated task!");
+			if (s){
+				return Response.status(200).entity(s).build();
+			}
+			return Response.status(404).entity(s).build();
 		} catch(SQLException e) {
 			log.error("Failed to update task", e);
-			throw new ServerErrorException("Failed to update task", Response.Status.INTERNAL_SERVER_ERROR, e);
+			throw new ServerErrorException("Failed to set completed by", Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 
 	/** Updates a {@link Chore} so the status of "taken" by a {@link data.User}.
 	 *
-	 * @param userEmail ID/Email of the {@link data.User} who are to complete the chore.
 	 * @param choreId ID of the {@link Chore} the user are to complete.
+	 * @param user    The {@link data.User} who are to complete the chore.
 	 */
 	@PUT
 	@Path("/{choreId}")
 	@Consumes("application/json")
-	public void assignChore(@PathParam("choreId") int choreId, String userEmail) {
+	public Response assignChore(@PathParam("choreId") int choreId, User user) {
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
-			choreDao.assignChore(userEmail, choreId);
-			log.info("Updated task!");
+			boolean s = choreDao.assignChore(user, choreId);
+			log.info("Assigned task!");
+			if (s){
+				return Response.status(200).entity(s).build();
+			}
+			return Response.status(404).entity(s).build();
 		} catch(SQLException e) {
-			log.error("Failed to update task", e);
-			throw new ServerErrorException("Failed to update task", Response.Status.INTERNAL_SERVER_ERROR, e);
+			log.error("Failed to assign task", e);
+			throw new ServerErrorException("Failed to assign task", Response.Status.INTERNAL_SERVER_ERROR, e);
 		}
 	}
 
@@ -142,11 +155,15 @@ public class TaskService {
 	@DELETE
 	@Path("/{choreId}")
 	@Consumes("application/json")
-	public void deleteChore(@PathParam("choreId") int choreId) {
+	public Response deleteChore(@PathParam("choreId") int choreId) {
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
-			choreDao.deleteChore(choreId);
+			boolean s = choreDao.deleteChore(choreId);
 			log.info("Deleted task!");
+			if (s){
+				return Response.status(200).entity(s).build();
+			}
+			return Response.status(404).entity(s).build();
 		} catch(SQLException e) {
 			log.error("Failed to Delete task", e);
 			throw new ServerErrorException("Failed to Delete task", Response.Status.INTERNAL_SERVER_ERROR, e);

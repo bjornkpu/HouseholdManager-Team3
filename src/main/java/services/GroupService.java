@@ -235,4 +235,18 @@ public class GroupService {
         }
     }
 
+    @PUT
+    @Path("/updateBalances/{groupId}/{email1}/{email2}/{amount}")
+    @Consumes("application/json")
+    public boolean updateUserBalance(@PathParam("groupId") int groupId, @PathParam("amount") double amount, @PathParam("email1") String email1, @PathParam("email2") String email2){
+        try (Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+            log.info("Upating balance.");
+            return groupDao.updateBalances(email1,email2,amount,groupId);
+        } catch (SQLException e) {
+            log.info("Could not update balance");
+            throw new ServerErrorException("Failed to update balance.", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
 }

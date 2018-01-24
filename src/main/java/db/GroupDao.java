@@ -377,7 +377,7 @@ public class GroupDao {
 
     public ArrayList<Payment> getPayments(String email, int groupId) throws SQLException{
         try{
-            ps = connection.prepareStatement("SELECT p.id,p.payer_id,p.amount,u.name FROM payment p JOIN user u ON p.payer_id = u.email WHERE receiver_id=? AND party_id=?");
+            ps = connection.prepareStatement("SELECT p.id,p.payer_id,p.amount,u.name FROM payment p JOIN user u ON p.payer_id = u.email WHERE receiver_id=? AND party_id=? AND active=0");
             ps.setString(1,email);
             ps.setInt(2,groupId);
             rs = ps.executeQuery();
@@ -400,6 +400,65 @@ public class GroupDao {
             ps.setInt(1,paymentId);
             int result = ps.executeUpdate();
             return result==1;
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
+        }
+    }
+
+    private ArrayList<Member> getMemberBalance(String email1, String email2, int groupId) throws SQLException{
+        try{
+            ArrayList<Member> result = new ArrayList<>();
+                Member m = new Member();
+                ps = connection.prepareStatement("SELECT balance FROM user_party WHERE party_id=? AND user_email=?");
+                ps.setInt(1, groupId);
+                ps.setString(2, email1);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    double balance = rs.getDouble("balance");
+                    m.setBalance(balance);
+                    m.setEmail(email1);
+                }
+                result.add(m);
+                m = new Member();
+                ps = connection.prepareStatement("SELECT balance FROM user_party WHERE party_id=? AND user_email=?");
+                ps.setInt(1, groupId);
+                ps.setString(2, email2);
+                rs = ps.executeQuery();
+                while (rs.next()) {
+                    double balance = rs.getDouble("balance");
+                    m.setBalance(balance);
+                    m.setEmail(email2);
+                }
+                result.add(m);
+            return result;
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
+        }
+    }
+
+    public boolean updateBalances (String email1, String email2, double amount, int groupId) throws SQLException{
+        try{
+            ArrayList<Member> members=getMemberBalance(email1,email2,groupId);
+            for(int i=0;i<members.size();i++){
+                Double b1 = members.get(i).getBalance();
+                Double newBalance;
+                if(i<1){
+                    newBalance = b1 - amount;
+                }
+                else{
+                    newBalance = b1 + amount;
+                }
+                ps = connection.prepareStatement("UPDATE user_party SET balance=? WHERE party_id=? AND user_email=?");
+                ps.setDouble(1,newBalance);
+                ps.setInt(2,groupId);
+                ps.setString(3,members.get(i).getEmail());
+                if(ps.executeUpdate()!=1) return false;
+            }
+            return true;
         }finally {
             Db.close(rs);
             Db.close(ps);
