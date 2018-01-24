@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <title>"Gruppens tittel"</title>
     <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css" rel="stylesheet">
-
-</head>
+    <!--<link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.css">-->
 <body>
 
 <h1><span id="you_shoppinglists">Your shopping lists</span></h1>
@@ -42,7 +40,6 @@
 
 <table class="table table-hover" id="disbursementTable">
 </table>
-
         <h2>Group balance</h2>
         <table class="table table-hover" id="balanceTable">
         </table>
@@ -144,6 +141,14 @@
     <h1>New shoppinglist</h1>
     <table>
         <tr>
+            <td></td>
+            <td>
+                <div class="col-sm">
+                    <button class="backToShoppinglist button"  id ="confirmShoppinglist"> Create shoppinglist</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
             <td style="padding-right: 10px">Name of Shoppinglist</td>
             <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
         </tr>
@@ -152,10 +157,9 @@
             <td>
                 <div class="ui search">
                     <div class="ui icon input">
-                        <input class="prompt" type="text" placeholder="Search users...">
-                        <i class="search icon"></i>
+                        <input class="prompt" id="user_input" type="text" placeholder="Search users...">
                     </div>
-                    <div class="results"></div>
+                    <div class="results" id="user_return"></div>
                 </div>
             </td>
             <td>
@@ -165,16 +169,22 @@
             </td>
         </tr>
         <tr>
-            <td></td>
+            <td>My searchbar</td>
             <td>
-                <span id = "addedUser">Add users motherfucker</span>
+                <div>
+                    <ul id="search_container">
+                        <li id="search_click">Oh boy</li>
+                        <ul id = "search_results">
+                            <li><a class="trykk" href="#">Gutta1</a></li>
+                            <li><a class="trykk" href="#">Gutta1</a></li>
+                            <li><a class="trykk" href="#">Gutta1</a></li>
+                        </ul>
+                    </ul>
+                </div>
             </td>
-        </tr>
-        <tr>
-            <td></td>
             <td>
-                <div class="col-sm">
-                    <button class="backToShoppinglist button"  id ="confirmShoppinglist"> Create shoppinglist</button>
+                <div>
+                    <span id = "addedUser" style="top: 0; position:relative">Add users motherfucker</span>
                 </div>
             </td>
         </tr>
@@ -191,10 +201,10 @@
 </div>
 <!-- end of creating a shoppinglist-->
 
+<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Shoppinglist.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
 </body>
 </html>

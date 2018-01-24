@@ -4,3 +4,10 @@
 .boughtMarked{
     background-color: #01d100
 }
+#user_return{
+    background-color: darkblue;
+}
+
+#search_results{
+    display: none;
+}

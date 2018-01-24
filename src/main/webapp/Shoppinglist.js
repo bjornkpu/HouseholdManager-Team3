@@ -213,7 +213,7 @@ $(document).ready(function() {
             }
         });
 
-        getItemsInShoppingList(1);
+        getItemsInShoppingList();
     });
 
     $('#deleteItems').click(function() {
@@ -335,19 +335,21 @@ $(document).ready(function() {
         var selectedUsers = [];
         var index = 0;
 
-        $('.ui.search')
-            .search({
-                source: usersInGroup,
-                searchFields: [
-                    'email',
-                    'name'
-                ],
-                fields:{
-                    title: 'email',
-                    description: 'name'
-                }
-            })
-        ;
+        // $('.ui.search')
+        //     .search({
+        //         source: usersInGroup,
+        //         searchFields: [
+        //             'email',
+        //             'name'
+        //         ],
+        //         fields:{
+        //             title: 'email',
+        //             description: 'name'
+        //         }
+        //     })
+        // ;
+
+        mySearchbar();
 
         $("#addUserButton").click(function(){
             var selected = $(".ui.search").search('get value');
@@ -430,11 +432,26 @@ $(document).ready(function() {
 
             $("#page-content").load("Shoppinglist.html");
         });
+        function mySearchbar(){
+            var searchResults = document.getElementById("search_results");
+            $("#search_click").click(function(){
+                searchResults.style.display = 'block';
+            });
+            $("#search_results").on('click', 'a.trykk', function(){
+                searchResults.style.display = 'none';
+            });
+            $("#search_container").mouseleave(function(){
+                searchResults.style.display = 'none';
+            });
+            // $("#search_bar").is(":focus", function(){
+            //     console.log("Jadda");
+            // });
+        }
 
         $('#addedUsers').on('click', 'button.b', function(){
             console.log(selectedUsers[this.id].name + ' er fjernet!');
             selectedUsers[this.id] = 'empty';
-            reloadList()
+            reloadList();
         });
 
         function reloadList(){
