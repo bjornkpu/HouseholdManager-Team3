@@ -349,53 +349,12 @@ $(document).ready(function() {
         //     })
         // ;
 
+        for(var i = 0; i < usersInGroup.length; i++){
+            $(".search_results").append("<div class='links' id='link_" + i + "'>" + usersInGroup[i].name + "" +
+                "<br><span class='email_span'>" + usersInGroup[i].email +"</span></div>");
+        }
+
         mySearchbar();
-
-        $("#addUserButton").click(function(){
-            var selected = $(".ui.search").search('get value');
-            var user;
-            var isUser = false;
-            for(var i = 0; i < usersInGroup.length; i++){
-                if(usersInGroup[i].email === selected){
-                    user ={
-                        email: usersInGroup[i].email,
-                        name: usersInGroup[i].name
-                    };
-                    isUser = true;
-                    break;
-                }
-                if(usersInGroup[i].name.toLowerCase() === selected.toLowerCase()){
-                    user ={
-                        email: usersInGroup[i].email,
-                        name: usersInGroup[i].name
-                    };
-                    isUser = true;
-                    break;
-                }
-            }
-            if(!isUser){
-                $("#addedUser").text(selected + " is not a member!");
-                return;
-            }
-            var addedBefore = false;
-            for(var i = 0; i < selectedUsers.length; i++){
-                if (selectedUsers[i].email === user.email){
-                    addedBefore = true;
-                }
-            }
-            if(addedBefore){
-                $("#addedUser").text(user.name + " is already added!");
-                return;
-            }
-
-            selectedUsers[index] = user;
-            $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
-            // addUserToTable(user);
-            $("#addedUsers").append("<li>Dette er en test med " + user.name + "" +
-                "<button class='b' id='" + index + "'>Click me!</button></li>");
-            console.log(index + " added!");
-            index++;
-        });
 
         $('#confirmShoppinglist').click(function(){
             var name = $("#nameOfShoppinglist").val();
@@ -404,7 +363,6 @@ $(document).ready(function() {
                 return;
             }
             var userList = [];
-            console.log("Adding shoppinglist " + name + "...");
 
             //TODO clean this up
             for(var i = 0; i < selectedUsers.length; i++){
@@ -433,19 +391,29 @@ $(document).ready(function() {
             $("#page-content").load("Shoppinglist.html");
         });
         function mySearchbar(){
-            var searchResults = document.getElementById("search_results");
-            $("#search_click").click(function(){
-                searchResults.style.display = 'block';
+            $(".search_results").on('click', '.links', function(){
+                var user = usersInGroup[this.id.split("_").pop()];
+
+                var addedBefore = false;
+                for(var i = 0; i < selectedUsers.length; i++){
+                    if (selectedUsers[i].email === user.email){
+                        addedBefore = true;
+                    }
+                }
+                if(addedBefore){
+                    $("#addedUser").text(user.name + " is already added!");
+                    return;
+                }
+
+                selectedUsers[index] = user;
+
+                // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
+
+                $("#addedUsers").append("<li>" + user.name + "" +
+                    "<button class='b' id='" + index + "'>Delete!</button></li>");
+
+                index++;
             });
-            $("#search_results").on('click', 'a.trykk', function(){
-                searchResults.style.display = 'none';
-            });
-            $("#search_container").mouseleave(function(){
-                searchResults.style.display = 'none';
-            });
-            // $("#search_bar").is(":focus", function(){
-            //     console.log("Jadda");
-            // });
         }
 
         $('#addedUsers').on('click', 'button.b', function(){
@@ -458,8 +426,8 @@ $(document).ready(function() {
             $("#addedUsers").empty();
             for(var i = 0; i < selectedUsers.length; i++){
                 if(selectedUsers[i] === "empty") continue;
-                $("#addedUsers").append("<li>Dette er en test med " + selectedUsers[i].name + "" +
-                    "<button class='b' id='" + i + "'>Click me!</button></li>");
+                $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
+                    "<button class='b' id='" + i + "'>Remove</button></li>");
             }
         }
     });

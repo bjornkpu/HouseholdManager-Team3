@@ -8,6 +8,60 @@
     background-color: darkblue;
 }
 
-#search_results{
+#nameOfShoppinglist{
+    width: 100%;
+}
+
+#creatingShoppinglist td{
+    min-width:250px;
+}
+
+/*--DROPDOWN--*/
+.search_bttn {
+    background-color: lightgray;
+    width: 100%;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: 1px #3d3b3b solid;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.search_results {
     display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    width: 100%;
+    z-index: 1;
+    overflow-y: scroll;
+    height: 230px;
+}
+
+.links {
+    color: black;
+    padding: 6px;
+    display: block;
+}
+
+.email_span{
+    color: #909090;
+}
+
+.search_results .links:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.dropdown:hover .search_results {
+    display: block;
+}
+
+.dropdown:hover .search_bttn {
+    background-color: darkgray;
 }
