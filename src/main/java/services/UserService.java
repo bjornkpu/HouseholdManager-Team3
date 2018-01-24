@@ -7,7 +7,7 @@ import db.UserDao;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import util.ForgottenPassword;
+import util.EmailSender;
 import util.InputChecker;
 import util.Logger;
 import util.LoginCheck;
@@ -103,7 +103,7 @@ public class UserService {
             UserDao userDao = new UserDao(connection);
             User user = userDao.getUser(toEmail);
             if(user!=null){
-                newPassword = ForgottenPassword.generateNewPassword(toEmail);
+                newPassword = EmailSender.generateNewPassword(toEmail);
                 newPassword = LoginCheck.getHash(newPassword);
                 String salt = LoginCheck.getSalt();
                 user.setSalt(salt);
