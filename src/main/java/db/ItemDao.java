@@ -115,27 +115,22 @@ public class ItemDao {
     }
 
     /** Method that gets any items connected to a given Disbursement.
-     * @param id The id of the Disbursement the items are connected to.
+     * @param disbursementId The id of the Disbursement the items are connected to.
      * @return An ArrayList of items connected to the given Disbursement.
      * @throws SQLException when failing to get Item.
      */
-    public ArrayList<Item> getItemsInDisbursement(int id) throws SQLException {
+    public ArrayList<Item> getItemsInDisbursement(int disbursementId) throws SQLException {
 //        connection = Db.instance().getConnection();
         try {
             ps = connection.prepareStatement("SELECT * FROM item WHERE disbursement_id=?");
-            ps.setInt(1,id);
+            ps.setInt(1,disbursementId);
             rs = ps.executeQuery();
 
-//            TODO kan ikke teste her, hvordan
-//            if(!rs.next()) {
-//                log.info("could not find item " + id);
-//            }
-
-            Item item = new Item();
+            Item item;
             ArrayList<Item> itemList = new ArrayList<Item>();
             if(rs.next()){
                 do{
-                    log.info("Found item in disbursement" + id);
+                    log.info("Found item in disbursement" + disbursementId);
                     item = new Item();
                     item.setId(rs.getInt("id"));
                     item.setName(rs.getString("name"));
@@ -145,7 +140,7 @@ public class ItemDao {
                     itemList.add(item);
                 }while(rs.next());
             }else{
-                log.info("Found no items in disbursement "+ id);
+                log.info("Found no items in disbursement "+ disbursementId);
             }
             return itemList;
         } finally {

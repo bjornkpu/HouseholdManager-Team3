@@ -4,6 +4,21 @@ $(document).ready(function(){
     getLoggedOnUser(setData);
     var groups;
 
+    $(window).on('hashchange', function(){
+        var element;
+        var sidebarDivs = document.getElementsByClassName("leftsidebar-list-items");
+        var sidebarLinks = document.getElementsByClassName("sidelink");
+        for (var i = 0; i < sidebarLinks.length; i++) {
+            console.log("For loop in");
+            if (sidebarLinks[i].hash === window.location.hash) {
+                element = sidebarDivs[i];
+                console.log("element good");
+            }
+            sidebarDivs[i].className = 'leftsidebar-list-items';
+        }
+            element.className = 'leftsidebar-list-items activePage';
+        });
+
 
     //Goes to correct page when reload
     if (window.location.hash === "#shopping"){
@@ -23,11 +38,6 @@ $(document).ready(function(){
         //console.log(getCookie(curGroup));
         $("#navUsername").html(""+user.name);
     }
-
-   /** $('#newGroup1').click(function () {
-        var test=prompt("test: ");
-    })*/
-
 
     //function which lists out the different groups into the dropdown menu
     function renderGroupDropdown(data) {

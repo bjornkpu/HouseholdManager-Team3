@@ -4,11 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
-public class ForgottenPasswordTest {
+public class EmailSenderTest {
 
     @Test
     public void geneateNewPasswordTest(){
-        assertTrue(ForgottenPassword.generateNewPassword("sulfax@hotmail.com")!=null);
+        assertTrue(EmailSender.generateNewPassword("sulfax@hotmail.com")!=null);
     }
 
 }

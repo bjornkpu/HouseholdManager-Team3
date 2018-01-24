@@ -51,29 +51,28 @@ $(document).ready(function() {
         var buttonConfirm = document.getElementById('confirmNewName');
         var newNameField = document.getElementById('newNameField');
 
-        var newName = $('newNameField').val();
+        var newName = $('#newNameField').val();
+        console.log("the new name for the group: "+ newName);
         $.ajax({
             type: 'PUT',
             url: 'rest/groups/'+ y,
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
+                "id": y,
                 "name": newName,
             }),
-            success: function (jqXHR, textStatus) {
-                console.log("new name updated test");
-                switch (jqXHR.status) {
-                    case 204:
-                        console.log("ajax update group name");
-                        alert("name updated");
-                        break;
-                    case 404:
-                        alert("Could not update");
-                        break;
-                    default:
-                        break;
-                }
-            }
+            success: function(){
+                console.log("updated group name");
+                //TODO: noen som vet hvorfor denne replacen ikke refresher siden
+                window.location.replace('GroupDashboard.html#Setting')
+                getGroupName();
+                $("#alertEditGroupNameSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                    $("#alertEditGroupNameSuccess").slideUp(500);
+
+
+                });
+            },
         });
 
         readOnlyField.style.display= "block";
@@ -113,12 +112,14 @@ $(document).ready(function() {
 
     function renderMembers(data) {
         var len = data.length;
-        //var memberStatus = getUserStatus(data);
         console.log(data);
-        //console.log("Status på brukere er: ");
-       // console.log(memberStatus);
         var statusText;
-
+        var adminCounter =0;
+        for (var i = 0; i < len; i++) {
+            if(data[i].status===2){
+                adminCounter++;
+            }
+        }
         for (var i = 0; i < len; i++) {
             var id= data[i].email;
             console.log(data[i].status);
@@ -127,41 +128,100 @@ $(document).ready(function() {
             }else{
                 statusText="Admin";
             }
-            $('#tabForUsersInGroup').append('<tr> ' +
+
+            var s = "removeButton"+i;
+            $('#tabForUsersInGroup').find("tbody").append('<tr id=\" " + s + "\"> ' +
+                '<td>' + data[i].name + '</td>' +
+                '<td>' + statusText + '</td>');
+            var $remove = $("<td><button type=\"button\" class='button'>Remove</button></td>");
+
+            //var $x=$('<tr> ' + '<td>' + data[i].name + '</td>' + '<td>' + statusText +'</td>');
+
+            var $removeButton =$('<td><button type="button" value="Delete Row" value="'+id+'" ' +
+                'onclick="DeleteRowFunction(this)" class="btn btn-default btn-sm">'
+                + '<span class="glyphicon glyphicon-remove"></span>' + '</button></td>');
+
+
+            (function (i) {
+                $removeButton.click(function () {
+                    console.log(i);
+                    //var checked = getChecked();
+
+                    if (data[i].status===2 && adminCounter ===1 ) {
+                        $("#alertRemoveFail2").fadeTo(10000, 500).slideUp(500, function () {
+                            $("#alertRemoveFail2").slideUp(500);
+                        });
+                    }else {
+                        // AJAX Request
+                        $.ajax({
+                            url: 'rest/groups/' + y + '/members/' + id, //testemail
+                            type: 'DELETE',
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+
+                            success: function () {
+                                /* var table_length = $('#tabForUsersInGroup tr').length;
+                                 for (var i = 0; i < table_length; i++) {
+                                     if ($("#checkbox" + i).is(':checked')) {
+                                         $("#checkbox" + i).closest('tr').remove();
+                                     }
+                                 }*/
+                                $("#alertRemoveSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                                    $("#alertRemoveSuccess").slideUp(500);
+                                });
+                                //alert("member(s) removed from group");
+                            },
+                        });
+                    }
+                })
+            }(i));
+            //$('#tabForUsersInGroup').append($x);
+            $('#tabForUsersInGroup').find("tbody").append($removeButton);
+           // $('#tabForUsersInGroup').append($removeButton);
+            $('#tabForUsersInGroup').find("tbody").append('</tr>');
+
+
+
+            /** $('#tabForUsersInGroup').append('<tr> ' +
                 '<td>' + data[i].name + '</td>' +
                 '<td>' + statusText +'</td>' +
                 "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
-                /**'<td><button id="removeMember'+i+'" type="button" value="Delete Row" value="'+id+'" onclick="DeleteRowFunction(this)" class="btn btn-default btn-sm">\n' +
+               '<td><button id="removeMember'+i+'" type="button" value="Delete Row" value="'+id+'" onclick="DeleteRowFunction(this)" class="btn btn-default btn-sm">\n' +
                 '<span class="glyphicon glyphicon-remove"></span>' +
-                '</button></td>' + */
-                '</tr>');
+                '</button></td>' +
+                '</tr>');*/
 
-            $('#removeMember').click(function() {
-                if (confirm("You are about to remove a member from your group, do you want to continue?")) {
-                    var checked = getChecked();
+          /**  $('#removeMember' +i).click(function() {
+                console.log(i);
+                //var checked = getChecked();
+
+                if (data[i].status===2 && adminCounter ===1 ) {
+                    $("#alertRemoveFail2").fadeTo(10000, 500).slideUp(500, function () {
+                        $("#alertRemoveFail2").slideUp(500);
+                    });
+                }else {
                     // AJAX Request
                     $.ajax({
                         url: 'rest/groups/' + y + '/members/' + id, //testemail
                         type: 'DELETE',
-                        data: JSON.stringify(checked),
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
 
-                        success: function (response) {
+                        success: function () {
                             var table_length = $('#tabForUsersInGroup tr').length;
                             for (var i = 0; i < table_length; i++) {
                                 if ($("#checkbox" + i).is(':checked')) {
                                     $("#checkbox" + i).closest('tr').remove();
                                 }
                             }
+                            $("#alertRemoveSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertRemoveSuccess").slideUp(500);
+                            });
                             //alert("member(s) removed from group");
                         },
-                        error: function () {
-                            console.log("member could not be removed");
-                        }
                     });
                 }
-            });
+            }); */
         }
     }
 
@@ -176,10 +236,17 @@ $(document).ready(function() {
             }),
             statusCode: {
                 200: function () {
-                    window.location.href = "Navbars.html";
+                    $("#alertInvSuccess").fadeTo(4000, 500).slideUp(500, function(){
+                        $("#alertInvSuccess").slideUp(500);
+                    });
                 },
                 500: function () {
                     console.log("Internal Server Error");
+                },
+                404: function () {
+                    $("#alertInvFail").fadeTo(4000, 500).slideUp(500, function(){
+                        $("#alertInvFail").slideUp(500);
+                    });
                 }
             }
 
@@ -200,7 +267,7 @@ function getChecked(){
     return checked;
 }
 
-/**
+
 function getCheckedButton(){
     var table_length = $('#tabForUsersInGroup tr').length;
     var checked = [];
@@ -221,7 +288,7 @@ function DeleteRowFunction(btndel) {
     }
 }
 
-*/
+
 
 
 

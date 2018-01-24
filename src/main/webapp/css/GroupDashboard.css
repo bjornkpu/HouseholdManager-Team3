@@ -4,7 +4,7 @@
  * Top navbar general
  */
     .navbar-light{
-        background-color: #3d3b3b;
+        background-color: #040e1c;
     }
     .scrollable-menu {
     height: auto;
@@ -18,14 +18,14 @@
 
     .username{
         padding-right: 3px;
-        color: cadetblue;
+        color: #0596c6;
     }
     .account:hover .username{
-        color: black;
+        color: #475c66;
     }
 
     .groupdropdown{
-        background-color: lightgrey;
+        background-color: white;
         left: 50%;
         right: 50%;
         transform: translateX(-30%);
@@ -33,16 +33,16 @@
 
 
     .groupicon{
-        color: cadetblue;
+        color: #0596c6;
     }
     .grouplink:hover .navGroupName{
-        color: black;
+        color: #475c66;
     }
     .grouplink:hover .groupicon{
-        color: black;
+        color: #475c66;
     }
     .navGroupName{
-        color: cadetblue;
+        color: #0596c6;
     }
 
 
@@ -63,13 +63,13 @@ hover
 .tooltip {
     position: relative;
     display: inline-block;
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dotted #475c66;
 }
 
 .tooltip .tooltiptext {
     visibility: hidden;
     width: 120px;
-    background-color: black;
+    background-color: #475c66;
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -125,17 +125,33 @@ buttons
         user-select: none;
     }
     .leftsidebar-list-items a:visited{
-        color: cadetblue;
+        color: #0596c6;
         cursor: default;
         text-decoration: none;
     }
 
     .leftsidebar-list-items a:hover {
-        color: black;
+        color: #475c66;
     }
 
     .leftsidebar-list p{
         font-size: 14px;
+    }
+
+    .activePage{
+        background-color: lightgrey;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        -webkit-border-bottom-left-radius: 30px;
+        -webkit-border-top-left-radius: 30px;
+        -moz-border-radius-bottomleft: 30px;
+        -moz-border-radius-topleft: 30px;
+        border: none;
+        overflow: auto;
+        outline: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
     }
 
 
@@ -154,9 +170,12 @@ buttons
 
     .navbar-brand.text{
         font-size: 18px;
-        color: cadetblue;
+        color: #0596c6;
         transform: translateX(0px);
         transform: translateY(5px);
+    }
+    .navbar-brand :hover{
+        color: #475c66;
     }
 
     /*
@@ -171,7 +190,7 @@ buttons
     .leftsidebar-list {
         padding-top: 30px;
         padding-bottom: 50px;
-        background-color: #3d3b3b;
+        background-color: #040e1c;
         min-width: 70px;
         max-width: 70px;
         height: 100vh;
@@ -193,7 +212,7 @@ buttons
         margin-left: 70px;
         top: 0px;
         position: relative;
-        background-color: lightgrey;
+        background-color: white;
         height: 100%;
     }
 
@@ -210,8 +229,8 @@ buttons
     .material-icons.md-48 { font-size: 48px; }
 
     /* Rules for using icons as black on a light background. */
-    .material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-    .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+    .material-icons.md-dark { color: #475c66 }
+    .material-icons.md-dark.md-inactive { color: #475c66 }
 
     /* Rules for using icons as white on a dark background. */
     .material-icons.md-light { color: rgba(255, 255, 255, 1); }
@@ -232,6 +251,7 @@ buttons
         font-size: 0px;
         padding-right: 3px;
         color: cadetblue;
+
     }
 
     /*
@@ -257,10 +277,13 @@ buttons
 
     .leftsidebar-list-items {
         float: left;
-        margin-left: 5%;
-        margin-right: 5%;
+        margin-left: 3%;
+        margin-right: 3%;
         position: relative;
         color: cadetblue;
+    }
+    .leftsidebar-list-items p{
+        font-size: 14px;
     }
     .leftsidebar-list-items.aboutlink{
         display: none;
@@ -287,12 +310,12 @@ buttons
     /* Rules for sizing the icon. */
     .material-icons.md-18 { font-size: 18px; }
     .material-icons.md-24 { font-size: 24px; }
-    .material-icons.md-36 { font-size: 22px; }
+    .material-icons.md-36 { font-size: 20px; }
     .material-icons.md-48 { font-size: 48px; }
 
     /* Rules for using icons as black on a light background. */
-    .material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
-    .material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+    .material-icons.md-dark { color: #475c66 }
+    .material-icons.md-dark.md-inactive { color: #475c66 }
 
     /* Rules for using icons as white on a dark background. */
     .material-icons.md-light { color: rgba(255, 255, 255, 1); }
@@ -335,4 +358,8 @@ LightBlue:  #00BFF3
 Black:      #363636
 DarkGray:   #636363
 Gray:       #898989
+
+best yellow: #efa30b
+best blue: #0596c6
+best hovercolor #475c66
  */

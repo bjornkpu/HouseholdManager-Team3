@@ -29,16 +29,6 @@ public class StatisticsTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        user1.setSalt("123");
-        user2.setSalt("321");
-        WallPost p1 = new WallPost(timestamp, "Melding1", "m@m.no", 100);
-        WallPost p2 = new WallPost(timestamp, "Melding2", "k@k.no", 100);
-        WallPost p3 = new WallPost(timestamp, "Melding3", "m@m.no", 100);
-        WallPost p4 = new WallPost(timestamp, "Melding4", "m@m.no", 101);
-        list1.add(p1);
-        list1.add(p2);
-        list1.add(p3);
-        list2.add(p4);
         Connection connection = Db.instance().getConnection();
         System.out.println("Connection opened before");
 
@@ -105,13 +95,13 @@ public class StatisticsTest {
     @Test
     public void testGetChoresPerUser() throws Exception{
         ArrayList<StatisticsHelp> map = statisticsDao.getChoresPerUser(100);
-        int result =0;
+        double result =0;
         for (StatisticsHelp aMap : map) {
-            if (aMap.getKey().equals("m@m.no")) {
+            if (aMap.getKey().equals("Mats")) {
                 result = aMap.getValue();
                 break;
             }
         }
-        assertEquals(1,result);
+        assertEquals(1.0,result);
     }
 }
