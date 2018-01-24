@@ -17,9 +17,11 @@ $(document).ready(function(){
 
     }
 
+   /**click on the logo on the loginpage to login
     $('#logo').click(function () {
         $('#myModal').modal('show');
     });
+    */
 
     // Log in
     $("#loginButton").click(function() {
