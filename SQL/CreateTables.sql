@@ -150,7 +150,7 @@ ALTER TABLE user_disbursement
   ADD CONSTRAINT user_disbursement_fk1 FOREIGN KEY(user_email)REFERENCES user(email);
 
 ALTER TABLE user_disbursement
-  ADD CONSTRAINT user_disbursement_fk2 FOREIGN KEY(disp_id)REFERENCES disbursement(id);
+  ADD CONSTRAINT user_disbursement_fk2 FOREIGN KEY(disp_id)REFERENCES disbursement(id) ON DELETE CASCADE ;
 
 ALTER TABLE item
   ADD CONSTRAINT item_fk1 FOREIGN KEY(disbursement_id) REFERENCES  disbursement(id);
