@@ -228,7 +228,7 @@ public class DisbursementDaoTest {
         assertEquals(disbursement.getDate().getTime(),disbursementFromDao.getDate().getTime(),999);
         assertEquals(disbursement.getParticipants().size(),disbursementFromDao.getParticipants().size());
         assertEquals(disbursement.getItems().size()-1,disbursementFromDao.getItems().size());
-        assertEquals(disbursement.getItems().get(0).getId(),disbursementFromDao.getItems().get(0).getId());
+        assertEquals(disbursement.getItems().get(1).getId(),disbursementFromDao.getItems().get(0).getId());
         assertEquals(disbursement.getParticipants().get(0).getEmail(),disbursementFromDao.getParticipants().get(0).getEmail());
         assertEquals(disbursement.getParticipants().get(1).getEmail(), disbursementFromDao.getParticipants().get(1).getEmail());
     }
@@ -290,7 +290,7 @@ public class DisbursementDaoTest {
             Db.close(rs);
             Db.close(ps);
 
-            //Check that items are in items
+            //Check that items are in disbursement
             ps=connection.prepareStatement("SELECT disbursement_id FROM item WHERE id=? AND shoppinglist_id IS NULL");
             Item i=disbursement3.getItems().get(0);
             ps.setInt(1,i.getId());

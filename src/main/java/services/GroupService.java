@@ -1,5 +1,6 @@
 package services;
 import data.Group;
+import data.Payment;
 import data.StatisticsHelp;
 import db.Db;
 import db.GroupDao;
@@ -209,7 +210,7 @@ public class GroupService {
     @GET
     @Path("/payment/{groupId}/{email}")
     @Produces("application/json")
-    public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId, @PathParam("email") String email){
+    public ArrayList<Payment> getBalance(@PathParam("groupId") int groupId, @PathParam("email") String email){
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving payments to member.");
