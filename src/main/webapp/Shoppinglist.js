@@ -213,7 +213,7 @@ $(document).ready(function() {
             url: "rest/groups/1/shoppingLists/"+lists[currentShoppingList].id+"/items",
             data: JSON.stringify(
                 {
-                    name: name,
+                    name: htmlEntities(name),
                     status: 1,
                     shoppingListId: lists[currentShoppingList].id,
                     id: 0,
@@ -366,7 +366,7 @@ $(document).ready(function() {
         ;
 
         $("#addUserButton").click(function(){
-            var user = $(".ui.search").search('get value');
+            var user = htmlEntities($(".ui.search").search('get value'));
             var isUser = false;
             for(var i = 0; i < usersInGroup.length; i++){
                 if(usersInGroup[i].email === user){
@@ -400,7 +400,7 @@ $(document).ready(function() {
         });
 
         $('#confirmShoppinglist').click(function(){
-            var name = $("#nameOfShoppinglist").val();
+            var name = htmlEntities($("#nameOfShoppinglist").val());
             if(name === '' || name === undefined || name === null){
                 alert("You have to give the shoppinglist a name");
                 return;
@@ -558,8 +558,8 @@ $(document).ready(function() {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -572,8 +572,8 @@ $(document).ready(function() {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
                 };
                 console.log(disb.valueOf())
             }
