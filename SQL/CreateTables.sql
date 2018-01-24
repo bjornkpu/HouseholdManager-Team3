@@ -1,13 +1,4 @@
-/*ALL STATEMENTS*/
-/*Viser alle prosessene startet av brukeren vår
-SHOW PROCESSLIST ;
-
-Kopier resultatet av denne spørringa for å drepe alle connections som ikke utfører spørringer.
-SELECT CONCAT('KILL ',id,';') AS run_this FROM information_schema.processlist WHERE user='g_tdat2003_t3' AND info IS NULL ORDER BY id;
- */
-
--- Sletter tabeller
-SET FOREIGN_KEY_CHECKS = 0;
+/SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS item_shoppinglist;
@@ -178,7 +169,7 @@ ALTER TABLE payment
   ADD CONSTRAINT payment_fk2 FOREIGN KEY (receiver_id) REFERENCES user(email);
 
 ALter TABLE payment
-    ADD CONSTRAINT payment_fk3 FOREIGN KEY (party_id) REFERENCES party(id);
+  ADD CONSTRAINT payment_fk3 FOREIGN KEY (party_id) REFERENCES party(id);
 
 
 #TESTDATA
@@ -195,9 +186,9 @@ INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@h.n
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'bjorn', 'bk@p.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 
 
-INSERT INTO party(name) VALUES ('Frex');
-INSERT INTO party(name) VALUES ('Brummun');
-INSERT INTO party(name) VALUES ('BKs Hi');
+INSERT INTO party(id,name) VALUES (1,'Frex');
+INSERT INTO party(id,name) VALUES (2,'Brummun');
+INSERT INTO party(id,name) VALUES (3,'BKs Hi');
 
 
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,100,2);
