@@ -618,6 +618,7 @@ function respondToDisbursement(data,response) {
 
         success: function () {
             getDisbursementList();
+            getUserBalance();
         }
     });
 }
