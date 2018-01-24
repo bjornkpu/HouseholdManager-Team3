@@ -19,11 +19,10 @@ function initTable() {
                 message = data[i].message;
                 postedBy = data[i].postedBy;
                 postedTo = data[i].postedTo;
-                $(".textPosts").append($("<div class='post'><div><h3>" +
-                    message + "</h3></div>" +
-                    "<p>"+ postedBy +
-                    "</p><p>" + datePosted.toLocaleDateString() + " " +
-                    datePosted.toLocaleTimeString() +"</p></div>"));
+                $(".textPosts").append($("<div class='post'><div class='message'><p>" +
+                    message + "</p></div><div class='postedBy'><p>"+ postedBy +
+                    "</p></div><div class='datePosted'><p>" + datePosted.toLocaleDateString() + " at " +
+                    datePosted.toLocaleTimeString() +"</p></div></div>"));
             }
             }
         },
@@ -73,6 +72,3 @@ $(document).ready(function() {
     });
 });
 
-
-function htmlEntities(str) {
-    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')};

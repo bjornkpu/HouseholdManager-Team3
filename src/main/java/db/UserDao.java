@@ -81,9 +81,7 @@ public class UserDao {
             ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             log.info("Add user " + (result == 1?"ok":"failed"));
-            if(result == 1){
-                sendConfirmationMail(user.getEmail());
-            }
+
             return result == 1;
         } finally {
             Db.close(ps);

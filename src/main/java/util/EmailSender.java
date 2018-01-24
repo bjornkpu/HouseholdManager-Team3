@@ -1,4 +1,6 @@
 package util;
+import data.Group;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -81,9 +83,15 @@ public class EmailSender {
 
     public static void sendConfirmationMail(String toMail){
         String confirmationText = "Welcome as a new user of Household Manager." +
-                "\n You can log in with "+toMail+ "and the password you chose." +
-                "If you've forgotten your password you can get a new one sent for our Login page.";
+                "\n You can log in with "+toMail+ " and the password you chose." +
+                "If you've forgotten your password you can get a new one sent from our Login page.";
         sendMail(toMail,confirmationText);
+    }
+    public static void sendInvitationMail(String toMail, Group group){
+        String invitationText = "Hello!\n\n You have been invited to join a group on Household Manager. " +
+                "Login to accept the invitation \n" +
+                "Invited to group: "+group.getName()+ "\n Invited by: "+group.getAdmin();
+        sendMail(toMail,invitationText);
     }
 
 }

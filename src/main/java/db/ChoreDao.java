@@ -1,7 +1,9 @@
 package db;
-import data.RepeatedChore;
-import util.Logger;
+
 import data.Chore;
+import data.RepeatedChore;
+import data.User;
+import util.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -181,16 +183,16 @@ public class ChoreDao {
     }
 
     /** assign a user to a chore
-     * @param email the id of the user
+     * @param user the user you want to assign to the task
      * @param id the id of the chore you want to add the user to
      * @return true if the query succeeds
      * @throws SQLException if the query fails
      */
-    public boolean assignChore(String email, int id) throws SQLException{
+    public boolean assignChore(User user, int id) throws SQLException{
 //        connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("UPDATE chore set user_email=? where id=?");
-            ps.setString(1,email);
+            ps.setString(1,user.getEmail());
             ps.setInt(2,id);
             int result = ps.executeUpdate();
             return result==1;

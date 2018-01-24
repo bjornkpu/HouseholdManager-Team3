@@ -1,170 +1,61 @@
+var currentGroup;
+var paymentRequests=[];
+var currentUser;
+var disbursementList=[];
+var balanceList=0;
 $(document).ready(function() {
 
-    var disbursementList;
     var lists;
     var items;
     var currentShoppingList = 0;
     var numberOfMembers = 0;
-    var balanceList=0;
-    var currentGroup = getCookie("currentGroup");
-    var currentUser = getCookie("userLoggedOn");
-    var paymentRequests;
+    currentGroup = getCookie("currentGroup");
+    currentUser = getCookie("userLoggedOn");
 
-    console.log(document.cookie);
 
     loadShoppingListsFromGroup(currentGroup);
 
-    function fixDisbursementTable(){
-        var len = disbursementList.length;
-        var table = document.getElementById("disbursementTable");
-        console.log("found table");
-        while(table.rows.length > 0) {
-            table.deleteRow(0);
+    $('#sendPaymentRequest').click(function () {
+        var amount1=prompt("Amount:");
+        if(amount1 == null){
+            return;
         }
-        $("#disbursementTable").append(
-            "<tr>"+
-            "<th>#</th>"+
-            "<th>Reciet</th>"+
-            "<th>Participants</th>"+
-            "<th>Cost</th>"+
-            "<th>Day/Month/Year</th>"+
-            "<th>Buyer</th>"+
-            "</tr>"
-        );
-
-        for(var i = 0; i < len; i++){
-            var participantsList = disbursementList[i].participants;
-            var participantsString = "";
-            for(var j=0;j<participantsList.length;j++){
-                participantsString+=participantsList[j].name + ", ";
-            }
-            var dispDate = new Date(disbursementList[i].date);
-            var month = dispDate.getUTCMonth() + 1; //months from 1-12
-            var day = dispDate.getUTCDate();
-            var year = dispDate.getUTCFullYear();
-            var d = day + "/" + month + "/" + year;
-
-            $("#disbursementTable").append(
-                "<tr>"+
-                "<th scope=\"row\">"+(i+1)+"</th>"+
-                "<th>"+disbursementList[i].name+"</th>"+
-                "<th>"+participantsString+"</th>"+
-                "<th>"+disbursementList[i].disbursement+"</th>"+
-                "<th>"+d+"</th>"+
-                "<th>"+disbursementList[i].payer.name+"</th>"+
-                "</tr>"
-            );
-            /*if(items[i].status===2){
-                $("#row"+i).addClass('boughtMarked');
-            }*/
+        var receiverName=prompt("To:");
+        if(receiverName == null){
+            return;
         }
-        console.log("Added Items");
-    }
 
-    function getDisbursementList(){
-        var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
-
-        $.get(url, function(data, status){
-            console.log("skrrt");
-            if (status === "success") {
-                disbursementList = data;
-                fixDisbursementTable();
-                console.log("Item content loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading Item content");
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/scrum/rest/groups/newPayment",
+            data: JSON.stringify(
+                {
+                    payer: currentUser,
+                    receiver: receiverName,
+                    amount: amount1,
+                    party: currentGroup
+                }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function () {
+                console.log("Payment sent");
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
             }
         });
-    }
+    });
 
-    function getUserBalance(){
-        var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
-
-        $.get(url, function(data, status){
-            console.log("skrrt");
-            if (status === "success") {
-                balanceList = data;
-                fixBalanceTable();
-                console.log("Item content loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading Item content");
-            }
-        });
-    }
-
-    function getPaymentRequests(){
-        var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
-
-        $.get(url, function(data, status){
-            console.log("skrrt");
-            if (status === "success") {
-                paymentRequests = data;
-                fixPaymentRequestsTable();
-                console.log(paymentRequests);
-                console.log("Number of payments loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading number of payments content");
-            }
-        });
-    }
-
-    function fixBalanceTable(){
-        var len = balanceList.length;
-        var table = document.getElementById("balanceTable");
-        console.log("found table");
-        while(table.rows.length > 0) {
-            table.deleteRow(0);
-        }
-        $("#balanceTable").append(
-            "<tr>"+
-            "<th>User</th>"+
-            "<th>Balance</th>"+
-            "</tr>"
-        );
-
-        for(var i = 0; i < len; i++){
-            $("#balanceTable").append(
-                "<tr>"+
-                "<th scope=\"row\">"+balanceList[i].key+"</th>"+
-                "<th>"+balanceList[i].value+"</th>"+
-                "</tr>"
-            );
-        }
-        console.log("Added Items");
-    }
-
-    function fixPaymentRequestsTable(){
-        var len = paymentRequests.length;
-        var table = document.getElementById("paymentRequests");
-        console.log("found table");
-        while(table.rows.length > 0) {
-            table.deleteRow(0);
-        }
-        $("#paymentRequests").append(
-            "<tr>"+
-            "<th>User</th>"+
-            "<th>Amount</th>"+
-            "</tr>"
-        );
-
-        for(var i = 0; i < len; i++){
-            $("#paymentRequests").append(
-                "<tr>"+
-                "<th scope=\"row\">"+paymentRequests[i].key+"</th>"+
-                "<th>"+paymentRequests[i].value+"</th>"+
-                "</tr>"
-            );
-        }
-        console.log("Added Items");
-    }
 
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-
+        var table = document.getElementById("paymentRequests");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
 
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
@@ -197,7 +88,7 @@ $(document).ready(function() {
             url: "rest/groups/1/shoppingLists/"+lists[currentShoppingList].id+"/items",
             data: JSON.stringify(
                 {
-                    name: name,
+                    name: htmlEntities(name),
                     status: 1,
                     shoppingListId: lists[currentShoppingList].id,
                     id: 0,
@@ -266,7 +157,7 @@ $(document).ready(function() {
         });
     });
 
-    $('#unmarked').click(function() {
+    $('#unmarked').click(function(){
         var checked=getCheckedItems();
         // AJAX Request
         $.ajax({
@@ -350,50 +241,41 @@ $(document).ready(function() {
         ;
 
         $("#addUserButton").click(function(){
-            var selected = $(".ui.search").search('get value');
-            var user;
+            var user = htmlEntities($(".ui.search").search('get value'));
             var isUser = false;
             for(var i = 0; i < usersInGroup.length; i++){
-                if(usersInGroup[i].email === selected){
-                    user ={
-                        email: usersInGroup[i].email,
-                        name: usersInGroup[i].name
-                    };
+                if(usersInGroup[i].email === user){
                     isUser = true;
                     break;
                 }
-                if(usersInGroup[i].name.toLowerCase() === selected.toLowerCase()){
-                    user ={
-                        email: usersInGroup[i].email,
-                        name: usersInGroup[i].name
-                    };
+                if(usersInGroup[i].name.toLowerCase() === user.toLowerCase()){
+                    user = usersInGroup[i].email;
                     isUser = true;
                     break;
                 }
             }
             if(!isUser){
-                $("#addedUser").text(selected + " is not a member!");
+                $("#addedUser").text(user + " is not a member!");
                 return;
             }
-            var addedBefore = false;
+            var selectedBefore = false;
             for(var i = 0; i < selectedUsers.length; i++){
-                if (selectedUsers[i].email === user.email){
-                    addedBefore = true;
+                if (selectedUsers[i] === user){
+                    selectedBefore = true;
                 }
             }
-            if(addedBefore){
-                $("#addedUser").text(user.name + " is already added!");
+            if(selectedBefore){
+                $("#addedUser").text(user + " already added!");
                 return;
             }
 
             selectedUsers[index] = user;
-            $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
+            $("#addedUser").text("Added user with email " + user);
             index++;
-            addUserToTable(user);
         });
 
         $('#confirmShoppinglist').click(function(){
-            var name = $("#nameOfShoppinglist").val();
+            var name = htmlEntities($("#nameOfShoppinglist").val());
             if(name === '' || name === undefined || name === null){
                 alert("You have to give the shoppinglist a name");
                 return;
@@ -402,7 +284,7 @@ $(document).ready(function() {
             console.log("Adding shoppinglist " + name + "...");
             for(var i = 0; i < selectedUsers.length; i++){
                 userList[i] = {
-                    email: selectedUsers[i].email,
+                    email: selectedUsers[i],
                     name: null,
                     phone: null,
                     password: null,
@@ -415,10 +297,6 @@ $(document).ready(function() {
             $("#page-content").load("Shoppinglist.html");
         });
     });
-
-    function addUserToTable(user){
-        $("addedUsers").append("<li><a> Dette er en test med " + user.name + "</a></li>");
-    }
 
     function createShoppingList(name, participants){
         $.ajax({
@@ -555,22 +433,28 @@ $(document).ready(function() {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
             }),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
             success: function(){
-                alert('Success!')
+                var creatingDisbursement =document.getElementById('creatingDisbursement');
+                var shoppinglist = document.getElementById('shoppinglist');
+                var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+
+                creatingDisbursement.style.display="none";
+                shoppinglist.style.display="block";
+                dropdownShoppinglist.style.display="block";
             },
             error: function(){
                 var disb = {
                     items: getCheckedItems(),
                     payer: {email: getCookie("userLoggedOn")},
                     participants: getCheckedMembers(),
-                    name: $('#nameOfDisbursement').val(),
-                    disbursement: $('#totalAmount').val()
+                    name: htmlEntities($('#nameOfDisbursement').val()),
+                    disbursement: htmlEntities($('#totalAmount').val())
                 };
                 console.log(disb.valueOf())
             }
@@ -587,7 +471,7 @@ $(document).ready(function() {
         }
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
-                data[i].name + '</a></li>'
+                data[i].name + '</aclass></li>'
             );
         }
     }
@@ -604,6 +488,7 @@ $(document).ready(function() {
                 if(data === null || data.size === 0 || data[0] === undefined){
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
+                    console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     getItemsInShoppingList(groupId);
                 }
@@ -679,7 +564,7 @@ $(document).ready(function() {
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + items[i].status + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox' ></td>" +
+                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
             if(items[i].status===2){
@@ -702,6 +587,15 @@ $(document).ready(function() {
 
     function getCheckedMembers() {
         var members = [];
+        for (var i = 0; i < numberOfMembers; i++) {
+            if ($("#memberCheckbox" + i).is(':checked')) {
+                members.push({email: $("#memberCheckbox" + i)[0].value});
+            }
+        }
+        return members;
+};
+    function getCheckedMembers() {
+        var members = [];
         for(var i = 0;i<numberOfMembers; i++){
             if($("#memberCheckbox"+i).is(':checked')) {
                 members.push({email: $("#memberCheckbox"+i)[0].value});
@@ -709,7 +603,220 @@ $(document).ready(function() {
         }
         return members;
     }
+
 });
+function respondToDisbursement(data,response) {
+    // AJAX Request
+    console.log(data.value+"  "+response);
+    $.ajax({
+        type: "PUT",
+        url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
+        data: JSON.stringify(
+            {id: data.value}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function () {
+            getDisbursementList();
+            getUserBalance();
+        }
+    });
+}
+
+//Used by the buttons generated by function fixPaymentRequests, DON'T DELETE
+function acceptPaymentsClick(data){
+    var array = data.value.split(",");
+    var paymentId = array[0];
+    var amount = array[1];
+    var payer = array[2];
+    console.log("Payment Id=" + paymentId + " Amount=" + amount + " Payer=" + payer);
+    $.ajax({
+        type: 'PUT',
+        url: "http://localhost:8080/scrum/rest/groups/updatePayment/" + paymentId, //test
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("accepted paymentt");
+
+        },
+        error: function () {
+            alert("payment not accepted");
+        }
+    });
+
+    $.ajax({
+        type: 'PUT',
+        url: "http://localhost:8080/scrum/rest/groups/updateBalances/" + currentGroup + "/"+ currentUser+"/"+ payer +"/" + amount,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("accepted paymentt");
+            getUserBalance();
+            getPaymentRequests();
+        },
+        error: function () {
+            alert("payment not accepted");
+        }
+    })
+};
+
+function fixDisbursementTable(){
+    var acceptedString;
+    var len = disbursementList.length;
+    var table = document.getElementById("disbursementTable");
+    console.log("found table");
+    while(table.rows.length > 0) {
+        table.deleteRow(0);
+    }
+    $("#disbursementTable").append(
+        "<tr>"+
+        "<th>#</th>"+
+        "<th>Reciet</th>"+
+        "<th>Participants</th>"+
+        "<th>Cost</th>"+
+        "<th>Day/Month/Year</th>"+
+        "<th>Buyer</th>"+
+        "</tr>"
+    );
+
+    for(var i = 0; i < len; i++){
+        if(disbursementList[i].accepted === 0){
+            acceptedString = "<button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
+        } else {acceptedString =  "Accepted"}
+        var participantsList = disbursementList[i].participants;
+        var participantsString = "";
+        for(var j=0;j<participantsList.length;j++){
+            participantsString+=participantsList[j].name + ", ";
+        }
+        var dispDate = new Date(disbursementList[i].date);
+        var month = dispDate.getUTCMonth() + 1; //months from 1-12
+        var day = dispDate.getUTCDate();
+        var year = dispDate.getUTCFullYear();
+        var d = day + "/" + month + "/" + year;
+
+        $("#disbursementTable").append(
+            "<tr>"+
+            "<td scope=\"row\">"+(i+1)+"</td>"+
+            "<td>"+disbursementList[i].name+"</td>"+
+            "<td>"+participantsString+"</td>"+
+            "<td>"+disbursementList[i].disbursement+"</td>"+
+            "<td>"+d+"</td>"+
+            "<td>"+disbursementList[i].payer.name+"</td>"+
+            "<td>"+acceptedString+"</td>"+
+            "</tr>");
+        /*if(items[i].status===2){
+            $("#row"+i).addClass('boughtMarked');
+        }*/
+    }
+    console.log("Added Items");
+}
+
+function getDisbursementList(){
+    var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
+
+    $.get(url, function(data, status){
+        console.log("skrrt");
+        if (status === "success") {
+            disbursementList = data;
+            fixDisbursementTable();
+            console.log("Item content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading Item content");
+        }
+    });
+}
+
+function getUserBalance(){
+    var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
+
+    $.get(url, function(data, status){
+        console.log("skrrt");
+        if (status === "success") {
+            balanceList = data;
+            fixBalanceTable();
+            console.log("Item content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading Item content");
+        }
+    });
+}
+
+function getPaymentRequests(){
+    var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
+
+    $.get(url, function(data, status){
+        console.log("skrrt");
+        if (status === "success") {
+            paymentRequests = data;
+            fixPaymentRequestsTable();
+            console.log(paymentRequests);
+            console.log("Number of payments loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading number of payments content");
+        }
+    });
+}
+
+function fixBalanceTable(){
+    var len = balanceList.length;
+    var table = document.getElementById("balanceTable");
+    console.log("found table");
+    while(table.rows.length > 0) {
+        table.deleteRow(0);
+    }
+    $("#balanceTable").append(
+        "<tr>"+
+        "<th>User</th>"+
+        "<th>Balance</th>"+
+        "</tr>"
+    );
+
+    for(var i = 0; i < len; i++){
+        $("#balanceTable").append(
+            "<tr>"+
+            "<th scope=\"row\">"+balanceList[i].key+"</th>"+
+            "<th>"+balanceList[i].value+"</th>"+
+            "</tr>"
+        );
+    }
+    console.log("Added Items");
+}
+
+function fixPaymentRequestsTable(){
+    var len = paymentRequests.length;
+    console.log(paymentRequests);
+    var table = document.getElementById("paymentRequests");
+    console.log("found table");
+    while(table.rows.length > 0) {
+        table.deleteRow(0);
+    }
+    $("#paymentRequests").append(
+        "<tr>"+
+        "<th>User</th>"+
+        "<th>Asks For</th>"+
+        "<th></th>"+
+        "</tr>"
+    );
+
+    for(var i = 0; i < len; i++){
+        var table1 = [];
+        table1[0]=paymentRequests[i].id;
+        table1[1]=paymentRequests[i].amount;
+        table1[2]=paymentRequests[i].payer;
+        $("#paymentRequests").append(
+            "<tr>"+
+            "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
+            "<th>"+paymentRequests[i].amount+"</th>"+
+            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Accept Payment</button></th>"+
+            "</tr>"
+        );
+    }
+    console.log("Added Itempp");
+}
+
 
 
 

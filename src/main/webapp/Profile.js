@@ -1,205 +1,37 @@
-    $(document).ready(function() {
-
-
-        $('#editUser').click(function () {
-            var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
-            var tableEdit = document.getElementById("tableUserInfo");
-
-            tableReadOnly.style.display = "none";
-            tableEdit.style.display = "block";
-
-        });
-
-
-
-    getLoggedOnUser(setData);
-    getLoggedOnUser(getGroups);
-    var sessionEmail;
-    //getEmail();
-
-
-
-    function setData(user) {
-        console.log("name: " + user.name);
-        console.log("email: " + user.email);
-        sessionEmail = user.email;
-        $('#nameReadOnly').attr('value', user.name);
-        $('#emailReadOnly').attr('value', user.email);
-        $('#phoneReadOnly').attr('value', user.phone);
-        var lists;
-
-        var url='rest/groups/'+ user.email +'/invites';
-        $.get(url, function(data,status){
-            lists=data;
-            renderInvites(data,user);
-            if(status === "success"){
-                console.log("members content loaded successfully!");
-            }
-            if(status === "error"){
-                console.log("Error in loading members");
-            }
-        });
-    }
-
-
-    function getInfo(email){
-        $.ajax({
-            type: 'GET',
-            url: 'rest/user/' + email,
-            dataType: 'json',
-            success: function (data) {
-                console.log( "data: " + data);
-                console.log(email)
-                $('#nameReadOnly').attr('value', data.name);
-                $('#emailReadOnly').attr('value', email);
-                $('#phoneReadOnly').attr('value', data.phone);
-            }
-        })
-    }
-
-
-    //Updating user information
-    $('#Confirm').click(function () {
+var sessionEmail;
+var loggedOnUser;
+$(document).ready(function() {
+    //Assign click functions
+    $('#editUser').click(function () {
         var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
         var tableEdit = document.getElementById("tableUserInfo");
-        var alertSuccess = document.getElementById("alertSuccessEditProfile");
 
-        var nameField = $('#nameProfileField1').val();
-        var phoneField = $('#phoneField1').val();
-        if(nameField == ""){
-            //alert("please fill out namefield");
-            $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
-                $("#alertNameField").slideUp(500);
-            });
-            $('#nameProfileField1').css({
-                "background-color": "yellow",
-            });
-        }else if(phoneField ==""){
-            //alert("please fill out phonefield");
-            $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
-                $("#alertPhoneField").slideUp(500);
-            });
-            $('#phoneField1').css({
-                "background-color": "yellow",
-            });
-        }else {
+        tableReadOnly.style.display = "none";
+        tableEdit.style.display = "block";
 
-            $.ajax({
-                type: 'PUT',
-                url: 'rest/user/'+ sessionEmail, //test
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({
-                    "name": nameField,
-                    "phone": phoneField,
-                    "email": sessionEmail,
-                    "password":null
+    });
+    $("#createGroup").click(function () {
+        createNewGroup();
+    });
+    $('#Confirm').click(function(){
+        updateUserInformation()
+    });
 
-                }),
-                success: function () {
-                    //window.location.reload();
-                    getLoggedOnUser(setData);
-                   // alertSuccess.style.display="block";
-                    $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
-                        $("#alertSuccessEditProfile").slideUp(500);
-                    });
-
-                },
-                error: function () {
-                    alert("information did not update")
-                }
-
-            });
-
-            tableReadOnly.style.display = "block";
-            tableEdit.style.display = "none";
-            console.log("confirmknapp trykket")
-        }
+    getLoggedOnUser(function(user){
+        setData(user);
+        getGroups(user);
     });
 
     //Updating user password
     $('#changePassword').click(function () {
-        //var passwordField =$('#confirmPasswordField').val();
-        sha256($("#passwordRegField").val()).then(function (value) {
-            $.ajax({
-                type: 'PUT',
-                url: 'rest/user/' + sessionEmail, //test
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({
-                    "name": null,
-                    "email": sessionEmail,
-                    "password": value
-                }),
-                success: function () {
-                    //window.location.reload();
-                    // alertSuccess.style.display="block";
-                    $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
-                        $("#alertPassword").slideUp(500);
-                    });
-
-                },
-                error: function () {
-                    alert("Password did not update")
-                }
-            });
+        passwordIsCorrect().then(function () {
+            changePassword();
+        }).catch(function (){
+            alert("Wrong pw");
         });
     });
+});
 
-    /**(function datatoJSONupdateInfo() {
-        json = JSON.stringify({
-            "name": $('#nameProfileField1').val(),
-            "phone": $('#phoneField1').val(),
-            "email": 'abcqwe',
-            "password":'qwe'
-
-        });
-        console.log(json);
-        return json;
-    }*/
-
-
-    $("#createGroup").click(function () {
-        createNewGroup();
-    });
-
-    function getInvites(user) {
-        $.ajax({
-            type:"GET",
-            url: "rest/groups/" + user.email + "/invites",
-            contentType: "application/json",
-            dataType:"json",
-            success: function (data) {
-                renderInvites(data);
-            }
-        })
-    }
-
-        function getGroups(user) {
-            $.ajax({
-                type: 'GET',
-                url: '/scrum/rest/groups/list/' + user.email,
-                dataType: "json",
-                success: homeButtonForOldUsers
-            });
-            //console.log(getCookie(curGroup));
-        }
-
-        //Users who are connected to a group can press the logo to go the the dashboard while
-        //new users cant
-        function homeButtonForOldUsers(data) {
-            groups=data;
-            var len = data.length;
-            if(len>=1){
-                $('#houseHoldManagerLogo').click(function () {
-                    window.location.href = "GroupDashboard.html"
-                })
-                $('#houseHoldManagerLogo2').click(function () {
-                    window.location.href = "GroupDashboard.html"
-                })
-            }
-        }
-    });
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -240,11 +72,9 @@ function renderInvites(data,user) {
         $("#profileInvites").append($fjern);
         $("#profileInvites").append("</tr>");
     }
-
 }
 
 function createNewGroup() {
-    //console.log("Click");
     var Groupname=prompt("Group name: ");
     if(Groupname == null) {
         return;
@@ -256,9 +86,9 @@ function createNewGroup() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
-                'name': Groupname,
+                'name': htmlEntities(Groupname),
                 'description': null,
-                'admin': $("#emailReadOnly").val(),
+                'admin': htmlEntities($("#emailReadOnly").val()),
                 'members': null
             }),
             statusCode: {
@@ -272,5 +102,202 @@ function createNewGroup() {
             }
         })
     }
-};
+}
 
+//Check if old password correct
+function passwordIsCorrect(){
+    return new Promise(function (resolve,reject){
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
+            sha256(pass + loggedOnUser.salt).then(function (saltedHashed) {
+                console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
+                    pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
+                if(saltedHashed===(loggedOnUser.password)){
+                    console.log("Old password is correct");
+                    resolve();
+                }else{
+                    console.log("Old password is wrong");
+                    reject();
+                }
+            })
+        });
+    });
+
+}
+
+//Change password
+function changePassword(){
+    var passwordField =$('#confirmPasswordField').val();
+    console.log(passwordField);
+    sha256(passwordField).then(function (pass) {
+        console.log(pass);
+        $.ajax({
+            type: 'PUT',
+            url: 'rest/user/' + sessionEmail, //test
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                "name": null,
+                "email": sessionEmail,
+                "password": htmlEntities(pass)
+            }),
+            success: function () {
+                //Alert that password is changed
+                $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#alertPassword").slideUp(500);
+                });
+                getLoggedOnUser(setData);
+
+            },
+            error: function () {
+                alert("Password did not update")
+            }
+        });
+    });
+}
+
+// function getInvites(user) {
+//     $.ajax({
+//         type:"GET",
+//         url: "rest/groups/" + user.email + "/invites",
+//         contentType: "application/json",
+//         dataType:"json",
+//         success: function (data) {
+//             renderInvites(data);
+//         }
+//     })
+// }
+
+function getGroups(user) {
+    $.ajax({
+        type: 'GET',
+        url: '/scrum/rest/groups/list/' + user.email,
+        dataType: "json",
+        success: function(data){
+            if (data.length == 0){
+                // do nothing
+            } else {
+                homeButtonForOldUsers(data);
+            }
+        }
+    });
+    //console.log(getCookie(curGroup));
+}
+
+//Users who are connected to a group can press the logo to go the the dashboard while
+//new users cant
+function homeButtonForOldUsers(groups) {
+    var len = groups.length;
+    if (len == 0){
+    }
+    if(len>=1){
+        $('#houseHoldManagerLogo').click(function () {
+            window.location.href = "GroupDashboard.html#feed"
+        })
+        $('#houseHoldManagerLogo2').click(function () {
+            window.location.href = "GroupDashboard.html#feed"
+        })
+    }
+}
+
+//Sets the values of the fields to reflect current user information
+function setData(userObj) {
+    console.log("name: " + userObj.name);
+    console.log("email: " + userObj.email);
+    sessionEmail = userObj.email;
+    $('#nameReadOnly').attr('value', userObj.name);
+    $('#emailReadOnly').attr('value', userObj.email);
+    $('#phoneReadOnly').attr('value', userObj.phone);
+    $('#nameProfileField1').attr('value',userObj.name);
+    $('#phoneField1').attr('value',userObj.phone);
+    var lists;
+
+    var url='rest/groups/'+ userObj.email +'/invites';
+    $.get(url, function(data,status){
+        lists=data;
+        renderInvites(data,userObj);
+        if(status === "success"){
+            console.log("members content loaded successfully!");
+        }
+        if(status === "error"){
+            console.log("Error in loading members");
+        }
+    });
+    loggedOnUser=userObj;
+}
+
+//Updating user information
+function updateUserInformation () {
+    var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
+    var tableEdit = document.getElementById("tableUserInfo");
+    var alertSuccess = document.getElementById("alertSuccessEditProfile");
+
+    var nameField = $('#nameProfileField1').val();
+    var phoneField = $('#phoneField1').val();
+    if(nameField == ""){
+        //alert("please fill out namefield");
+        $("#alertNameField").fadeTo(2000, 500).slideUp(500, function(){
+            $("#alertNameField").slideUp(500);
+        });
+        $('#nameProfileField1').css({
+            "background-color": "yellow",
+        });
+    }else if(phoneField ==""){
+        //alert("please fill out phonefield");
+        $("#alertPhoneField").fadeTo(2000, 500).slideUp(500, function(){
+            $("#alertPhoneField").slideUp(500);
+        });
+        $('#phoneField1').css({
+            "background-color": "yellow",
+        });
+    }else {
+
+        $.ajax({
+            type: 'PUT',
+            url: 'rest/user/'+ sessionEmail, //test
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                "name": htmlEntities(nameField),
+                "phone": htmlEntities(phoneField),
+                "email": htmlEntities(sessionEmail),
+                "password":null
+            }),
+            success: function () {
+                //window.location.reload();
+                getLoggedOnUser(setData);
+                // alertSuccess.style.display="block";
+                $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
+                    $("#alertSuccessEditProfile").slideUp(500);
+                });
+
+            },
+            error: function () {
+                alert("information did not update")
+            }
+
+        });
+
+        tableReadOnly.style.display = "block";
+        tableEdit.style.display = "none";
+        console.log("confirmknapp trykket")
+    }
+}
+
+//Brukes ikke???
+/*
+function getInfo(email){
+    $.ajax({
+        type: 'GET',
+        url: 'rest/user/' + email,
+        dataType: 'json',
+        success: function (data) {
+            console.log( "data: " + data);
+            console.log(email)
+            $('#nameReadOnly').attr('value', data.name);
+            $('#emailReadOnly').attr('value', email);
+            $('#phoneReadOnly').attr('value', data.phone);
+        }
+    })
+}
+*/

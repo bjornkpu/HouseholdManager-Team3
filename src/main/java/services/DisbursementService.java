@@ -16,6 +16,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 @Path("/groups/{groupId}/disbursement/")
 public class DisbursementService {
     private final Logger log = Logger.getLogger();
@@ -44,6 +46,19 @@ public class DisbursementService {
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
             dDao.addDisbursement(disbursement,groupId);
+        } catch (SQLException e) {
+            log.error("Failed to add disbursement", e);
+            throw new ServerErrorException("Failed to add disbursement", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+    @PUT
+    @Path("/{userEmail}/{response}")
+    public void disbursementResponse(@PathParam("userEmail") String userEmail, @PathParam("response") int response,
+                                     @PathParam("groupId") int groupId, Disbursement disbursement){
+        log.info(disbursement.getId()+" to be responded to by "+userEmail+"with int: "+response);
+        try (Connection connection = Db.instance().getConnection()){
+            DisbursementDao dDao = new DisbursementDao(connection);
+            dDao.respondToDisbursement(disbursement,groupId,userEmail,response);
         } catch (SQLException e) {
             log.error("Failed to get Statistics", e);
             throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);

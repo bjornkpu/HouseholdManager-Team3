@@ -252,15 +252,4 @@ public class GroupDaoTest {
         }
         assertTrue(ok);
     }
-
-    @Test
-    public void getNumberOfRequestsTest() throws SQLException{
-        int result =0;
-        try{
-            result = gr.getNumberOfPaymentRequests("en@h.no",1);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        assertEquals(3,result);
-    }
 }
