@@ -110,6 +110,7 @@ CREATE TABLE payment(
   receiver_id VARCHAR (255) NOT NULL,
   party_id INTEGER(10) NOT NULL,
   amount DOUBLE NOT NULL,
+  active BIT NOT NULL DEFAULT 0,
   CONSTRAINT payment_pk PRIMARY KEY(id));
 
 

@@ -144,6 +144,7 @@ $(document).ready(function() {
             "<tr>"+
             "<th>User</th>"+
             "<th>Amount</th>"+
+            "<th></th>"+
             "</tr>"
         );
 
@@ -152,11 +153,17 @@ $(document).ready(function() {
                 "<tr>"+
                 "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
                 "<th>"+paymentRequests[i].amount+"</th>"+
+                "<th><button class='acceptPayment' value="+paymentRequests[i].id+">Accept Payment</button></th>"+
                 "</tr>"
             );
         }
         console.log("Added Items");
     }
+
+    $('.acceptPayment').click(function(){
+        console.log("Hei");
+        var paymentId = $(this).value;
+    });
 
     $('#viewPaymentRequests').click(function(){
         var table = document.getElementById("paymentRequests");

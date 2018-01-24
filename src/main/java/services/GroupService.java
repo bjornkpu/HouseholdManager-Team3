@@ -210,7 +210,7 @@ public class GroupService {
     @GET
     @Path("/payment/{groupId}/{email}")
     @Produces("application/json")
-    public ArrayList<Payment> getBalance(@PathParam("groupId") int groupId, @PathParam("email") String email){
+    public ArrayList<Payment> getPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving payments to member.");
@@ -221,17 +221,18 @@ public class GroupService {
         }
     }
 
-    @GET
-    @Path("/numberOfPayments/{groupId}/{email}")
-    @Produces("application/json")
-    public int getNumberOfPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
+    @PUT
+    @Path("/updatePayment/{payId}")
+    @Consumes("application/json")
+    public boolean updatePayment(@PathParam("payId") int payId){
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
-            log.info("Retrieving number of payments requests to member.");
-            return groupDao.getNumberOfPaymentRequests(email,groupId);
+            log.info("Updating payment.");
+            return groupDao.updatePayment(payId);
         } catch (SQLException e) {
-            log.info("Could not get number of payments requests");
-            throw new ServerErrorException("Failed to get number of payments requests.", Response.Status.INTERNAL_SERVER_ERROR, e);
+            log.info("Could not update payment");
+            throw new ServerErrorException("Failed to update payment.", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
 }
