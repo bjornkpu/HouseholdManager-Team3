@@ -33,19 +33,6 @@ $(document).ready(function() {
 });
 
 
-/*
-(function datatoJSONupdateInfo() {
-        json = JSON.stringify({
-            "name": $('#nameProfileField1').val(),
-            "phone": $('#phoneField1').val(),
-            "email": 'abcqwe',
-            "password":'qwe'
-
-        });
-        console.log(json);
-        return json;
-}
-*/
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
 
@@ -199,17 +186,16 @@ function getGroups(user) {
 
 //Users who are connected to a group can press the logo to go the the dashboard while
 //new users cant
-function homeButtonForOldUsers(data) {
-    groups=data;
-    var len = data.length;
+function homeButtonForOldUsers(groups) {
+    var len = groups.length;
     if (len == 0){
     }
     if(len>=1){
         $('#houseHoldManagerLogo').click(function () {
-            window.location.href = "GroupDashboard.html"
+            window.location.href = "GroupDashboard.html#feed"
         })
         $('#houseHoldManagerLogo2').click(function () {
-            window.location.href = "GroupDashboard.html"
+            window.location.href = "GroupDashboard.html#feed"
         })
     }
 }

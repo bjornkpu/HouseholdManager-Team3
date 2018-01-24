@@ -9,6 +9,7 @@ public class Payment {
     private int party;
     private boolean paid=false;
 
+    public Payment(){}
     public Payment(int id, String payer, String receiver, double amount, int party, String payerName){
         this.id=id;
         this.payer=payer;
@@ -27,6 +28,34 @@ public class Payment {
 
     public double getAmount() {
         return amount;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setPayer(String payer) {
+        this.payer = payer;
+    }
+
+    public void setPayerName(String payerName) {
+        this.payerName = payerName;
+    }
+
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setParty(int party) {
+        this.party = party;
+    }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
     }
 
     public int getId() {

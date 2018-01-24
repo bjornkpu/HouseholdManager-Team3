@@ -62,13 +62,15 @@
         <button class = "button" id="addTask"> Add Task</button>
     </div>
     <div class="col-sm">
-        <button class = "button" id="assignTask"> Assign Task</button>
+        <button class = "button dropdown-toggle" type="button" data-toggle="dropdown" id="assignTask"> Assign Task</button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="assignTask" id="taskAssignDropdown"></ul>
     </div>
     <div class="col-sm">
-        <button class = "button" id="completeTask"> Set Completed By</button>
+        <button class = "button dropdown-toggle" type="button" data-toggle="dropdown" id="completeTask"> Set Completed By</button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="completeTask" id="taskCompDropdown"></ul>
     </div>
     <div class="col-sm">
-        <button class = "button" id="deleteTask"> Delete Task<items></items></button>
+        <button class = "button" id="deleteTask"> Delete Task</button>
     </div>
 </div>
 <!--end of buttons for task -->

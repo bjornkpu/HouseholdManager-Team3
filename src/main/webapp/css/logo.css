@@ -21,13 +21,30 @@ body {
     #logo2{
         display: none;
     }
+    #logo3{
+        display: none;
+    }
 }
     @media screen and (orientation:portrait){
+
         #logo2{
-            /* CODE HERE*/
+            position: absolute;
+            top:  0;
+            left: 0;
+
+            width: 100%;
+            height:50%;
         }
         #logo{
             display: none;
+        }
+        #logo3{
+            position: absolute;
+            top: 70%;
+            left: 0;
+
+            width: 100%;
+            height:20%;
         }
     }
 

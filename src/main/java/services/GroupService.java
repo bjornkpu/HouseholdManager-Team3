@@ -249,4 +249,19 @@ public class GroupService {
         }
     }
 
+    @POST
+    @Path("/newPayment/")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean addPayment(Payment payment) {
+        try(Connection connection= Db.instance().getConnection()) {
+            GroupDao groupDao = new GroupDao(connection);
+
+            return groupDao.setPayment(payment);
+
+        } catch (SQLException e) {
+            log.info("Add payment failed");
+            throw new ServerErrorException("Failed to add payment", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+
 }
