@@ -3,7 +3,6 @@ package db;
 import data.StatisticsHelp;
 import data.User;
 
-import java.sql.*;
 import java.util.ArrayList;
 
 import util.Logger;
@@ -12,7 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
+import static util.EmailSender.sendConfirmationMail;
 
 /**
  * -Description of the class-
@@ -81,6 +81,9 @@ public class UserDao {
             ps.setString(5,user.getSalt());
             int result = ps.executeUpdate();
             log.info("Add user " + (result == 1?"ok":"failed"));
+            if(result == 1){
+                sendConfirmationMail(user.getEmail());
+            }
             return result == 1;
         } finally {
             Db.close(ps);
