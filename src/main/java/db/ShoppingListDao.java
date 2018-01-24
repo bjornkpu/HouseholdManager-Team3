@@ -262,6 +262,7 @@ public class ShoppingListDao {
                     "VALUES (?, ?)");
 
             for(int i = 0; i < shoppingList.getUserList().size(); i++){
+                if(shoppingList.getUserList().get(i).getEmail().equals("SKIP")) continue;
                 ps.setInt(1, id);
                 ps.setString(2, shoppingList.getUserList().get(i).getEmail());
                 ps.addBatch();

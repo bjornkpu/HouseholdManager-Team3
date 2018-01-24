@@ -388,8 +388,11 @@ $(document).ready(function() {
 
             selectedUsers[index] = user;
             $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
+            // addUserToTable(user);
+            $("#addedUsers").append("<li>Dette er en test med " + user.name + "" +
+                "<button class='b' id='" + index + "'>Click me!</button></li>");
+            console.log(index + " added!");
             index++;
-            addUserToTable(user);
         });
 
         $('#confirmShoppinglist').click(function(){
@@ -400,25 +403,49 @@ $(document).ready(function() {
             }
             var userList = [];
             console.log("Adding shoppinglist " + name + "...");
+
+            //TODO clean this up
             for(var i = 0; i < selectedUsers.length; i++){
-                userList[i] = {
-                    email: selectedUsers[i].email,
-                    name: null,
-                    phone: null,
-                    password: null,
-                    salt: null
-                };
-                console.log("Adding user: " + userList[i].email + "...");
+                if(selectedUsers[i] === 'empty') {
+                    console.log("SKIP FOUND");
+                    userList[i] = {
+                        email: 'SKIP',
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                } else {
+                    userList[i] = {
+                        email: selectedUsers[i].email,
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                    console.log("Adding user: " + userList[i].email + "...");
+                }
             }
             createShoppingList(name, userList);
 
             $("#page-content").load("Shoppinglist.html");
         });
-    });
 
-    function addUserToTable(user){
-        $("addedUsers").append("<li><a> Dette er en test med " + user.name + "</a></li>");
-    }
+        $('#addedUsers').on('click', 'button.b', function(){
+            console.log(selectedUsers[this.id].name + ' er fjernet!');
+            selectedUsers[this.id] = 'empty';
+            reloadList()
+        });
+
+        function reloadList(){
+            $("#addedUsers").empty();
+            for(var i = 0; i < selectedUsers.length; i++){
+                if(selectedUsers[i] === "empty") continue;
+                $("#addedUsers").append("<li>Dette er en test med " + selectedUsers[i].name + "" +
+                    "<button class='b' id='" + i + "'>Click me!</button></li>");
+            }
+        }
+    });
 
     function createShoppingList(name, participants){
         $.ajax({
