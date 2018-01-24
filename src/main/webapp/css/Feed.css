@@ -1,6 +1,6 @@
 .feedGrid{
     display: grid;
-    grid-template-columns: [col1-start] 55% [col1-end col2-start] 45% [col2-end];
+    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
     grid-template-rows: [row1-start] 150px [row2-end row2-start] 100%;
     grid-template-areas:
             "leftheader rightheader"
@@ -26,7 +26,7 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: none;
+    border: 2px groove #0596c6;
     overflow: auto;
     outline: none;
     -webkit-box-shadow: none;
@@ -40,7 +40,7 @@
 
 .wall{
     display: grid;
-    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100vh [wallRow2-end];
+    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
     grid-area: wallposts;
     background-color: #d8d8d8;
     justify-items: center;
@@ -48,26 +48,25 @@
 
 .textPosts{
     display: grid;
-    height: 80%;
+    height: 100%;
     width: 80%;
     margin-top: 20px;
     background-color: #d8d8d8;
     align-content: start;
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
-    border: 1px groove black;
-    resize: none;
-
+    border: none;
 }
+
 .post{
     display: grid;
-    grid-template-rows: [row1-start] auto [row1-end row2-start] auto;
+    grid-template-rows: [row1-start] auto [row1-end row2-start] 25px;
     grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
     grid-template-areas:
                         "message message"
                         "name date";
 
-    width: 38vw;
+    width: 90%;
     background-color: whitesmoke;
     margin: 5px;
     font-size: 15px;
@@ -75,21 +74,25 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    border: none;
+    border: 2px groove #0596c6;
     outline: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
 }
+
 .message{
     display: grid;
     grid-area: message;
     justify-self: stretch;
+    align-self: stretch;
     overflow: auto;
     height: 100%;
     border-bottom: 2px groove #0596c6;
 }
 .message p{
+    padding-left: 3px;
+    padding-right: 3px;
     font-size: 18px;
 }
 
@@ -97,19 +100,26 @@
     display: grid;
     grid-area: name;
     justify-self: stretch;
-    justify-items: center;
 }
+
 .postedBy p{
+    display: grid;
     font-size: 14px;
-    color: lightslategrey;
+    color: darkgrey;
+    justify-self: center;
 }
+
 .datePosted{
     display: grid;
     grid-area: date;
-    justify-self: stretch;
-    justify-items: center;
-    align-content: center;
     border-left: 2px groove #0596c6;
+    justify-self: stretch;
+}
+.datePosted p{
+    display: grid;
+    font-size: 14px;
+    color: darkgray;
+    justify-self: center;
 }
 
 .rightHeader{
