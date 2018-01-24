@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
     $.ajax({
         url: 'rest/session',
         type: 'GET',
@@ -6,6 +7,18 @@ $(document).ready(function(){
         success: function(session){
             // window.location.href="GroupDashboard.html";
         }
+    });
+
+    //setTimeout(loadLogin,5000);
+    loadLogin();
+
+    function loadLogin() {
+        $('#myModal').modal('show');
+
+    }
+
+    $('#logo').click(function () {
+        $('#myModal').modal('show');
     });
 
     // Log in
@@ -30,9 +43,9 @@ $(document).ready(function(){
                             document.cookie ="userLoggedOn =" + email;
                             break;
                         case 401:
-                            $("#wrongPasswordAlert").removeClass("hide");
-                            alert("Wrong email or password");
-                            $('#forgottenPassword').show();
+                            $("#alertWrongUsernameOrPassword").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertWrongUsernameOrPassword").slideUp(500);
+                            });
                             break;
                         default:
                             // window.location.href="error.html";
@@ -43,7 +56,7 @@ $(document).ready(function(){
         });
     });
 
-    $('#forgottenPassword').hide();
+   // $('#forgottenPassword').hide();
     $('#forgottenPassword').click(function () {
         toEmail = $("#emailField").val();
         mess1 = "Send new password to: "+ toEmail;
@@ -53,27 +66,33 @@ $(document).ready(function(){
                 url: 'rest/user/forgotPw/'+toEmail,
                 type: 'PUT',
                 complete: function () {
-                    alert("Password sent to: "+toEmail);
+                    $("#alertEmailSent").fadeTo(4000, 500).slideUp(500, function () {
+                        $("#alertEmailSent").slideUp(500);
+                    });
                 }
             });
         }
     })
     
     $('#registerButton').click(function () {
-        $("#div_for_login").hide();
+        $("#loginContent").hide();
         $("#div_reg").show();
+        $(".modal-footer").hide();
     })
 
     $('#cancelBtn').click(function () {
         $("#div_reg").hide();
-        $("#div_for_login").show();
+        $("#loginContent").show();
+        $(".modal-footer").show();
     })
 
     $('#confirmReg').click(function click() {
 
         if(!$("#name_of_user_field").val() || !$("#emailRegField").val() ||
             !$("#passwordRegField").val() || !$("#passwordConfirmField").val()){
-            alert("All fields must be filled in");
+            $("#alertMissingInfo").fadeTo(4000, 500).slideUp(500, function () {
+                $("#alertMissingInfo").slideUp(500);
+            });
             return;
         }
         /*//--Checks if the email is valid - Doesn't work, should tho...
@@ -97,15 +116,27 @@ $(document).ready(function(){
                     }),
                     contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
-                    success: function(data){
-                        $("#div_reg").hide();
-                        $("#div_for_login").show();
-                        alert("User is now Active")
+                    statusCode: {
+                        200: function() {
+                            $("#div_reg").hide();
+                            $("#loginContent").show();
+                            $(".modal-footer").show();
+                            $("#alertUserActive").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertUserActive").slideUp(500);
+                            });
+                        },
+                        400: function() {
+                            $("#alertInvalidEmail").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertInvalidEmail").slideUp(500);
+                            });
+                        }
                     }
                 });
             });
         }else{
-            alert("Passwords must match >:)))))");
+            $("#alertMismatchingPassword").fadeTo(4000, 500).slideUp(500, function () {
+                $("#alertMismatchingPassword").slideUp(500);
+            });
         }
     })
 });

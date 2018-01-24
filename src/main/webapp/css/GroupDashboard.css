@@ -47,6 +47,14 @@
 
 
 
+    #forgottenPassword{
+        font-size: small;
+        background:none;
+        border:none;
+        color: #0596c6;
+    }
+
+
     .center{
     margin: auto;
     text-align: center;
