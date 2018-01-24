@@ -27,6 +27,10 @@ $(document).ready(function(){
     if (window.location.hash == "#feed"){
         $("#page-content").load("Feed.html");
     }
+    if (window.location.hash == "#tasks"){
+        $("#page-content").load("Tasks.html");
+    }
+
 
     function setData(user) {
         $.ajax({
