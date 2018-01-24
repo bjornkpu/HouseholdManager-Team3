@@ -574,17 +574,16 @@ $(document).ready(function() {
         console.log("Added Items");
     }
 
-});
-function getCheckedItems(){
-    var table_length = $('#shoppingTable tr').length;
-    var checked = [];
-    for (var i =0; i<table_length;i++){
-        if($("#checkbox"+i).is(':checked')){
-            var item = {id: $("#checkbox"+i)[0].value};
-            checked.push(item);
-        }
-    }return checked;
-}
+    function getCheckedItems(){
+        var table_length = $('#shoppingTable tr').length;
+        var checked = [];
+        for (var i =0; i<table_length;i++){
+            if($("#checkbox"+i).is(':checked')){
+                var item = {id: $("#checkbox"+i)[0].value};
+                checked.push(item);
+            }
+        }return checked;
+    }
 
     function getCheckedMembers() {
         var members = [];
@@ -595,7 +594,17 @@ function getCheckedItems(){
         }
         return members;
 };
+    function getCheckedMembers() {
+        var members = [];
+        for(var i = 0;i<numberOfMembers; i++){
+            if($("#memberCheckbox"+i).is(':checked')) {
+                members.push({email: $("#memberCheckbox"+i)[0].value});
+            }
+        }
+        return members;
+    }
 
+});
 function respondToDisbursement(data,response) {
     // AJAX Request
     console.log(data.value+"  "+response);
