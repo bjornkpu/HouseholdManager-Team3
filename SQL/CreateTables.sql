@@ -1,3 +1,4 @@
+/*ALL STATEMENTS*/
 /*Viser alle prosessene startet av brukeren vår
 SHOW PROCESSLIST ;
 
@@ -191,10 +192,13 @@ INSERT INTO user(name, email, password, salt, phone) VALUES( 'geir', 'fire@h.no'
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'ove', 'fem@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12345623);
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'lisa', 'seks@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+INSERT INTO user(name, email, password, salt ,phone) VALUES( 'bjorn', 'bk@p.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 
 
 INSERT INTO party(name) VALUES ('Frex');
 INSERT INTO party(name) VALUES ('Brummun');
+INSERT INTO party(name) VALUES ('BKs Hi');
+
 
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,100,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',2,100,1);
@@ -205,6 +209,7 @@ INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fire@h.no',2
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fem@h.no',2,-2000.1,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('seks@h.no',2,0,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('sju@h.no',2,0,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('bk@p.no',3,0,1);
 
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Husk å dra ned i do, Murtin',1,'en@h.no');
 INSERT INTO wallpost(message, party_id, user_email) VALUES ('Kommer ikke hjem før onsdag',1,'to@h.no');
@@ -219,10 +224,12 @@ INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('T�
 
 INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Legge inn testdata',0,'29-01-18', 2, 'en@h.no');
 INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Legge inn testdata igjen',0,'02-02-18', 2, 'tre@h.no');
+INSERT INTO chore(name, regularity, deadline,  party_id, user_email) VALUES ('Spise Nachos',0,'02-02-18', 3, null);
 
 INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('Kino', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 1);
+
 INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
 
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 1, 1,1);
@@ -244,12 +251,12 @@ INSERT INTO chore_log(user_email,chore_id) VALUE ('fire@h.no',2);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',1);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',2);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('to@h.no',3);
-
 INSERT INTO chore_log(user_email,chore_id) VALUE ('en@h.no',6);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',7);
 INSERT INTO chore_log(user_email,chore_id) VALUE ('tre@h.no',6);
 
 INSERT INTO user_party (user_email, party_id, balance, status) VALUEs ('abcqwe',1,0,1);
+
 INSERT INTO shoppinglist_user(user_email,shoppinglist_id) VALUEs ('abcqwe',1);
 INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (1,'en@h.no');
 INSERT INTO shoppinglist_user(shoppinglist_id, user_email) VALUES (3,'en@h.no');

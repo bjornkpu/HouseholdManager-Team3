@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <meta charset="UTF-8">
     <title>"Gruppens tittel"</title>
+    <link rel="stylesheet" type="text/css" href="css/tasks.css">
 </head>
 <body>
 
@@ -11,9 +11,9 @@
 <br>
 <br>
 
-<div class="container">
+<!--dropdown tasks -->
+<!--<div class="container">
     <div class="row">
-        <!--dropdown tasks -->
         <div class="container" id="dropdownTasks" style ="display:block;">
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
@@ -26,8 +26,8 @@
             </div>
         </div>
     </div>
-</div>
-<!--end of dropdown tasks -->
+</div>-->
+<!--end of dropdown tasks-->
 <br>
 
 <!-- Tasks-->
@@ -35,13 +35,15 @@
     <div class = "row">
         <h2 id="TaskName"></h2>
     </div>
-    <div class="row">
 
+    <div class="row">
+        <!--Task Table-->
         <table class="table table-hover", id="taskTable">
             <thead>
             <tr>
                 <th>Task Description</th>
-                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Completed By</th>
                 <th>Deadline</th>
                 <th></th>
 
@@ -50,9 +52,48 @@
             <tbody id="tableTask">
             </tbody>
         </table>
+        <!--End of task table-->
     </div>
 </div>
+
+<!-- Buttons for task-->
+<div class="row" id="button_row">
+    <div class="col-sm">
+        <button class = "button" id="addTask"> Add Task</button>
+    </div>
+    <div class="col-sm">
+        <button class = "button" id="assignTask"> Assign Task</button>
+    </div>
+    <div class="col-sm">
+        <button class = "button" id="completeTask"> Set Completed By</button>
+    </div>
+    <div class="col-sm">
+        <button class = "button" id="deleteTask"> Delete Task<items></items></button>
+    </div>
+</div>
+<!--end of buttons for task -->
+
+<!-- div for adding a Task-->
+<div id="creatingTask" style="display: none;">
+    <h1>New Task</h1>
+    <table>
+        <tr>
+            <td style="padding-right: 10px">Description of Task</td>
+            <td > <input id="descriptionOfTask" type="text" name="descriptionOfTask"></td>
+        </tr>
+        <tr>
+            <td style="padding-right: 10px">Deadline</td>
+            <td> <input id="deadlineTask" type="date" name="deadlineTask"> </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td > <button class="backToTasks" id ="confirmTask"> Create Task</button> </td>
+        </tr>
+    </table>
+</div>
+<!-- end of creating a shoppinglist-->
 <!-- End of tasks-->
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Tasks.js"></script>
