@@ -198,6 +198,7 @@ INSERT INTO party(name) VALUES ('Frex');
 INSERT INTO party(name) VALUES ('Brummun');
 INSERT INTO party(name) VALUES ('BKs Hi');
 
+
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,100,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',2,100,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-2000.1,0);
