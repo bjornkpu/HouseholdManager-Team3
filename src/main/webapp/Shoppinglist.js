@@ -150,26 +150,44 @@ $(document).ready(function() {
         for(var i = 0; i < len; i++){
             $("#paymentRequests").append(
                 "<tr>"+
-                "<th scope=\"row\">"+paymentRequests[i].key+"</th>"+
-                "<th>"+paymentRequests[i].value+"</th>"+
+                "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
+                "<th>"+paymentRequests[i].amount+"</th>"+
                 "</tr>"
             );
         }
         console.log("Added Items");
     }
 
+    $('#viewPaymentRequests').click(function(){
+        var table = document.getElementById("paymentRequests");
+        var button = document.getElementById("viewPaymentRequests");
+        if(table.rows>0){
+            button.innerHTML = 'View Payment Requests';
+            while(table.rows.length > 0) {
+                table.deleteRow(0);
+            }
+        }
+        else{
+            button.innerHTML = 'Hide Payment Requests';
+            getPaymentRequests();
+        }
+    });
+
     $('#goToDisbursements').click(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-
+        var table = document.getElementById("paymentRequests");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
 
         listOfDisbursements.style.display ="block";
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
         getDisbursementList();
         getUserBalance();
-        getPaymentRequests();
         paymentRequests.innerHTML = 'Payment Requests';
     });
 
