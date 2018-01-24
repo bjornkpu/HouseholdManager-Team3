@@ -90,9 +90,9 @@ $(document).ready(function() {
                 contentType: 'application/json; charset=utf-8',
                 dataType: 'json',
                 data: JSON.stringify({
-                    "name": nameField,
-                    "phone": phoneField,
-                    "email": sessionEmail,
+                    "name": htmlEntities(nameField),
+                    "phone": htmlEntities(phoneField),
+                    "email": htmlEntities(sessionEmail),
                     "password":null
                 }),
                 success: function () {
@@ -212,9 +212,9 @@ function createNewGroup() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
-                'name': Groupname,
+                'name': htmlEntities(Groupname),
                 'description': null,
-                'admin': $("#emailReadOnly").val(),
+                'admin': htmlEntities($("#emailReadOnly").val()),
                 'members': null
             }),
             statusCode: {
@@ -244,7 +244,7 @@ function changePassword(){
             data: JSON.stringify({
                 "name": null,
                 "email": sessionEmail,
-                "password": pass
+                "password": htmlEntities(value)
             }),
             success: function () {
                 //window.location.reload();
