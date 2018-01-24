@@ -131,7 +131,9 @@ $(document).ready(function() {
             }
 
             var s = "removeButton"+i;
-            $('#tabForUsersInGroup').append('<tr id=\"" + s + "\"> <td>' + data[i].name + '</td><td>' + statusText + '</td>');
+            $('#tabForUsersInGroup').find("tbody").append('<tr id=\" " + s + "\"> ' +
+                '<td>' + data[i].name + '</td>' +
+                '<td>' + statusText + '</td>');
             var $remove = $("<td><button type=\"button\" class='button'>Remove</button></td>");
 
             //var $x=$('<tr> ' + '<td>' + data[i].name + '</td>' + '<td>' + statusText +'</td>');
@@ -175,9 +177,9 @@ $(document).ready(function() {
                 })
             }(i));
             //$('#tabForUsersInGroup').append($x);
-            $('#tabForUsersInGroup').append($removeButton);
+            $('#tabForUsersInGroup').find("tbody").append($removeButton);
            // $('#tabForUsersInGroup').append($removeButton);
-            $('#tabForUsersInGroup').append('</tr>');
+            $('#tabForUsersInGroup').find("tbody").append('</tr>');
 
 
 
