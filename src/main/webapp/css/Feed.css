@@ -105,7 +105,7 @@
 .postedBy p{
     display: grid;
     font-size: 14px;
-    color: darkgrey;
+    color: green;
     justify-self: center;
 }
 
@@ -118,7 +118,7 @@
 .datePosted p{
     display: grid;
     font-size: 14px;
-    color: darkgray;
+    color: green;
     justify-self: center;
 }
 
