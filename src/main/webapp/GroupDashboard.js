@@ -49,8 +49,8 @@ $(document).ready(function(){
     $("#loadSettings").click(function () {
         $("#page-content").load("GroupSetting.html");
     });
-    $("#loadAbout").click(function(){
-        $("#page-content").load("About.html");
+    $("#loadReceipts").click(function(){
+        $("#page-content").load("Receipts.html");
     });
     $("#loadSettings").click(function(){
         $("#page-content").load("GroupSetting.html");
