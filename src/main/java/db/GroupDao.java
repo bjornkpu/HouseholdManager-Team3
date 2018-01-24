@@ -440,6 +440,26 @@ public class GroupDao {
         }
     }
 
+    public boolean setPayment(Payment payment) throws SQLException{
+        try{
+            String payer = payment.getPayer();
+            String receiver = payment.getReceiver();
+            int party = payment.getParty();
+            Double amount = payment.getAmount();
+
+            ps = connection.prepareStatement("INSERT INTO payment(payer_id,receiver_id,party_id,amount) VALUES (?,?,?,?)");
+            ps.setString(1,payer);
+            ps.setString(2,receiver);
+            ps.setInt(3,party);
+            ps.setDouble(4,amount);
+            int result = ps.executeUpdate();
+            return result==1;
+        }finally{
+            Db.close(rs);
+            Db.close(ps);
+        }
+    }
+
     public boolean updateBalances (String email1, String email2, double amount, int groupId) throws SQLException{
         try{
             ArrayList<Member> members=getMemberBalance(email1,email2,groupId);

@@ -422,8 +422,8 @@ public class DisbursementDao {
 
     public boolean respondToDisbursement(Disbursement disbursement,int groupId ,String email, int response) throws SQLException{
         try{
+            disbursement = getDisbursementDetails(disbursement.getId(),email);
             if(response==2){
-                disbursement = getDisbursementDetails(disbursement.getId(),email);
                 deleteDisbursement(disbursement);
                 return true;
             }

@@ -173,7 +173,13 @@ function getGroups(user) {
         type: 'GET',
         url: '/scrum/rest/groups/list/' + user.email,
         dataType: "json",
-        success: homeButtonForOldUsers
+        success: function(data){
+            if (data.length == 0){
+                // do nothing
+            } else {
+                homeButtonForOldUsers(data);
+            }
+        }
     });
     //console.log(getCookie(curGroup));
 }
@@ -182,6 +188,8 @@ function getGroups(user) {
 //new users cant
 function homeButtonForOldUsers(groups) {
     var len = groups.length;
+    if (len == 0){
+    }
     if(len>=1){
         $('#houseHoldManagerLogo').click(function () {
             window.location.href = "GroupDashboard.html#feed"
