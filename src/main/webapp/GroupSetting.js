@@ -59,13 +59,14 @@ $(document).ready(function() {
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
-                "id": y,
-                "name": newName,
+                "id": htmlEntities(y),
+                "name": htmlEntities(newName),
             }),
             success: function(){
                 console.log("updated group name");
+                document.cookie = "groupName=" + htmlEntities(newName);
                 //TODO: noen som vet hvorfor denne replacen ikke refresher siden
-                window.location.replace('GroupDashboard.html#Setting')
+                window.location.replace('GroupDashboard.html#Setting');
                 getGroupName();
                 $("#alertEditGroupNameSuccess").fadeTo(4000, 500).slideUp(500, function () {
                     $("#alertEditGroupNameSuccess").slideUp(500);
@@ -229,10 +230,10 @@ $(document).ready(function() {
         $.ajax({
             type:"POST",
             dataType:"json",
-            url:"rest/groups/"+y+"/members/" + $("#invUserField").val(),
+            url:"rest/groups/"+htmlEntities(y)+"/members/" + htmlEntities($("#invUserField").val()),
             contentType: "application/json",
             data:JSON.stringify({
-                "email": $("#invUserField").val()
+                "email": htmlEntities($("#invUserField").val())
             }),
             statusCode: {
                 200: function () {
@@ -273,7 +274,7 @@ function getCheckedButton(){
     var checked = [];
     for (var i =0; i<table_length;i++){
         if($("#removeMember"+i).is(':checked')){
-            var id = $("#removeMember"+i)[0].value;
+            var id = htmlEntities($("#removeMember"+i)[0].value);
             checked.push(id);
         }
     }//console.log(checked);
