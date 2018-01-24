@@ -22,6 +22,7 @@ import java.util.List;
  * Javadoc for put,post and delete has curl commands for testing.
  *
  * @author nybakk1
+ * @author KnutWiig
  * @version 0.1
  */
 @Path("/groups/")
@@ -182,6 +183,7 @@ public class GroupService {
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Updating group. ID: " + group.getId());
+            log.info("Updating group. Name: " + group.getName());
             groupDao.updateGroup(group);
         } catch (SQLException e){
             log.info("Updating group failed. ID " + group.getId());
