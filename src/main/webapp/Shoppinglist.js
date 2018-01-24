@@ -617,7 +617,7 @@ function respondToDisbursement(data,response) {
         dataType: "json",
 
         success: function () {
-            fixDisbursementTable();
+            getDisbursementList();
         }
     });
 }
