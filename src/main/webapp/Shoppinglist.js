@@ -572,7 +572,13 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(){
-                alert('Success!')
+                var creatingDisbursement =document.getElementById('creatingDisbursement');
+                var shoppinglist = document.getElementById('shoppinglist');
+                var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+
+                creatingDisbursement.style.display="none";
+                shoppinglist.style.display="block";
+                dropdownShoppinglist.style.display="block";
             },
             error: function(){
                 var disb = {

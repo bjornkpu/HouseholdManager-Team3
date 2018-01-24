@@ -2,7 +2,9 @@ package services;
 
 import data.Member;
 import db.Db;
+import db.GroupDao;
 import db.MemberDao;
+import util.EmailSender;
 import util.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -68,8 +70,12 @@ public class MemberService {
     public Response inviteAMember(@PathParam("email") String email,@PathParam("groupId") int groupId) {
         try (Connection connection = Db.instance().getConnection()) {
             MemberDao memberDao = new MemberDao(connection);
+            GroupDao groupDao = new GroupDao(connection);
             boolean ok = memberDao.inviteUser(email, groupId);
-            if (ok) return Response.status(200).entity(ok).build();
+            if (ok){
+                EmailSender.sendInvitationMail(email,groupDao.getGroup(groupId));
+                return Response.status(200).entity(ok).build();
+            }
             return Response.status(404).entity(ok).build();
 
         } catch (SQLException e) {
