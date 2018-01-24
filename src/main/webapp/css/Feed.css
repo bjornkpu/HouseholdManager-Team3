@@ -27,8 +27,9 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
     border: 2px groove #0596c6;
-    overflow: auto;
     outline: none;
+    overflow-y: auto;
+    overflow-x: hidden;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -56,6 +57,7 @@
     overflow-y: hidden;
     overflow-x: hidden;
     border: none;
+    justify-items: center;
 }
 
 .post{
@@ -105,7 +107,7 @@
 .postedBy p{
     display: grid;
     font-size: 14px;
-    color: green;
+    color: black;
     justify-self: center;
 }
 
@@ -118,7 +120,7 @@
 .datePosted p{
     display: grid;
     font-size: 14px;
-    color: green;
+    color: black;
     justify-self: center;
 }
 
