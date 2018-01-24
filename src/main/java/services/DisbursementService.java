@@ -45,6 +45,19 @@ public class DisbursementService {
             DisbursementDao dDao = new DisbursementDao(connection);
             dDao.addDisbursement(disbursement,groupId);
         } catch (SQLException e) {
+            log.error("Failed to add disbursement", e);
+            throw new ServerErrorException("Failed to add disbursement", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
+    @PUT
+    @Path("/{userEmail}/{response}")
+    public void disbursementResponse(
+            @PathParam("userEmail") String userEmail, @PathParam("response") int response,Disbursement disbursement){
+        log.info(disbursement.getName()+" to be responded to by"+userEmail);
+        try (Connection connection = Db.instance().getConnection()){
+            DisbursementDao dDao = new DisbursementDao(connection);
+            //dDao.respondToDisbursement(disbursement,userEmail, response);
+        } catch (SQLException e) {
             log.error("Failed to get Statistics", e);
             throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
         }

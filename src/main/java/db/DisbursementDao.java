@@ -410,5 +410,42 @@ public class DisbursementDao {
             Db.close(ps);
         }
     }
-   // public boolean acceptDisbursement()
+
+    public boolean respondToDisbursement(Disbursement disbursement,int groupId ,String email, int response) throws SQLException{
+        try{
+            if(response==2){
+                //deleteDisbursement(disbursement);
+                return true;
+            }
+            ps = connection.prepareStatement("UPDATE user_disbursement SET accepted=? WHERE user_email=? AND disp_id = ?");
+            ps.setInt(1,response);
+            ps.setString(2,email);
+            ps.setInt(3,disbursement.getId());
+            int result = ps.executeUpdate();
+            if(result==1&&checkResponses(disbursement,groupId)){
+                updateBalances(disbursement,groupId);
+            }
+            return result==1;
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+//            connection.close();
+        }
+    }
+    public boolean checkResponses(Disbursement disbursement, int groupId) throws SQLException {
+        try {
+            ps = connection.prepareStatement("SELECT accepted FROM user_disbursement WHERE disp_id=?");
+            ps.setInt(1, disbursement.getId());
+            res = ps.executeQuery();
+            while (res.next()) {
+                int response = res.getInt("accepted");
+                if (response == 0) return false;
+            }
+            return true;
+        } finally {
+            Db.close(res);
+            Db.close(ps);
+//            Db.close(connection);
+        }
+    }
 }
