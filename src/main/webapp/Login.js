@@ -10,8 +10,8 @@ $(document).ready(function(){
 
     // Log in
     $("#loginButton").click(function() {
-        var passPromise = sha256($("#passwordField").val());
         var email=$("#emailField").val();
+        var passPromise = sha256($("#passwordField").val());
         passPromise.then(function(pass){
             // console.log(pass);
             $.ajax({

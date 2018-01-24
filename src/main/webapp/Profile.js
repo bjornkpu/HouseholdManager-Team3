@@ -1,14 +1,14 @@
-    $(document).ready(function() {
+$(document).ready(function() {
 
 
-        $('#editUser').click(function () {
-            var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
-            var tableEdit = document.getElementById("tableUserInfo");
+    $('#editUser').click(function () {
+        var tableReadOnly = document.getElementById("tableUserInfoReadOnly");
+        var tableEdit = document.getElementById("tableUserInfo");
 
-            tableReadOnly.style.display = "none";
-            tableEdit.style.display = "block";
+        tableReadOnly.style.display = "none";
+        tableEdit.style.display = "block";
 
-        });
+    });
 
 
 
@@ -94,12 +94,11 @@
                     "phone": phoneField,
                     "email": sessionEmail,
                     "password":null
-
                 }),
                 success: function () {
                     //window.location.reload();
                     getLoggedOnUser(setData);
-                   // alertSuccess.style.display="block";
+                    // alertSuccess.style.display="block";
                     $("#alertSuccessEditProfile").fadeTo(2000, 500).slideUp(500, function(){
                         $("#alertSuccessEditProfile").slideUp(500);
                     });
@@ -119,28 +118,23 @@
 
     //Updating user password
     $('#changePassword').click(function () {
-        //var passwordField =$('#confirmPasswordField').val();
-        sha256($("#passwordRegField").val()).then(function (value) {
+        //Check if old password correct
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
             $.ajax({
-                type: 'PUT',
-                url: 'rest/user/' + sessionEmail, //test
-                contentType: 'application/json; charset=utf-8',
+                url: 'rest/user/'+sessionEmail,
+                type: 'GET',
                 dataType: 'json',
-                data: JSON.stringify({
-                    "name": null,
-                    "email": sessionEmail,
-                    "password": value
-                }),
-                success: function () {
-                    //window.location.reload();
-                    // alertSuccess.style.display="block";
-                    $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
-                        $("#alertPassword").slideUp(500);
-                    });
-
-                },
-                error: function () {
-                    alert("Password did not update")
+                complete: function (user) {
+                    sha256(pass+user.salt).then(function (saltedHashed) {
+                        console.log("Pass: "+pass+"\tSalt: "+user.salt+"\tSaltedHashed: "+saltedHashed)
+                        if(saltedHashed===(user.password)){
+                            //Change the password
+                            changePassword();
+                        }else{
+                            alert("Old password is wrong faggot");
+                        }
+                    })
                 }
             });
         });
@@ -162,44 +156,7 @@
     $("#createGroup").click(function () {
         createNewGroup();
     });
-
-    function getInvites(user) {
-        $.ajax({
-            type:"GET",
-            url: "rest/groups/" + user.email + "/invites",
-            contentType: "application/json",
-            dataType:"json",
-            success: function (data) {
-                renderInvites(data);
-            }
-        })
-    }
-
-        function getGroups(user) {
-            $.ajax({
-                type: 'GET',
-                url: '/scrum/rest/groups/list/' + user.email,
-                dataType: "json",
-                success: homeButtonForOldUsers
-            });
-            //console.log(getCookie(curGroup));
-        }
-
-        //Users who are connected to a group can press the logo to go the the dashboard while
-        //new users cant
-        function homeButtonForOldUsers(data) {
-            groups=data;
-            var len = data.length;
-            if(len>=1){
-                $('#houseHoldManagerLogo').click(function () {
-                    window.location.href = "GroupDashboard.html"
-                })
-                $('#houseHoldManagerLogo2').click(function () {
-                    window.location.href = "GroupDashboard.html"
-                })
-            }
-        }
-    });
+});
 
 
 //TODO: Button does not give any feedback wether the join was successful or not. Need to fix that.
@@ -240,7 +197,6 @@ function renderInvites(data,user) {
         $("#profileInvites").append($fjern);
         $("#profileInvites").append("</tr>");
     }
-
 }
 
 function createNewGroup() {
@@ -272,5 +228,72 @@ function createNewGroup() {
             }
         })
     }
-};
+}
 
+//Change password
+function changePassword(){
+    var passwordField =$('#confirmPasswordField').val();
+    console.log(passwordField);
+    sha256(passwordField).then(function (pass) {
+        console.log(pass);
+        $.ajax({
+            type: 'PUT',
+            url: 'rest/user/' + sessionEmail, //test
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({
+                "name": null,
+                "email": sessionEmail,
+                "password": pass
+            }),
+            success: function () {
+                //window.location.reload();
+                // alertSuccess.style.display="block";
+                $("#alertPassword").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#alertPassword").slideUp(500);
+                });
+
+            },
+            error: function () {
+                alert("Password did not update")
+            }
+        });
+    });
+}
+
+function getInvites(user) {
+    $.ajax({
+        type:"GET",
+        url: "rest/groups/" + user.email + "/invites",
+        contentType: "application/json",
+        dataType:"json",
+        success: function (data) {
+            renderInvites(data);
+        }
+    })
+}
+
+function getGroups(user) {
+    $.ajax({
+        type: 'GET',
+        url: '/scrum/rest/groups/list/' + user.email,
+        dataType: "json",
+        success: homeButtonForOldUsers
+    });
+    //console.log(getCookie(curGroup));
+}
+
+//Users who are connected to a group can press the logo to go the the dashboard while
+//new users cant
+function homeButtonForOldUsers(data) {
+    groups=data;
+    var len = data.length;
+    if(len>=1){
+        $('#houseHoldManagerLogo').click(function () {
+            window.location.href = "GroupDashboard.html"
+        })
+        $('#houseHoldManagerLogo2').click(function () {
+            window.location.href = "GroupDashboard.html"
+        })
+    }
+}
