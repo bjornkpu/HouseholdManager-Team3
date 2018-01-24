@@ -26,7 +26,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Oppretter tabeller med entitetsintegritet (primærnøkkel)
 
 CREATE TABLE user(
-  name VARCHAR(600),
+  name VARCHAR(255),
   email VARCHAR(255) NOT NULL,
   password CHAR(64)NOT NULL,
   salt VARCHAR(20) NOT NULL,
