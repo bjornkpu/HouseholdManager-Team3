@@ -24,8 +24,20 @@ $(document).ready(function(){
     if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }
-    if (window.location.hash == "#feed"){
+    if (window.location.hash === "#feed"){
         $("#page-content").load("Feed.html");
+    }
+    if (window.location.hash === "#tasks"){
+        $("#page-content").load("Tasks.html");
+    }
+    if (window.location.hash === "#Receipts"){
+        $("#page-content").load("Receipts.html");
+    }
+    if (window.location.hash === "#Setting"){
+        $("#page-content").load("GroupSetting.html");
+    }
+    if (window.location.hash === "#stats"){
+        $("#page-content").load("Statistics.html");
     }
 
     function setData(user) {
@@ -112,7 +124,7 @@ $(document).ready(function(){
     });
 
         $("#loadSettings").click(function () {
-            $("#page-content").load("Settings.html");
+            $("#page-content").load("GroupSetting.html");
         });
 
     $("#loadAbout").click(function(){

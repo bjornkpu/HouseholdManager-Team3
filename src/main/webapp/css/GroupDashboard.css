@@ -7,9 +7,9 @@
         background-color: #040e1c;
     }
     .scrollable-menu {
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
+        height: auto;
+        max-height: 200px;
+        overflow-x: hidden;
     }
 
     .navbarcontainer{
@@ -28,7 +28,7 @@
         background-color: white;
         left: 50%;
         right: 50%;
-        transform: translateX(-30%);
+        transform: translate(-31%, 5%);
     }
 
 
@@ -255,7 +255,7 @@ buttons
     .username{
         font-size: 0px;
         padding-right: 3px;
-        color: cadetblue;
+        color: #0596c6;
 
     }
 
@@ -264,7 +264,7 @@ buttons
      */
     .leftsidebar-wrapper {
         position: fixed;
-        background-color: #3d3b3b;
+        background-color: #040e1c;
         bottom: 0px;
         height: 65px;
         width: 100%;
@@ -282,13 +282,13 @@ buttons
 
     .leftsidebar-list-items {
         float: left;
-        margin-left: 3%;
-        margin-right: 3%;
+        margin-left: 2%;
+        margin-right: 2%;
         position: relative;
-        color: cadetblue;
+        color: #0596c6;
     }
     .leftsidebar-list-items p{
-        font-size: 14px;
+        font-size: 12px;
     }
     .leftsidebar-list-items.aboutlink{
         display: none;

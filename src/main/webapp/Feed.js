@@ -21,7 +21,7 @@ function initTable() {
                 postedTo = data[i].postedTo;
                 $(".textPosts").append($("<div class='post'><div class='message'>" +
                     message + "</div><div class='postedBy'><p>"+ postedBy +
-                    "</p></div><div class='datePosted'><p>" + datePosted.toLocaleDateString() +
+                    "</p></div><div class='datePosted'><p>" + datePosted.toLocaleDateString() + " at " +
                     datePosted.toLocaleTimeString() +"</p></div></div>"));
             }
             }

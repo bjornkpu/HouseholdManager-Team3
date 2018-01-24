@@ -12,7 +12,7 @@
 .writePost{
     display: grid;
     grid-area: leftheader;
-    background-color: lightsteelblue;
+    background-color: #d8d8d8;
     justify-items: center;
 }
 .post-input{
@@ -20,7 +20,7 @@
     height: 70%;
     margin-bottom: 15px;
     margin-top: 20px;
-    background-color: navajowhite;
+    background-color: #ffb45e;
     resize: none;
 
     -webkit-border-radius: 5px;
@@ -42,7 +42,7 @@
     display: grid;
     grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100vh [wallRow2-end];
     grid-area: wallposts;
-    background-color: lightgrey;
+    background-color: #d8d8d8;
     justify-items: center;
 }
 
@@ -51,7 +51,7 @@
     height: 80%;
     width: 80%;
     margin-top: 20px;
-    background-color: lightgreen;
+    background-color: #d8d8d8;
     align-content: start;
     overflow-y: auto;
     overflow-x: hidden;
@@ -67,9 +67,9 @@
                         "message message"
                         "name date";
 
-    width: 37vw;
+    width: 38vw;
 
-    background-color: navajowhite;
+    background-color: #ffb45e;
     margin: 5px;
     font-size: 15px;
     height: auto;
@@ -99,8 +99,13 @@
     justify-self: center;
 }
 
+.rightHeader{
+    grid-area: rightheader;
+    background-color: #d8d8d8;
+}
+
 .groupEvents{
     display: grid;
     grid-area: events;
-    background-color: lightblue;
+    background-color: #d8d8d8;
 }
