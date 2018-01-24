@@ -467,10 +467,10 @@ public class GroupDao {
                 Double b1 = members.get(i).getBalance();
                 Double newBalance;
                 if(i<1){
-                    newBalance = b1 + amount;
+                    newBalance = b1 - amount;
                 }
                 else{
-                    newBalance = b1 - amount;
+                    newBalance = b1 + amount;
                 }
                 ps = connection.prepareStatement("UPDATE user_party SET balance=? WHERE party_id=? AND user_email=?");
                 ps.setDouble(1,newBalance);
