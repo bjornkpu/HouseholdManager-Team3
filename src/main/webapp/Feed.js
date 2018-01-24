@@ -19,8 +19,8 @@ function initTable() {
                 message = data[i].message;
                 postedBy = data[i].postedBy;
                 postedTo = data[i].postedTo;
-                $(".textPosts").append($("<div class='post'><div class='message'>" +
-                    message + "</div><div class='postedBy'><p>"+ postedBy +
+                $(".textPosts").append($("<div class='post'><div class='message'><p>" +
+                    message + "</p></div><div class='postedBy'><p>"+ postedBy +
                     "</p></div><div class='datePosted'><p>" + datePosted.toLocaleDateString() + " at " +
                     datePosted.toLocaleTimeString() +"</p></div></div>"));
             }
