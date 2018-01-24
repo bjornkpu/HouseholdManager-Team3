@@ -51,29 +51,28 @@ $(document).ready(function() {
         var buttonConfirm = document.getElementById('confirmNewName');
         var newNameField = document.getElementById('newNameField');
 
-        var newName = $('newNameField').val();
+        var newName = $('#newNameField').val();
+        console.log("the new name for the group: "+ newName);
         $.ajax({
             type: 'PUT',
             url: 'rest/groups/'+ y,
             contentType: 'application/json; charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({
+                "id": y,
                 "name": newName,
             }),
-            success: function (jqXHR, textStatus) {
-                console.log("new name updated test");
-                switch (jqXHR.status) {
-                    case 204:
-                        console.log("ajax update group name");
-                        alert("name updated");
-                        break;
-                    case 404:
-                        alert("Could not update");
-                        break;
-                    default:
-                        break;
-                }
-            }
+            success: function(){
+                console.log("updated group name");
+                //TODO: noen som vet hvorfor denne replacen ikke refresher siden
+                window.location.replace('GroupDashboard.html#Setting')
+                getGroupName();
+                $("#alertEditGroupNameSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                    $("#alertEditGroupNameSuccess").slideUp(500);
+
+
+                });
+            },
         });
 
         readOnlyField.style.display= "block";
@@ -131,7 +130,9 @@ $(document).ready(function() {
             }
 
             var s = "removeButton"+i;
-            $('#tabForUsersInGroup').append('<tr id=\"" + s + "\"> <td>' + data[i].name + '</td><td>' + statusText + '</td>');
+            $('#tabForUsersInGroup').find("tbody").append('<tr id=\" " + s + "\"> ' +
+                '<td>' + data[i].name + '</td>' +
+                '<td>' + statusText + '</td>');
             var $remove = $("<td><button type=\"button\" class='button'>Remove</button></td>");
 
             //var $x=$('<tr> ' + '<td>' + data[i].name + '</td>' + '<td>' + statusText +'</td>');
@@ -175,9 +176,9 @@ $(document).ready(function() {
                 })
             }(i));
             //$('#tabForUsersInGroup').append($x);
-            $('#tabForUsersInGroup').append($removeButton);
+            $('#tabForUsersInGroup').find("tbody").append($removeButton);
            // $('#tabForUsersInGroup').append($removeButton);
-            $('#tabForUsersInGroup').append('</tr>');
+            $('#tabForUsersInGroup').find("tbody").append('</tr>');
 
 
 

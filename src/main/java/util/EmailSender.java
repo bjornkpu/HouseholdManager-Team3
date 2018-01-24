@@ -4,14 +4,14 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class ForgottenPassword {
+public class EmailSender {
     /**
      * This method connects with GMail's servers and sends out mail.
      *
      * @param toEmail is the email of the recipient of the email.
-     * @param newPW is the password which is is now registered to the user.
+     * @param mailText is the password which is is now registered to the user.
      */
-    private static void sendMail(String toEmail, String newPW) {
+    private static void sendMail(String toEmail, String mailText) {
         final String username = "info.householdmanager@gmail.com";  //The Email of the sender.
         final String password = "emailpassword";
 
@@ -38,8 +38,7 @@ public class ForgottenPassword {
                     InternetAddress.parse(toEmail));
             message.setSubject("New Password - Household Manager");
             //Message to the user
-            message.setText("Hello, your new password for Household Manager is: "+newPW+
-                    "\n Please log in and change your password. You can do this by pressing 'My Profile'->'Edit Profile'");
+            message.setText(mailText);
 
             Transport.send(message);
 
@@ -74,8 +73,17 @@ public class ForgottenPassword {
      */
     public static String generateNewPassword(String toMail){
         String newPassword = genString();       //generate a new password
-        sendMail(toMail,newPassword);           //Send the new password to the users email.
+        String newPasswordText = "Hello, your new password for Household Manager is: "+newPassword+
+                "\n Please log in and change your password. You can do this by pressing 'My Profile'->'Edit Profile'";
+        sendMail(toMail,newPasswordText);           //Send the new password to the users email.
         return newPassword;                     //return the new password
+    }
+
+    public static void sendConfirmationMail(String toMail){
+        String confirmationText = "Welcome as a new user of Household Manager." +
+                "\n You can log in with "+toMail+ "and the password you chose." +
+                "If you've forgotten your password you can get a new one sent for our Login page.";
+        sendMail(toMail,confirmationText);
     }
 
 }
