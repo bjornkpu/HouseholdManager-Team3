@@ -1,3 +1,4 @@
+/*ALL STATEMENTS*/
 /*Viser alle prosessene startet av brukeren vår
 SHOW PROCESSLIST ;
 
