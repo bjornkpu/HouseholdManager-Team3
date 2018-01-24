@@ -16,6 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+
+import static util.EmailSender.sendConfirmationMail;
+import static util.InputChecker.isEMail;
+import static util.InputChecker.isName;
+
 /**
  * Service that handles reading, making, updating and deleting user information.
  *
@@ -48,7 +53,7 @@ public class UserService {
 
     @POST
     @Consumes("application/json")
-    public void add(User user) {
+    public Response add(User user) {
         String salt = LoginCheck.getSalt();
         user.setSalt(salt);
         String pw=LoginCheck.getHash(user.getPassword()+salt);
@@ -56,8 +61,21 @@ public class UserService {
         log.info("Salt: "+salt+" PW: "+pw);
         try(Connection connection= Db.instance().getConnection()) {
             UserDao userDao = new UserDao(connection);
-            userDao.addUser(user);
-            log.info("Added user!");
+            boolean okEmail = isEMail(user.getEmail());
+            boolean okName = isName(user.getName());
+            boolean okAll = (okEmail && okName);
+            log.info("name: " + user.getName());
+            log.info("Email: " + user.getEmail());
+            log.info("okEmail: " + okEmail);
+            log.info("okName: " + okName);
+            log.info("okAll: "+okAll);
+            if (okAll){
+                if(userDao.addUser(user)) {
+                    sendConfirmationMail(user.getEmail());
+                    log.info("Added user!");
+                    return Response.status(200).entity(okAll).build();
+                }
+            }return Response.status(400).entity(okAll).build();
         } catch(SQLException e) {
             log.error("Failed to Add user", e);
             throw new ServerErrorException("Failed to Add user", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -139,6 +157,6 @@ public class UserService {
 	@Path("/emailCheck/{email}")
     @Produces("application/json")
 	public boolean checkEmail(@PathParam("email") String email){
-        return InputChecker.isEMail(email);     //returns true if the format is: *@*.**
+        return isEMail(email);     //returns true if the format is: *@*.**
     }
 }
