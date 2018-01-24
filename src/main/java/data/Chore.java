@@ -13,10 +13,6 @@ public class Chore {
     private java.sql.Timestamp deadline;
     private int partyId;
 
-    public static void main(String[] args) {
-
-    }
-
     public Chore() {
     }
 
