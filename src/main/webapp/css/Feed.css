@@ -20,7 +20,7 @@
     height: 70%;
     margin-bottom: 15px;
     margin-top: 20px;
-    background-color: #ffb45e;
+    background-color: whitesmoke;
     resize: none;
 
     -webkit-border-radius: 5px;
@@ -55,7 +55,7 @@
     align-content: start;
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid black;
+    border: 1px groove black;
     resize: none;
 
 }
@@ -69,7 +69,7 @@
 
     width: 38vw;
 
-    background-color: #ffb45e;
+    background-color: whitesmoke;
     margin: 5px;
     font-size: 15px;
     height: auto;
@@ -86,7 +86,7 @@
     grid-area: message;
     overflow: auto;
     height: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px groove black;
 }
 .postedBy{
     grid-area: name;
@@ -97,6 +97,7 @@
     grid-area: date;
     align-self: stretch;
     justify-self: center;
+    border-left: 1px groove ;
 }
 
 .rightHeader{
