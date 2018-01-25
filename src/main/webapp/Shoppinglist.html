@@ -41,7 +41,6 @@
 
 <table class="table table-hover" id="disbursementTable">
 </table>
-
         <h2>Group balance</h2>
         <table class="table table-hover" id="balanceTable">
         </table>
@@ -49,8 +48,20 @@
         <h2>Incoming Payment Requests</h2>
         <table class="table table-hover" id="paymentRequests">
         </table>
+        <div class="container" id="dropdownUsers" style ="display:block;">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu2" data-toggle="dropdown">
+                    <span id="emailSpan">Emails</span>
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="usersdropdown">
+                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>-->
+                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >oppussing</a></li>-->
+                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >party</a></li>-->
+                </ul>
+            </div>
+            <button id="sendPaymentRequest">Make Dummy Request</button>
+        </div>
         <button id="backToShoppinglist"> back</button>
-        <button id="sendPaymentRequest">Make Dummy Request</button>
     </div>
 </div>
     <!-- End of List of disbursements-->
@@ -144,31 +155,40 @@
     <h1>New shoppinglist</h1>
     <table>
         <tr>
-            <td style="padding-right: 10px">Name of Shoppinglist</td>
+            <td></td>
+            <td>
+                <div class="col-sm">
+                    <button class="backToShoppinglist button"  id ="confirmShoppinglist"> Create shoppinglist</button>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Name of Shoppinglist</td>
             <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
         </tr>
         <tr>
-            <td style="padding-right: 10px">Select users</td>
+            <td>Add users</td>
             <td>
-                <div class="ui search">
-                    <div class="ui icon input">
-                        <input class="prompt" type="text" placeholder="Search users...">
-                        <i class="search icon"></i>
+                <div class="dropdown">
+                    <button class="search_bttn">Add user</button>
+                    <div id="results" class="search_results">
+                        <!--Here's a list over members of a group-->
                     </div>
-                    <div class="results"></div>
                 </div>
             </td>
-            <td><button class="add" id="addUserButton">Add user</button></td>
-        </tr>
-        <tr>
-            <td></td>
             <td>
-                <span id = "addedUser">Add users motherfucker</span>
+                <div>
+                    <!--<span id = "addedUser">Add users motherfucker</span>-->
+                </div>
             </td>
         </tr>
         <tr>
-            <td></td>
-            <td > <button class="backToShoppinglist" id ="confirmShoppinglist"> Create shoppinglist</button> </td>
+            <td>Added users</td>
+            <td>
+                <ul id="addedUsers">
+                    <!--Here's a list over added users in shoppinglist-->
+                </ul>
+            </td>
         </tr>
     </table>
 </div>
@@ -177,6 +197,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Shoppinglist.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
 </body>
 </html>
