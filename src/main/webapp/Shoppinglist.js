@@ -1,4 +1,5 @@
 var currentGroup;
+var currentGroupName;
 var paymentRequests=[];
 var currentUser;
 var disbursementList=[];
@@ -9,6 +10,7 @@ $(document).ready(function() {
     var items;
     var currentShoppingList = 0;
     var numberOfMembers = 0;
+    currentGroupName = getCookie("groupName");
     var newPaymentUser = 0;
     currentGroup = getCookie("currentGroup");
     currentUser = getCookie("userLoggedOn");
@@ -246,6 +248,7 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
 
         var usersInGroup = getUsers();
+        usersInGroup.sort(compare);
 
         var selectedUsers = [];
         var index = 0;
@@ -269,7 +272,7 @@ $(document).ready(function() {
                 "<br><span class='email_span'>" + usersInGroup[i].email +"</span></div>");
         }
 
-        mySearchbar();
+        usersDropdown();
 
         $('#confirmShoppinglist').click(function(){
             var name = $("#nameOfShoppinglist").val();
@@ -305,7 +308,7 @@ $(document).ready(function() {
 
             $("#page-content").load("Shoppinglist.html");
         });
-        function mySearchbar(){
+        function usersDropdown(){
             $(".search_results").on('click', '.links', function(){
                 var user = usersInGroup[this.id.split("_").pop()];
 
@@ -540,7 +543,7 @@ $(document).ready(function() {
                     $("#shoppinglistName").text(data[0].name);
                     getItemsInShoppingList(groupId);
                 }
-                $("#you_shoppinglists").text("Shoppinglists for groupId " + currentGroup);
+                $("#you_shoppinglists").text("Shoppinglists for " + currentGroupName);
                 renderShoppingListDropdownMenu(data);
             }
             if(status === "error"){
@@ -853,6 +856,15 @@ function fixPaymentRequestsTable(){
         );
     }
     console.log("Added Itempp");
+}
+
+
+function compare(a,b) {
+    if (a.name.toLowerCase() < b.name.toLowerCase())
+        return -1;
+    if (a.name.toLowerCase() > b.name.toLowerCase())
+        return 1;
+    return 0;
 }
 
 
