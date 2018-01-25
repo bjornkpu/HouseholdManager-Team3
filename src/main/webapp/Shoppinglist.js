@@ -104,7 +104,7 @@ $(document).ready(function() {
             }
         });
 
-        getItemsInShoppingList(1);
+        getItemsInShoppingList();
     });
 
     $('#deleteItems').click(function() {
@@ -226,76 +226,101 @@ $(document).ready(function() {
         var selectedUsers = [];
         var index = 0;
 
-        $('.ui.search')
-            .search({
-                source: usersInGroup,
-                searchFields: [
-                    'email',
-                    'name'
-                ],
-                fields:{
-                    title: 'email',
-                    description: 'name'
-                }
-            })
-        ;
+        // $('.ui.search')
+        //     .search({
+        //         source: usersInGroup,
+        //         searchFields: [
+        //             'email',
+        //             'name'
+        //         ],
+        //         fields:{
+        //             title: 'email',
+        //             description: 'name'
+        //         }
+        //     })
+        // ;
 
-        $("#addUserButton").click(function(){
-            var user = htmlEntities($(".ui.search").search('get value'));
-            var isUser = false;
-            for(var i = 0; i < usersInGroup.length; i++){
-                if(usersInGroup[i].email === user){
-                    isUser = true;
-                    break;
-                }
-                if(usersInGroup[i].name.toLowerCase() === user.toLowerCase()){
-                    user = usersInGroup[i].email;
-                    isUser = true;
-                    break;
-                }
-            }
-            if(!isUser){
-                $("#addedUser").text(user + " is not a member!");
-                return;
-            }
-            var selectedBefore = false;
-            for(var i = 0; i < selectedUsers.length; i++){
-                if (selectedUsers[i] === user){
-                    selectedBefore = true;
-                }
-            }
-            if(selectedBefore){
-                $("#addedUser").text(user + " already added!");
-                return;
-            }
+        for(var i = 0; i < usersInGroup.length; i++){
+            $(".search_results").append("<div class='links' id='link_" + i + "'>" + usersInGroup[i].name + "" +
+                "<br><span class='email_span'>" + usersInGroup[i].email +"</span></div>");
+        }
 
-            selectedUsers[index] = user;
-            $("#addedUser").text("Added user with email " + user);
-            index++;
-        });
-
+        // mySearchbar();
+        //
         $('#confirmShoppinglist').click(function(){
-            var name = htmlEntities($("#nameOfShoppinglist").val());
+            var name = $("#nameOfShoppinglist").val();
             if(name === '' || name === undefined || name === null){
                 alert("You have to give the shoppinglist a name");
                 return;
             }
             var userList = [];
-            console.log("Adding shoppinglist " + name + "...");
+
+            // TODO clean this up
             for(var i = 0; i < selectedUsers.length; i++){
-                userList[i] = {
-                    email: selectedUsers[i],
-                    name: null,
-                    phone: null,
-                    password: null,
-                    salt: null
-                };
-                console.log("Adding user: " + userList[i].email + "...");
+                if(selectedUsers[i] === 'empty') {
+                    console.log("SKIP FOUND");
+                    userList[i] = {
+                        email: 'SKIP',
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                } else {
+                    userList[i] = {
+                        email: selectedUsers[i].email,
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                    console.log("Adding user: " + userList[i].email + "...");
+                }
             }
             createShoppingList(name, userList);
 
             $("#page-content").load("Shoppinglist.html");
         });
+        function mySearchbar(){
+            $(".search_results").on('click', '.links', function(){
+                var user = usersInGroup[this.id.split("_").pop()];
+
+                var addedBefore = false;
+                for(var i = 0; i < selectedUsers.length; i++){
+                    if (selectedUsers[i].email === user.email){
+                        addedBefore = true;
+                    }
+                }
+                if(addedBefore){
+                    $("#addedUser").text(user.name + " is already added!");
+                    return;
+                }
+
+                selectedUsers[index] = user;
+
+                // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
+
+                $("#addedUsers").append("<li>" + user.name + "" +
+                    "<button class='b' id='" + index + "'>Delete!</button></li>");
+
+                index++;
+            });
+        }
+
+        $('#addedUsers').on('click', 'button.b', function(){
+            console.log(selectedUsers[this.id].name + ' er fjernet!');
+            selectedUsers[this.id] = 'empty';
+            reloadList();
+        });
+
+        function reloadList(){
+            $("#addedUsers").empty();
+            for(var i = 0; i < selectedUsers.length; i++){
+                if(selectedUsers[i] === "empty") continue;
+                $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
+                    "<button class='b' id='" + i + "'>Remove</button></li>");
+            }
+        }
     });
 
     function createShoppingList(name, participants){
@@ -471,7 +496,7 @@ $(document).ready(function() {
         }
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
-                data[i].name + '</aclass></li>'
+                data[i].name + '</a></li>'
             );
         }
     }
@@ -488,7 +513,6 @@ $(document).ready(function() {
                 if(data === null || data.size === 0 || data[0] === undefined){
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
-                    console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     getItemsInShoppingList(groupId);
                 }
@@ -605,218 +629,6 @@ $(document).ready(function() {
     }
 
 });
-function respondToDisbursement(data,response) {
-    // AJAX Request
-    console.log(data.value+"  "+response);
-    $.ajax({
-        type: "PUT",
-        url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
-        data: JSON.stringify(
-            {id: data.value}),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-
-        success: function () {
-            getDisbursementList();
-            getUserBalance();
-        }
-    });
-}
-
-//Used by the buttons generated by function fixPaymentRequests, DON'T DELETE
-function acceptPaymentsClick(data){
-    var array = data.value.split(",");
-    var paymentId = array[0];
-    var amount = array[1];
-    var payer = array[2];
-    console.log("Payment Id=" + paymentId + " Amount=" + amount + " Payer=" + payer);
-    $.ajax({
-        type: 'PUT',
-        url: "http://localhost:8080/scrum/rest/groups/updatePayment/" + paymentId, //test
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function () {
-            console.log("accepted paymentt");
-
-        },
-        error: function () {
-            alert("payment not accepted");
-        }
-    });
-
-    $.ajax({
-        type: 'PUT',
-        url: "http://localhost:8080/scrum/rest/groups/updateBalances/" + currentGroup + "/"+ currentUser+"/"+ payer +"/" + amount,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        success: function () {
-            console.log("accepted paymentt");
-            getUserBalance();
-            getPaymentRequests();
-        },
-        error: function () {
-            alert("payment not accepted");
-        }
-    })
-};
-
-function fixDisbursementTable(){
-    var acceptedString;
-    var len = disbursementList.length;
-    var table = document.getElementById("disbursementTable");
-    console.log("found table");
-    while(table.rows.length > 0) {
-        table.deleteRow(0);
-    }
-    $("#disbursementTable").append(
-        "<tr>"+
-        "<th>#</th>"+
-        "<th>Reciet</th>"+
-        "<th>Participants</th>"+
-        "<th>Cost</th>"+
-        "<th>Day/Month/Year</th>"+
-        "<th>Buyer</th>"+
-        "</tr>"
-    );
-
-    for(var i = 0; i < len; i++){
-        if(disbursementList[i].accepted === 0){
-            acceptedString = "<button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
-        } else {acceptedString =  "Accepted"}
-        var participantsList = disbursementList[i].participants;
-        var participantsString = "";
-        for(var j=0;j<participantsList.length;j++){
-            participantsString+=participantsList[j].name + ", ";
-        }
-        var dispDate = new Date(disbursementList[i].date);
-        var month = dispDate.getUTCMonth() + 1; //months from 1-12
-        var day = dispDate.getUTCDate();
-        var year = dispDate.getUTCFullYear();
-        var d = day + "/" + month + "/" + year;
-
-        $("#disbursementTable").append(
-            "<tr>"+
-            "<td scope=\"row\">"+(i+1)+"</td>"+
-            "<td>"+disbursementList[i].name+"</td>"+
-            "<td>"+participantsString+"</td>"+
-            "<td>"+disbursementList[i].disbursement+"</td>"+
-            "<td>"+d+"</td>"+
-            "<td>"+disbursementList[i].payer.name+"</td>"+
-            "<td>"+acceptedString+"</td>"+
-            "</tr>");
-        /*if(items[i].status===2){
-            $("#row"+i).addClass('boughtMarked');
-        }*/
-    }
-    console.log("Added Items");
-}
-
-function getDisbursementList(){
-    var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
-
-    $.get(url, function(data, status){
-        console.log("skrrt");
-        if (status === "success") {
-            disbursementList = data;
-            fixDisbursementTable();
-            console.log("Item content loaded successfully!");
-        }
-        if(status === "error"){
-            console.log("Error in loading Item content");
-        }
-    });
-}
-
-function getUserBalance(){
-    var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
-
-    $.get(url, function(data, status){
-        console.log("skrrt");
-        if (status === "success") {
-            balanceList = data;
-            fixBalanceTable();
-            console.log("Item content loaded successfully!");
-        }
-        if(status === "error"){
-            console.log("Error in loading Item content");
-        }
-    });
-}
-
-function getPaymentRequests(){
-    var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
-
-    $.get(url, function(data, status){
-        console.log("skrrt");
-        if (status === "success") {
-            paymentRequests = data;
-            fixPaymentRequestsTable();
-            console.log(paymentRequests);
-            console.log("Number of payments loaded successfully!");
-        }
-        if(status === "error"){
-            console.log("Error in loading number of payments content");
-        }
-    });
-}
-
-function fixBalanceTable(){
-    var len = balanceList.length;
-    var table = document.getElementById("balanceTable");
-    console.log("found table");
-    while(table.rows.length > 0) {
-        table.deleteRow(0);
-    }
-    $("#balanceTable").append(
-        "<tr>"+
-        "<th>User</th>"+
-        "<th>Balance</th>"+
-        "</tr>"
-    );
-
-    for(var i = 0; i < len; i++){
-        $("#balanceTable").append(
-            "<tr>"+
-            "<th scope=\"row\">"+balanceList[i].key+"</th>"+
-            "<th>"+balanceList[i].value+"</th>"+
-            "</tr>"
-        );
-    }
-    console.log("Added Items");
-}
-
-function fixPaymentRequestsTable(){
-    var len = paymentRequests.length;
-    console.log(paymentRequests);
-    var table = document.getElementById("paymentRequests");
-    console.log("found table");
-    while(table.rows.length > 0) {
-        table.deleteRow(0);
-    }
-    $("#paymentRequests").append(
-        "<tr>"+
-        "<th>User</th>"+
-        "<th>Asks For</th>"+
-        "<th></th>"+
-        "</tr>"
-    );
-
-    for(var i = 0; i < len; i++){
-        var table1 = [];
-        table1[0]=paymentRequests[i].id;
-        table1[1]=paymentRequests[i].amount;
-        table1[2]=paymentRequests[i].payer;
-        $("#paymentRequests").append(
-            "<tr>"+
-            "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
-            "<th>"+paymentRequests[i].amount+"</th>"+
-            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Accept Payment</button></th>"+
-            "</tr>"
-        );
-    }
-    console.log("Added Itempp");
-}
-
 
 
 
