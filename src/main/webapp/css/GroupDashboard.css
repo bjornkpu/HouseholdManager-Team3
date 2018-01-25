@@ -33,7 +33,7 @@
         background-color: white;
         left: 50%;
         right: 50%;
-        transform: translate(-31%, 5%);
+        transform: translate(-35%, 5%);
     }
 
 
@@ -50,8 +50,15 @@
         color: #0596c6;
     }
 
-    .notifications {
+    .notificationIcon {
         color: #0596c6;
+    }
+    .notificationIcon .newNotification{
+        color: red;
+    }
+
+    .notificationDropdown{
+        transform: translate(-35%, 5%);
     }
 
 
