@@ -15,7 +15,7 @@ $(document).ready(function() {
     });
 
     var y = getCookie("currentGroup");
-    console.log("y: " + y);
+    //console.log("y: " + y);
 
     var lists;
     var url='rest/groups/'+ y +'/members';
@@ -52,7 +52,7 @@ $(document).ready(function() {
         var newNameField = document.getElementById('newNameField');
 
         var newName = $('#newNameField').val();
-        console.log("the new name for the group: "+ newName);
+        //console.log("the new name for the group: "+ newName);
         $.ajax({
             type: 'PUT',
             url: 'rest/groups/'+ y,
@@ -63,7 +63,7 @@ $(document).ready(function() {
                 "name": htmlEntities(newName),
             }),
             success: function(){
-                console.log("updated group name");
+                //console.log("updated group name");
                 document.cookie = "groupName=" + htmlEntities(newName);
                 //TODO: noen som vet hvorfor denne replacen ikke refresher siden
                 window.location.replace('GroupDashboard.html#Setting');
@@ -87,15 +87,15 @@ $(document).ready(function() {
 
 
     function checkAdmin(data) {
-        sessionEmail;
-        getLoggedOnUser(function(user){
-            sessionEmail=user.email;
-        });
-        console.log("session email: " + sessionEmail);
-        console.log("cookie" + getCookie("userLoggedOn"));
+       // sessionEmail;
+        //getLoggedOnUser(function(user){
+          //  sessionEmail=user.email;
+        //});
+        //console.log("session email: " + sessionEmail);
+        //console.log("cookie" + getCookie("userLoggedOn"));
         var len= data.length;
             for(var i=0;i<len;i++){
-                console.log("status på brukere: " + data[i].status);
+                //console.log("status på brukere: " + data[i].status);
                 if(data[i].status===2 && data[i].email === getCookie("userLoggedOn")){
                     $('#adminButtons').append(
                         '<tr> ' +
