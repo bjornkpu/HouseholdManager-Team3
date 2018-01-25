@@ -106,6 +106,7 @@ public class ChoreDao {
             ps = connection.prepareStatement("DELETE FROM chore_log WHERE chore_id=?");
             ps.setInt(1,choreId);
             ps.executeUpdate();
+            if(users == null) return true;      //When you are deleting a Chore
             for (String user : users) {
                 ps = connection.prepareStatement("INSERT INTO chore_log(user_email,chore_id,done) VALUES (?,?,?)");
                 ps.setString(1, user);
