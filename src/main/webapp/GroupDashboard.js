@@ -13,19 +13,6 @@ $(document).ready(function(){
 
 
     //Goes to correct page when reload
-    if (window.location.hash === "#shopping"){
-        $("#page-content").load("Shoppinglist.html");
-    }if (window.location.hash === "#feed"){
-        $("#page-content").load("Feed.html");
-    }if (window.location.hash === "#tasks"){
-        $("#page-content").load("Tasks.html");
-    }if (window.location.hash === "#Receipts"){
-        $("#page-content").load("Receipts.html");
-    }if (window.location.hash === "#Setting"){
-        $("#page-content").load("GroupSetting.html");
-    }if (window.location.hash === "#stats"){
-        $("#page-content").load("Statistics.html");
-    }
 
 
     //Assigns logout to logout button
