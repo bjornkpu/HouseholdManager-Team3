@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var groupId = getCookie("currentGroup");
-    var tasks;                                  //For rendering the Task List
+    var tasks;//For rendering the Task List
     var members;
 
     //Setting up the datatable
@@ -12,11 +12,17 @@ $(document).ready(function() {
             table.deleteRow(0);
         }
         for(var i = 0; i < len; i++){
-            var id = tasks[i].id;
-            var assigned = tasks[i].assignedTo;
-            var complete = tasks[i].completedBy;
-            if(assigned == null) assigned = "-";
-            if(complete == null) complete = "-";
+            var id = tasks[i].choreId;
+            var assigned;
+            var complete;
+
+            assigned = getAssignedTo(i);
+            console.log(assigned)
+            complete = getCompletedBy(id)
+            console.log(complete)
+
+            if(assigned === undefined) assigned = "-";
+            if(complete === undefined) complete = "-";
 
             var date = new Date(tasks[i].deadline).toString().substr(4, 11);
 
@@ -41,7 +47,6 @@ $(document).ready(function() {
         $.get('http://localhost:8080/scrum/rest/groups/' + groupId + '/task/', function(data, status){
             if(status === "success") {
                 tasks = data;
-
                 console.log("Tasks loaded successfully!");
                 $("#tableShoppinglist").empty();
                 setTasksInTable();
@@ -50,6 +55,40 @@ $(document).ready(function() {
         });
     }
     getTasksInGroup();
+
+    //Setting up the members in the drop-down menu
+    function setMembersList(data) {
+        var len = data.length;
+        if(len === 0){
+            $('#taskAssignDropdown').append('<li tabindex="-1" class="list" role="presentation" ' +
+                'style="text-align: center">Empty</li>');
+            $('#taskCompDropdown').append('<li tabindex="-1" class="list" role="presentation" ' +
+                'style="text-align: center">Empty</li>');
+            return;
+        }
+        for (var i = 0; i < len;i++ ) {
+            $('#taskAssignDropdown').append('<li tabindex="-1" class="list" role="presentation">' +
+                '<a class="link" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
+            );
+            $('#taskCompDropdown').append('<li tabindex="-1" class="list" role="presentation">' +
+                '<a class="link" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
+            );
+        }
+    }
+    function getMemberList() {
+        console.log("Loading members from group " + groupId + "...");
+        $('#taskAssignDropdown').empty();
+        $('#taskCompDropdown').empty();
+        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/members';
+
+        $.get(url,function (data, status) {
+            members = data;
+            if(status === "success")    console.log("Members loaded successfully!");
+            if(status === "error")      console.log("Error in loading members.");
+            setMembersList(data);
+        });
+    }
+    getMemberList();
 
     //Help methods
     function getCheckedTasks(){
@@ -62,11 +101,27 @@ $(document).ready(function() {
             }
         }return checked;
     }
-    function getMemberList() {
-        console.log("Loading members from group " + groupId + "...");
-        $('#taskAssignDropdown').empty();
-        $('#taskCompDropdown').empty();
-        var url='http://localhost:8080/scrum/rest/groups/'+groupId+'/shoppingLists/user';
+    function getAssignedTo(i){
+        var r = undefined;
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/scrum/rest/user/' + tasks[i].assignedTo,
+            async: false,
+            success: function (data, status) {
+                r = data.name;
+            }});
+        return r;
+    }
+    function getCompletedBy(id){
+        var r = undefined;
+        $.ajax({
+            type: 'GET',
+            url: 'http://localhost:8080/scrum/rest/groups/' + groupId + '/task/CompletedBy/' + id,
+            async: false,
+            success: function (data, status) {
+                r = data[0];
+            }});
+        return r;
     }
 
     //The buttons
@@ -104,32 +159,27 @@ $(document).ready(function() {
                 }
             });
 
-            $("#page-content").load("http://localhost:8080/scrum/GroupDashboard.html#tasks");
+            $("#page-content").load("Tasks.html");
         });
     });
 
-   /* $("#assignTask").click(function(){
+    $("#taskAssignDropdown").on("click", "a.link", function(){
         var checked = getCheckedTasks();
-        var url = "http://localhost:8080/scrum/rest/groups/3/task/";
+        if(checked.length === 0) {
+            alert("You must check what task you want to assign");
+            return;
+        }
 
-        $.get("http://localhost:8080/scrum/rest/groups/" + groupId + "/members", function (data) {
-            members = data;
-            for(var i = 0; 0 < members.length; i++){
-
-            }
-            console.log(data[0].name)
-        });
-        var email = prompt(members,"asd");
-
-        // if ()
+        var clickedUserIndex = this.id;
+        var clickedUserEmail = members[clickedUserIndex].email;
 
         for(var i = 0; i < checked.length; i++){
             $.ajax({
                 type: "PUT",
-                url: url + checked[i].id ,
+                url: 'http://localhost:8080/scrum/rest/groups/' + groupId + '/task/' + checked[i].id ,
                 dataType: "json",
                 data: JSON.stringify({
-                    email: email
+                    email: clickedUserEmail
                 }),
                 contentType: "application/json;charset=UTF-8",
                 success: function (data, status) {
@@ -138,12 +188,35 @@ $(document).ready(function() {
                 }
             });
         }
-        $("#page-content").load("http://localhost:8080/scrum/GroupDashboard.html#tasks");
-    });*/
+        $("#page-content").load("Tasks.html");
+    });
 
-    $("#completeTask").click(function(){
+    $("#taskCompDropdown").on("click", "a.link", function(){
+        var checked = getCheckedTasks();
+        if(checked.length === 0) {
+            alert("You must check what task you want to complete");
+            return;
+        }
 
-        $("#page-content").load("http://localhost:8080/scrum/GroupDashboard.html#tasks");
+        var clickedUserIndex = this.id;
+        var clickedUserEmail = members[clickedUserIndex].email;
+
+        for(var i = 0; i < checked.length; i++){
+            $.ajax({
+                type: "PUT",
+                url: 'http://localhost:8080/scrum/rest/groups/' + groupId + '/task/CompletedBy/' + checked[i].id ,
+                dataType: "json",
+                data: JSON.stringify([
+                    clickedUserEmail
+                ]),
+                contentType: "application/json;charset=UTF-8",
+                success: function (data, status) {
+                    if (status === "success")   console.log("Task Deleted!");
+                    if (status === "error")     console.log("Could not delete Task");
+                }
+            });
+        }
+        $("#page-content").load("Tasks.html");
     });
 
     $("#deleteTask").click(function(){
@@ -159,8 +232,6 @@ $(document).ready(function() {
                 }
             });
         }
-        $("#page-content").load("http://localhost:8080/scrum/GroupDashboard.html#tasks");
+        $("#page-content").load("Tasks.html");
     });
-
-
 });

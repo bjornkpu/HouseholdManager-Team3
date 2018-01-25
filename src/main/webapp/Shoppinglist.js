@@ -605,6 +605,7 @@ $(document).ready(function() {
     }
 
 });
+
 function respondToDisbursement(data,response) {
     // AJAX Request
     console.log(data.value+"  "+response);
