@@ -78,7 +78,7 @@ public class NotificationDao {
         try{
             ps = connection.prepareStatement("UPDATE notification SET seen=1 WHERE id=?");
             ps.setInt(1,notificationId);
-            //rs = ps.executeQuery();
+            rs = ps.executeQuery();
             int result = ps.executeUpdate();
             return result==1;
         }
@@ -100,7 +100,7 @@ public class NotificationDao {
             ps = connection.prepareStatement("UPDATE  notification SET seen=1 WHERE user_email = ?");
             ps.setString(1,email);
             int res = ps.executeUpdate();
-            return res > 1;
+            return res >= 1 ;
         } finally {
             //Db.close(rs);
             Db.close(ps);
