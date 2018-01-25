@@ -1,4 +1,4 @@
-/SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS payment;
 DROP TABLE IF EXISTS item_shoppinglist;
@@ -24,6 +24,15 @@ CREATE TABLE user(
   salt VARCHAR(20) NOT NULL,
   phone VARCHAR (15),
   CONSTRAINT user_pk PRIMARY KEY(email));
+
+CREATE TABLE notification(
+  id INTEGER (10) AUTO_INCREMENT,
+  user_email VARCHAR(255) NOT NULL,
+  text VARCHAR(255) NOT NULL,
+  time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  seen INTEGER DEFAULT 0,
+  CONSTRAINT notification_pk PRIMARY KEY(id)
+);
 
 CREATE TABLE party(
   id INTEGER NOT NULL AUTO_INCREMENT,
@@ -85,6 +94,7 @@ CREATE TABLE shoppinglist_user (
 CREATE TABLE user_disbursement(
   user_email VARCHAR(255) NOT NULL,
   disp_id INTEGER(10) NOT NULL,
+  accepted INTEGER(1) DEFAULT 0,
   CONSTRAINT user_disbursement_pk PRIMARY KEY (user_email,disp_id));
 
 CREATE TABLE disbursement(
@@ -108,8 +118,9 @@ CREATE TABLE payment(
 
 
 -- Legger på referanseintegritet (fremmednøkler)
+ALTER TABLE notification
+    ADD CONSTRAINT notification_fk FOREIGN KEY (user_email) REFERENCES user(email);
 
-ALTER TABLE user_disbursement ADD COLUMN accepted INTEGER DEFAULT 0;
 
 ALTER TABLE wallpost
   ADD CONSTRAINT wallpost_fk1 FOREIGN KEY(party_id)REFERENCES party(id);
@@ -184,6 +195,13 @@ INSERT INTO user(name, email, password, salt, phone) VALUES( 'ove', 'fem@h.no', 
 INSERT INTO user(name, email, password, salt, phone) VALUES( 'lisa', 'seks@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'camilla', 'sju@h.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
 INSERT INTO user(name, email, password, salt ,phone) VALUES( 'bjorn', 'bk@p.no', 'd0a4906fe8234ceaf651e4fc4e045a6c0511e36d00b0a3565ece64a7e597498f','123',12343524);
+
+INSERT INTO notification(user_email,text) VALUES ('en@h.no', 'Dette er en notification');
+INSERT INTO notification(user_email,text) VALUES ('en@h.no', 'Mats er en notification');
+INSERT INTO notification(user_email,text) VALUES ('en@h.no', 'Mats er en hoe');
+INSERT INTO notification(user_email,text) VALUES ('abcqwe', 'Dette er en notification');
+INSERT INTO notification(user_email,text) VALUES ('abcqwe', 'Kristian må les dette');
+INSERT INTO notification(user_email,text) VALUES ('abcqwe', 'Kristian må lese mer');
 
 
 INSERT INTO party(id,name) VALUES (1,'Frex');
