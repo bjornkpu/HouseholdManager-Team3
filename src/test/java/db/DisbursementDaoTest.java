@@ -26,10 +26,12 @@ public class DisbursementDaoTest {
     private static final int id1 = 2000000001;
     private static final ArrayList<Item> items = new ArrayList<Item>();
     private static final ArrayList<User> participants = new ArrayList<User>();
+    private static final ArrayList<User> users = new ArrayList<>();
 
     private static Group group = new Group(id1,"disbursementtestgroup","","");
     private static final Member dPayer=new Member("payeremail#unique","payername","payerphone","payerpw","payersalt",1000,Member.ACCEPTED_STATUS);
     private static final Member other = new Member("qtheremail#unique","o","o","o","o",1000,Member.ACCEPTED_STATUS);
+    private static final Member other2 =new Member(other.getEmail()+2,"o","o","o","o",500,Member.ACCEPTED_STATUS);
     private static final Disbursement disbursement = new Disbursement();
     private static final Disbursement disbursement2 = new Disbursement();
     private static final Item item1 = new Item(id1,"item1",Item.STANDARD,id1,-1);
@@ -37,10 +39,13 @@ public class DisbursementDaoTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
+        users.add(other);
+        users.add(other2);
+        users.add(dPayer);
         items.add(item1);
         items.add(item2);
-        participants.add(dPayer);
         participants.add(other);
+        participants.add(other2);
 
         disbursement.setId(id1);
         disbursement.setDisbursement(dValue);
@@ -89,7 +94,7 @@ public class DisbursementDaoTest {
 
             //User
             ps=connection.prepareStatement("INSERT INTO user (name, email, password, salt, phone) VALUES (?,?,?,?,?)");
-            for(User u: participants){
+            for(User u: users){
                 ps.setString(1,u.getName());
                 ps.setString(2,u.getEmail());
                 ps.setString(3,u.getPassword());
@@ -104,7 +109,7 @@ public class DisbursementDaoTest {
 
             //Member
             ps=connection.prepareStatement("INSERT INTO user_party (user_email, party_id, balance, status) VALUES (?,?,?,?)");
-            for(User uNotM: participants){
+            for(User uNotM: users){
                 Member u = (Member) uNotM;
                 ps.setString(1,u.getEmail());
                 ps.setInt(2,group.getId());
@@ -198,7 +203,7 @@ public class DisbursementDaoTest {
             }
             Db.close(ps);
 
-            assertEquals(15,updatedrowcount);
+            assertEquals(17,updatedrowcount);
 
         }catch(MySQLIntegrityConstraintViolationException e){
             log.error("Primary key failure",e);
@@ -289,38 +294,11 @@ public class DisbursementDaoTest {
             Db.close(rs);
             Db.close(ps);
 
-            /*
-            //Check that participants and payer balances are updated.
-            ps=connection.prepareStatement("SELECT balance FROM user_party WHERE user_email=? AND party_id=?");
-            m = (Member) disbursement3.getParticipants().get(0);
-            ps.setString(1,m.getEmail());
-            ps.setInt(2,group.getId());
-            rs=ps.executeQuery();
-            if(rs.next()){
-                payerbalance=rs.getDouble(1);
-            }
-            Db.close(rs);
-            Db.close(ps);
-
-
-            ps=connection.prepareStatement("SELECT balance FROM user_party WHERE user_email=? AND party_id=?");
-            m=(Member) disbursement3.getParticipants().get(1);
-            ps.setString(1,m.getEmail());
-            ps.setInt(2,group.getId());
-            rs=ps.executeQuery();
-            if(rs.next()){
-                otherbalance=rs.getDouble(1);
-            }
-            Db.close(rs);
-            Db.close(ps);
-            */
-
             //Check that items are in disbursement
             ps=connection.prepareStatement("SELECT disbursement_id FROM item WHERE id=? AND status=3");
             Item i=disbursement3.getItems().get(0);
             ps.setInt(1,i.getId());
             rs=ps.executeQuery();
-//            log.info("result rs.length: "+rs.l);
             if(rs.next()){
                 itemDisbId=rs.getInt(1);
             }
@@ -340,19 +318,85 @@ public class DisbursementDaoTest {
     }
 
     @Test
+    public void updateBalances(){
+        final Disbursement disbursement3=disbursement.copy();
+        ArrayList<User> participants1 = new ArrayList<>();
+        participants1.add(other);
+        participants1.add(other2);
+        disbursement3.setParticipants(participants1);
+
+        boolean added=false;
+        double payerbalance=0;
+        double otherbalance=0;
+        double other2balance=0;
+
+        Member m;
+        ResultSet rs=null;
+        try{
+            added = disbursementDao.updateBalances(disbursement3,id1);
+//            connection.commit();
+
+            //Check that participants and payer balances are updated.
+            ps=connection.prepareStatement("SELECT balance FROM user_party WHERE user_email=? AND party_id=?");
+            m = (Member) disbursement3.getPayer();
+            ps.setString(1,m.getEmail());
+            ps.setInt(2,group.getId());
+            rs=ps.executeQuery();
+            if(rs.next()){
+                payerbalance=rs.getDouble(1);
+            }
+            Db.close(rs);
+            Db.close(ps);
+
+            ps=connection.prepareStatement("SELECT balance FROM user_party WHERE user_email=? AND party_id=?");
+            m=(Member) disbursement3.getParticipants().get(0);
+            ps.setString(1,m.getEmail());
+            ps.setInt(2,group.getId());
+            rs=ps.executeQuery();
+            if(rs.next()){
+                otherbalance=rs.getDouble(1);
+            }
+            Db.close(rs);
+            Db.close(ps);
+
+            ps=connection.prepareStatement("SELECT balance FROM user_party WHERE user_email=? AND party_id=?");
+            m=(Member) disbursement3.getParticipants().get(1);
+            ps.setString(1,m.getEmail());
+            ps.setInt(2,group.getId());
+            rs=ps.executeQuery();
+            if(rs.next()){
+                other2balance=rs.getDouble(1);
+            }
+        }catch(SQLException e){
+            log.error("addDisbursement errored",e);
+        }finally {
+            Db.close(rs);
+            Db.close(ps);
+        }
+
+        assertTrue(added);
+        assertEquals(1200,payerbalance,0.0051);
+        assertEquals(900,otherbalance,0.0051);
+        assertEquals(400,other2balance,0.0051);
+
+
+    }
+
+    @Test
     public void deleteDisbursement() {
+        final Disbursement disbursement3=disbursement.copy();
+        ArrayList<Item> items3 = new ArrayList<>();
+        items3.add(item2);
+        disbursement3.setItems(items3);
+
         ResultSet rs=null;
         boolean dbUpdated=false;
         boolean deleted=false;
         boolean itemUpdated=false;
 
-        ArrayList<Item> items3 = new ArrayList<>();
-        items3.add(item2);
-        disbursement.setItems(items3);
-
         try{
             //Delete disbursement
-            deleted=disbursementDao.deleteDisbursement(disbursement);
+            deleted=disbursementDao.deleteDisbursement(disbursement3);
 
             //Check that disbursement is not in DB
             ps=connection.prepareStatement("SELECT COUNT(*) FROM disbursement WHERE id=?");
