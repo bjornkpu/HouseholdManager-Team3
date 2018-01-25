@@ -45,7 +45,7 @@ function activePage(){
     }if (window.location.hash === "#Setting"){
         $("#page-content").load("GroupSetting.html");
     }if (window.location.hash === "#stats"){
-        $("#page-content").load("Statistics.html");
+        $("#page-content").load("Statistic.html");
     }
 
     var element;
