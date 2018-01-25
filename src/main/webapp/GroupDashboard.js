@@ -59,9 +59,11 @@ function checkCookie(id) {
 
 function activePage(){
     //Goes to correct page when reload
+    /*
     if(window.location.pathname==="/scrum/GroupDashboard.html"){
         window.location.href="GroupDashboard.html#feed";
     }
+    */
     if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }if (window.location.hash === "#feed"){
