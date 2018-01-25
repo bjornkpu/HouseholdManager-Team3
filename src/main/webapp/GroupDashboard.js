@@ -7,25 +7,8 @@ $(document).ready(function(){
     getLoggedOnUser(setGroupDropdown);
 
 
-    //No clue what this does
+    //Changes active page when anchor changes
     $(window).on('hashchange', activePage);
-    // $('#page-content').on('load', activePage());
-
-
-    //Goes to correct page when reload
-    if (window.location.hash === "#shopping"){
-        $("#page-content").load("Shoppinglist.html");
-    }if (window.location.hash === "#feed"){
-        $("#page-content").load("Feed.html");
-    }if (window.location.hash === "#tasks"){
-        $("#page-content").load("Tasks.html");
-    }if (window.location.hash === "#Receipts"){
-        $("#page-content").load("Receipts.html");
-    }if (window.location.hash === "#Setting"){
-        $("#page-content").load("GroupSetting.html");
-    }if (window.location.hash === "#stats"){
-        $("#page-content").load("Statistics.html");
-    }
 
 
     //Assigns logout to logout button
@@ -75,6 +58,26 @@ function checkCookie(id) {
 }
 
 function activePage(){
+    //Goes to correct page when reload
+    /*
+    if(window.location.pathname==="/scrum/GroupDashboard.html"){
+        window.location.href="GroupDashboard.html#feed";
+    }
+    */
+    if (window.location.hash === "#shopping"){
+        $("#page-content").load("Shoppinglist.html");
+    }if (window.location.hash === "#feed"){
+        $("#page-content").load("Feed.html");
+    }if (window.location.hash === "#tasks"){
+        $("#page-content").load("Tasks.html");
+    }if (window.location.hash === "#Receipts"){
+        $("#page-content").load("Receipts.html");
+    }if (window.location.hash === "#Setting"){
+        $("#page-content").load("GroupSetting.html");
+    }if (window.location.hash === "#stats"){
+        $("#page-content").load("Statistics.html");
+    }
+
     var element;
     var sidebarDivs = document.getElementsByClassName("leftsidebar-list-items");
     var sidebarLinks = document.getElementsByClassName("sidelink");
