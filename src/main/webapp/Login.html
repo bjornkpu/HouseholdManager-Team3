@@ -45,6 +45,7 @@
                 <h4 class="modal-title center notOp" id="myModalLabel" >Login</h4>
             </div>
             <div class="modal-body">
+                <!--action return false stops page from reloading, method=post to not put data in url-->
                 <form id="loginContent" action="javascript:myFunction(); return false;" method="post">
                     <table class="center" id="loginTable">
                         <!--Alert for wrong username or password -->
@@ -83,6 +84,7 @@
                 </form>
 
                 <!-- Table for register new users -->
+                <!--action return false stops page from reloading, method=post to not put data in url-->
                 <form id="div_reg" style="display: none;" action="javascript:myFunction(); return false;" method="post">
                     <h1>Register new user</h1>
                     <table id="table_reg" class="center">
