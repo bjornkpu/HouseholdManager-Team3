@@ -300,5 +300,41 @@ function compare(a,b) {
     return 0;
 }
 
+function acceptPaymentsClick(data){
+    var array = data.value.split(",");
+    var paymentId = array[0];
+    var amount = array[1];
+    var payer = array[2];
+    console.log("Payment Id=" + paymentId + " Amount=" + amount + " Payer=" + payer);
+    $.ajax({
+        type: 'PUT',
+        url: "http://localhost:8080/scrum/rest/groups/updatePayment/" + paymentId, //test
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("accepted paymentt");
+
+        },
+        error: function () {
+            alert("payment not accepted");
+        }
+    });
+
+    $.ajax({
+        type: 'PUT',
+        url: "http://localhost:8080/scrum/rest/groups/updateBalances/" + currentGroup + "/"+ currentUser+"/"+ payer +"/" + amount,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        success: function () {
+            console.log("accepted paymentt");
+            getUserBalance();
+            getPaymentRequests();
+        },
+        error: function () {
+            alert("payment not accepted");
+        }
+    })
+};
+
 
 
