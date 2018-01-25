@@ -7,9 +7,13 @@ $(document).ready(function(){
     getLoggedOnUser(setGroupDropdown);
     listNotificationsForUserLoggedIn();
 
-
     //Changes active page when anchor changes
     $(window).on('hashchange', activePage);
+
+    // Ugly hack for the group dropdown caret
+    $(document).on('click', function(){
+        groupDropdownArrow();
+    });
 
     //Assigns logout to logout button
     $("#logout").click(function(){
@@ -24,7 +28,7 @@ $(document).ready(function(){
 });
 
 function checkCookie(id) {
-    var username = getCookie(curGroup);
+    var username = getCookie(curGroup );
     if (username == "") {
         document.cookie = curGroup + "=" + id;
     }
@@ -63,5 +67,13 @@ function notificationIcon(){
         $('.notificationIcon').html('notifications_active');
     }else {
         $('.notificationIcon').html('notifications');
+    }
+}
+
+function groupDropdownArrow(){
+    if($('#navbarDropdownMenuLink1').attr('aria-expanded') === "true"){
+        $('.groupArrow').html("arrow_drop_up");
+    }else{
+        $('.groupArrow').html("arrow_drop_down");
     }
 }
