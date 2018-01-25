@@ -1,3 +1,48 @@
+.shoppingListGrid {
+    display: grid;
+    grid-template-columns: [col1-start] 65% [col1-end col2-start] 35% [col2-end];
+    grid-template-rows: [row1-start] 50% [row2-end row2-start] 25% [row2-end];
+    grid-template-areas: "leftTop rightSideGrid"
+                         "leftBottom  rightBottom";
+    justify-items: stretch;
+    min-width: 100%;
+}
+
+.listGrid {
+    display: grid;
+    grid-area: leftTop;
+    background-color: lightblue;
+    justify-items: center;
+}
+
+.rightsideGrid {
+    display: grid;
+    grid-area: rightSideGrid;
+    background-color: lightcoral;
+    justify-self: center;
+    align-self: start;
+    width: 100%;
+    justify-items: center;
+}
+
+.leftBottom{
+    display: grid;
+    grid-area: leftBottom;
+    background-color: lightseagreen;
+    justify-self: center;
+    align-self: center;
+    width: 100%;
+    justify-items: center;
+}
+
+
+
+
+
+
+
+
+
 #dropdownShoppinglist{
     padding-left: 500px;
 }

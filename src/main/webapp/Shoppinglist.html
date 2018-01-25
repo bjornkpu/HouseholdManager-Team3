@@ -8,16 +8,6 @@
 </head>
 <body>
 
-<!--Menu shoppinglist-->
-<table class="center" id="menuShopinglist" style="display: block">
-    <tr>
-        <td><button class = "button" id="createDisbursementButton" > Create receipt</button></td>
-        <td> <button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
-        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of Shoppinglists</button></td>
-    </tr>
-</table>
-<!-- end of menu-->
-
 <!--Create receipt site -->
 <div id="creatingDisbursement" style="display: none;">
     <h1>Creating Disbursement</h1>
@@ -107,49 +97,44 @@
 
 <br>
 <!-- Shoppinglist-->
-<div class="container" id="shoppinglist" style="display:block;">
+<div class="container shoppingListGrid" id="shoppinglist" >
+
+    <div class="listGrid">
     <div class = "row">
         <h2 id="shoppinglistName" class="center"></h2>
     </div>
     <div class="row">
-        <table class="table table-hover", id="shoppingTable">
+        <table class="table table-hover" id="shoppingTable">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Item name</th>
+                <th>Item</th>
                 <th>status</th>
                 <th></th>
-
             </tr>
             </thead>
             <tbody id="tableShoppinglist">
             </tbody>
         </table>
     </div>
-
+    </div>
+    <!--grid rightside for a few buttons and etc -->
+    <div class="rightsideGrid">
+        <button class = "button" id="createDisbursementButton" > Create receipt</button>
+        <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+        <div>finbwfiubawøfbwøjkbfajkwbfkjawbfkjwbf
+        wjfbwjkbfawjkbfjwfkaf</div>
+    </div>
     <!-- Buttons for shoppinglist-->
-    <div class="row">
-        <div class="col-sm">
-            <button class = "button" id="addItem"> Add item</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="toBeBought"> Mark as bought</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="unmarked"> Unmark</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="deleteItems"> Delete <items></items></button>
-        </div>
-    </div>
-    <div class="row">
-        <br>
-    </div>
-    <div class="row">
-        <div class="col-sm">
-            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
-        </div>
-
+    <div class="leftBottom">
+        <table>
+            <tr>
+            <td><button class = "button" id="addItem"> Add item</button></td>
+            <td><button class = "button" id="toBeBought"> Mark as bought</button></td>
+            <td><button class = "button" id="unmarked"> Unmark</button></td>
+            <td><button class = "button" id="deleteItems"> Delete <items></items></button></td>
+            </tr>
+        </table>
     </div>
     <!--end of buttons for shoppinglist -->
 </div>
@@ -157,6 +142,14 @@
 </div>
 <!--overview of shoppinglists -->
 
+<!--Menu shoppinglist-->
+<table class="center" id="menuShopinglist" style="display: block">
+    <tr>
+        <td> <button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
+        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of Shoppinglists</button></td>
+    </tr>
+</table>
+<!-- end of menu-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
