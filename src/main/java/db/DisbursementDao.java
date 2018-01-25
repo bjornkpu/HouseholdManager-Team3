@@ -210,16 +210,14 @@ public class DisbursementDao {
             if(makeDisbursement(disbursement,groupid)){
                 disbursement.setId(lastId());
                 if(addParticipantsToDisbursement(disbursement)){
-                    if(updateBalances(disbursement,groupid)){
-                        if(addItemsToDisbursement(disbursement)){
-                            if(oldCommit){
-                                log.info("Comitting disbursement");
-                                connection.commit();
-                            }else{
-                                log.info("Old autocommit was false, leaving commit up to parent");
-                            }
-                            return true;
+                    if(addItemsToDisbursement(disbursement)){
+                        if(oldCommit){
+                            log.info("Comitting disbursement");
+                            connection.commit();
+                        }else{
+                            log.info("Old autocommit was false, leaving commit up to parent");
                         }
+                        return true;
                     }
                 }
             }
@@ -374,6 +372,7 @@ public class DisbursementDao {
             Db.close(ps);
         }
     }
+
     private boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
         try{
             statement = connection.createStatement();
@@ -448,6 +447,7 @@ public class DisbursementDao {
 //            connection.close();
         }
     }
+
     public boolean checkResponses(Disbursement disbursement, int groupId) throws SQLException {
         try {
             ps = connection.prepareStatement("SELECT accepted FROM user_disbursement WHERE disp_id=?");
