@@ -146,7 +146,10 @@ public class DisbursementDao {
                 ps.setInt(1,disbursement.getId());
                 rs=ps.executeUpdate();
                 if(rs!=disbursement.getItems().size()){
+                    log.info("Could not find all the items in the disbursement");
                     return false;
+                }else {
+                    log.info("Found '"+rs+"' items in disbursement: "+disbursement.getId());
                 }
             }catch(SQLException e){
                 throw new SQLException("Error on deleteDisbursement, remove item.disbursement_id",e);
@@ -166,7 +169,10 @@ public class DisbursementDao {
                     }else{
                         log.info("Old autocommit was false, leaving commit up to parent");
                     }return true;
+                }else{
+                    log.info("Deleted '"+rs+"' disbursement with id: "+disbursement.getId());
                 }
+
             }catch (SQLException e) {
                 throw new SQLException("Error on deleteDisbursement, delete disbursement",e);
             }finally {
@@ -240,7 +246,7 @@ public class DisbursementDao {
         }
     }
 
-    private boolean updateBalances(Disbursement disbursement, int groupid) throws SQLException {
+    public boolean updateBalances(Disbursement disbursement, int groupid) throws SQLException {
         boolean returnResult = true;
         ArrayList<Member> members = new ArrayList<>();
         Member payer = null;
