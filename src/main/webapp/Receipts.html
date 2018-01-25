@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipts</title>
+    <link rel="stylesheet" href="css/Receipts.css">
+</head>
+<body>
+
+
+<!--Table for the "menu" receipts and group balance -->
+
+<table id="tableMenuReceipts" class="center">
+    <tr>
+        <td> <button id="goToDisbursements" class="button" style="display: block;">Go to receipts</button> </td>
+        <td> <button id="goToBalance" class="button" style="display: block;">Go to group balance</button></td>
+    </tr>
+</table>
+
+<!-- Div for receipts-part of the page -->
+<div class="container tableReceipts" id="listOfDisbursements" style="display: none;">
+    <div class = "row">
+        <h2 class="center">List of receipts</h2>
+    </div>
+    <div class="row">
+
+        <table class="table table-hover" id="disbursementTable">
+        </table>
+    </div>
+</div>
+<!-- End of receipts-part -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="Receipts.js"></script>
+
+</body>
+</html>
