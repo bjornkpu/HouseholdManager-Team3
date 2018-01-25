@@ -21,7 +21,6 @@ $(document).ready(function(){
         createNewGroup();
         // window.location.reload();
     });
-
 });
 
 function checkCookie(id) {

@@ -21,6 +21,10 @@
         padding-right: 3px;
         color: #0596c6;
     }
+    .caret{
+        color: #0596c6;
+    }
+
     .account:hover .username{
         color: #475c66;
     }
@@ -43,6 +47,10 @@
         color: #475c66;
     }
     .navGroupName{
+        color: #0596c6;
+    }
+
+    .notifications {
         color: #0596c6;
     }
 
@@ -105,8 +113,8 @@ buttons
     display: inline-block;
     font-size: 14px;
     margin: 2px 1px;
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
+    -webkit-transition-duration: 0.6s; /* Safari */
+    transition-duration: 0.6s;
     cursor: pointer;
 
 }
@@ -184,7 +192,6 @@ buttons
     .navbar-brand.text{
         font-size: 18px;
         color: #0596c6;
-        transform: translateX(0px);
         transform: translateY(5px);
     }
     .navbar-brand :hover{
