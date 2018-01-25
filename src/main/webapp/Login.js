@@ -49,7 +49,7 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            window.location.href = "GroupDashboard.html";
+                            window.location.href = "GroupDashboard.html#feed";
                             document.cookie ="userLoggedOn =" + email;
                             break;
                         case 401:
