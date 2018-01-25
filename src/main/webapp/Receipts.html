@@ -6,7 +6,11 @@
     <link rel="stylesheet" href="css/Receipts.css">
 </head>
 <body>
-
+<!--Alert for successful payment sent -->
+<div class="alert alert-success" id="alertSentPayment" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> Payment sent
+</div>
 
 
 <!-- Div for receipts-part of the page -->
@@ -28,25 +32,46 @@
 <h2 class="center">Group balance</h2>
 <table class="table table-hover" id="balanceTable">
 </table>
-
-<h2 class="center">Incoming Payment Requests</h2>
-<table class="table table-hover" id="paymentRequests">
+    <br><br><br>
+<h2 class="center">Payment</h2>
+    <table class="center">
+        <tr>
+            <td><h4>Send payment requests</h4></td>
+        </tr>
+        <tr>
+            <td>
+        <!-- <div class="container" id="dropdownUsers" style ="display:block;"> -->
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                    <span id="emailSpan">Emails</span>
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="usersdropdown">
+                </ul>
+            </div>
+            <button id="sendPaymentRequest" class=" center button" style="display: none;">Make request</button>
+       <!-- </div> -->
+            </td>
+        </tr>
+    </table>
+    <br><br><br>
+<h4 class="center">Incoming Payment Requests</h4>
+<table class="table table-hover center" id="paymentRequests">
 </table>
 </div>
+<br><br>
 <!--Table for the "menu" receipts and group balance -->
 
 <table id="tableMenuReceipts" class="center">
     <tr>
         <td> <button id="goToDisbursements" class="button" style="display: block;">Go to receipts</button> </td>
         <td> <button id="goToBalance" class="button" style="display: block;">Go to group balance</button></td>
-        <td><button id="sendPaymentRequest" class=" center button" style="display: none;">Make request</button></td>
-
     </tr>
 </table>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Receipts.js"></script>
+<script src="GroupDashboard.js"></script>
 
 </body>
 </html>

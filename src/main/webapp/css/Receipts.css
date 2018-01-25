@@ -37,7 +37,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background-color: #01d100;
     }
 
     .truncateTableCell {
@@ -46,6 +45,5 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background-color: yellow;
     }
 }
