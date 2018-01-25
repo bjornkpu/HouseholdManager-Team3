@@ -41,7 +41,6 @@
 
 <table class="table table-hover" id="disbursementTable">
 </table>
-
         <h2>Group balance</h2>
         <table class="table table-hover" id="balanceTable">
         </table>
@@ -144,33 +143,6 @@
     <h1>New shoppinglist</h1>
     <table>
         <tr>
-            <td style="padding-right: 10px">Name of Shoppinglist</td>
-            <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
-        </tr>
-        <tr>
-            <td style="padding-right: 10px">Select users</td>
-            <td>
-                <div class="ui search">
-                    <div class="ui icon input">
-                        <input class="prompt" type="text" placeholder="Search users...">
-                        <i class="search icon"></i>
-                    </div>
-                    <div class="results"></div>
-                </div>
-            </td>
-            <td>
-                <div class="col-sm">
-                    <button class="add button" id="addUserButton">Add user</button>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                <span id = "addedUser">Add users motherfucker</span>
-            </td>
-        </tr>
-        <tr>
             <td></td>
             <td>
                 <div class="col-sm">
@@ -179,10 +151,33 @@
             </td>
         </tr>
         <tr>
-            <td></td>
+            <td style="padding-right: 10px">Name of Shoppinglist</td>
+            <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
+        </tr>
+        <tr>
+            <td>Add users</td>
             <td>
-                <ul>
-
+                <div class="dropdown">
+                    <button class="search_bttn">Click to add user</button>
+                    <div id="results" class="search_results">
+                        <!--<a href="#shoppingselect">Eirik<br><span class="email_span"> eirik@gmail.com</span></a>-->
+                        <!--<a href="#shoppingselect">Lars Berge<br><span class="email_span"> lars.berge@gmail.com</span></a>-->
+                        <!--<a href="#shoppingselect">Grete<br><span class="email_span"> grete231@gmail.com</span></a>-->
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <!--<span id = "addedUser">Add users motherfucker</span>-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Added users</td>
+            <td>
+                <ul id="addedUsers">
+                    <!--<li><a href="#">1 element</a></li>-->
+                    <!--<li><a href="#">2 element</a></li>-->
                 </ul>
             </td>
         </tr>
@@ -193,6 +188,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script src="Shoppinglist.js"></script>
-<script src="http://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.10/semantic.min.js"></script>
 </body>
 </html>

@@ -245,8 +245,8 @@ $(document).ready(function() {
                 "<br><span class='email_span'>" + usersInGroup[i].email +"</span></div>");
         }
 
-        // mySearchbar();
-        //
+        mySearchbar();
+
         $('#confirmShoppinglist').click(function(){
             var name = $("#nameOfShoppinglist").val();
             if(name === '' || name === undefined || name === null){
@@ -255,7 +255,7 @@ $(document).ready(function() {
             }
             var userList = [];
 
-            // TODO clean this up
+            //TODO clean this up
             for(var i = 0; i < selectedUsers.length; i++){
                 if(selectedUsers[i] === 'empty') {
                     console.log("SKIP FOUND");
