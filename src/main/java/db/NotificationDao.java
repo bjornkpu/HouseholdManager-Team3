@@ -2,6 +2,8 @@ package db;
 
 import data.Notification;
 import data.User;
+
+import javax.ws.rs.PathParam;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,7 +78,7 @@ public class NotificationDao {
         try{
             ps = connection.prepareStatement("UPDATE notification SET seen=1 WHERE id=?");
             ps.setInt(1,notificationId);
-            rs = ps.executeQuery();
+            //rs = ps.executeQuery();
             int result = ps.executeUpdate();
             return result==1;
         }
@@ -84,6 +86,24 @@ public class NotificationDao {
             Db.close(rs);
             Db.close(ps);
 //            Db.close(connection);
+        }
+    }
+
+    /**
+     * Sets all the notifications to seen.
+     * @param email Email of user.
+     * @return Returns true if update succeeds.
+     * @throws SQLException If the query fails.
+     */
+    public boolean seenAllNotifications(String email) throws SQLException {
+        try {
+            ps = connection.prepareStatement("UPDATE  notification SET seen=1 WHERE user_email = ?");
+            ps.setString(1,email);
+            int res = ps.executeUpdate();
+            return res > 1;
+        } finally {
+            //Db.close(rs);
+            Db.close(ps);
         }
     }
 
