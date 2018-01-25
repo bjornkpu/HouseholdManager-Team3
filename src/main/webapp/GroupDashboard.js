@@ -11,6 +11,10 @@ $(document).ready(function(){
     $(window).on('hashchange', activePage);
     // $('#page-content').on('load', activePage());
 
+    if(window.location.pathname==="/scrum/GroupDashboard.html"){
+        window.location.href="GroupDashboard.html#feed";
+    }
+
 
     //Goes to correct page when reload
     if (window.location.hash === "#shopping"){
