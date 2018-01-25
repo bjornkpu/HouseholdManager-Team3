@@ -283,7 +283,6 @@ $(document).ready(function () {
     $("#disbursementTable").on('click', 'tr.truncateRow', function(){
         if(isMobile()) {
             $(".info").css("display", "none");
-            console.log(this.id + ", " + selected);
             if(this.id !== selected){
                 $(".info_"+this.id).css("display", "table-header-group");
                 selected = this.id;
