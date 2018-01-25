@@ -39,6 +39,7 @@ public class NotificationDao {
             ArrayList<Notification> resultat = new ArrayList<>();
             while(rs.next()){
                 Notification notification = new Notification(rs.getInt("id"),rs.getString("user_email"),rs.getString("text"),rs.getTimestamp("time"));
+                notification.setSeen(rs.getInt("seen"));
                 resultat.add(notification);
             } return resultat;
         }finally {
