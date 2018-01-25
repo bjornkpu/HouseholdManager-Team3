@@ -16,38 +16,12 @@ $(document).ready(function(){
         logOut();
     });
 
-    //Loads pages into the content div when clicking sidebar items.
-    $("#loadShoppingList").click(function(){
-        $("#page-content").load("Shoppinglist.html");
-    });
-    $("#loadFeed").click(function(){
-        $("#page-content").load("Feed.html");
-    });
-    $("#loadStatistics").click(function(){
-        $("#page-content").load("Statistic.html");
-    });
-    $("#loadTasks").click(function(){
-        $("#page-content").load("Tasks.html");
-    });
-
-    // DO NOT FUCKING USE. creates double load.
-    /*
-    $("#loadSettings").click(function () {
-        $("#page-content").load("GroupSetting.html");
-    });
-    */
-    $("#loadReceipts").click(function(){
-        $("#page-content").load("Receipts.html");
-    });
-    $("#loadSettings").click(function(){
-        $("#page-content").load("GroupSetting.html");
-    });
-
 
     $("#newGroup1").click(function () {
         createNewGroup();
         // window.location.reload();
     });
+
 });
 
 function checkCookie(id) {
@@ -59,6 +33,7 @@ function checkCookie(id) {
 
 function activePage(){
     //Goes to correct page when reload
+    console.log("Aktive page.")
     if (window.location.hash === "#shopping"){
         $("#page-content").load("Shoppinglist.html");
     }if (window.location.hash === "#feed"){
@@ -70,7 +45,7 @@ function activePage(){
     }if (window.location.hash === "#Setting"){
         $("#page-content").load("GroupSetting.html");
     }if (window.location.hash === "#stats"){
-        $("#page-content").load("Statistics.html");
+        $("#page-content").load("Statistic.html");
     }
 
     var element;

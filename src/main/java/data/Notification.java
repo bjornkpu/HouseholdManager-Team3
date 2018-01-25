@@ -10,6 +10,10 @@ public class Notification {
     private int seen;
 
     public Notification() {}
+    public Notification(String userEmail, String text){
+        this.userEmail = userEmail;
+        this.text=text;
+    }
 
     public Notification(int id, String userEmail, String text, Date date) {
         this.id = id;
