@@ -9,6 +9,11 @@
     position: center;
 }
 
+/*mobile fix*/
+/*.info{*/
+    /*display: none;*/
+/*}*/
+
 
 
 @media screen and (orientation:portrait) {
@@ -37,7 +42,7 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background-color: #01d100;
+        background-color: darkgray;
     }
 
     .truncateTableCell {
@@ -46,6 +51,24 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
-        background-color: yellow;
+        /*background-color: yellow;*/
+    }
+    .info{
+        background-color: whitesmoke;
+        display: none;
+    }
+    .info tr{
+        /*border: 1px solid black;*/
+    }
+    .info td{
+        /*border: 1px solid black;*/
+    }
+
+    /*accept/decline buttons*/
+    .info td.accept:active{
+        background-color:green;
+    }
+    .info td.decline:active{
+        background-color:red;
     }
 }

@@ -6,7 +6,6 @@ $(document).ready(function () {
     currentGroup = getCookie("currentGroup");
     currentUser = getCookie("userLoggedOn");
 
-
     //functions to call on page load
 
     $('#goToDisbursements').click(function () {
@@ -68,11 +67,11 @@ $(document).ready(function () {
         $("#disbursementTable").append(
             "<tr class='truncateTableHeader'>"+
             "<th class='removePortrait'>#</th>"+
-            "<th>Reciet</th>"+
+            "<th>Receipt</th>"+
             "<th class='removePortrait'>Participants</th>"+
             "<th>Cost</th>"+
-            "<th>Date</th>"+
-            "<th>Buyer</th>"+
+            "<th class='removePortrait'>Date</th>"+
+            "<th class='removePortrait'>Buyer</th>"+
             "<th class='removePortrait'>Status</th>"+
             "</tr>"
         );
@@ -93,15 +92,46 @@ $(document).ready(function () {
             var d = day + "/" + month + "/" + year;
 
             $("#disbursementTable").append(
-                "<tr class='truncateRow'>"+
-                "<td scope=\"row\" class='truncateTableCell removePortrait'>"+(i+1)+"</td>"+
-                "<td class='truncateTableCell'>"+disbursementList[i].name+"</td>"+
-                "<td class='truncateTableCell removePortrait'>"+participantsString+"</td>"+
-                "<td class='truncateTableCell'>"+disbursementList[i].disbursement+"</td>"+
-                "<td class='truncateTableCell'>"+d+"</td>"+
-                "<td class='truncateTableCell'>"+disbursementList[i].payer.name+"</td>"+
-                "<td class='truncateTableCell removePortrait'>"+acceptedString+"</td>"+
-                "</tr>");
+                "<tr id='"+i+"' class='truncateRow'>"+
+                    "<td scope=\"row\" class='truncateTableCell removePortrait'>"+(i+1)+"</td>"+
+                    "<td class='truncateTableCell'>"+disbursementList[i].name+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+participantsString+"</td>"+
+                    "<td class='truncateTableCell'>"+disbursementList[i].disbursement+",-</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+d+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+disbursementList[i].payer.name+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+acceptedString+"</td>"+
+                "</tr>"
+            );
+
+            //mobile info
+            if(isMobile()){
+                $("#disbursementTable").append(
+                    "<tr class='info info_" + i +"' style='width:100%'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Receipt:</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].name+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Participants</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+participantsString+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Cost</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].disbursement+",-</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Date</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+d+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Payer</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].payer.name+"</td>" +
+                    "</tr>"+
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell accept'>ACCEPT</td>" +
+                        "<td scope=\"row\" class='truncateTableCell decline'>DECLINE</td>" +
+                    "</tr>"
+                );
+            }
             /*if(items[i].status===2){
                 $("#row"+i).addClass('boughtMarked');
             }*/
@@ -248,5 +278,35 @@ $(document).ready(function () {
         });
     });
 
+    var selected = -1;
+    //mobile site view
+    $("#disbursementTable").on('click', 'tr.truncateRow', function(){
+        if(isMobile()) {
+            $(".info").css("display", "none");
+            console.log(this.id + ", " + selected);
+            if(this.id !== selected){
+                $(".info_"+this.id).css("display", "table-header-group");
+                selected = this.id;
+            } else {
+                selected = -1;
+            }
+        }
+    })
+    $("#disbursementTable").on('click', 'td.accept', function(){
+        if(isMobile()) {
+            console.log("accept");
+        }
+    })
+    $("#disbursementTable").on('click', 'td.decline', function(){
+        if(isMobile()) {
+            console.log("decline");
+        }
+    })
+
 });
+
+//checks if mobile or laptop
+function isMobile(){
+    return ($(window).width() < 550);
+}
 
