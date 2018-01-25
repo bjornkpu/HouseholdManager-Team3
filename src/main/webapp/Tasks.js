@@ -16,13 +16,13 @@ $(document).ready(function() {
             var assigned;
             var complete;
 
-            assigned = getAssignedTo(i);
+            assigned = getUserByEmail(tasks[i].assignedTo);
             console.log(assigned)
-            complete = getCompletedBy(id)
+            complete = getUserByEmail(getCompletedBy(id));
             console.log(complete)
 
-            if(assigned === undefined) assigned = "-";
-            if(complete === undefined) complete = "-";
+            if(assigned === undefined || assigned === null) assigned = "-";
+            if(complete === undefined || complete === null) complete = "-";
 
             var date = new Date(tasks[i].deadline).toString().substr(4, 11);
 
@@ -101,11 +101,12 @@ $(document).ready(function() {
             }
         }return checked;
     }
-    function getAssignedTo(i){
+    function getUserByEmail(email){
+        if (email === undefined || email === null) return null;
         var r = undefined;
         $.ajax({
             type: 'GET',
-            url: 'http://localhost:8080/scrum/rest/user/' + tasks[i].assignedTo,
+            url: 'http://localhost:8080/scrum/rest/user/' + email,
             async: false,
             success: function (data, status) {
                 r = data.name;
@@ -113,6 +114,7 @@ $(document).ready(function() {
         return r;
     }
     function getCompletedBy(id){
+        if (id === undefined || id === null) return null;
         var r = undefined;
         $.ajax({
             type: 'GET',
@@ -142,6 +144,8 @@ $(document).ready(function() {
                 return;
             }
             console.log("Adding task " + description + "...");
+            deadline = ""+deadline;
+            console.log(deadline);
 
             $.ajax({
                 type: "POST",
@@ -161,6 +165,7 @@ $(document).ready(function() {
 
             $("#page-content").load("Tasks.html");
         });
+        $('#backTask').click(function() {$("#page-content").load("Tasks.html");});
     });
 
     $("#taskAssignDropdown").on("click", "a.link", function(){
