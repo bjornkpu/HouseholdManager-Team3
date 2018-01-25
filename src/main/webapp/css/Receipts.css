@@ -10,3 +10,42 @@
 }
 
 
+
+@media screen and (orientation:portrait) {
+    #disbursementTable {
+        display: table;
+        width: 100%;
+    }
+    th.removePortrait{
+        display:none;
+        width:0;
+        height:0;
+        opacity:0;
+        visibility: collapse;
+    }
+    td.removePortrait{
+        display:none;
+        width:0;
+        height:0;
+        opacity:0;
+        visibility: collapse;
+    }
+
+    .truncateTableHeader {
+        display: table-header-group;
+        max-width: 1px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        background-color: #01d100;
+    }
+
+    .truncateTableCell {
+        display: table-cell;
+        max-width: 1px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        background-color: yellow;
+    }
+}

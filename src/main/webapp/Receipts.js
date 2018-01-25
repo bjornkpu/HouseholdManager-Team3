@@ -13,9 +13,13 @@ $(document).ready(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var goToDisbursementsButton = document.getElementById('goToDisbursements');
         var goToBalanceButton = document.getElementById('goToBalance');
+        var divForBalance = document.getElementById('divForBalance');
+        var requestButton = document.getElementById('sendPaymentRequest');
+        requestButton.style.display="none";
         goToBalanceButton.style.display="block";
         listOfDisbursements.style.display ="block";
         goToDisbursementsButton.style.display="none";
+        divForBalance.style.display="none";
         getDisbursementList();
     });
 
@@ -23,9 +27,15 @@ $(document).ready(function () {
         var listOfDisbursements = document.getElementById('listOfDisbursements');
         var goToDisbursementsButton = document.getElementById('goToDisbursements');
         var goToBalanceButton = document.getElementById('goToBalance');
+        var divForBalance = document.getElementById('divForBalance');
+        var requestButton = document.getElementById('sendPaymentRequest');
+        requestButton.style.display="block";
         goToBalanceButton.style.display="none";
         listOfDisbursements.style.display ="none";
         goToDisbursementsButton.style.display="block";
+        divForBalance.style.display="block";
+        getUserBalance();
+        getPaymentRequests();
     });
 
 
@@ -43,7 +53,6 @@ $(document).ready(function () {
 
             success: function () {
                 getDisbursementList();
-               // getUserBalance();
             }
         });
     }
@@ -57,13 +66,14 @@ $(document).ready(function () {
             table.deleteRow(0);
         }
         $("#disbursementTable").append(
-            "<tr>"+
-            "<th>#</th>"+
+            "<tr class='truncateTableHeader'>"+
+            "<th class='removePortrait'>#</th>"+
             "<th>Reciet</th>"+
-            "<th>Participants</th>"+
+            "<th class='removePortrait'>Participants</th>"+
             "<th>Cost</th>"+
-            "<th>Day/Month/Year</th>"+
+            "<th>Date</th>"+
             "<th>Buyer</th>"+
+            "<th class='removePortrait'>Status</th>"+
             "</tr>"
         );
 
@@ -83,14 +93,14 @@ $(document).ready(function () {
             var d = day + "/" + month + "/" + year;
 
             $("#disbursementTable").append(
-                "<tr>"+
-                "<td scope=\"row\">"+(i+1)+"</td>"+
-                "<td>"+disbursementList[i].name+"</td>"+
-                "<td>"+participantsString+"</td>"+
-                "<td>"+disbursementList[i].disbursement+"</td>"+
-                "<td>"+d+"</td>"+
-                "<td>"+disbursementList[i].payer.name+"</td>"+
-                "<td>"+acceptedString+"</td>"+
+                "<tr class='truncateRow'>"+
+                "<td scope=\"row\" class='truncateTableCell removePortrait'>"+(i+1)+"</td>"+
+                "<td class='truncateTableCell'>"+disbursementList[i].name+"</td>"+
+                "<td class='truncateTableCell removePortrait'>"+participantsString+"</td>"+
+                "<td class='truncateTableCell'>"+disbursementList[i].disbursement+"</td>"+
+                "<td class='truncateTableCell'>"+d+"</td>"+
+                "<td class='truncateTableCell'>"+disbursementList[i].payer.name+"</td>"+
+                "<td class='truncateTableCell removePortrait'>"+acceptedString+"</td>"+
                 "</tr>");
             /*if(items[i].status===2){
                 $("#row"+i).addClass('boughtMarked');
@@ -114,6 +124,129 @@ $(document).ready(function () {
             }
         });
     }
+
+    function getUserBalance(){
+        var url='http://localhost:8080/scrum/rest/groups/balance/'+currentGroup;
+
+        $.get(url, function(data, status){
+            console.log("skrrt");
+            if (status === "success") {
+                balanceList = data;
+                fixBalanceTable();
+                console.log("Item content loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading Item content");
+            }
+        });
+    }
+
+    function getPaymentRequests(){
+        var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
+
+        $.get(url, function(data, status){
+            console.log("skrrt");
+            if (status === "success") {
+                paymentRequests = data;
+                fixPaymentRequestsTable();
+                console.log(paymentRequests);
+                console.log("Number of payments loaded successfully!");
+            }
+            if(status === "error"){
+                console.log("Error in loading number of payments content");
+            }
+        });
+    }
+    function fixBalanceTable(){
+        var len = balanceList.length;
+        var table = document.getElementById("balanceTable");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#balanceTable").append(
+            "<tr>"+
+            "<th>User</th>"+
+            "<th>Balance</th>"+
+            "</tr>"
+        );
+
+        for(var i = 0; i < len; i++){
+            $("#balanceTable").append(
+                "<tr>"+
+                "<td scope=\"row\">"+balanceList[i].key+"</td>"+
+                "<td>"+balanceList[i].value+"</td>"+
+                "</tr>"
+            );
+        }
+        console.log("Added Items");
+    }
+
+    function fixPaymentRequestsTable(){
+        var len = paymentRequests.length;
+        console.log(paymentRequests);
+        var table = document.getElementById("paymentRequests");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#paymentRequests").append(
+            "<tr>"+
+            "<th>User</th>"+
+            "<th>Asks For</th>"+
+            "<th></th>"+
+            "</tr>"
+        );
+
+        for(var i = 0; i < len; i++){
+            var table1 = [];
+            table1[0]=paymentRequests[i].id;
+            table1[1]=paymentRequests[i].amount;
+            table1[2]=paymentRequests[i].payer;
+            $("#paymentRequests").append(
+                "<tr>"+
+                "<td scope=\"row\">"+paymentRequests[i].payerName+"</td>"+
+                "<td>"+paymentRequests[i].amount+"</td>"+
+                "<td><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Accept Payment</button></td>"+
+                "</tr>"
+            );
+        }
+        console.log("Added Itempp");
+    }
+
+
+
+
+    $('#sendPaymentRequest').click(function () {
+        var amount1=prompt("Amount:");
+        if(amount1 == null){
+            return;
+        }
+        var receiverName=prompt("To:");
+        if(receiverName == null){
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/scrum/rest/groups/newPayment",
+            data: JSON.stringify(
+                {
+                    payer: currentUser,
+                    receiver: receiverName,
+                    amount: amount1,
+                    party: currentGroup
+                }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function () {
+                console.log("Payment sent");
+            },
+            error: function (xhr, resp, text) {
+                console.log(xhr, resp, text);
+            }
+        });
+    });
 
 });
 

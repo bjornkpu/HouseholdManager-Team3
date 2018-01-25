@@ -1,4 +1,5 @@
 var currentGroup;
+var currentGroupName;
 var paymentRequests=[];
 var currentUser;
 var disbursementList=[];
@@ -9,21 +10,60 @@ $(document).ready(function() {
     var items;
     var currentShoppingList = 0;
     var numberOfMembers = 0;
+    currentGroupName = getCookie("groupName");
+    var newPaymentUser = 0;
     currentGroup = getCookie("currentGroup");
     currentUser = getCookie("userLoggedOn");
+    renderUserListDropdownMenu(getUsers());
 
 
     loadShoppingListsFromGroup(currentGroup);
 
+
+    function getUsers(){
+        var users = [];
+        var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/members';
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: function(json){
+                users = json;
+            },
+            async: false
+        });
+        return users;
+    }
+
+    function renderUserListDropdownMenu(data) {
+        var len = data.length;
+        if(len === 0){
+            $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation" style="text-align: center">' +
+                'Empty</li>');
+            return;
+        }
+        for (var i = 0; i < len;i++ ) {
+            $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+data[i].email+'" href="#">' +
+                data[i].name + '</aclass></li>'
+            );
+        }
+    }
+
+    $("#usersdropdown").on("click", "a.link", function(){
+        newPaymentUser = this.id;
+        //var uName = document.getElementById("userdropdown").innerHTML;
+        document.getElementById("emailSpan").innerHTML = "User selected: " + newPaymentUser;
+        console.log(newPaymentUser);
+    });
+
     $('#sendPaymentRequest').click(function () {
-        var amount1=prompt("Amount:");
-        if(amount1 == null){
+        if(newPaymentUser===0){
+            alert("Must select user from dropdown");
             return;
         }
-        var receiverName=prompt("To:");
-        if(receiverName == null){
-            return;
-        }
+            var amount1=prompt("Amount(must be a number, eks: 200.34):");
+            if(amount1 == null){
+                return;
+            }
 
         $.ajax({
             type: "POST",
@@ -31,7 +71,7 @@ $(document).ready(function() {
             data: JSON.stringify(
                 {
                     payer: currentUser,
-                    receiver: receiverName,
+                    receiver: newPaymentUser,
                     amount: amount1,
                     party: currentGroup
                 }),
@@ -104,7 +144,7 @@ $(document).ready(function() {
             }
         });
 
-        getItemsInShoppingList(1);
+        getItemsInShoppingList();
     });
 
     $('#deleteItems').click(function() {
@@ -198,20 +238,6 @@ $(document).ready(function() {
     //
     // });
 
-    function getUsers(){
-        var users = [];
-        var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/members';
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(json){
-                users = json;
-            },
-            async: false
-        });
-        return users;
-    }
-
     $('#createShoppinglistButton').click(function () {
         var creatingShoppinglist = document.getElementById('creatingShoppinglist');
         var shoppinglist = document.getElementById('shoppinglist');
@@ -222,80 +248,106 @@ $(document).ready(function() {
         dropdownShoppinglist.style.display="none";
 
         var usersInGroup = getUsers();
+        usersInGroup.sort(compare);
 
         var selectedUsers = [];
         var index = 0;
 
-        $('.ui.search')
-            .search({
-                source: usersInGroup,
-                searchFields: [
-                    'email',
-                    'name'
-                ],
-                fields:{
-                    title: 'email',
-                    description: 'name'
-                }
-            })
-        ;
+        // $('.ui.search')
+        //     .search({
+        //         source: usersInGroup,
+        //         searchFields: [
+        //             'email',
+        //             'name'
+        //         ],
+        //         fields:{
+        //             title: 'email',
+        //             description: 'name'
+        //         }
+        //     })
+        // ;
 
-        $("#addUserButton").click(function(){
-            var user = htmlEntities($(".ui.search").search('get value'));
-            var isUser = false;
-            for(var i = 0; i < usersInGroup.length; i++){
-                if(usersInGroup[i].email === user){
-                    isUser = true;
-                    break;
-                }
-                if(usersInGroup[i].name.toLowerCase() === user.toLowerCase()){
-                    user = usersInGroup[i].email;
-                    isUser = true;
-                    break;
-                }
-            }
-            if(!isUser){
-                $("#addedUser").text(user + " is not a member!");
-                return;
-            }
-            var selectedBefore = false;
-            for(var i = 0; i < selectedUsers.length; i++){
-                if (selectedUsers[i] === user){
-                    selectedBefore = true;
-                }
-            }
-            if(selectedBefore){
-                $("#addedUser").text(user + " already added!");
-                return;
-            }
+        for(var i = 0; i < usersInGroup.length; i++){
+            $(".search_results").append("<div class='links' id='link_" + i + "'>" + usersInGroup[i].name + "" +
+                "<br><span class='email_span'>" + usersInGroup[i].email +"</span></div>");
+        }
 
-            selectedUsers[index] = user;
-            $("#addedUser").text("Added user with email " + user);
-            index++;
-        });
+        usersDropdown();
 
         $('#confirmShoppinglist').click(function(){
-            var name = htmlEntities($("#nameOfShoppinglist").val());
+            var name = $("#nameOfShoppinglist").val();
             if(name === '' || name === undefined || name === null){
                 alert("You have to give the shoppinglist a name");
                 return;
             }
             var userList = [];
-            console.log("Adding shoppinglist " + name + "...");
+
+            //TODO clean this up
             for(var i = 0; i < selectedUsers.length; i++){
-                userList[i] = {
-                    email: selectedUsers[i],
-                    name: null,
-                    phone: null,
-                    password: null,
-                    salt: null
-                };
-                console.log("Adding user: " + userList[i].email + "...");
+                if(selectedUsers[i] === 'empty') {
+                    console.log("SKIP FOUND");
+                    userList[i] = {
+                        email: 'SKIP',
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                } else {
+                    userList[i] = {
+                        email: selectedUsers[i].email,
+                        name: null,
+                        phone: null,
+                        password: null,
+                        salt: null
+                    };
+                    console.log("Adding user: " + userList[i].email + "...");
+                }
             }
             createShoppingList(name, userList);
 
             $("#page-content").load("Shoppinglist.html");
         });
+        function usersDropdown(){
+            $(".search_results").on('click', '.links', function(){
+                var user = usersInGroup[this.id.split("_").pop()];
+
+                var addedBefore = false;
+                for(var i = 0; i < selectedUsers.length; i++){
+                    if (selectedUsers[i].email === user.email){
+                        addedBefore = true;
+                    }
+                }
+                if(addedBefore){
+                    $("#addedUser").text(user.name + " is already added!");
+                    return;
+                }
+
+                selectedUsers[index] = user;
+
+                // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
+
+                $("#addedUsers").append("<li>" + user.name + "" +
+                    "<button class='b' id='" + index + "'>Delete!</button></li>");
+
+                index++;
+            });
+        }
+
+        $('#addedUsers').on('click', 'button.b', function(){
+            console.log(selectedUsers[this.id].name + ' er fjernet!');
+            selectedUsers[this.id] = 'empty';
+            reloadList();
+        });
+
+        function reloadList(){
+            $("#addedUsers").empty();
+            for(var i = 0; i < selectedUsers.length; i++){
+                if(selectedUsers[i] === "empty") continue;
+                $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
+                    "<button class='b' id='" + i + "'>Remove</button></li>");
+            }
+        }
     });
 
     function createShoppingList(name, participants){
@@ -471,7 +523,7 @@ $(document).ready(function() {
         }
         for (var i = 0; i < len;i++ ) {
             $('#shoppinglistdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+i+'" href="#">' +
-                data[i].name + '</aclass></li>'
+                data[i].name + '</a></li>'
             );
         }
     }
@@ -488,11 +540,10 @@ $(document).ready(function() {
                 if(data === null || data.size === 0 || data[0] === undefined){
                     $("#shoppinglistName").text("No shoppinglists available");
                 } else {
-                    console.log("Data[0]");
                     $("#shoppinglistName").text(data[0].name);
                     getItemsInShoppingList(groupId);
                 }
-                $("#you_shoppinglists").text("Shoppinglists for groupId " + currentGroup);
+                $("#you_shoppinglists").text("Shoppinglists for " + currentGroupName);
                 renderShoppingListDropdownMenu(data);
             }
             if(status === "error"){
@@ -584,16 +635,6 @@ $(document).ready(function() {
             }
         }return checked;
     }
-
-    function getCheckedMembers() {
-        var members = [];
-        for (var i = 0; i < numberOfMembers; i++) {
-            if ($("#memberCheckbox" + i).is(':checked')) {
-                members.push({email: $("#memberCheckbox" + i)[0].value});
-            }
-        }
-        return members;
-};
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){
@@ -811,11 +852,20 @@ function fixPaymentRequestsTable(){
             "<tr>"+
             "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
             "<th>"+paymentRequests[i].amount+"</th>"+
-            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Accept Payment</button></th>"+
+            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Register as paid</button></th>"+
             "</tr>"
         );
     }
     console.log("Added Itempp");
+}
+
+
+function compare(a,b) {
+    if (a.name.toLowerCase() < b.name.toLowerCase())
+        return -1;
+    if (a.name.toLowerCase() > b.name.toLowerCase())
+        return 1;
+    return 0;
 }
 
 

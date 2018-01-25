@@ -7,53 +7,13 @@ $(document).ready(function(){
     getLoggedOnUser(setGroupDropdown);
 
 
-    //No clue what this does
+    //Changes active page when anchor changes
     $(window).on('hashchange', activePage);
-    // $('#page-content').on('load', activePage());
-
-
-    //Goes to correct page when reload
-    if (window.location.hash === "#shopping"){
-        $("#page-content").load("Shoppinglist.html");
-    }if (window.location.hash === "#feed"){
-        $("#page-content").load("Feed.html");
-    }if (window.location.hash === "#tasks"){
-        $("#page-content").load("Tasks.html");
-    }if (window.location.hash === "#Receipts"){
-        $("#page-content").load("Receipts.html");
-    }if (window.location.hash === "#Setting"){
-        $("#page-content").load("GroupSetting.html");
-    }if (window.location.hash === "#stats"){
-        $("#page-content").load("Statistics.html");
-    }
 
 
     //Assigns logout to logout button
     $("#logout").click(function(){
         logOut();
-    });
-
-    //Loads pages into the content div when clicking sidebar items.
-    $("#loadShoppingList").click(function(){
-        $("#page-content").load("Shoppinglist.html");
-    });
-    $("#loadFeed").click(function(){
-        $("#page-content").load("Feed.html");
-    });
-    $("#loadStatistics").click(function(){
-        $("#page-content").load("Statistic.html");
-    });
-    $("#loadTasks").click(function(){
-        $("#page-content").load("Tasks.html");
-    });
-    $("#loadSettings").click(function () {
-        $("#page-content").load("GroupSetting.html");
-    });
-    $("#loadReceipts").click(function(){
-        $("#page-content").load("Receipts.html");
-    });
-    $("#loadSettings").click(function(){
-        $("#page-content").load("GroupSetting.html");
     });
 
 
@@ -71,6 +31,22 @@ function checkCookie(id) {
 }
 
 function activePage(){
+    //Goes to correct page when reload
+    console.log("Aktive page.")
+    if (window.location.hash === "#shopping"){
+        $("#page-content").load("Shoppinglist.html");
+    }if (window.location.hash === "#feed"){
+        $("#page-content").load("Feed.html");
+    }if (window.location.hash === "#tasks"){
+        $("#page-content").load("Tasks.html");
+    }if (window.location.hash === "#Receipts"){
+        $("#page-content").load("Receipts.html");
+    }if (window.location.hash === "#Setting"){
+        $("#page-content").load("GroupSetting.html");
+    }if (window.location.hash === "#stats"){
+        $("#page-content").load("Statistic.html");
+    }
+
     var element;
     var sidebarDivs = document.getElementsByClassName("leftsidebar-list-items");
     var sidebarLinks = document.getElementsByClassName("sidelink");

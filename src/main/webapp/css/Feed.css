@@ -1,136 +1,287 @@
-.feedGrid{
-    display: grid;
-    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
-    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100%;
-    grid-template-areas:
-            "leftheader rightheader"
-            "wallposts events";
-    justify-items: stretch;
-
-}
-
-.writePost{
-    display: grid;
-    grid-area: leftheader;
-    background-color: #d8d8d8;
-    justify-items: center;
-}
-.post-input{
-    width: 80%;
-    height: 70%;
-    margin-bottom: 15px;
-    margin-top: 20px;
-    background-color: whitesmoke;
-    resize: none;
-
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 2px groove #0596c6;
-    outline: none;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-.post-button{
-    width: 30%;
-    height: 60%;
-}
-
-.wall{
-    display: grid;
-    grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
-    grid-area: wallposts;
-    background-color: #d8d8d8;
-    justify-items: center;
-}
-
-.textPosts{
-    display: grid;
-    height: 100%;
-    width: 80%;
-    margin-top: 20px;
-    background-color: #d8d8d8;
-    align-content: start;
-    overflow-y: hidden;
-    overflow-x: hidden;
-    border: none;
-    justify-items: center;
-}
-
-.post{
-    display: grid;
-    grid-template-rows: [row1-start] auto [row1-end row2-start] 25px;
-    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
-    grid-template-areas:
-                        "message message"
-                        "name date";
-
-    width: 90%;
-    background-color: whitesmoke;
-    margin: 5px;
-    font-size: 15px;
-    height: auto;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
-    border: 2px groove #0596c6;
-    outline: none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-
-.message{
-    display: grid;
-    grid-area: message;
-    justify-self: stretch;
-    align-self: stretch;
-    overflow: auto;
-    height: 100%;
-    border-bottom: 2px groove #0596c6;
-}
-.message p{
-    padding-left: 3px;
-    padding-right: 3px;
-    font-size: 18px;
-}
-
-.postedBy{
-    display: grid;
-    grid-area: name;
-    justify-self: stretch;
-}
-
-.postedBy p{
-    display: grid;
-    font-size: 14px;
-    color: black;
-    justify-self: center;
-}
-
-.datePosted{
-    display: grid;
-    grid-area: date;
-    border-left: 2px groove #0596c6;
-    justify-self: stretch;
-}
-.datePosted p{
-    display: grid;
-    font-size: 14px;
-    color: black;
-    justify-self: center;
-}
-
-.rightHeader{
-    grid-area: rightheader;
+body{
     background-color: #d8d8d8;
 }
 
-.groupEvents{
-    display: grid;
-    grid-area: events;
-    background-color: #d8d8d8;
+@media screen and (orientation: landscape) {
+    .feedGrid {
+        display: grid;
+        grid-template-columns: [col1-start] 65% [col1-end col2-start] auto [col2-end];
+        grid-template-rows: [row1-start] 25% [row2-end row2-start] 100%;
+        grid-template-areas: "inputArea rightheader"
+                                "wallposts events";
+        justify-items: stretch;
+
+    }
+
+    .writePost {
+        display: grid;
+        grid-area: inputArea;
+        background-color: #d8d8d8;
+        justify-items: center;
+    }
+
+    .post-input {
+        width: 60%;
+        height: 70%;
+        margin-bottom: 15px;
+        margin-top: 20px;
+        background-color: whitesmoke;
+        resize: none;
+
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 2px groove #0596c6;
+        outline: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .post-button {
+        width: 20%;
+        height: 70%;
+    }
+
+    .wall {
+        display: grid;
+        grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
+        grid-area: wallposts;
+        background-color: #d8d8d8;
+        justify-items: center;
+    }
+
+    .textPosts {
+        display: grid;
+        height: 100%;
+        width: 80%;
+        margin-top: 20px;
+        background-color: #d8d8d8;
+        align-content: start;
+        overflow: hidden;
+        border: none;
+        justify-items: center;
+    }
+
+    .post {
+        display: grid;
+        grid-template-rows: [row1-start] auto [row1-end row2-start] auto;
+        grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+        grid-template-areas: "message message" "name date";
+
+        width: 75%;
+        background-color: whitesmoke;
+        margin: 5px;
+        font-size: 15px;
+        height: auto;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 2px groove #0596c6;
+        outline: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .message {
+        display: grid;
+        grid-area: message;
+        justify-self: stretch;
+        align-self: stretch;
+        overflow: auto;
+        height: 100%;
+        width: 100%;
+        border-bottom: 2px groove #0596c6;
+    }
+
+    .message p {
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size: 18px;
+    }
+
+    .postedBy {
+        display: grid;
+        grid-area: name;
+        justify-self: stretch;
+    }
+
+    .postedBy p {
+        display: grid;
+        font-size: 14px;
+        color: black;
+        justify-self: center;
+    }
+
+    .datePosted {
+        display: grid;
+        grid-area: date;
+        border-left: 2px groove #0596c6;
+        justify-self: stretch;
+    }
+
+    .datePosted p {
+        display: grid;
+        font-size: 14px;
+        color: black;
+        justify-self: center;
+    }
+
+    .rightHeader {
+        grid-area: rightheader;
+        background-color: #d8d8d8;
+    }
+
+    .groupEvents {
+        display: grid;
+        grid-area: events;
+        background-color: #d8d8d8;
+    }
+}
+
+
+
+@media screen and (orientation: portrait) {
+    .feedGrid {
+        display: grid;
+        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 80% [col2-end col3-start] 1fr;
+        grid-template-rows: [row1-start] 25% [row2-end row2-start] 100%;
+        grid-template-areas: "leftspace inputArea rightspace"
+                             "leftspace wallposts rightspace";
+        justify-items: stretch;
+
+    }
+
+    .writePost {
+        display: grid;
+        grid-area: inputArea;
+        background-color: #d8d8d8;
+        justify-items: center;
+    }
+
+    .post-input {
+        width: 60%;
+        height: 70%;
+        margin-bottom: 15px;
+        margin-top: 20px;
+        background-color: whitesmoke;
+        resize: none;
+
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 2px groove #0596c6;
+        outline: none;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .post-button {
+        width: 20%;
+        height: 70%;
+    }
+
+    .wall {
+        display: grid;
+        grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
+        grid-area: wallposts;
+        background-color: #d8d8d8;
+        justify-items: center;
+    }
+
+    .textPosts {
+        display: grid;
+        height: 100%;
+        width: 80%;
+        margin-top: 20px;
+        background-color: #d8d8d8;
+        align-content: start;
+        overflow-y: hidden;
+        overflow-x: hidden;
+        border: none;
+        justify-items: center;
+    }
+
+    .post {
+        display: grid;
+        grid-template-rows: [row1-start] auto [row1-end row2-start] auto [row2-end];
+        grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+        grid-template-areas: "message message"
+                              "name date";
+
+        width: 75%;
+        background-color: whitesmoke;
+        margin: 5px;
+        font-size: 15px;
+        height: auto;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        border: 2px groove #0596c6;
+        outline: none;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+    }
+
+    .message {
+        display: grid;
+        grid-area: message;
+        justify-self: stretch;
+        align-self: stretch;
+        overflow: auto;
+        height: 100%;
+        border-bottom: 2px groove #0596c6;
+    }
+
+    .message p {
+        padding-left: 3px;
+        padding-right: 3px;
+        font-size: 16px;
+    }
+
+    .postedBy {
+        display: grid;
+        grid-area: name;
+        justify-self: stretch;
+    }
+
+    .postedBy p {
+        display: grid;
+        font-size: 12px;
+        color: black;
+        justify-self: center;
+    }
+
+    .datePosted {
+        display: grid;
+        grid-area: date;
+        border-left: 2px groove #0596c6;
+        justify-self: stretch;
+    }
+
+    .datePosted p {
+        display: grid;
+        font-size: 12px;
+        color: black;
+        justify-self: center;
+    }
+
+    .rightHeader {
+        display: none;
+        grid-area: rightheader;
+        background-color: #d8d8d8;
+    }
+
+    .groupEvents {
+        display: none;
+        grid-area: events;
+        background-color: #d8d8d8;
+    }
 }

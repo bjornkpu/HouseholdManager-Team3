@@ -86,4 +86,21 @@ public class Disbursement {
     public void setItems(ArrayList<Item> items) {
         this.items = items;
     }
+
+    /**Returns a copy, with the same participants and items arraylist reference
+     *
+     * @return
+     */
+    public Disbursement copy(){
+        Disbursement d = new Disbursement();
+        d.setId(this.id);
+        d.setDisbursement(this.disbursement);
+        d.setName(this.name);
+        d.setDate(this.date);
+        d.setAccepted(this.accepted);
+        d.setPayer(this.payer);
+        d.setParticipants(this.participants);
+        d.setItems(this.items);
+        return d;
+    }
 }
