@@ -39,9 +39,8 @@ public class Member extends User{
      */
     public final static int BANNED_STATUS = 4;
 
-
-
     public static final int BLOCKED_STATUS = 3;
+
     public Member() {}
 
     public Member(String email, String name, String phone, String password, String salt, double balance, int status) {

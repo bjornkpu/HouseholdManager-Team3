@@ -15,14 +15,21 @@ $(document).ready(function(){
 
     function loadLogin() {
         $('#myModal').modal('show');
-
     }
 
-   /**click on the logo on the loginpage to login
+   //click on the logo on the loginpage to login
     $('#logo').click(function () {
         $('#myModal').modal('show');
     });
-    */
+    //click on the logo on the loginpage to login
+    $('#logo2').click(function () {
+        $('#myModal').modal('show');
+    });
+    //click on the logo on the loginpage to login
+    $('#logo3').click(function () {
+        $('#myModal').modal('show');
+    });
+
 
     // Log in
     $("#loginButton").click(function() {
@@ -42,7 +49,7 @@ $(document).ready(function(){
                 complete: function (jqXHR, textStatus) {
                     switch (jqXHR.status) {
                         case 200:
-                            window.location.href = "GroupDashboard.html";
+                            window.location.href = "GroupDashboard.html#feed";
                             document.cookie ="userLoggedOn =" + email;
                             break;
                         case 401:
@@ -81,12 +88,17 @@ $(document).ready(function(){
         $("#loginContent").hide();
         $("#div_reg").show();
         $(".modal-footer").hide();
-    })
+        $("#myModalLabel2").show();
+        $("#myModalLabel").hide();
+    });
 
     $('#cancelBtn').click(function () {
         $("#div_reg").hide();
         $("#loginContent").show();
         $(".modal-footer").show();
+        $("#myModalLabel2").hide();
+        $("#myModalLabel").show();
+
     })
 
     $('#confirmReg').click(function click() {
@@ -124,6 +136,8 @@ $(document).ready(function(){
                             $("#div_reg").hide();
                             $("#loginContent").show();
                             $(".modal-footer").show();
+                            $("#myModalLabel2").hide();
+                            $("#myModalLabel").show();
                             $("#alertUserActive").fadeTo(4000, 500).slideUp(500, function () {
                                 $("#alertUserActive").slideUp(500);
                             });

@@ -1,11 +1,13 @@
 package services;
 
 import data.Disbursement;
+import data.Group;
+import data.Notification;
 import data.StatisticsHelp;
-import db.Db;
-import db.DisbursementDao;
-import db.StatisticsDao;
+import db.*;
 import util.Logger;
+import util.NotificationSender;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -20,6 +22,7 @@ import static javax.swing.JOptionPane.showMessageDialog;
 
 @Path("/groups/{groupId}/disbursement/")
 public class DisbursementService {
+    private NotificationSender notificationSender = new NotificationSender();
     private final Logger log = Logger.getLogger();
 
     @Context
@@ -45,7 +48,11 @@ public class DisbursementService {
         log.info(disbursement.getName()+" to be added.");
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
-            dDao.addDisbursement(disbursement,groupId);
+            if(dDao.addDisbursement(disbursement,groupId)){
+                GroupDao groupDao = new GroupDao(connection);
+                Group group = groupDao.getGroup(groupId);
+                notificationSender.distursementNotification(disbursement,group);
+            }
         } catch (SQLException e) {
             log.error("Failed to add disbursement", e);
             throw new ServerErrorException("Failed to add disbursement", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -58,7 +65,10 @@ public class DisbursementService {
         log.info(disbursement.getId()+" to be responded to by "+userEmail+"with int: "+response);
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
-            dDao.respondToDisbursement(disbursement,groupId,userEmail,response);
+            if(dDao.respondToDisbursement(disbursement,groupId,userEmail,response)){
+                UserDao userDao = new UserDao(connection);
+                notificationSender.distursementAcceptNotification(userDao.getUser(userEmail),disbursement);
+            }
         } catch (SQLException e) {
             log.error("Failed to get Statistics", e);
             throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);

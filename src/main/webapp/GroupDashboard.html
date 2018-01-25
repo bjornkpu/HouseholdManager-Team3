@@ -10,14 +10,27 @@
     <link rel="stylesheet" href="css/GroupDashboard.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    <title>Dashboard</title>
+
+    <!--favicon stuffs-->
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/manifest.json">
+    <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#ff9516">
+    <link rel="shortcut icon" href="/images/favicon.ico">
+    <meta name="msapplication-config" content="/images/browserconfig.xml">
+    <meta name="theme-color" content="#ff9516">
+
+
+    <title>HouseHold Manager</title>
 </head>
 <body>
 
 <!-- Top navbar-->
 <nav class="navbar navbar-light fixed-top">
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
-        <!-- Left items-->
+
+        <!-- Logo items (Left) -->
         <div class="navbar-nav flex-row">
             <div class="navbar-brand logo" href="#">
                 <img class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
@@ -28,7 +41,7 @@
         </div>
 
 
-        <!-- Middle items-->
+        <!-- Group items (Middle) -->
         <div class="navbar-nav d-flex flex-row">
             <div class="nav-item dropdown d-flex grouplink">
                 <a class="nav-link dropdown d-flex flex-row" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +53,20 @@
             </div>
         </div>
 
-        <!-- Right items -->
+        <!-- Notification items (Middle) -->
+        <div class="navbar-nav d-flex flex-row">
+            <div class="nav-item dropdown d-flex notification">
+                <a class="nav-link dropdown dropdown-toggle-hidden d-flex flex-row" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                     <div class="notifications d-flex flex-row">
+                        <i class="material-icons md-24 notificationIcon">notifications</i>
+                    </div>
+                </a>
+                <ul class="dropdown-menu scrollable-menu notificationDropdown" aria-labelledby="navbarDropdownMenuLink3" id="notificationdropdown">
+                </ul>
+            </div>
+        </div>
+
+        <!-- Profile items (Right) -->
         <div class="navbar-nav d-flex flex-row">
             <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="account d-flex flex-row">
@@ -120,6 +146,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="GroupDashboard.js"></script>
 <script src="Authentication.js"></script>
+<script src="Notification.js"></script>
 <script src="Statistics.js"></script>
 <script src="Receipts.js"></script>
 

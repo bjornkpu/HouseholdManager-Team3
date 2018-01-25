@@ -158,6 +158,8 @@ public class TaskService {
 	public Response deleteChore(@PathParam("choreId") int choreId) {
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
+			choreDao.setCompletedBy(choreId,null);
+			choreDao.assignChore(new User(null),choreId);
 			boolean s = choreDao.deleteChore(choreId);
 			log.info("Deleted task!");
 			if (s){

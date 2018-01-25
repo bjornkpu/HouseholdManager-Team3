@@ -5,11 +5,11 @@ $(document).ready(function(){
 
     //gets info of groups from server and renders the dropdown for them.
     getLoggedOnUser(setGroupDropdown);
+    listNotificationsForUserLoggedIn();
 
 
     //Changes active page when anchor changes
     $(window).on('hashchange', activePage);
-
 
     //Assigns logout to logout button
     $("#logout").click(function(){
@@ -21,7 +21,6 @@ $(document).ready(function(){
         createNewGroup();
         // window.location.reload();
     });
-
 });
 
 function checkCookie(id) {
@@ -58,4 +57,11 @@ function activePage(){
         sidebarDivs[i].className = 'leftsidebar-list-items';
     }
     element.className = 'leftsidebar-list-items activePage';
+}
+function notificationIcon(){
+    if($('#navbarDropdownMenuLink3').attr("aria-expanded") === "false"){
+        $('.notificationIcon').html('notifications_active');
+    }else {
+        $('.notificationIcon').html('notifications');
+    }
 }

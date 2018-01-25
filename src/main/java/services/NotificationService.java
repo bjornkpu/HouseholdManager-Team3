@@ -1,6 +1,7 @@
 package services;
-import data.Notification;
+import data.*;
 import db.Db;
+import db.GroupDao;
 import db.NotificationDao;
 import util.Logger;
 
@@ -58,7 +59,7 @@ public class NotificationService {
      * @param notificationId Id of the {@code Notification}.
      */
     @PUT
-    public void seenNotification( int notificationId) {
+    public void seenNotification(int notificationId) {
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
             notificationDao.seenNotification(notificationId);
@@ -66,4 +67,24 @@ public class NotificationService {
             throw new ServerErrorException("Failed to registrer seen notification", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
+    /**
+     * Updates all the {@code notifications} from a {@code user} to seen.
+     * @param userEmail Email of {@code user}.
+     * @return {@code HTTP} status of 200 if successful. If unsuccessful throws {@code HTTP} status 500.
+     */
+
+    @PUT
+    @Path("/seenAll")
+    public Response seenAllNotifications(@PathParam("userEmail") String userEmail){
+        try (Connection connection = Db.instance().getConnection()){
+            NotificationDao notificationDao = new NotificationDao(connection);
+            boolean ok = notificationDao.seenAllNotifications(userEmail);
+            return Response.status(200).entity(ok).build();
+        } catch (SQLException e){
+            throw new ServerErrorException("Failed to register seen notification", Response.Status.INTERNAL_SERVER_ERROR,e);
+        }
+    }
+
+
 }
