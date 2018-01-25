@@ -1,6 +1,7 @@
 package services;
-import data.Notification;
+import data.*;
 import db.Db;
+import db.GroupDao;
 import db.NotificationDao;
 import util.Logger;
 
@@ -66,4 +67,6 @@ public class NotificationService {
             throw new ServerErrorException("Failed to registrer seen notification", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
+
+
 }

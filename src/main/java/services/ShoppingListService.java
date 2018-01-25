@@ -9,6 +9,7 @@ import db.ItemDao;
 import db.ShoppingListDao;
 import db.UserDao;
 import util.Logger;
+import util.NotificationSender;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 @Path("/groups/{groupId}/shoppingLists/")
 public class ShoppingListService {
     private static final Logger log = Logger.getLogger();
+
+	private NotificationSender notificationSender = new NotificationSender();
 
 	public ShoppingListService() {
 	}
@@ -79,7 +82,9 @@ public class ShoppingListService {
     public void addShoppingList(ShoppingList shoppingList) {
         try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
-            shoppingListDao.addShoppingList(shoppingList);
+            if(shoppingListDao.addShoppingList(shoppingList)){
+            	notificationSender.newShoppingListNotification(shoppingList);
+			}
         } catch(SQLException e) {
             log.error("Failed to Add shopping list", e);
             throw new ServerErrorException("Failed to Add shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -132,6 +137,9 @@ public class ShoppingListService {
     public void deleteShoppingList(@PathParam("shoppingListId") int shoppingListId) {
         try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
+			Session session = (Session)request.getSession();
+			String email = session.getEmail();
+			notificationSender.closeShoppingListNotification(shoppingListDao.getShoppingList(shoppingListId,email));
             shoppingListDao.delShoppingList(shoppingListId);
             log.info("Deleted shopping list!");
         } catch(SQLException e) {
