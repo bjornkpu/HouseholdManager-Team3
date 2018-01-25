@@ -8,149 +8,42 @@
 </head>
 <body>
 
-<h1><span id="you_shoppinglists">Your shopping lists</span></h1>
-<br>
-<br>
-
-<div class="container">
-    <div class="row">
-<!--dropdown shoppinglist -->
-<div class="container" id="dropdownShoppinglist" style ="display:block;">
-    <div class="dropdown">
-        <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-            <span id="nameSpan">Shoppinglists</span>
-            <span class="caret"></span></button>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
-            <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>-->
-            <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >oppussing</a></li>-->
-            <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >party</a></li>-->
-        </ul>
-    </div>
-</div>
-    </div>
-</div>
-<!--end of dropdown shoppinglist -->
-<br>
-
-<!-- List of Disbursements-->
-<div class="container" id="listOfDisbursements" style="display:none;">
-    <div class = "row">
-        <h2>List of receipts</h2>
-    </div>
-    <div class="row">
-
-<table class="table table-hover" id="disbursementTable">
+<!--Menu shoppinglist-->
+<table class="center" id="menuShopinglist" style="display: block">
+    <tr>
+        <td><button class = "button" id="createDisbursementButton" > Create receipt</button></td>
+        <td> <button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
+        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of Shoppinglists</button></td>
+    </tr>
 </table>
-        <h2>Group balance</h2>
-        <table class="table table-hover" id="balanceTable">
-        </table>
+<!-- end of menu-->
 
-        <h2>Incoming Payment Requests</h2>
-        <table class="table table-hover" id="paymentRequests">
-        </table>
-        <div class="container" id="dropdownUsers" style ="display:block;">
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="menu2" data-toggle="dropdown">
-                    <span id="emailSpan">Emails</span>
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="usersdropdown">
-                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >PizzaTorsdag</a></li>-->
-                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >oppussing</a></li>-->
-                    <!--<li role="presentation"><a role="menuitem" tabindex="-1" href="#" >party</a></li>-->
-                </ul>
-            </div>
-            <button id="sendPaymentRequest">Make Dummy Request</button>
-        </div>
-        <button id="backToShoppinglist"> back</button>
-    </div>
-</div>
-    <!-- End of List of disbursements-->
-
-<!-- Shoppinglist-->
-<div class="container" id="shoppinglist" style="display:block;">
-    <div class = "row">
-        <h2 id="shoppinglistName"></h2>
-    </div>
-    <div class="row">
-
-        <table class="table table-hover", id="shoppingTable">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Item name</th>
-                <th>status</th>
-                <th></th>
-
-            </tr>
-            </thead>
-            <tbody id="tableShoppinglist">
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Buttons for shoppinglist-->
-    <div class="row">
-        <div class="col-sm">
-            <button class = "button" id="addItem"> Add item</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="toBeBought"> Mark as bought</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="unmarked"> Unmark</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="deleteItems"> Delete <items></items></button>
-        </div>
-    </div>
-    <div class="row">
-        <br>
-    </div>
-    <div class="row">
-        <div class="col-sm">
-            <button class = "button" id="createDisbursementButton" style="display: block;"> Create receipt</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="createShoppinglistButton" style="display: block;"> Create Shoppinglist</button>
-        </div>
-        <div class="col-sm">
-            <button class = "button" id="goToDisbursements"> Go to receipts</button>
-        </div>
-        <div class="col-sm">
-            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
-        </div>
-
-    </div>
-    <!--end of buttons for shoppinglist -->
-</div>
-<!-- End of shoppinglist-->
-
-<!-- div for creating a disbursement-->
+<!--Create receipt site -->
 <div id="creatingDisbursement" style="display: none;">
     <h1>Creating Disbursement</h1>
     <table>
-    <tr>
-        <td>Name of receipt</td>
-        <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
-    </tr>
-    <tr>
-        <td>Participants:</td>
-    </tr>
+        <tr>
+            <td>Name of receipt</td>
+            <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
+        </tr>
+        <tr>
+            <td>Participants:</td>
+        </tr>
         <tr id="shoppinglistMembers">
         </tr>
-    <tr>
-        <td>Total amount</td>
-        <td > <input id="totalAmount" type="text" name="totalAmount"></td>
-    </tr>
-    <tr>
-        <td>Confirm</td>
-        <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td><td > <button class="backToShoppinglist" id ="cancelDisbursement"> Cancel</button> </td>
-    </tr>
-</table>
+        <tr>
+            <td>Total amount</td>
+            <td > <input id="totalAmount" type="text" name="totalAmount"></td>
+        </tr>
+        <tr>
+            <td>Confirm</td>
+            <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td><td > <button class="backToShoppinglist" id ="cancelDisbursement"> Cancel</button> </td>
+        </tr>
+    </table>
 </div>
-<!-- end of creating a disbursement-->
+<!-- end of receipts-->
 
-<!-- div for creating a shoppinglist-->
+<!-- create shoppinglist site-->
 <div id="creatingShoppinglist" style="display: none;">
     <h1>New shoppinglist</h1>
     <table>
@@ -192,7 +85,79 @@
         </tr>
     </table>
 </div>
-<!-- end of creating a shoppinglist-->
+<!-- end of shoppinglist site-->
+
+<!--overview of shoppinglists -->
+<div id="overviewShoppinglist" style="display: none;">
+<div class="container">
+    <div class="row">
+        <!--dropdown shoppinglist -->
+        <div class="container" id="dropdownShoppinglist" style ="display:block;">
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                    <span id="nameSpan">Select a shoppinglists</span>
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--end of dropdown shoppinglist -->
+
+<br>
+<!-- Shoppinglist-->
+<div class="container" id="shoppinglist" style="display:block;">
+    <div class = "row">
+        <h2 id="shoppinglistName" class="center"></h2>
+    </div>
+    <div class="row">
+        <table class="table table-hover", id="shoppingTable">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Item name</th>
+                <th>status</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody id="tableShoppinglist">
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Buttons for shoppinglist-->
+    <div class="row">
+        <div class="col-sm">
+            <button class = "button" id="addItem"> Add item</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="toBeBought"> Mark as bought</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="unmarked"> Unmark</button>
+        </div>
+        <div class="col-sm">
+            <button class = "button" id="deleteItems"> Delete <items></items></button>
+        </div>
+    </div>
+    <div class="row">
+        <br>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+        </div>
+
+    </div>
+    <!--end of buttons for shoppinglist -->
+</div>
+<!-- End of shoppinglist-->
+</div>
+<!--overview of shoppinglists -->
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
