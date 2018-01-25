@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+//Redirect to dashboard if session is active.
     $.ajax({
         url: 'rest/session',
         type: 'GET',

@@ -45,44 +45,47 @@
                 <h4 class="modal-title center notOp" id="myModalLabel" >Login</h4>
             </div>
             <div class="modal-body">
-                <table class="center" id="loginContent">
-                    <!--Alert for wrong username or password -->
-                    <div class="alert alert-warning" id="alertWrongUsernameOrPassword" style="display: none;">
-                        <strong>Ops!</strong> Wrong username or password
-                    </div>
-                    <!--Alert, user active-->
-                    <div class="alert alert-success" id="alertUserActive" style="display: none;">
-                        <strong>Success!</strong> User now active
-                    </div>
-                    <!--Alert, user active-->
-                    <div class="alert alert-success" id="alertEmailSent" style="display: none;">
-                        New Password is now sent to your email
-                    </div>
-                    <tr>
-                        <td id="email" class="notOp">Email: </td>
-                        <td > <input id="emailField" type="text" name="emailField" class="notOp"></td>
-                    </tr>
-                    <tr>
-                        <td id="password" class="notOp">Password: </td>
-                        <td > <input id="passwordField" type="password" name="passwordField" class="notOp"></td>
-                    </tr>
-                    <tr>
-                        <td> New user? </td>
-                        <td>Register down below</td>
-                    </tr>
-                    <tr>
-                        <td> <input type="submit" class = "button" id = "loginButton" value="Login"></td>
-                        <td><Button class = "button" id = "registerButton">Register new user</Button></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td><button id="forgottenPassword">Forgotten your password?</button></td>
-                    </tr>
-                </table>
+                <form id="loginContent" action="javascript:myFunction(); return false;" method="post">
+                    <table class="center" id="loginTable">
+                        <!--Alert for wrong username or password -->
+                        <div class="alert alert-warning" id="alertWrongUsernameOrPassword" style="display: none;">
+                            <strong>Ops!</strong> Wrong username or password
+                        </div>
+                        <!--Alert, user active-->
+                        <div class="alert alert-success" id="alertUserActive" style="display: none;">
+                            <strong>Success!</strong> User now active
+                        </div>
+                        <!--Alert, user active-->
+                        <div class="alert alert-success" id="alertEmailSent" style="display: none;">
+                            New Password is now sent to your email
+                        </div>
+                        <tr>
+                            <td id="email" class="notOp">Email: </td>
+                            <td > <input id="emailField" type="text" name="emailField" class="notOp"></td>
+                        </tr>
+                        <tr>
+                            <td id="password" class="notOp">Password: </td>
+                            <td > <input id="passwordField" type="password" name="passwordField" class="notOp"></td>
+                        </tr>
+                        <tr>
+                            <td> New user? </td>
+                            <td>Register down below</td>
+                        </tr>
+                        <tr>
+                            <td> <input type="submit" class = "button" id = "loginButton" value="Login"></td>
+                            <td><Button class = "button" id = "registerButton">Register new user</Button></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><button id="forgottenPassword">Forgotten your password?</button></td>
+                        </tr>
+                    </table>
+                </form>
+
                 <!-- Table for register new users -->
-                <div id="div_reg" style="display: none;">
+                <form id="div_reg" style="display: none;" action="javascript:myFunction(); return false;" method="post">
                     <h1>Register new user</h1>
-                    <table id="table_reg">
+                    <table id="table_reg" class="center">
                         <!--Alert, not all fields are filled in -->
                         <div class="alert alert-warning" id="alertMissingInfo" style="display: none;">
                             <strong>Ops!</strong> Please fill out all fields
@@ -96,11 +99,11 @@
                             <strong>Ops!</strong> Invalid email or name(only letters in your name)
                         </div>
                         <tr id="name_of_user">
-                            <td>Name </td>
+                            <td>Name: </td>
                             <td > <input id="name_of_user_field" type="text" name="name_of_user_field"></td>
                         </tr>
                         <tr id="emailReg">
-                            <td>Email </td>
+                            <td>Email: </td>
                             <td > <input id="emailRegField" type="email" name="emailRegField"></td>
                         </tr>
                         <tr id="passwordReg">
@@ -112,13 +115,11 @@
                             <td > <input id="passwordConfirmField" type="password" name="passwordConfirmField"></td>
                         </tr>
                         <tr>
-                            <td id = "confirmReg"><button class = "button"> Confirm</button></td></td>
-                        </tr>
-                        <tr>
-                            <td id = "cancelBtn"><button class = "button"> Cancel</button></td></td>
+                            <td><input type="submit" id = "confirmReg" class = "button" value="Confirm" ></td>
+                            <td><button id = "cancelBtn" class = "button">Cancel</button></td>
                         </tr>
                     </table>
-                </div>
+                </form>
             </div>
         </div>
     </div>
