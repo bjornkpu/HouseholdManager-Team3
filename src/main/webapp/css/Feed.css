@@ -1,7 +1,7 @@
 .feedGrid{
     display: grid;
     grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
-    grid-template-rows: [row1-start] 150px [row2-end row2-start] 100%;
+    grid-template-rows: [row1-start] 180px [row2-end row2-start] 100vh [row2-end];
     grid-template-areas:
             "leftheader rightheader"
             "wallposts events";
