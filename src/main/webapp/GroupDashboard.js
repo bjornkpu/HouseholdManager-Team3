@@ -46,9 +46,13 @@ $(document).ready(function(){
     $("#loadTasks").click(function(){
         $("#page-content").load("Tasks.html");
     });
+
+    // DO NOT FUCKING USE. creates double load.
+    /*
     $("#loadSettings").click(function () {
         $("#page-content").load("GroupSetting.html");
     });
+    */
     $("#loadReceipts").click(function(){
         $("#page-content").load("Receipts.html");
     });
