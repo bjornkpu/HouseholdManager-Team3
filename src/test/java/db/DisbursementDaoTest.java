@@ -91,6 +91,12 @@ public class DisbursementDaoTest {
             ps.setString(2,"disbursementtestgroup");
             updatedrowcount+=ps.executeUpdate();
             Db.close(ps);
+            //Group2
+            ps = connection.prepareStatement("INSERT INTO party (id, name) VALUES (?,?);");
+            ps.setInt(1,id1+1);
+            ps.setString(2,"disbursementtestgroup2");
+            updatedrowcount+=ps.executeUpdate();
+            Db.close(ps);
 
             //User
             ps=connection.prepareStatement("INSERT INTO user (name, email, password, salt, phone) VALUES (?,?,?,?,?)");
@@ -149,7 +155,7 @@ public class DisbursementDaoTest {
             ps.setString(2,disbursement2.getName());
             ps.setTimestamp(3,disbursement2.getDate());
             ps.setString(4,disbursement2.getPayer().getEmail());
-            ps.setInt(5,1);
+            ps.setInt(5,id1+1);
             updatedrowcount+=ps.executeUpdate();
             Db.close(ps);
 
@@ -162,7 +168,6 @@ public class DisbursementDaoTest {
                     ps.addBatch();
                 }
             }
-//            System.out.println("\ndisbID: "+disbursement.getId());
             r=ps.executeBatch();
             for(int i: r){
                 updatedrowcount+=i;
@@ -189,11 +194,9 @@ public class DisbursementDaoTest {
                     ps.setNull(4, Types.INTEGER);
                 }if(i.getDisbursementId()>0){
                     int disbid=i.getDisbursementId();
-                    System.out.println("\n itemDisbID: "+disbid);
                     ps.setInt(5,disbid);
                 }else{
                     ps.setNull(5,Types.INTEGER);
-                    System.out.println("nulled");
                 }
                 ps.addBatch();
             }
@@ -203,7 +206,7 @@ public class DisbursementDaoTest {
             }
             Db.close(ps);
 
-            assertEquals(17,updatedrowcount);
+            assertEquals(18,updatedrowcount);
 
         }catch(MySQLIntegrityConstraintViolationException e){
             log.error("Primary key failure",e);

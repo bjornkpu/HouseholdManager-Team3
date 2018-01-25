@@ -25,16 +25,16 @@ public class NotificationDao {
     }
 
     /** gets a list of wallposts in a group
-     * @param user the id of the group you want to get all wallposts from
+     * @param userEmail the id of the group you want to get all wallposts from
      * @return an ArrayList of Notifications on the given group ID
      * @throws SQLException if the query fails
      */
 
-    public ArrayList<Notification> getNotificationss(User user) throws SQLException{
+    public ArrayList<Notification> getNotifications(String userEmail) throws SQLException{
 //        connection=Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT * FROM notification WHERE user_email=?");
-            ps.setString(1,user.getEmail());
+            ps.setString(1,userEmail);
             rs = ps.executeQuery();
             ArrayList<Notification> resultat = new ArrayList<>();
             while(rs.next()){
@@ -52,7 +52,7 @@ public class NotificationDao {
      * @return true if the wallpost is added successfully
      * @throws SQLException if the query fails
      */
-    public boolean sendNotification(Notification notification) throws SQLException{
+    public boolean addNotification(Notification notification) throws SQLException{
 //        connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("INSERT INTO notification(user_email, text) VALUES (?,?)");
