@@ -53,7 +53,8 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content ">
             <div class="modal-header">
-                <h4 class="modal-title center notOp" id="myModalLabel" >Login</h4>
+                <h4 class="modal-title center notOp" id="myModalLabel">Login</h4>
+                <h4 class="modal-title center notOp" id="myModalLabel2" style="display: none;">Register new user</h4>
             </div>
             <div class="modal-body">
                 <!--action return false stops page from reloading, method=post to not put data in url-->
@@ -80,10 +81,6 @@
                             <td > <input id="passwordField" type="password" name="passwordField" class="notOp"></td>
                         </tr>
                         <tr>
-                            <td> New user? </td>
-                            <td>Register down below</td>
-                        </tr>
-                        <tr>
                             <td> <input type="submit" class = "button" id = "loginButton" value="Login"></td>
                             <td><Button class = "button" id = "registerButton">Register new user</Button></td>
                         </tr>
@@ -96,8 +93,8 @@
 
                 <!-- Table for register new users -->
                 <!--action return false stops page from reloading, method=post to not put data in url-->
+
                 <form id="div_reg" style="display: none;" action="javascript:myFunction(); return false;" method="post">
-                    <h1>Register new user</h1>
                     <table id="table_reg" class="center">
                         <!--Alert, not all fields are filled in -->
                         <div class="alert alert-warning" id="alertMissingInfo" style="display: none;">
