@@ -1,5 +1,6 @@
+var currentGroup;
 $(document).ready(function() {
-    var currentGroup = getCookie("currentGroup");
+    currentGroup = getCookie("currentGroup");
 
     /*var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -21,41 +22,40 @@ $(document).ready(function() {
         }]
     });
     chart.render();*/
-    var choreList;
 
-    console.log("fert");
     getStatistics();
-    function getStatistics(){
-        var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/';
+});
 
-        $.get(url, function(data, status){
-            console.log("bertt");
-            if (status === "success") {
-                choreList = data;
-                console.log("Item content loaded successfully!");
-                setItemsInTable();
-            }
-            if(status === "error"){
-                console.log("Error in loading Item content");
-            }
-        });
-    }
-    function setItemsInTable(){
-        console.log("lager tab");
-        var maxValue=0;
-        for(var j=0;j<choreList.length;j++){
-            if(choreList[j].value>maxValue){
-                maxValue=choreList[j].value;
-            }
+function getStatistics(){
+    var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/';
+
+    $.get(url, function(data, status){
+        console.log("bertt");
+        if (status === "success") {
+            choreList = data;
+            console.log("Item content loaded successfully!");
+            setItemsInTable();
         }
-        for(var i=0; i<choreList.length;i++){
-           var count =  choreList[i].value;
-           var name = choreList[i].key;
-            var height = (count/maxValue)*100;
-            $(".bar-graph").append(
+        if(status === "error"){
+            console.log("Error in loading Item content");
+        }
+    });
+}
+function setItemsInTable(){
+    console.log("lager tab");
+    var maxValue=0;
+    for(var j=0;j<choreList.length;j++){
+        if(choreList[j].value>maxValue){
+            maxValue=choreList[j].value;
+        }
+    }
+    for(var i=0; i<choreList.length;i++){
+        var count =  choreList[i].value;
+        var name = choreList[i].key;
+        var height = (count/maxValue)*100;
+        $(".bar-graph").append(
             "<li class='bar primary' style='height: "+height+"%;' title='10'>"
             + "<div class='percent'>"+ count + "<span>chors</span></div>"
             +  "<div class='description'>" + name +"</div> </li>");
-        }
     }
-});
+}
