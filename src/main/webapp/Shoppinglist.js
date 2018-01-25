@@ -608,16 +608,6 @@ $(document).ready(function() {
             }
         }return checked;
     }
-
-    function getCheckedMembers() {
-        var members = [];
-        for (var i = 0; i < numberOfMembers; i++) {
-            if ($("#memberCheckbox" + i).is(':checked')) {
-                members.push({email: $("#memberCheckbox" + i)[0].value});
-            }
-        }
-        return members;
-};
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){
