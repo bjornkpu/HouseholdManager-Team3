@@ -2,10 +2,7 @@ package db;
 import data.*;
 import util.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 /**
  * -Description of the class-
@@ -21,6 +18,7 @@ public class ShoppingListDao {
     private Connection connection;
     private UserDao userDao;
     private ItemDao itemDao;
+    private GroupDao groupDao;
     private PreparedStatement ps;
     private ResultSet rs;
 
@@ -61,7 +59,7 @@ public class ShoppingListDao {
         } finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+            //Db.close(connection);
         }
     }
 
@@ -223,73 +221,56 @@ public class ShoppingListDao {
 	 * @param shoppingList The shopping list you are adding.
 	 * @throws SQLException when failing to add shopping list.
 	 */
-    public boolean addShoppingList(ShoppingList shoppingList) throws SQLException {
+    public int addShoppingList(ShoppingList shoppingList) throws SQLException {
 //        connection = Db.instance().getConnection();
         itemDao = new ItemDao(connection);
         userDao = new UserDao(connection);
+        groupDao = new GroupDao(connection);
+
+        int ret = -1;
         try {
 
-            if(!groupCheck(shoppingList.getGroupId())){ //checks if the party-object exists
+            if(groupDao.getGroup(shoppingList.getGroupId()) == null){ //checks if the party-object exists
                 log.info("Could not find party " + shoppingList.getGroupId());
-                return false;
+                return ret;
             }
 
 //          creates new shoppinglist object in shoppinglist table
             ps = connection.prepareStatement("INSERT INTO " +
-                    "shoppinglist(name, party_id) VALUES (?,?)");
+                    "shoppinglist(name, party_id) VALUES (?,?)", Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, shoppingList.getName());
             ps.setInt(2, shoppingList.getGroupId());
             int createShoppingListResult = ps.executeUpdate();
+            rs = ps.getGeneratedKeys();
+            if (rs.next()){
+                ret = rs.getInt(1);
+            }
             log.info("Create shoppinglist " + (createShoppingListResult == 1?"ok":"failed"));
 
 //          gets last inserted id in shoppinglist_table
-            ps = connection.prepareStatement("SELECT shoppinglist.id " +
-                    "FROM shoppinglist " +
-                    "ORDER BY shoppinglist.id  " +
-                    "DESC LIMIT 1");
-            rs = ps.executeQuery();
-            log.info("Found last id in shoppinglist!");
-
-            int id = 0;
-            if(rs.next()){
-                id = rs.getInt(1);
-            } else {
-                log.info("Nothing returned from prepared statement");
-                return false;
-            }
 
             ps = connection.prepareStatement("INSERT INTO `shoppinglist_user`(`shoppinglist_id`, `user_email`) " +
                     "VALUES (?, ?)");
 
-            for(int i = 0; i < shoppingList.getUserList().size(); i++){
-                if(shoppingList.getUserList().get(i).getEmail().equals("SKIP")) continue;
-                ps.setInt(1, id);
-                ps.setString(2, shoppingList.getUserList().get(i).getEmail());
-                ps.addBatch();
+            if (shoppingList.getUserList() != null){
+                for(int i = 0; i < shoppingList.getUserList().size(); i++){
+                    if(shoppingList.getUserList().get(i).getEmail().equals("SKIP")) continue;
+                    ps.setInt(1, ret);
+                    ps.setString(2, shoppingList.getUserList().get(i).getEmail());
+                    ps.addBatch();
+                }
+
+                if(createShoppingListResult == 1){
+                    ps.executeBatch();
+                }
             }
-
-            if(createShoppingListResult == 1){
-                ps.executeBatch();
-            }
-
-
             boolean insertShoppingList = true;
-
-
-            boolean addedUsers = true;
-//            for(int i = 0; i < batch.length; i++){
-//                if(batch[i] != 1){
-//                    addedUsers = false;
-//                    break;
-//                }
-//            }
-
-            insertShoppingList = ((createShoppingListResult==1) && addedUsers);
+            insertShoppingList = ((createShoppingListResult==1) && ret != -1);
 
             log.info("Added shoppinglist with users " + insertShoppingList);
 
 //          TODO clean up
-            return insertShoppingList;
+            return ret;
 
         } finally {
             Db.close(rs);
@@ -343,14 +324,16 @@ public class ShoppingListDao {
             log.info("Delete shoppinglist_user dependancy " + (deleteDependancyResult == 1 ? "ok":"failed"));
 
 //          deletes shopping list
+            /*
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
             log.info("Delete shoppinglist_ " + (deleteShoppingListResult == 1 ? "ok":"failed"));
+            */
 
 //            TODO clean up
-            log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
-            return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
+            log.info("Delete shoppinglist " + (deleteDependancyResult == 1?"ok":"failed"));
+            return deleteDependancyResult == 1;
 
         } finally {
 

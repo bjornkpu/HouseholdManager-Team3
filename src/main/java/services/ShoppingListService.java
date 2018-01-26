@@ -82,7 +82,7 @@ public class ShoppingListService {
     public void addShoppingList(ShoppingList shoppingList) {
         try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
-            if(shoppingListDao.addShoppingList(shoppingList)){
+            if(shoppingListDao.addShoppingList(shoppingList) >= 1){
             	notificationSender.newShoppingListNotification(shoppingList);
 			}
         } catch(SQLException e) {
@@ -117,7 +117,7 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}")
 	@Produces("application/json")
 	public ShoppingList getShoppingList(@PathParam("shoppingListId") int shoppingListId) {
-		Session session = (Session)request.getSession();
+		Session session = (Session) request.getSession().getAttribute("session");
 		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 			return shoppingListDao.getShoppingList(shoppingListId,session.getEmail());
@@ -135,13 +135,13 @@ public class ShoppingListService {
     @Path("/{shoppingListId}")
     @Consumes("application/json")
     public void deleteShoppingList(@PathParam("shoppingListId") int shoppingListId) {
-        try(Connection connection= Db.instance().getConnection()) {
+		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
-			Session session = (Session)request.getSession();
+			Session session = (Session) request.getSession().getAttribute("session");
 			String email = session.getEmail();
-			notificationSender.closeShoppingListNotification(shoppingListDao.getShoppingList(shoppingListId,email));
             shoppingListDao.delShoppingList(shoppingListId);
-            log.info("Deleted shopping list!");
+			notificationSender.closeShoppingListNotification(shoppingListDao.getShoppingList(shoppingListId,email));
+			log.info("Deleted shopping list!");
         } catch(SQLException e) {
             log.error("Failed to Delete shopping list", e);
             throw new ServerErrorException("Failed to Delete shopping list", Response.Status.INTERNAL_SERVER_ERROR, e);
@@ -213,13 +213,12 @@ public class ShoppingListService {
 	public void updateItems(@PathParam("status") int status, ArrayList<Item> items){
 		try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
-			if(status==2||status==1) {
+			if(status==2||status==1||status==0) {
 				for (Item item : items) {
 					item = itemDao.getItem(item.getId());
 					item.setStatus(status);
 					itemDao.updateItem(item);
 				}
-
 			}
 		} catch(SQLException e){
 			log.error("Failed to update item", e);

@@ -46,18 +46,17 @@ public class NotificationSender {
             throw new ServerErrorException("Failed to send notification", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
     }
-    /*
-    public boolean paymentNotification(Payment payment){
-        String text = user.getName()+disbursmentString+group.getName();
 
+    public boolean paymentNotification(Payment payment){
+        String text = "You have got a payment request from '"+payment.getPayerName()+"'. ";
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
-            Notification notification = new Notification(user.getEmail(),text);
+            Notification notification = new Notification(payment.getPayer(),text);
             return notificationDao.addNotification(notification);
         } catch (SQLException e) {
             throw new ServerErrorException("Failed to send notification", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
-    }*/
+    }
 
     public boolean newShoppingListNotification(ShoppingList shoppingList){
 
@@ -91,11 +90,11 @@ public class NotificationSender {
         }
     }
 
-    public boolean invitedUserNotification(User user, Group group){
+    public boolean invitedUserNotification(String email, Group group){
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
             String invitedUserString ="You have been invited to group; "+group.getName();
-            Notification notification = new Notification(user.getEmail(),invitedUserString);
+            Notification notification = new Notification(email,invitedUserString);
             return notificationDao.addNotification(notification);
         } catch (SQLException e) {
             throw new ServerErrorException("Failed to send notification", Response.Status.INTERNAL_SERVER_ERROR, e);
