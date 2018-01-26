@@ -57,6 +57,7 @@ $(document).ready(function() {
 
 
 
+
     function getUsers(){
         var users = [];
         var url='http://localhost:8080/scrum/rest/groups/'+currentGroup+'/members';
@@ -622,10 +623,10 @@ $(document).ready(function() {
         var id = this.id.split('w').pop();
         if(checkedItems[id] === "checked"){
             checkedItems[id] = "";
-            $('#shoppingTable #'+this.id).css('background', 'grey');
+            $('#shoppingTable #'+this.id).removeClass('selected');
         } else {
             checkedItems[id] = "checked";
-            $('#shoppingTable #'+this.id).css('background', 'red');
+            $('#shoppingTable #'+this.id).addClass('selected');
         }
     });
 

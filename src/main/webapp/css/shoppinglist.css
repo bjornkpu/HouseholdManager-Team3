@@ -11,24 +11,22 @@
 .listGrid {
     display: grid;
     grid-area: leftTop;
-    background-color: lightblue;
     justify-items: center;
 }
 
 .rightsideGrid {
     display: grid;
     grid-area: rightSideGrid;
-    background-color: lightcoral;
     justify-self: center;
     align-self: start;
     width: 100%;
+    padding-top: 4%;
     justify-items: center;
 }
 
 .leftBottom{
     display: grid;
     grid-area: leftBottom;
-    background-color: lightseagreen;
     justify-self: center;
     align-self: center;
     width: 100%;
@@ -44,7 +42,8 @@
 
 
 #dropdownShoppinglist{
-    padding-left: 500px;
+    padding-top: 3%;
+    padding-left: 45%;
 }
 .boughtMarked{
     background-color: lightgray;
@@ -56,9 +55,6 @@ input[type='checkbox'] {
     background:white;
     border-radius:5px;
     border:2px solid #555;
-}
-input[type='checkbox']:checked {
-    background: #dd0013;
 }
 .checkboxClass{
     -webkit-appearance:none;
@@ -125,9 +121,18 @@ input[type='checkbox']:checked {
 }
 
 #shoppingTable{
-    background-color: blue;
     min-width: 400px;
 }
 #shoppingTable td{
     min-width: 150px;
+}
+#shoppingTable tr.item:hover{
+    cursor: pointer;
+    background-color: lightgray;
+}
+.selected{
+    background-color: darkgray;
+}
+#shoppingTable tr.selected:hover{
+    background-color: darkgray;
 }
