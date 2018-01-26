@@ -2,15 +2,15 @@ var groupId;
 var sessionEmail;
 $(document).ready(function() {
     $('#editGroupName').click(function () {
-        var readOnlyField = document.getElementById('groupName');
-        var buttonEdit = document.getElementById('editGroupName');
+        $("#groupName").hide();
+        $("#editGroupName").hide();
+        $("#confirmNewName").show();
+        $("#newNameField").show();
+    });
 
-        var buttonConfirm = document.getElementById('confirmNewName');
-        var newNameField = document.getElementById('newNameField');
-        readOnlyField.style.display= "none";
-        buttonEdit.style.display="none";
-        buttonConfirm.style.display="block";
-        newNameField.style.display="block";
+    //TODO: fikse groupservice og dao slik at man kan update name
+    $('#confirmNewName').click(function () {
+        registerNewName();
     });
 
     groupId = getCookie("currentGroup");
@@ -32,10 +32,7 @@ $(document).ready(function() {
 
     getGroupName();
 
-    //TODO: fikse groupservice og dao slik at man kan update name
-    $('#confirmNewName').click(function () {
-        registerNewName();
-    });
+
 
 
     $("#invUserButton").click(function () {
@@ -76,6 +73,7 @@ function getGroupName() {
         dataType: 'json',
         success: function (data) {
             $('#groupName').attr('value', data.name);
+            $('#newNameField').val(data.name);
         }
     });
 }
@@ -104,40 +102,74 @@ function renderMembers(members) {
             statusText="Admin";
         }
 
-        var tableRowId = "removeButton"+i;
-        $('#memberListGroup').append("<tr id= '" + tableRowId + "'>" +
+        var tableRowId = "memberRow"+i;
+        $('#memberListGroup').append("<tr>" +
             "<td>" + members[i].name + "</td>" +
-            "<td>" + statusText + "</td></tr>");
-        var $removeButton = $("<td><button type='button center' class='button'>Remove</button></td>");
-        (function (i, userEmail) {
-            $removeButton.click(function () {
-                console.log("member#: "+i);
-                console.log("id: "+userEmail);
-                //var checked = getChecked();
-                if (members[i].status===2 && adminCounter ===1 ) {
-                    $("#alertRemoveFail2").fadeTo(10000, 500).slideUp(500, function () {
-                        $("#alertRemoveFail2").slideUp(500);
-                    });
-                }else {
-                    // AJAX Request
-                    $.ajax({
-                        url: 'rest/groups/' + groupId + '/members/' + userEmail + "/" + 3, //testemail
-                        type: 'PUT',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
+            "<td>" + statusText + "</td><td id= '" + tableRowId + "'></td></tr>");
 
-                        success: function () {
-                            $("#alertRemoveSuccess").fadeTo(4000, 500).slideUp(500, function () {
-                                $("#alertRemoveSuccess").slideUp(500);
-                            });
-                        },
-                    });
-                }
+        var $removeButton = $("<button id='"+tableRowId+"rmw' type='button center' class='button tablebutton btn'>Remove</button>");
+        var $promoteButton = $("<button id='"+tableRowId+"promo' type='button center' class='button tablebutton btn'>Promote</button>");
+
+        $('#' + tableRowId).append($removeButton);
+        $('#' + tableRowId).append($promoteButton);
+        (function (i, userEmail) {
+            $('#'+tableRowId+'rmw').click(function () {
+                removeUserFromGroup(members[i],adminCounter);
+            })
+            $('#'+tableRowId+'promo').click(function () {
+                promoteUser(members[i]);
             })
         }(i,userEmail));
-        $('#' + tableRowId).append($removeButton);
     }
 }
+function promoteUser(user) {
+    console.log("id: "+user.email);
+    //var checked = getChecked();
+    if (user.status===2) {
+        $("#alertPromoteFail").fadeTo(10000, 500).slideUp(500, function () {
+            $("#alertPromoteFail").slideUp(500);
+        });
+    }else {
+        // AJAX Request
+        $.ajax({
+            url: 'rest/groups/' + groupId + '/members/' + user.email + "/" + 2, //testemail
+            type: 'PUT',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function () {
+                $("#alertPromoteSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                    $("#alertPromoteSuccess").slideUp(500);
+                });
+            }
+        });
+    }
+}
+
+function removeUserFromGroup(user,adminCounter) {
+    console.log("id: "+user.email);
+    //var checked = getChecked();
+    if (user.status===2 && adminCounter ===1 ) {
+        $("#alertRemoveFail2").fadeTo(10000, 500).slideUp(500, function () {
+            $("#alertRemoveFail2").slideUp(500);
+        });
+    }else {
+        // AJAX Request
+        $.ajax({
+            url: 'rest/groups/' + groupId + '/members/' + user.email + "/" + 3, //testemail
+            type: 'PUT',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+
+            success: function () {
+                $("#alertRemoveSuccess").fadeTo(4000, 500).slideUp(500, function () {
+                    $("#alertRemoveSuccess").slideUp(500);
+                });
+            }
+        });
+    }
+}
+
 
 //Registers the new name
 function registerNewName(){
@@ -168,12 +200,12 @@ function registerNewName(){
 
 
             });
-        },
+        }
     });
-    readOnlyField.style.display= "block";
-    buttonEdit.style.display="block";
-    buttonConfirm.style.display="none";
-    newNameField.style.display="none";
+    readOnlyField.show();
+    buttonEdit.show();
+    buttonConfirm.hide();
+    newNameField.hide();
 }
 
 //Checks if user is admin and adds admin buttons

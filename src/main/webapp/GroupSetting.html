@@ -4,13 +4,26 @@
     <meta charset="UTF-8">
     <title>Settings</title>
     <link rel="stylesheet" href="css/GroupDashboard.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/GroupSettings.css">
 </head>
+
 <body>
 <!--Alert for successful invite -->
 <div class="alert alert-success" id="alertInvSuccess" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
     <strong>Success!</strong> User invited
+</div>
+
+<!--Alert for successful promote -->
+<div class="alert alert-success" id="alertPromoteSuccess" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> User promoted
+</div>
+
+<!--Alert for fail promote -->
+<div class="alert alert-danger" id="alertPromoteFail" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> User is already admin
 </div>
 
 <!--Alert for fail invite -->
@@ -44,42 +57,45 @@
 </div>
 
 <div class="center">
-<h2 class="center">Group settings</h2>
-
-
     <br>
-<table class="center">
-    <tr>
-        <td> <input id="groupName" readonly value=""></td>
-        <td><input type="text" id="newNameField" placeholder="Edit" style="display: none"></td>
-        <td> <button class="button" id="editGroupName">Edit </button></td>
-        <td> <button class="button" id="confirmNewName" style="display: none">Confirm</button></td>
-    </tr>
-</table>
-<br>
-<table class="center">
-    <tr>
-        <td><h5>Invite users to group</h5></td>
-    </tr>
-    <tr>
-        <td><input type="text" id="invUserField" placeholder="insert username"> </td>
-        <td> <button id="invUserButton" class="button">Invite</button></td>
-    </tr>
-    <table id="tabForUsersInGroup" class="center">
+    <table class="center">
+        <tr>
+            <td><h5>Change group name</h5></td>
+        </tr>
+        <tr>
+            <td> <input id="groupName" readonly value="" class="form-control" disabled="disabled">
+            <input type="text" id="newNameField" placeholder="Edit" class="form-control" style="display: none"></td>
+
+            <td> <button class="button btn" id="editGroupName">Edit </button>
+            <button class="button btn" id="confirmNewName" style="display: none">Confirm</button></td>
+        </tr>
+    </table>
+    <br>
+    <table class="center">
+        <tr>
+            <td><h5>Invite users to group</h5></td>
+        </tr>
+        <tr>
+            <td><input type="text" id="invUserField" class="form-control" placeholder="abc@email.com"> </td>
+            <td> <button id="invUserButton" class="button btn">Invite</button></td>
+        </tr>
+        <tr>
+            <!-- <td><button id="removeMember" class="button ">Remove member</button></td>-->
+        </tr>
+    </table>
+    <br>
+    <table id="tabForUsersInGroup" class="center table table-hover table-condensed">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Status</th>
+            <th class="center">Name</th>
+            <th class="center">Status</th>
+            <th></th>
         </tr>
         </thead>
         <tbody id="memberListGroup">
         </tbody>
 
     </table>
-    <tr>
-       <!-- <td><button id="removeMember" class="button ">Remove member</button></td>-->
-    </tr>
-</table>
     <br><br>
     <table id="adminButtons" class="center">
 
