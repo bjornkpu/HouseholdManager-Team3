@@ -30,7 +30,7 @@
 <br>
 
 
-<<nav class="navbar navbar-light fixed-top">
+<nav class="navbar navbar-light fixed-top">
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
 
         <!-- Logo items (Left) -->
@@ -160,39 +160,39 @@
 <div class="container">
     <div class="row">
         <div class="col" id="leftSide">
-            <table id="tableUserInfoReadOnly" style="display: block;">
+            <table class="center" id="tableUserInfoReadOnly" style="display: block;">
                 <tr><h3>Personal settings</h3></tr>
                 <tr>
                     <td id="nameProfile">Name: </td>
-                    <td > <input type="text" id="nameReadOnly" value="" readonly><br></td>
+                    <td ><input type="text" class="form-control" id="nameReadOnly" value="" disabled></td>
                 </tr>
                 <tr>
                     <td id="email">Email: </td>
-                    <td > <input type="text" id="emailReadOnly" value="" readonly><br></td>
+                    <td ><input type="text" class="form-control" id="emailReadOnly" value="" disabled></td>
                 </tr>
                 <tr>
                     <td id="phone">Phonenumber: </td>
-                    <td > <input type="text" id="phoneReadOnly" value="" readonly><br></td>
+                    <td ><input type="text" class="form-control" id="phoneReadOnly" value="" disabled></td>
                 </tr>
                 <tr>
-                    <td > <button class = "button button5" id = "editUser"> Edit information</button></td>
+                    <td ><button class = "button btn button5" id = "editUser"> Edit information</button></td>
                 </tr>
             </table>
             <table id="tableUserInfo" style="display: none;">
                 <tr>
                     <td id="nameProfile1">Name: </td>
-                    <td> <input id="nameProfileField1" type="text" name="nameProfileField"></td>
+                    <td> <input id="nameProfileField1" class="form-control" type="text" name="nameProfileField"></td>
                 </tr>
                 <tr>
                     <td id="email1">Email: </td>
-                    <td > <input id="emailField1" type="text" name="emailField" readonly placeholder="Can not change email"></td>
+                    <td > <input id="emailField1" type="text" class="form-control" name="emailField" disabled placeholder="Can not change email"></td>
                 </tr>
                 <tr>
                     <td id="phone1">Phonenumber: </td>
-                    <td > <input id="phoneField1" type="text" name="phoneField"></td>
+                    <td > <input id="phoneField1" type="text" class="form-control" name="phoneField"></td>
                 </tr>
                 <tr>
-                    <td> <button class = "button button5" id = "Confirm"> Confirm</button></td>
+                    <td> <button class = "button btn button5" id = "Confirm"> Confirm</button></td>
 
                 </tr>
             </table>
@@ -200,7 +200,7 @@
             <br><br>
             <h3>Group Settings </h3>
             <h5>Create a new Group</h5>
-            <button class="button button5" id="createGroup">Create group</button>
+            <button class="button btn button5" id="createGroup">Create group</button>
 
 
         </div>
@@ -209,25 +209,31 @@
                 <tr><h3>Password settings</h3></tr>
                 <tr>
                     <td id="currentPassword">Current password: </td>
-                    <td > <input id="passwordField" type="password" name="passwordField"></td>
+                    <td > <input id="passwordField" class="form-control" type="password" name="passwordField"></td>
                 </tr>
                 <tr>
                     <td id="newPassword">New password: </td>
-                    <td > <input id="newPasswordField" type="password" name="newPasswordField"></td>
+                    <td > <input id="newPasswordField" class="form-control" type="password" name="newPasswordField"></td>
                 </tr>
                 <tr>
                     <td id="confirmPassword">Confirm password: </td>
-                    <td > <input id="confirmPasswordField" type="password" name="confirmPasswordField"></td>
+                    <td > <input id="confirmPasswordField" class="form-control" type="password" name="confirmPasswordField"></td>
                 </tr>
                 <tr>
-                    <td> <button class = "button button5" id = "changePassword"> Change Password</button></td>
+                    <td> <button class = "button btn button5" id = "changePassword"> Change Password</button></td>
                 </tr>
             </table>
 
             <br><br>
             <h3>Group Settings </h3>
-            <h5>My invitations</h5>
-            <table id="profileInvites">
+            <table>
+                <thead>
+                <th><h5>My invitations</h5></th>
+                <th></th>
+                </thead>
+                <tbody  id="profileInvites">
+
+                </tbody>
 
             </table>
         </div>
@@ -241,11 +247,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="GroupDashboard.js"></script>
-<script src="Authentication.js"></script>
-<script src="Statistics.js"></script>
+<script src="common.js"></script>
 <script src="Profile.js"></script>
-<script src="GroupSetting.js"></script>
 
 
 </body>

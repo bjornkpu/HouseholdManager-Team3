@@ -1,3 +1,21 @@
+$(document).ready(function () {
+    //gets info of groups from server and renders the dropdown for them.
+    if(window.location.pathname!=="/scrum/Login.html"){
+        getLoggedOnUser(setGroupDropdown);
+    }
+    // listNotificationsForUserLoggedIn();
+
+    // Ugly hack for the group dropdown caret
+    $(document).on('click', function(){
+        groupDropdownArrow();
+    });
+
+    //Assigns logout to logout button
+    $("#logout").click(function(){
+        logOut();
+    });
+});
+
 //Removes XSS
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')};
@@ -167,6 +185,19 @@ function groupsContainsCurrentgroup(groups, groupid) {
         }
     }
     return s;
-
+}
+function groupDropdownArrow(){
+    if($('#navbarDropdownMenuLink1').attr('aria-expanded') === "true"){
+        $('.groupArrow').html("arrow_drop_up");
+    }else{
+        $('.groupArrow').html("arrow_drop_down");
+    }
+}
+function notificationIcon(){
+    if($('#navbarDropdownMenuLink3').attr("aria-expanded") === "false"){
+        $('.notificationIcon').html('notifications_active');
+    }else {
+        $('.notificationIcon').html('notifications');
+    }
 }
 

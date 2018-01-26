@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS shoppinglist;
 DROP TABLE IF EXISTS user_party;
 DROP TABLE IF EXISTS disbursement;
 DROP TABLE IF EXISTS party;
+DROP TABLE IF EXISTS notification;
 DROP TABLE IF EXISTS user;
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -211,11 +212,11 @@ INSERT INTO party(id,name) VALUES (3,'BKs Hi');
 
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',1,100,2);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('en@h.no',2,100,1);
-INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-2000.1,0);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('to@h.no',1,-20.1,0);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',1,0,0);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('tre@h.no',2,0,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fire@h.no',2,0.2,2);
-INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fem@h.no',2,-2000.1,1);
+INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('fem@h.no',2,-20.1,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('seks@h.no',2,0,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('sju@h.no',2,0,1);
 INSERT INTO user_party(user_email,party_id,balance,status) VALUES ('bk@p.no',3,0,1);
