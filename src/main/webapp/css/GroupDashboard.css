@@ -3,6 +3,13 @@
 /*
  * Top navbar general
  */
+body{
+    min-height: 100%;
+    background-color: #d8d8d8;
+}
+.page-content{
+    color: #d8d8d8
+}
 
     .navbar-light{
         background-color: #040e1c;
@@ -36,7 +43,6 @@
         transform: translate(-35%, 5%);
     }
 
-
     .groupicon{
         color: #0596c6;
     }
@@ -53,8 +59,8 @@
     .notificationIcon {
         color: #0596c6;
     }
-    .notificationIcon .newNotification{
-        color: red;
+    .notificationIcon.newNotification{
+        color: #efa30b;
     }
 
     .notificationDropdown{

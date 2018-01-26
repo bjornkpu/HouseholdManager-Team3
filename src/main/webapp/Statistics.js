@@ -1,8 +1,8 @@
 var currentGroup;
-$(document).ready(function() {
-    currentGroup = getCookie("currentGroup");
+/*
+window.onload= function() {
 
-    /*var chart = new CanvasJS.Chart("chartContainer", {
+    var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
             text: "Desktop Search Engine Market Share - 2016"
@@ -21,10 +21,17 @@ $(document).ready(function() {
             ]
         }]
     });
-    chart.render();*/
+    chart.render();
+    console.log("rendered");
+};*/
+$(document).ready(function() {
+    currentGroup = getCookie("currentGroup");
 
-    getStatistics();
+    $("#choreStat").click(function () {
+        getStatistics();
+    });
 });
+
 
 function getStatistics(){
     var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/';
@@ -41,21 +48,26 @@ function getStatistics(){
         }
     });
 }
-function setItemsInTable(){
+function setItemsInTable() {
     console.log("lager tab");
-    var maxValue=0;
-    for(var j=0;j<choreList.length;j++){
-        if(choreList[j].value>maxValue){
-            maxValue=choreList[j].value;
+    var textBox = document.getElementById("description");
+    textBox.innerHTML="Number of chores completed by each member in current group";
+    var textTitle = document.getElementById("title");
+    textTitle.innerHTML="Description:";
+    var maxValue = 0;
+    for (var j = 0; j < choreList.length; j++) {
+        if (choreList[j].value > maxValue) {
+            maxValue = choreList[j].value;
         }
     }
-    for(var i=0; i<choreList.length;i++){
-        var count =  choreList[i].value;
+    $(".bar-graph").empty();
+    for (var i = 0; i < choreList.length; i++) {
+        var count = choreList[i].value;
         var name = choreList[i].key;
-        var height = (count/maxValue)*100;
+        var height = (count / maxValue) * 100;
         $(".bar-graph").append(
-            "<li class='bar primary' style='height: "+height+"%;' title='10'>"
-            + "<div class='percent'>"+ count + "<span>chors</span></div>"
-            +  "<div class='description'>" + name +"</div> </li>");
+            "<li class='bar primary' style='height: " + height + "%;' title='10'>"
+            + "<div class='percent'>" + count + "<span></span></div>"
+            + "<div class='description'>" + name + "</div> </li>");
     }
-}
+};
