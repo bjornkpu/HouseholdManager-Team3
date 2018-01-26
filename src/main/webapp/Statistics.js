@@ -28,19 +28,45 @@ $(document).ready(function() {
     currentGroup = getCookie("currentGroup");
 
     $("#choreStat").click(function () {
-        getStatistics();
+        getChoreStatistics();
+    });
+
+    $("#receiptStat").click(function () {
+        getDisbursementStatistics();
     });
 });
 
 
-function getStatistics(){
+function getChoreStatistics(){
     var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/';
 
     $.get(url, function(data, status){
-        console.log("bertt");
         if (status === "success") {
             choreList = data;
             console.log("Item content loaded successfully!");
+            var textBox = document.getElementById("description");
+            textBox.innerHTML="Number of chores completed by each member in current group";
+            var textTitle = document.getElementById("title");
+            textTitle.innerHTML="Description:";
+            setItemsInTable();
+        }
+        if(status === "error"){
+            console.log("Error in loading Item content");
+        }
+    });
+}
+
+function getDisbursementStatistics(){
+    var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/statistics/costs';
+
+    $.get(url, function(data, status){
+        if (status === "success") {
+            choreList = data;
+            console.log("Item content loaded successfully!");
+            var textBox = document.getElementById("description");
+            textBox.innerHTML="Total costs of receits paid for by each member in current group";
+            var textTitle = document.getElementById("title");
+            textTitle.innerHTML="Description:";
             setItemsInTable();
         }
         if(status === "error"){
@@ -50,10 +76,6 @@ function getStatistics(){
 }
 function setItemsInTable() {
     console.log("lager tab");
-    var textBox = document.getElementById("description");
-    textBox.innerHTML="Number of chores completed by each member in current group";
-    var textTitle = document.getElementById("title");
-    textTitle.innerHTML="Description:";
     var maxValue = 0;
     for (var j = 0; j < choreList.length; j++) {
         if (choreList[j].value > maxValue) {
