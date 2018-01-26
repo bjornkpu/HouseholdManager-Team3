@@ -5,10 +5,10 @@
  */
 body{
     min-height: 100%;
-    background-color: #d8d8d8;
+    background-color: #ffffff;
 }
 .page-content{
-    color: #d8d8d8
+    color: #ffffff
 }
 
     .navbar-light{
@@ -40,7 +40,7 @@ body{
         background-color: white;
         left: 50%;
         right: 50%;
-        transform: translate(-35%, 5%);
+        transform: translate(-35%, 13%);
     }
 
     .groupicon{
@@ -67,15 +67,12 @@ body{
         transform: translate(-35%, 5%);
     }
 
-
-
     #forgottenPassword{
         font-size: small;
         background:none;
         border:none;
         color: #0596c6;
     }
-
 
     .center{
     margin: auto;
@@ -120,7 +117,7 @@ buttons
 .button {
     border: cadetblue;
     color: white;
-    padding: 8px 12px;
+    padding: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -140,6 +137,9 @@ buttons
 .button:hover {
     background-color: #565f60;
     color: white;
+}
+.post-button{
+    padding: 0px;
 }
 
     /*
@@ -285,7 +285,10 @@ buttons
         font-size: 0px;
         padding-right: 3px;
         color: #0596c6;
-
+    }
+    .notificationDropdown{
+        transform: translate(-70%, 5%);
+        width: 100vw;
     }
 
     /*
@@ -324,11 +327,13 @@ buttons
     }
 
 
+
+
     /*
      * PAGE CONTENT STYLING PORTRAIT
      */
     #page-content {
-        background-color: lightgrey;
+        background-color: #ffffff;
         margin-top: 60px;
         margin-bottom: 65px;
         padding-top: 3px;

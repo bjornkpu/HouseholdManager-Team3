@@ -239,7 +239,11 @@ INSERT INTO shoppinglist(name, party_id) VALUES ('Taco', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('Kino', 1);
 INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 1);
 
-INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
+INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '18-01-18');
+INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (300,'Liste1', 'to@h.no', 1, '18-01-08');
+INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (45,'Kvitto', 'tre@h.no', 1, '18-01-20');
+INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (20,'Såpeting', 'en@h.no', 1, '18-01-01');
+INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Kino', 'en@h.no', 1, '18-01-05');
 
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 0, 1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Tacokrydder', 0,1,1);

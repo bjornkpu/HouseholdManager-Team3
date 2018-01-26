@@ -3,8 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <title>About Page</title>
-</head>
-<body>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/GroupDashboard.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/AboutPage.css">
+</head>
+
+<body>
+<nav class="navbar navbar-light fixed-top">
+    <div class="navbarbarcontainer d-flex flex-row justify-content-between">
+    <!-- Logo items (Left) -->
+        <div class="navbar-nav flex-row">
+            <div class="navbar-brand logo" href="#">
+                <img class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
+            </div>
+            <div class="navbar-brand text">
+                <strong>Household Manager</strong>
+            </div>
+        </div>
+
+
+        <!-- Group items (Middle) -->
+        <div class="navbar-nav d-flex flex-row">
+            <div class="nav-item dropdown d-flex grouplink">
+                <a class="nav-link dropdown d-flex flex-row" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <strong class="navGroupName">Groups </strong>
+                    <i class="material-icons md-24 groupicon">people</i>
+                    <i class="material-icons md-24 groupicon groupArrow">arrow_drop_down</i>
+                </a>
+                <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
+                </ul>
+            </div>
+        </div>
+
+        <!-- Notification items (Middle) -->
+        <div class="navbar-nav d-flex flex-row">
+            <div class="nav-item dropdown d-flex notification">
+                <a class="nav-link dropdown dropdown-toggle-hidden d-flex flex-row" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="notifications d-flex flex-row">
+                        <i class="material-icons md-24 notificationIcon">notifications</i>
+                    </div>
+                </a>
+                <ul class="dropdown-menu scrollable-menu notificationDropdown" aria-labelledby="navbarDropdownMenuLink3" id="notificationdropdown">
+                </ul>
+            </div>
+        </div>
+
+        <!-- Profile items (Right) -->
+        <div class="navbar-nav d-flex flex-row">
+            <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="account d-flex flex-row">
+                    <div class="username">
+                        <strong id="navUsername"></strong>
+                    </div>
+                    <i class="username material-icons md-24">account_circle</i>
+                </div>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink2">
+                <a class="dropdown-item" href="Profile.html">Profile</a>
+                <a class="dropdown-item" href="#About.html">About HHM</a>
+                <div class="dropdown-divider"></div>
+                <a id="logout" class="dropdown-item" href="#">Log out</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="page">
+    <div class="headerSlide">
+        <img class="headerLogo" src="images/hhm_logo_transparent_icon.png">
+        <p class="headerBrand">HOUSEHOLD MANAGER</p>
+        <div class="brandSloganDivider"></div>
+        <p class="headerSlogan">EVERYDAY SIMPLICITY</p>
+    </div>
+
+    <div class="aboutSlide">
+
+    </div>
+
+    <div class="creditSlide">
+        <div class="creditCard">
+
+        </div>
+        <div class="creditCard">
+
+        </div>
+        <div class="creditCard">
+
+        </div>
+        <div class="creditCard">
+
+        </div>
+        <div class="creditCard">
+
+        </div>
+    </div>
+
+    <div class="documentationSlide">
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+<!-- Bootstrap Js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="GroupDashboard.js"></script>
+<script src="Authentication.js"></script>
+<script src="Statistics.js"></script>
+<script src="Profile.js"></script>
+<script src="GroupSetting.js"></script>
 </body>
 </html>

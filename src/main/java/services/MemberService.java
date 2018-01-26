@@ -1,11 +1,14 @@
 package services;
 
+import data.Group;
 import data.Member;
+import data.User;
 import db.Db;
 import db.GroupDao;
 import db.MemberDao;
 import util.EmailSender;
 import util.Logger;
+import util.NotificationSender;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -27,6 +30,7 @@ import java.util.ArrayList;
 @Path("/groups/{groupId}/members")
 public class MemberService {
     private static final Logger log = Logger.getLogger();
+    private NotificationSender notificationSender = new NotificationSender();
 
     public MemberService() {
     }
@@ -73,7 +77,9 @@ public class MemberService {
             GroupDao groupDao = new GroupDao(connection);
             boolean ok = memberDao.inviteUser(email, groupId);
             if (ok){
-                EmailSender.sendInvitationMail(email,groupDao.getGroup(groupId));
+                Group group = groupDao.getGroup(groupId);
+                notificationSender.invitedUserNotification(email, group);
+                EmailSender.sendInvitationMail(email,group);
                 return Response.status(200).entity(ok).build();
             }
             return Response.status(404).entity(ok).build();

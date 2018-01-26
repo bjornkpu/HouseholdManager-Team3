@@ -324,14 +324,16 @@ public class ShoppingListDao {
             log.info("Delete shoppinglist_user dependancy " + (deleteDependancyResult == 1 ? "ok":"failed"));
 
 //          deletes shopping list
+            /*
             ps = connection.prepareStatement("DELETE FROM shoppinglist where id=?");
             ps.setInt(1,id);
             int deleteShoppingListResult = ps.executeUpdate();
             log.info("Delete shoppinglist_ " + (deleteShoppingListResult == 1 ? "ok":"failed"));
+            */
 
 //            TODO clean up
-            log.info("Delete shoppinglist " + (deleteShoppingListResult == 1 && deleteDependancyResult == 1?"ok":"failed"));
-            return deleteShoppingListResult == 1 && deleteDependancyResult == 1;
+            log.info("Delete shoppinglist " + (deleteDependancyResult == 1?"ok":"failed"));
+            return deleteDependancyResult == 1;
 
         } finally {
 

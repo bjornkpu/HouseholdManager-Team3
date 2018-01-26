@@ -9,6 +9,11 @@
     position: center;
 }
 
+/*mobile fix*/
+/*.info{*/
+    /*display: none;*/
+/*}*/
+
 
 
 @media screen and (orientation:portrait) {
@@ -37,6 +42,7 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        background-color: darkgray;
     }
 
     .truncateTableCell {
@@ -45,5 +51,41 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+        /*background-color: yellow;*/
+    }
+    .info{
+        background-color: whitesmoke;
+        display: none;
+    }
+    .info tr{
+        /*border: 1px solid black;*/
+    }
+    .info td{
+        /*border: 1px solid black;*/
+    }
+
+    /*accept/decline buttons*/
+    .info td.accept{
+        /*text-align: center;*/
+        font-weight: bold;
+        background-color: #bbbbbb;
+        border-top: 1px solid #3d3b3b;
+        border-right: 1px solid #3d3b3b;
+        border-bottom: 1px solid #3d3b3b;
+    }
+    .info td.decline{
+        /*text-align: center;*/
+        font-weight: bold;
+        background-color: #bbbbbb;
+        border-top: 1px solid #3d3b3b;
+        border-bottom: 1px solid #3d3b3b;
+    }
+
+    /*accept/decline buttons*/
+    .info td.accept:active{
+        background-color:green;
+    }
+    .info td.decline:active{
+        background-color:red;
     }
 }

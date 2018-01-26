@@ -1,9 +1,10 @@
 var currentGroup;
 var currentGroupName;
-var paymentRequests=[];
+// var paymentRequests=[];
 var currentUser;
-var disbursementList=[];
-var balanceList=0;
+// var disbursementList=[];
+// var balanceList=0;
+var checkedItems = [];
 $(document).ready(function() {
 
     var lists;
@@ -136,16 +137,13 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(response){
-                var table_length = $('#shoppingTable tr').length;
-                for (var i =0; i<table_length;i++){
-                    if($("#checkbox"+i).is(':checked')){
-                        $("#checkbox"+i).closest('tr').remove();
-                    }
-                }
-                alert("Items deleted from shoppinglist");
+                // alert("Items deleted from shoppinglist");
+                setItemStatus(-1, checked);
+                setItemsInTable();
+                checkedItems.length = 0;
             },
             error: function(){
-                console.log(item.value);
+                console.log("Couldnt delete item");
             }
         });
     });
@@ -154,27 +152,26 @@ $(document).ready(function() {
 
     $('#assignItem').click(function() {
         var checked=getCheckedItems();
-
         console.log("alle som er marked: ");
-        console.log(checked);
         // AJAX Request
         $.ajax({
             type: "Put",
-            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+1+'/',
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/1/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-
             success: function(){
-
-                var table_length = $('#shoppingTable tr').length;
-                for (var i =0; i<table_length;i++){
-                    if($("#checkbox"+i).is(':checked')){
-
-                        $("#checkbox"+i).closest('tr').addClass('boughtMarked');
-                    }
-                }
-                alert("item marked as assigned");
+                // var table_length = $('#shoppingTable tr').length;
+                // for (var i =0; i<table_length;i++){
+                //     if($("#checkbox"+i).is(':checked')){
+                //
+                //         $("#checkbox"+i).closest('tr').addClass('boughtMarked');
+                //     }
+                // }
+                setItemStatus(1, checked);
+                setItemsInTable();
+                checkedItems.length = 0;
+                console.log(checkedItems);
 
             },
             error: function(){
@@ -183,31 +180,34 @@ $(document).ready(function() {
         });
     });
 
-
 //TODO denne fungerer ikke
     $('#unmarked').click(function(){
         var checked=getCheckedItems();
+
+        console.log(checked);
+
         // AJAX Request
         $.ajax({
             type: "Put",
-            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+0+'/',
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/0/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-
-            success: function(response){
-                var table_length = $('#shoppingTable tr').length;
-                for (var i =0; i<table_length;i++){
-                    if($("#checkbox"+i).is(':checked')){
-                        $("#checkbox"+i).closest('tr').removeClass("boughtMarked");
-                    }
-                }
-
+            success: function(){
+                // var table_length = $('#shoppingTable tr').length;
+                // for (var i =0; i<table_length;i++){
+                //     if($("#checkbox"+i).is(':checked')){
+                //         $("#checkbox"+i).closest('tr').removeClass("boughtMarked");
+                //     }
+                // }
+                console.log("Success");
+                setItemStatus(0, checked);
                 setItemsInTable();
-                alert("Items deleted from shoppinglist");
+                checkedItems.length = 0;
+                console.log(checkedItems);
             },
-            error: function(){
-                console.log(item.value);
+            error: function(response){
+                console.log("Error");
             }
         });
     });
@@ -345,8 +345,9 @@ $(document).ready(function() {
         });
     }
 
+
     $("#delete_shoppinglist").click(function(){
-        if(items.length !== 0){
+        if(!itemStatusCheck()){
             alert("Shoppinglist must be empty before deleting");
         } else {
             var toBeDeleted = lists[currentShoppingList].id;
@@ -368,6 +369,18 @@ $(document).ready(function() {
             });
         }
     });
+
+    function itemStatusCheck(){
+        var notBought = true;
+        for(var i = 0; i < items.length; i++){
+            console.log("i: " + i + ", " + items[i].status);
+            if(items[i].status === 0 || items[i].status === 1) {
+                notBought = false;
+                break;
+            }
+        }
+        return notBought;
+    }
 
 /**
     $('#createDisbursementButton').click(function () {
@@ -478,26 +491,7 @@ $(document).ready(function() {
             if(status === "error"){
                 console.log("Error in loading ShoppingList content");
             }
-            // if(status === undefined){
-            //     console.log("Hva faen");
-            // }
         });
-    }
-
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
     }
 
     //When clicking
@@ -539,52 +533,81 @@ $(document).ready(function() {
         //
         //status 1: x skal kjøpe
         //status 2: x har kjøpt
+        var skip = 0;
 
         for(var i = 0; i < len; i++){
-            var id = items[i].id;
             var statusName;
 
             if (items[i].status === 0){
-                statusName ="Not assigned";
+                statusName ="-";
+                $("#row"+i).removeClass('boughtMarked');
             }
             else if (items[i].status === 1){
-                statusName ="Assigned";
+                statusName ="To be bought";
+                $("#row"+i).addClass('boughtMarked');
             }
-            else if (items[i].status === 2){
+            else if (items[i].status === 2 || items[i] == "DELETE"){
                 //er status 3 er allerede varen betalt og satt på en kvittering
+                skip++;
                 continue;
             }
 
             $("#tableShoppinglist").append(
-                "<tr id='row"+i+"'>" +
-                "<th scope=\"row\">"+(i+1)+"</th>" +
+                "<tr class='item' id='row"+i+"'>" +
+                "<th scope=\"row\">"+(i+1-skip)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + statusName + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
-            if(items[i].status===1){
-                $("#row"+i).addClass('boughtMarked');
-
-            }
-            if(items[i].status===0){
-                $("#row"+i).removeClass('boughtMarked');
-            }
         }
-        console.log("shoppinglist rendered");
     }
 
     function getCheckedItems(){
         var table_length = $('#shoppingTable tr').length;
+        // for (var i =0; i<table_length;i++){
+        //     console.log("I: " + i);
+        //     if($("#checkbox"+i).is(':checked')){
+        //         var item = {id: $("#checkbox"+i)[0].value};
+        //         checked.push(item);
+        //     }
+        // }return checked;
         var checked = [];
-        for (var i =0; i<table_length;i++){
-            console.log("I: " + i);
-            if($("#checkbox"+i).is(':checked')){
-                var item = {id: $("#checkbox"+i)[0].value};
-                checked.push(item);
+        var skip = 0;
+        for(var i = 0; i < checkedItems.length; i++){
+            if(checkedItems[i] === "checked"){
+                checked[i-skip] = items[i];
+            } else {
+                skip++;
             }
-        }return checked;
+        }
+        return checked;
     }
+
+    function setItemStatus(status, checked){
+        var index = 0;
+        if(status === -1){
+            for(var i = 0; i < items.length; i++){
+                if(index >= checked.length){
+                    break;
+                }
+                if(items[i].id === checked[index].id) {
+                    items[i] = "DELETE";
+                    index++;
+                }
+            }
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                if (index >= checked.length) {
+                    break;
+                }
+                if (items[i].id === checked[index].id) {
+                    items[i].status = status;
+                    index++;
+                }
+            }
+        }
+    }
+
     function getCheckedMembers() {
         var members = [];
         for(var i = 0;i<numberOfMembers; i++){
@@ -595,16 +618,43 @@ $(document).ready(function() {
         return members;
     }
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('#shoppingTable').on('click', 'tr.item', function(){
+        var id = this.id.split('w').pop();
+        if(checkedItems[id] === "checked"){
+            checkedItems[id] = "";
+            $('#shoppingTable #'+this.id).css('background', 'grey');
+        } else {
+            checkedItems[id] = "checked";
+            $('#shoppingTable #'+this.id).css('background', 'red');
+        }
+    });
 
+    // $('[data-toggle="tooltip"]').tooltip();
 
 });
+
 function compare(a,b) {
     if (a.name.toLowerCase() < b.name.toLowerCase())
         return -1;
     if (a.name.toLowerCase() > b.name.toLowerCase())
         return 1;
     return 0;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
 
 

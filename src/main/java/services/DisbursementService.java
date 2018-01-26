@@ -63,9 +63,12 @@ public class DisbursementService {
     public void disbursementResponse(@PathParam("userEmail") String userEmail, @PathParam("response") int response,
                                      @PathParam("groupId") int groupId, Disbursement disbursement){
         log.info(disbursement.getId()+" to be responded to by "+userEmail+"with int: "+response);
+
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
             if(dDao.respondToDisbursement(disbursement,groupId,userEmail,response)){
+                disbursement = dDao.getDisbursementDetails(disbursement.getId(),userEmail);
+                disbursement.setAccepted(response);
                 UserDao userDao = new UserDao(connection);
                 notificationSender.distursementAcceptNotification(userDao.getUser(userEmail),disbursement);
             }

@@ -111,6 +111,7 @@ function renderGroupDropdown(groups) {
             window.location.href="Profile.html";
         }
     } else {
+        $('#groupdropdown').empty();
         if (getCookie(curGroup) < len || !groupsContainsCurrentgroup(groups, getCookie(curGroup))) {
             document.cookie = curGroup + "=" + groups[0].id;
             document.cookie = "groupName=" + groups[0].name;
@@ -121,7 +122,7 @@ function renderGroupDropdown(groups) {
             var id = '';
             id += i;
             id += 'group';
-            var $x = $('<li><a class="dropdown-item" href="#" id="' + id + '">' +
+            var $x = $('<li><a class="dropdown-item" href="GroupDashboard.html#feed" id="' + id + '">' +
                 groupname + '</a></li>'
             );
             (function (i) {

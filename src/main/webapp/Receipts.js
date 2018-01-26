@@ -14,7 +14,6 @@ $(document).ready(function () {
     currentUser = getCookie("userLoggedOn");
     var newPaymentUser = 0;
 
-
     //functions to call on page load
     renderUserListDropdownMenu(getUsers());
     var usersInGroup = getUsers();
@@ -50,23 +49,7 @@ $(document).ready(function () {
     });
 
 
-    function respondToDisbursement(data,response) {
-        // AJAX Request
-        console.log(data.value+"  "+response);
-        console.log("knut");
-        $.ajax({
-            type: "PUT",
-            url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
-            data: JSON.stringify(
-                {id: data.value}),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
 
-            success: function () {
-                getDisbursementList();
-            }
-        });
-    }
     $('#sendPaymentRequest').click(function () {
         if(newPaymentUser===0){
             alert("Must select user from dropdown");
@@ -116,15 +99,19 @@ $(document).ready(function () {
 
     function renderUserListDropdownMenu(data) {
         var len = data.length;
+        $("#usersdropdown").empty();
+
         if(len === 0){
             $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation" style="text-align: center">' +
                 'Empty</li>');
             return;
         }
         for (var i = 0; i < len;i++ ) {
-            $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+data[i].email+'" href="#">' +
-                data[i].name + '</aclass></li>'
-            );
+            if(data[i].email !== currentUser){
+                $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+data[i].email+'" href="#">' +
+                    data[i].name + '</aclass></li>'
+                );
+            }
         }
     }
 
@@ -138,25 +125,25 @@ $(document).ready(function () {
 });
 ///end of docu ready
 
-function fixDisbursementTable(){
-    var acceptedString;
-    var len = disbursementList.length;
-    var table = document.getElementById("disbursementTable");
-    console.log("found table");
-    while(table.rows.length > 0) {
-        table.deleteRow(0);
-    }
-    $("#disbursementTable").append(
-        "<tr class='truncateTableHeader'>"+
-        "<th class='removePortrait'>#</th>"+
-        "<th>Reciet</th>"+
-        "<th class='removePortrait'>Participants</th>"+
-        "<th>Cost</th>"+
-        "<th>Date</th>"+
-        "<th>Buyer</th>"+
-        "<th class='removePortrait'>Status</th>" +
-        "</tr>"
-    );
+    function fixDisbursementTable(){
+        var acceptedString;
+        var len = disbursementList.length;
+        var table = document.getElementById("disbursementTable");
+        console.log("found table");
+        while(table.rows.length > 0) {
+            table.deleteRow(0);
+        }
+        $("#disbursementTable").append(
+            "<tr class='truncateTableHeader'>"+
+            "<th class='removePortrait'>#</th>"+
+            "<th>Receipt</th>"+
+            "<th class='removePortrait'>Participants</th>"+
+            "<th>Cost</th>"+
+            "<th class='removePortrait'>Date</th>"+
+            "<th class='removePortrait'>Buyer</th>"+
+            "<th class='removePortrait'>Status</th>"+
+            "</tr>"
+        );
 
     for(var i = 0; i < len; i++){
         if(disbursementList[i].accepted === 0){
@@ -173,18 +160,53 @@ function fixDisbursementTable(){
         var year = dispDate.getUTCFullYear();
         var d = day + "/" + month + "/" + year;
 
-        $("#disbursementTable").append(
-            "<tr class='truncateTableHeader'>"+
-            "<td scope=\"row\" class='removePortrait truncateTableCell'>"+(i+1)+"</td>"+
-            "<td class='truncateTableCell'>"+disbursementList[i].name+"</td>"+
-            "<td class='removePortrait truncateTableCell'>"+participantsString+"</td>"+
-            "<td class='truncateTableCell'>"+disbursementList[i].disbursement+"</td>"+
-            "<td class='truncateTableCell'>"+d+"</td>"+
-            "<td class='truncateTableCell'>"+disbursementList[i].payer.name+"</td>"+
-            "<td class='removePortrait truncateTableCell'>"+acceptedString+"</td>"+
-            "</tr>");
+            $("#disbursementTable").append(
+                "<tr id='"+i+"' class='truncateRow'>"+
+                    "<td scope=\"row\" class='truncateTableCell removePortrait'>"+(i+1)+"</td>"+
+                    "<td class='truncateTableCell'>"+disbursementList[i].name+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+participantsString+"</td>"+
+                    "<td class='truncateTableCell'>"+disbursementList[i].disbursement+",-</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+d+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+disbursementList[i].payer.name+"</td>"+
+                    "<td class='truncateTableCell removePortrait'>"+acceptedString+"</td>"+
+                "</tr>"
+            );
+
+            //only for mobile
+            if(isMobile()){
+                $("#disbursementTable").append(
+                    "<tr class='info info_" + i +"' style='width:100%'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Receipt:</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].name+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Participants</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+participantsString+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Cost</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].disbursement+",-</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Date</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+d+"</td>" +
+                    "</tr>" +
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell'>Payer</td>" +
+                        "<td scope=\"row\" class='truncateTableCell'>"+disbursementList[i].payer.name+"</td>" +
+                    "</tr>"+
+                    "<tr class='info info_" + i +"'>" +
+                        "<td scope=\"row\" class='truncateTableCell accept'>ACCEPT</td>" +
+                        "<td scope=\"row\" class='truncateTableCell decline'>DECLINE</td>" +
+                    "</tr>"
+                );
+            }
+            /*if(items[i].status===2){
+                $("#row"+i).addClass('boughtMarked');
+            }*/
+        }
+        console.log("Added Items");
     }
-}
 
 function getDisbursementList(){
     var url='http://localhost:8080/scrum/rest/groups/' + currentGroup + '/disbursement/'+ currentUser + '/user';
@@ -337,4 +359,53 @@ function acceptPaymentsClick(data){
 };
 
 
+var selected = -1;
+//mobile site view
+$("#disbursementTable").on('click', 'tr.truncateRow', function(){
+    if(isMobile()) {
+        $(".info").css("display", "none");
+        if(this.id !== selected){
+            $(".info_"+this.id).css("display", "table-header-group");
+            selected = this.id;
+        } else {
+            selected = -1;
+        }
+    }
+});
+$("#disbursementTable").on('click', 'td.accept', function(){
+    if(isMobile()) {
+        console.log("accept");
+        $(".info").css("display", "none");
+        selected = -1;
+    }
+});
+$("#disbursementTable").on('click', 'td.decline', function(){
+    if(isMobile()) {
+        console.log("decline");
+        $(".info").css("display", "none");
+        selected = -1;
+    }
+});
 
+//checks if mobile or laptop
+function isMobile(){
+    return ($(window).width() < 550);
+}
+
+function respondToDisbursement(data,response) {
+    // AJAX Request
+    console.log(data.value+"  "+response);
+    console.log("knut");
+    $.ajax({
+        type: "PUT",
+        url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
+        data: JSON.stringify(
+            {id: data.value}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function () {
+            getDisbursementList();
+        }
+    });
+}
