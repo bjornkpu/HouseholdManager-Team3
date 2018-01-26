@@ -66,6 +66,7 @@ public class DisbursementService {
         try (Connection connection = Db.instance().getConnection()){
             DisbursementDao dDao = new DisbursementDao(connection);
             if(dDao.respondToDisbursement(disbursement,groupId,userEmail,response)){
+                disbursement = dDao.getDisbursementDetails(disbursement.getId(),userEmail);
                 UserDao userDao = new UserDao(connection);
                 notificationSender.distursementAcceptNotification(userDao.getUser(userEmail),disbursement);
             }
