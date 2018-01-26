@@ -35,7 +35,7 @@ public class ChoreDao {
     public ArrayList<String> getCompletedBy(int choreID) throws SQLException{
 //        connection = Db.instance().getConnection();
         try{
-            ps= connection.prepareStatement("SELECT user_email FROM chore_log WHERE chore_id=?");
+            ps= connection.prepareStatement("SELECT user_email FROM chore_log WHERE chore_id=? ORDER BY done DESC");
             ps.setInt(1,choreID);
             res = ps.executeQuery();
             ArrayList<String> result = new ArrayList<>();

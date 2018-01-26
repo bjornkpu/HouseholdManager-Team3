@@ -4,9 +4,11 @@ import data.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import util.Logger;
 import util.LoginCheck;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -32,8 +34,21 @@ public class ItemDaoTest {
     private static String userId;
     private static int groupId;
 
+
+
+    private static final Logger log = Logger.getLogger();
+    private static PreparedStatement ps;
+
+    private static String name1 = "Vennegjengen";
+    private static String email1 = "en@test1.no";
+    private static String email2 = "to@test1.no";
+    private static String email3 = "tre@test1.no";
+    private static String email4 = "fire@test1.no";
+    private static int groupId1 = 1001;
+    private static int groupId2 = 1002;
+
     @BeforeClass
-    public static void setUp() throws SQLException{
+    public static void setUp() throws SQLException {
         connection = Db.instance().getConnection();
         itemDao = new ItemDao(connection);
         userDao = new UserDao(connection);
@@ -41,9 +56,9 @@ public class ItemDaoTest {
         shoppingListDao = new ShoppingListDao(connection);
         memberDao = new MemberDao(connection);
 
-        itemId = 67;
-        shoppingListId = 67;
-        userId = "itemTestUser5@test.no";
+        itemId = 66;
+        shoppingListId = 68;
+        userId = "itemTestUser8@test.no";
         itemTest = new Item();
         itemTest.setId(itemId);
         itemTest.setName("TestItem");
@@ -60,14 +75,26 @@ public class ItemDaoTest {
         disbursement.setName("name");
         disbursement.setDisbursement(0);
         disbursement.setPayer(u);
-        shoppingListTest = new ShoppingList(shoppingListId, "ItemTest",groupId, null, userList);
-        try{
+        try {
             userDao.addUser(u);
             groupId = groupDao.addGroup(g);
 //            disbursementDao.addDisbursement(disbursement,groupId);
-            shoppingListDao.addShoppingList(shoppingListTest);
             itemDao.addItem(itemTest);
-        }catch(SQLException e){
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        connection = Db.instance().getConnection();
+        memberDao = new MemberDao(connection);
+
+        Group group1 = new Group();
+        group1.setId(groupId1);
+        group1.setName(name1);
+
+        try {
+            ps = connection.prepareStatement("INSERT INTO shoppinglist(id,name,party_id) VALUES(68,'testlist',1);");
+            int result = ps.executeUpdate();
+            log.info("Added group " + (result == 1 ? "ok" : "failed"));
+        }catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -156,7 +183,7 @@ public class ItemDaoTest {
     public static void tearDown() throws SQLException{
        try{
            itemDao.delItem(itemTest.getId());
-           shoppingListDao.delShoppingList(shoppingListTest.getId());
+           shoppingListDao.delShoppingList(shoppingListId);
            memberDao.deleteMember(userId,groupId);
            groupDao.deleteGroup(groupDao.getGroupByName("testgroup").get(0).getId());
            userDao.delUser(userId);

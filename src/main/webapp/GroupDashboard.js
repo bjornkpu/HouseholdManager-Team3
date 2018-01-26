@@ -3,22 +3,8 @@ var curGroup = "currentGroup";
 $(window).on('load', activePage);
 $(document).ready(function(){
 
-    //gets info of groups from server and renders the dropdown for them.
-    getLoggedOnUser(setGroupDropdown);
-    listNotificationsForUserLoggedIn();
-
     //Changes active page when anchor changes
     $(window).on('hashchange', activePage);
-
-    // Ugly hack for the group dropdown caret
-    $(document).on('click', function(){
-        groupDropdownArrow();
-    });
-
-    //Assigns logout to logout button
-    $("#logout").click(function(){
-        logOut();
-    });
 
 
     $("#newGroup1").click(function () {
@@ -61,19 +47,4 @@ function activePage(){
         sidebarDivs[i].className = 'leftsidebar-list-items';
     }
     element.className = 'leftsidebar-list-items activePage';
-}
-function notificationIcon(){
-    if($('#navbarDropdownMenuLink3').attr("aria-expanded") === "false"){
-        $('.notificationIcon').html('notifications_active');
-    }else {
-        $('.notificationIcon').html('notifications');
-    }
-}
-
-function groupDropdownArrow(){
-    if($('#navbarDropdownMenuLink1').attr('aria-expanded') === "true"){
-        $('.groupArrow').html("arrow_drop_up");
-    }else{
-        $('.groupArrow').html("arrow_drop_down");
-    }
 }

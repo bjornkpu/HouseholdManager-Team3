@@ -27,7 +27,9 @@ $(document).ready(function() {
         passwordIsCorrect().then(function () {
             changePassword();
         }).catch(function (){
-            alert("Wrong pw");
+            $("#alertPasswordFail").fadeTo(2000, 500).slideUp(500, function () {
+                $("#alertPasswordFail").slideUp(500);
+            });
         });
     });
 });
@@ -39,38 +41,43 @@ $(document).ready(function() {
 function renderInvites(data,user) {
     var len = data.length;
     console.log(user.email + " render invites.");
+    // build html
+    var html="";
     for (var i = 0; i < len;i++ ) {
-        var s = "inviteGroupButton"+i;
-        $('#profileInvites').append('<tr id=\"" + s + "\"> <td>' + data[i].name + "  " + ' </td>');
-        var $li = $("<td><button type=\"button\"  class=\"joinGroup\" title=\"joinGroup\">Join</button></td>");
-        var $fjern = $("<td><button type=\"button\" class=\"joinGroup\" title=\"joinGroup\">Remove</button></td>");
+        var s = "inviteGroupButton" + i;
+        html += ('<tr id=\"" + s + "\"> <td><strong>' + data[i].name + "  " + ' </strong></td>');
+        html += ("<td><button id='" + s + "join' type=\"button\"  class=\"button btn joinGroup\" title=\"joinGroup\">Join</button>");
+        html += ("<button id='" + s + "rmw' type=\"button\" class=\"button btn joinGroup\" title=\"Remove Invite\">Remove</button></td></tr>");
+    }
+    //Applyhtml
+    $('#profileInvites').html(html);
+    //Assign clicks
+    for (i = 0; i < len;i++ ) {
+        s="inviteGroupButton" + i;
         (function (i) {
-            $li.click(function() {
+            $("#" + s + "join").click(function () {
                 $.ajax({
-                    type:"PUT",
-                    url:"rest/groups/" + data[i].id + "/members/" + user.email+"/"+1,
+                    type: "PUT",
+                    url: "rest/groups/" + data[i].id + "/members/" + user.email + "/" + 1,
                     contentType: "application/json",
-                    dataType:"json",
-                    success: function (jqXHR,textStatus) {
+                    dataType: "json",
+                    success: function (jqXHR, textStatus) {
                         window.location.href = "Profile.html";
                     }
                 })
             });
-            $fjern.click(function () {
+            $("#" + s + "rmw").click(function () {
                 $.ajax({
-                    type:"DELETE",
-                    url:"rest/groups/" + data[i].id + "/members/" + user.email,
+                    type: "DELETE",
+                    url: "rest/groups/" + data[i].id + "/members/" + user.email,
                     contentType: "application/json",
-                    dataType:"json",
-                    success: function (jqXHR,textStatus) {
+                    dataType: "json",
+                    success: function (jqXHR, textStatus) {
                         window.location.href = "Profile.html";
                     }
                 })
             });
         }(i));
-        $("#profileInvites").append($li);
-        $("#profileInvites").append($fjern);
-        $("#profileInvites").append("</tr>");
     }
 }
 
@@ -110,9 +117,12 @@ function passwordIsCorrect(){
         var passPromise = sha256($("#passwordField").val());
         passPromise.then(function(pass){
             sha256(pass + loggedOnUser.salt).then(function (saltedHashed) {
-                console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
-                    pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
-                if(saltedHashed===(loggedOnUser.password)){
+                // console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
+                //     pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
+                if(saltedHashed===(loggedOnUser.password)
+                    && $("#newPasswordField").val()===$("#confirmPasswordField").val()
+                    && $("#confirmPasswordField").val()!=""){
+
                     console.log("Old password is correct");
                     resolve();
                 }else{
@@ -150,7 +160,9 @@ function changePassword(){
 
             },
             error: function () {
-                alert("Password did not update")
+                $("#alertPasswordFail").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#alertPasswordFail").slideUp(500);
+                });
             }
         });
     });
