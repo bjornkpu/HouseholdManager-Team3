@@ -17,6 +17,7 @@ $(document).ready(function() {
     renderUserListDropdownMenu(getUsers());
 
 
+
     loadShoppingListsFromGroup(currentGroup);
 
     $('#createDisbursementButton').click(function () {
@@ -28,6 +29,7 @@ $(document).ready(function() {
        creatingShoppinglist.style.display="none";
        menuShoppinglist.style.display="none";
        createReceipts.style.display="block";
+        renderCreateDisbursement();
     });
 
     $('#createShoppinglistButton').click(function () {
@@ -101,11 +103,11 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "rest/groups/1/shoppingLists/"+lists[currentShoppingList].id+"/items",
+            url: "rest/groups/"+ currentGroup+"/shoppingLists/"+lists[currentShoppingList].id+"/items",
             data: JSON.stringify(
                 {
                     name: htmlEntities(name),
-                    status: 1,
+                    status: 0,
                     shoppingListId: lists[currentShoppingList].id,
                     id: 0,
                     disbursementId: -1
@@ -127,7 +129,7 @@ $(document).ready(function() {
         var checked=getCheckedItems();
         // AJAX Request
         $.ajax({
-            url: '/scrum/rest/groups/' +1 + '/shoppingLists/items/',
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/',
             type: 'DELETE',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
@@ -148,24 +150,32 @@ $(document).ready(function() {
         });
     });
 
-    $('#toBeBought').click(function() {
+    //TODO om man adder nye items kan disse ikke bli assigned
+
+    $('#assignItem').click(function() {
         var checked=getCheckedItems();
+
+        console.log("alle som er marked: ");
+        console.log(checked);
         // AJAX Request
         $.ajax({
             type: "Put",
-            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+2+'/',
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+1+'/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
 
             success: function(){
+
                 var table_length = $('#shoppingTable tr').length;
                 for (var i =0; i<table_length;i++){
                     if($("#checkbox"+i).is(':checked')){
+
                         $("#checkbox"+i).closest('tr').addClass('boughtMarked');
                     }
                 }
-                alert("Items marked");
+                alert("item marked as assigned");
+
             },
             error: function(){
                 console.log(items.valueOf());
@@ -173,12 +183,14 @@ $(document).ready(function() {
         });
     });
 
+
+//TODO denne fungerer ikke
     $('#unmarked').click(function(){
         var checked=getCheckedItems();
         // AJAX Request
         $.ajax({
             type: "Put",
-            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+1+'/',
+            url: '/scrum/rest/groups/' +currentGroup + '/shoppingLists/items/'+0+'/',
             data: JSON.stringify(checked),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
@@ -190,6 +202,8 @@ $(document).ready(function() {
                         $("#checkbox"+i).closest('tr').removeClass("boughtMarked");
                     }
                 }
+
+                setItemsInTable();
                 alert("Items deleted from shoppinglist");
             },
             error: function(){
@@ -197,22 +211,6 @@ $(document).ready(function() {
             }
         });
     });
-
-
-    // $('.backToShoppinglist').click(function () {
-    //     var listOfDisbursements = document.getElementById('listOfDisbursements');
-    //     var shoppinglist = document.getElementById('shoppinglist');
-    //     var creatingShoppinglist =document.getElementById('creatingShoppinglist');
-    //     var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-    //     var creatingDisbursement =document.getElementById('creatingDisbursement');
-    //
-    //     listOfDisbursements.style.display ="none";
-    //     shoppinglist.style.display="block";
-    //     creatingShoppinglist.style.display="none";
-    //     dropdownShoppinglist.style.display="block";
-    //     creatingDisbursement.style.display="none";
-    //
-    // });
 
     $('#createShoppinglistButton').click(function () {
         var creatingShoppinglist = document.getElementById('creatingShoppinglist');
@@ -303,9 +301,8 @@ $(document).ready(function() {
 
                 // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
 
-                $("#addedUsers").append("<li>" + user.name + "" +
-                    "<button class='b' id='" + index + "'>Delete!</button></li>");
-
+                $("#addedUsers").append("<table><tr><td>" + user.name + "</td>" +
+                    "<td><button class='b button' id='" + index + "'>remove</td></tr></button></table>");
                 index++;
             });
         }
@@ -321,7 +318,7 @@ $(document).ready(function() {
             for(var i = 0; i < selectedUsers.length; i++){
                 if(selectedUsers[i] === "empty") continue;
                 $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
-                    "<button class='b' id='" + i + "'>Remove</button></li>");
+                    "<button class='b button' id='" + i + "'>Remove</button></li>");
             }
         }
     });
@@ -372,7 +369,7 @@ $(document).ready(function() {
         }
     });
 
-
+/**
     $('#createDisbursementButton').click(function () {
         renderCreateDisbursement();
         var creatingDisbursement =document.getElementById('creatingDisbursement');
@@ -383,51 +380,7 @@ $(document).ready(function() {
         shoppinglist.style.display="none";
         dropdownShoppinglist.style.display="none";
     });
-
-    //finds all disbursements
-    /*
-    function findAllDisbursements() {
-        console.log('findDisbursements');
-        $.ajax({
-            type: 'GET',
-            url: '/scrum/Disbursement',
-            dataType: "json",
-            success: renderDisbursementsList(),
-
-        });
-    }*/
-
-    //function which lists out the different disbursements
-    /*
-    function renderDisbursementsList(data) {
-        var list = data == null ? [] : (data instanceof Array ? data : [data]);
-        disbursementList = [];
-        $.each(list, function(index, Shoppinglist) {
-            disbursementList.push({
-                //SHOPPINGLIST ER BARE ET EKS, SKAL BYTTES MED DEN JAVAKLASSEN FOR DISBURSEMENT
-                "description": Shoppinglist.description,
-                "participants": Shoppinglist.users,
-                "cost": Shoppinglist.price,
-                "added": Shoppinglist.date,
-            });
-        });
-
-
-        // console.log(bordliste);
-        var scopeNr = 1; //disbursementNr
-        $.each(disbursementList, function (index, Shoppinglist) {
-            $('#tableDisbursements').append('<tr>' +
-                '<th scope="row">' + scopeNr + ' </th>' +
-                '<td>' + Shoppinglist.description + '</td>' +
-                '<td >' + Shoppinglist.users + '</td>' +
-                '<td >' + Shoppinglist.price  + '</td>' +
-                '<td >' + Shoppinglist.date + '</td>' +
-                '</tr>');
-
-            console.log("koden kom til bunnen av renderDisbursements");
-            scopeNr ++; //disbursementNr increment on each new list
-        });
-    }*/
+*/
 
 
     //function to set memberlist for createDisbursement
@@ -435,7 +388,7 @@ $(document).ready(function() {
         console.log("Rendering Create Disbursement ShoppingListId: "+lists[currentShoppingList].id);
         $.ajax({
             type: "GET",
-            url: "rest/groups/1/shoppingLists/" + lists[currentShoppingList].id + "/users/",
+            url: "rest/groups/"+ currentGroup+"/shoppingLists/" + lists[currentShoppingList].id + "/users/",
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
@@ -583,13 +536,14 @@ $(document).ready(function() {
         while(table.rows.length > 0) {
             table.deleteRow(0);
         }
-        //status 0: ingen kjøpt enda
+        //
         //status 1: x skal kjøpe
         //status 2: x har kjøpt
 
         for(var i = 0; i < len; i++){
             var id = items[i].id;
             var statusName;
+
             if (items[i].status === 0){
                 statusName ="Not assigned";
             }
@@ -597,8 +551,10 @@ $(document).ready(function() {
                 statusName ="Assigned";
             }
             else if (items[i].status === 2){
-                statusName ="Bought";
+                //er status 3 er allerede varen betalt og satt på en kvittering
+                continue;
             }
+
             $("#tableShoppinglist").append(
                 "<tr id='row"+i+"'>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
@@ -607,17 +563,22 @@ $(document).ready(function() {
                 "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
-            if(items[i].status===2){
+            if(items[i].status===1){
                 $("#row"+i).addClass('boughtMarked');
+
+            }
+            if(items[i].status===0){
+                $("#row"+i).removeClass('boughtMarked');
             }
         }
-        console.log("Added Items");
+        console.log("shoppinglist rendered");
     }
 
     function getCheckedItems(){
         var table_length = $('#shoppingTable tr').length;
         var checked = [];
         for (var i =0; i<table_length;i++){
+            console.log("I: " + i);
             if($("#checkbox"+i).is(':checked')){
                 var item = {id: $("#checkbox"+i)[0].value};
                 checked.push(item);
@@ -633,6 +594,9 @@ $(document).ready(function() {
         }
         return members;
     }
+
+    $('[data-toggle="tooltip"]').tooltip();
+
 
 });
 function compare(a,b) {

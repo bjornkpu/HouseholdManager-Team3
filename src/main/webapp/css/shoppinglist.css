@@ -47,7 +47,7 @@
     padding-left: 500px;
 }
 .boughtMarked{
-    background-color: #01d100;
+    background-color: lightgray;
 }
 input[type='checkbox'] {
     -webkit-appearance:none;
