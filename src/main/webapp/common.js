@@ -1,9 +1,11 @@
+var curGroup = "currentGroup";
 $(document).ready(function () {
     //gets info of groups from server and renders the dropdown for them.
     if(window.location.pathname!=="/scrum/Login.html"){
         getLoggedOnUser(setGroupDropdown);
     }
-    // listNotificationsForUserLoggedIn();
+
+    listNotificationsForUserLoggedIn();
 
     // Ugly hack for the group dropdown caret
     $(document).on('click', function(){
