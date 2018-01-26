@@ -40,6 +40,26 @@ public class StatisticsDao {
         }
     }
 
+    public ArrayList<StatisticsHelp> getDisbursementCostPerUser(int groupId) throws SQLException{
+        connection = Db.instance().getConnection();
+        try{
+            ps = connection.prepareStatement("SELECT SUM(d.price), u.name FROM user u JOIN disbursement d ON u.email=d.payer_id WHERE d.party_id=? GROUP BY u.name;");
+            ps.setInt(1,groupId);
+            rs = ps.executeQuery();
+            ArrayList<StatisticsHelp> resultat = new ArrayList<>();
+            while(rs.next()){
+                StatisticsHelp h = new StatisticsHelp(rs.getString("name"),rs.getDouble("SUM(d.price)"));
+                resultat.add(h);
+            }
+            return resultat;
+        }
+        finally {
+            Db.close(rs);
+            Db.close(ps);
+            Db.close(connection);
+        }
+    }
+
 
     //Let you find number of chores for user during the "dayNr" recent days.
     public ArrayList<StatisticsHelp> getChoresPerUser(int groupId, int dayNr) throws SQLException{

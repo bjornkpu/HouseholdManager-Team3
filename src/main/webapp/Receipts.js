@@ -115,15 +115,19 @@ $(document).ready(function () {
 
     function renderUserListDropdownMenu(data) {
         var len = data.length;
+        $("#usersdropdown").empty();
+
         if(len === 0){
             $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation" style="text-align: center">' +
                 'Empty</li>');
             return;
         }
         for (var i = 0; i < len;i++ ) {
-            $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+data[i].email+'" href="#">' +
-                data[i].name + '</aclass></li>'
-            );
+            if(data[i].email !== currentUser){
+                $('#usersdropdown').append('<li tabindex="-1" class="list" role="presentation"><a class="link" role="menuitem" id="'+data[i].email+'" href="#">' +
+                    data[i].name + '</aclass></li>'
+                );
+            }
         }
     }
 

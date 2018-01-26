@@ -25,11 +25,23 @@ public class StatisticsService {
         public ArrayList<StatisticsHelp> getChoresPerUser(@PathParam("groupId") int groupId) throws SQLException {
 //		Session session = (Session)request.getSession();
             try {
-                System.out.println("fert");
                 return sDao.getChoresPerUser(groupId);
             } catch (SQLException e) {
                 log.error("Failed to get Statistics", e);
                 throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
             }
         }
+
+    @GET
+    @Path("/costs")
+    @Produces("application/json")
+    public ArrayList<StatisticsHelp> getDisbursementCostPerUser(@PathParam("groupId") int groupId) throws SQLException {
+//		Session session = (Session)request.getSession();
+        try {
+            return sDao.getDisbursementCostPerUser(groupId);
+        } catch (SQLException e) {
+            log.error("Failed to get Statistics", e);
+            throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
+        }
+    }
     }
