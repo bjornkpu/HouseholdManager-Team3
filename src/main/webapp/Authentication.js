@@ -111,6 +111,7 @@ function renderGroupDropdown(groups) {
             window.location.href="Profile.html";
         }
     } else {
+        $('#groupdropdown').empty();
         if (getCookie(curGroup) < len || !groupsContainsCurrentgroup(groups, getCookie(curGroup))) {
             document.cookie = curGroup + "=" + groups[0].id;
             document.cookie = "groupName=" + groups[0].name;
