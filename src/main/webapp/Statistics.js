@@ -33,10 +33,50 @@ $(document).ready(function() {
     //makePie();
 
     $("#choreStat").click(function () {
+        var textbox1 = document.getElementById("descriptionBarChore");
+        var textTitle1 = document.getElementById("descriptionBarChoreTitle");
+        var textbox2 = document.getElementById("descriptionChartChore");
+        var textTitle2 = document.getElementById("descriptionChartChoreTitle");
+
+        var descShow1 = document.getElementById("descShow1");
+        var descShow2 = document.getElementById("descShow2");
+        var descShow3 = document.getElementById("descShow3");
+        var descShow4 = document.getElementById("descShow4");
+        descShow1.style.display="block";
+        descShow2.style.display="block";
+        descShow3.style.display="none";
+        descShow4.style.display="none";
+
+
+        textbox1.innerHTML="Number of chores completed";
+        textTitle1.innerHTML="Description: ";
+        textbox2.innerHTML="Assigned and unassigned chores(midlertidlig desc)";
+        textTitle2.innerHTML="Description: ";
+
         getChoreStatistics();
+
     });
 
     $("#receiptStat").click(function () {
+        var textbox3 = document.getElementById("descriptionBarReceipt");
+        var textTitle3 = document.getElementById("descriptionBarReceiptTitle");
+        var textbox4 = document.getElementById("descriptionChartReceipt");
+        var textTitle4 = document.getElementById("descriptionChartReceiptTitle");
+
+        var descShow1 = document.getElementById("descShow1");
+        var descShow2 = document.getElementById("descShow2");
+        var descShow3 = document.getElementById("descShow3");
+        var descShow4 = document.getElementById("descShow4");
+        descShow1.style.display="none";
+        descShow2.style.display="none";
+        descShow3.style.display="block";
+        descShow4.style.display="block";
+
+        textbox3.innerHTML="Debt per user";
+        textTitle3.innerHTML="Description: ";
+        textbox4.innerHTML="Amount of money each member have spend(midlertidig desc)";
+        textTitle4.innerHTML="Description: ";
+
         getDisbursementStatistics();
     });
 });
@@ -49,10 +89,6 @@ function getChoreStatistics(){
         if (status === "success") {
             dataList = data;
             console.log("Item content loaded successfully!");
-            var textBox = document.getElementById("description");
-            textBox.innerHTML="Number of chores completed by each member in current group";
-            var textTitle = document.getElementById("title");
-            textTitle.innerHTML="Description:";
             setItemsInTable();
             makePie();
         }
@@ -69,10 +105,6 @@ function getDisbursementStatistics(){
         if (status === "success") {
             dataList = data;
             console.log("Item content loaded successfully!");
-            var textBox = document.getElementById("description");
-            textBox.innerHTML="Total costs of receits paid for by each member in current group";
-            var textTitle = document.getElementById("title");
-            textTitle.innerHTML="Description:";
             setItemsInTable();
             makePie();
         }

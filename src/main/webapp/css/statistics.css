@@ -1,3 +1,46 @@
+.gridSide {
+    display: grid;
+    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+    grid-template-rows: [row1-start] 50% [row2-end row2-start] 50% [row2-end];
+    grid-template-areas: "desc1 desc2"
+    "leftBottom  rightBottom";
+    justify-items: stretch;
+    min-width: 100%;
+}
+.desc1 {
+    display: grid;
+    grid-area: desc1;
+    background-color: white;
+    justify-items: stretch;
+
+}
+
+.desc2 {
+    display: grid;
+    grid-area: desc2;
+    background-color: white;
+    justify-self: center;
+    align-self: start;
+    width: 100%;
+    justify-items: center;
+}
+
+.barStat {
+    display: grid;
+    grid-area: leftBottom;
+    background-color: white;
+    justify-items: stretch;
+}
+
+.chartStat {
+    display: grid;
+    grid-area: rightBottom;
+    background-color: white;
+    justify-self: center;
+    align-self: start;
+    width: 100%;
+    justify-items: center;
+}
 
 .bar-graph {
     padding: 0;
