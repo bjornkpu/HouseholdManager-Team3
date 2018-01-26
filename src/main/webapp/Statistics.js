@@ -94,10 +94,11 @@ function getChoreStatistics(){
         if (status === "success") {
             dataList1 = data;
             console.log("Item content loaded successfully!");
-            var textBox = document.getElementById("description");
+            setItemsInTable();
+            /*var textBox = document.getElementById("description");
             textBox.innerHTML="Number of chores completed by each member in current group";
             var textTitle = document.getElementById("title");
-            textTitle.innerHTML="Description:";
+            textTitle.innerHTML="Description:";*/
         }
         if(status === "error"){
             console.log("Error in loading Item content");
@@ -110,7 +111,6 @@ function getChoreStatistics(){
         if (status === "success") {
             dataList2 = data;
             console.log("Item content loaded successfully!");
-            setItemsInTable();
             makePie();
         }
         if(status === "error"){
@@ -126,10 +126,11 @@ function getDisbursementStatistics(){
         if (status === "success") {
             dataList2 = data;
             console.log("Item content loaded successfully!");
-            var textBox = document.getElementById("description");
+            makePie();
+            /*var textBox = document.getElementById("description");
             textBox.innerHTML="Total costs of receits paid for by each member in current group";
             var textTitle = document.getElementById("title");
-            textTitle.innerHTML="Description:";
+            textTitle.innerHTML="Description:";*/
         }
         if(status === "error"){
             console.log("Error in loading Item content");
@@ -143,7 +144,6 @@ function getDisbursementStatistics(){
             dataList1 = data;
             console.log("Item content loaded successfully!");
             setItemsInTable();
-            makePie();
         }
         if(status === "error"){
             console.log("Error in loading Item content");
