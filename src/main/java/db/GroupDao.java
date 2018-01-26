@@ -269,7 +269,7 @@ public class GroupDao {
             ps.setInt(1, group.getId());
             int dependencyResult = ps.executeUpdate();
             ps.close();
-            log.info("Delete dependency " + (dependencyResult == 1 ? "ok" : "failed"));
+            log.info("Delete dependency from user_party " + (dependencyResult == 1 ? "ok" : "failed"));
 
 //          deletes a party from the database
             ps = connection.prepareStatement("DELETE FROM party WHERE id=?");
