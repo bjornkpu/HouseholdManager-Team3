@@ -146,6 +146,11 @@
     <button type="button" class="close" data-dismiss="alert">x</button>
     <strong>Success!</strong> Password Updated
 </div>
+<!--Alert for successful password update -->
+<div class="alert alert-danger" id="alertPasswordFail" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> Password update failed
+</div>
 <!--Alert for missing namefield -->
 <div class="alert alert-info" id="alertNameField" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -154,7 +159,7 @@
 <!--Alert for missing phonefield-->
 <div class="alert alert-info" id="alertPhoneField" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
-    <strong>Ops!</strong> Please fill out phonenumber
+    <strong>Ops!</strong> Please fill out phone number
 </div>
 <h2>User profile</h2>
 <div class="container">
@@ -171,7 +176,7 @@
                     <td ><input type="text" class="form-control" id="emailReadOnly" value="" disabled></td>
                 </tr>
                 <tr>
-                    <td id="phone">Phonenumber: </td>
+                    <td id="phone">Phone number: </td>
                     <td ><input type="text" class="form-control" id="phoneReadOnly" value="" disabled></td>
                 </tr>
                 <tr>
