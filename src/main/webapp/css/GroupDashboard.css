@@ -64,7 +64,7 @@ body{
     }
 
     .notificationDropdown{
-        transform: translate(-35%, 5%);
+        transform: translate(-35%, 10px);
     }
 
     #forgottenPassword{
@@ -287,7 +287,7 @@ buttons
         color: #0596c6;
     }
     .notificationDropdown{
-        transform: translate(-70%, 5%);
+        transform: translate(-70%, 10px);
         width: 100vw;
     }
 
