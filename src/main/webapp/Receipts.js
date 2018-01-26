@@ -184,7 +184,7 @@ $(document).ready(function () {
                 "</tr>"
             );
 
-            //mobile info
+            //only for mobile
             if(isMobile()){
                 $("#disbursementTable").append(
                     "<tr class='info info_" + i +"' style='width:100%'>" +
@@ -371,30 +371,32 @@ function acceptPaymentsClick(data){
 };
 
 
-    var selected = -1;
-    //mobile site view
-    $("#disbursementTable").on('click', 'tr.truncateRow', function(){
-        if(isMobile()) {
-            $(".info").css("display", "none");
-            if(this.id !== selected){
-                $(".info_"+this.id).css("display", "table-header-group");
-                selected = this.id;
-            } else {
-                selected = -1;
-            }
+var selected = -1;
+//mobile site view
+$("#disbursementTable").on('click', 'tr.truncateRow', function(){
+    if(isMobile()) {
+        $(".info").css("display", "none");
+        if(this.id !== selected){
+            $(".info_"+this.id).css("display", "table-header-group");
+            selected = this.id;
+        } else {
+            selected = -1;
         }
-    })
-    $("#disbursementTable").on('click', 'td.accept', function(){
-        if(isMobile()) {
-            console.log("accept");
-        }
-    })
-    $("#disbursementTable").on('click', 'td.decline', function(){
-        if(isMobile()) {
-            console.log("decline");
-        }
-    })
-
+    }
+});
+$("#disbursementTable").on('click', 'td.accept', function(){
+    if(isMobile()) {
+        console.log("accept");
+        $(".info").css("display", "none");
+        selected = -1;
+    }
+});
+$("#disbursementTable").on('click', 'td.decline', function(){
+    if(isMobile()) {
+        console.log("decline");
+        $(".info").css("display", "none");
+        selected = -1;
+    }
 });
 
 //checks if mobile or laptop

@@ -65,6 +65,23 @@
     }
 
     /*accept/decline buttons*/
+    .info td.accept{
+        /*text-align: center;*/
+        font-weight: bold;
+        background-color: #bbbbbb;
+        border-top: 1px solid #3d3b3b;
+        border-right: 1px solid #3d3b3b;
+        border-bottom: 1px solid #3d3b3b;
+    }
+    .info td.decline{
+        /*text-align: center;*/
+        font-weight: bold;
+        background-color: #bbbbbb;
+        border-top: 1px solid #3d3b3b;
+        border-bottom: 1px solid #3d3b3b;
+    }
+
+    /*accept/decline buttons*/
     .info td.accept:active{
         background-color:green;
     }

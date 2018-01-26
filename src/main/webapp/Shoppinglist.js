@@ -560,7 +560,7 @@ $(document).ready(function() {
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + statusName + "</td>" +
-                "<td> <input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
+                "<td><input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
             if(items[i].status===1){
@@ -597,8 +597,8 @@ $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
 
-
 });
+
 function compare(a,b) {
     if (a.name.toLowerCase() < b.name.toLowerCase())
         return -1;
