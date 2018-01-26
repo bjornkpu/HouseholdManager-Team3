@@ -137,16 +137,13 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(response){
-                var table_length = $('#shoppingTable tr').length;
-                for (var i =0; i<table_length;i++){
-                    if($("#checkbox"+i).is(':checked')){
-                        $("#checkbox"+i).closest('tr').remove();
-                    }
-                }
-                alert("Items deleted from shoppinglist");
+                // alert("Items deleted from shoppinglist");
+                setItemStatus(-1, checked);
+                setItemsInTable();
+                checkedItems.length = 0;
             },
             error: function(){
-                console.log(item.value);
+                console.log("Couldnt delete item");
             }
         });
     });
@@ -535,9 +532,9 @@ $(document).ready(function() {
         //
         //status 1: x skal kjøpe
         //status 2: x har kjøpt
+        var skip = 0;
 
         for(var i = 0; i < len; i++){
-            var id = items[i].id;
             var statusName;
 
             if (items[i].status === 0){
@@ -548,14 +545,15 @@ $(document).ready(function() {
                 statusName ="To be bought";
                 $("#row"+i).addClass('boughtMarked');
             }
-            else if (items[i].status === 2){
+            else if (items[i].status === 2 || items[i] == "DELETE"){
                 //er status 3 er allerede varen betalt og satt på en kvittering
+                skip++;
                 continue;
             }
 
             $("#tableShoppinglist").append(
                 "<tr class='item' id='row"+i+"'>" +
-                "<th scope=\"row\">"+(i+1)+"</th>" +
+                "<th scope=\"row\">"+(i+1-skip)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + statusName + "</td>" +
                 "</tr>"
@@ -586,14 +584,25 @@ $(document).ready(function() {
 
     function setItemStatus(status, checked){
         var index = 0;
-        for(var i = 0; i < items.length; i++){
-            if(index >= checked.length){
-                break;
+        if(status === -1){
+            for(var i = 0; i < items.length; i++){
+                if(index >= checked.length){
+                    break;
+                }
+                if(items[i].id === checked[index].id) {
+                    items[i] = "DELETE";
+                    index++;
+                }
             }
-            if(items[i].id === checked[index].id) {
-                items[i].status = status;
-                index++;
-                console.log(items[i].status);
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                if (index >= checked.length) {
+                    break;
+                }
+                if (items[i].id === checked[index].id) {
+                    items[i].status = status;
+                    index++;
+                }
             }
         }
     }

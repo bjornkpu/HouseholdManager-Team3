@@ -196,13 +196,17 @@ public class ItemDao {
             ps.setInt(1,item.getId());
             ps.setString(2,item.getName());
             ps.setInt(3,item.getStatus());
-            if(item.getShoppingListId()==-1){
+            if(item.getShoppingListId() == -1 || item.getShoppingListId() == 0){
                 ps.setNull(4, Types.INTEGER);
             }else {
                 ps.setInt(4,item.getShoppingListId());
-            }if (item.getDisbursementId()==-1){
+            }
+            log.info("disb id = " + item.getDisbursementId());
+            if (item.getDisbursementId() == -1 || item.getDisbursementId()== 0){
+                log.info("Sets null");
                 ps.setNull(5, Types.INTEGER);
             }else {
+                log.info("Sets disb id");
                 ps.setInt(5,item.getDisbursementId());
             }
             ps.setInt(6,item.getId());
