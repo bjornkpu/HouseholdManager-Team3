@@ -82,7 +82,7 @@ public class ShoppingListService {
     public void addShoppingList(ShoppingList shoppingList) {
         try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
-            if(shoppingListDao.addShoppingList(shoppingList)){
+            if(shoppingListDao.addShoppingList(shoppingList) >= 1){
             	notificationSender.newShoppingListNotification(shoppingList);
 			}
         } catch(SQLException e) {
