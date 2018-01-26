@@ -10,60 +10,46 @@ $(document).ready(function() {
 
     //TODO: fikse groupservice og dao slik at man kan update name
     $('#confirmNewName').click(function () {
-        registerNewName();
+        registerNewName(function () {
+            getGroupName();
+            $("#groupName").show();
+            $("#editGroupName").show();
+            $("#confirmNewName").hide();
+            $("#newNameField").hide();
+        });
     });
 
     groupId = getCookie("currentGroup");
-    console.log("y: " + groupId);
-
+    console.log("GroupID: " + groupId);
 
     //Get the members of the group
+    getMembers();
+
+    //Enable adminbuttons if admin
+    getLoggedOnUser(checkAdmin);
+
+    getGroupName();
+
+
+    $("#invUserButton").click(function () {
+        inviteUser();
+        console.log("asd")
+    });
+});
+
+function getMembers() {
     var url='rest/groups/'+ groupId +'/members';
-    $.get(url, function(data, status){
-        renderMembers(data);
-        checkAdmin(data);
+    $.get(url, function(members, status){
         if(status === "success"){
+            renderMembers(members);
+            checkAdmin(members)
             console.log("members content loaded successfully!");
         }
         if(status === "error"){
             console.log("Error in loading members");
         }
     });
-
-    getGroupName();
-
-
-
-
-    $("#invUserButton").click(function () {
-        $.ajax({
-            type:"POST",
-            dataType:"json",
-            url:"rest/groups/"+htmlEntities(groupId)+"/members/" + htmlEntities($("#invUserField").val()),
-            contentType: "application/json",
-            data:JSON.stringify({
-                "email": htmlEntities($("#invUserField").val())
-            }),
-            statusCode: {
-                200: function () {
-                    $("#alertInvSuccess").fadeTo(4000, 500).slideUp(500, function(){
-                        $("#alertInvSuccess").slideUp(500);
-                    });
-                },
-                500: function () {
-                    console.log("Internal Server Error");
-                },
-                404: function () {
-                    $("#alertInvFail").fadeTo(4000, 500).slideUp(500, function(){
-                        $("#alertInvFail").slideUp(500);
-                    });
-                }
-            }
-
-        })
-
-    });
-});
+}
 
 function getGroupName() {
     $.ajax({
@@ -74,6 +60,33 @@ function getGroupName() {
         success: function (data) {
             $('#groupName').attr('value', data.name);
             $('#newNameField').val(data.name);
+        }
+    });
+}
+
+function inviteUser() {
+    $.ajax({
+        type:"POST",
+        dataType:"json",
+        url:"rest/groups/"+htmlEntities(groupId)+"/members/" + htmlEntities($("#invUserField").val()),
+        contentType: "application/json",
+        data:JSON.stringify({
+            "email": htmlEntities($("#invUserField").val())
+        }),
+        statusCode: {
+            200: function () {
+                $("#alertInvSuccess").fadeTo(4000, 500).slideUp(500, function(){
+                    $("#alertInvSuccess").slideUp(500);
+                });
+            },
+            500: function () {
+                console.log("Internal Server Error");
+            },
+            404: function () {
+                $("#alertInvFail").fadeTo(4000, 500).slideUp(500, function(){
+                    $("#alertInvFail").slideUp(500);
+                });
+            }
         }
     });
 }
@@ -107,19 +120,24 @@ function renderMembers(members) {
             "<td>" + members[i].name + "</td>" +
             "<td>" + statusText + "</td><td id= '" + tableRowId + "'></td></tr>");
 
-        var $removeButton = $("<button id='"+tableRowId+"rmw' type='button center' class='button tablebutton btn'>Remove</button>");
-        var $promoteButton = $("<button id='"+tableRowId+"promo' type='button center' class='button tablebutton btn'>Promote</button>");
+        var $removeButton = $("<button id='"+tableRowId+"rmw' type='button center' " +
+            "class='adminButton button tablebutton btn' disabled>Remove</button>");
+        var $promoteButton = $("<button id='"+tableRowId+"promo' type='button center' " +
+            "class='adminButton button tablebutton btn' disabled>Promote</button>");
 
         $('#' + tableRowId).append($removeButton);
         $('#' + tableRowId).append($promoteButton);
         (function (i, userEmail) {
             $('#'+tableRowId+'rmw').click(function () {
                 removeUserFromGroup(members[i],adminCounter);
+                getMembers();
             })
             $('#'+tableRowId+'promo').click(function () {
                 promoteUser(members[i]);
+                getMembers();
             })
         }(i,userEmail));
+
     }
 }
 function promoteUser(user) {
@@ -172,12 +190,7 @@ function removeUserFromGroup(user,adminCounter) {
 
 
 //Registers the new name
-function registerNewName(){
-    var readOnlyField = document.getElementById('groupName');
-    var buttonEdit = document.getElementById('editGroupName');
-    var buttonConfirm = document.getElementById('confirmNewName');
-    var newNameField = document.getElementById('newNameField');
-
+function registerNewName(success){
     var newName = $('#newNameField').val();
     console.log("the new name for the group: "+ newName);
     $.ajax({
@@ -197,38 +210,30 @@ function registerNewName(){
             getGroupName();
             $("#alertEditGroupNameSuccess").fadeTo(4000, 500).slideUp(500, function () {
                 $("#alertEditGroupNameSuccess").slideUp(500);
-
-
             });
+            success();
         }
     });
-    readOnlyField.show();
-    buttonEdit.show();
-    buttonConfirm.hide();
-    newNameField.hide();
 }
 
 //Checks if user is admin and adds admin buttons
-function checkAdmin(data) {
-    getLoggedOnUser(function(user){
-        sessionEmail=user.email;
-    });
-    console.log("session email: " + sessionEmail);
-    console.log("cookie: " + getCookie("userLoggedOn"));
-    var len= data.length;
-    for(var i=0;i<len;i++){
-        console.log("status på brukere: " + data[i].status);
-        if(data[i].status===2 && data[i].email === getCookie("userLoggedOn")){
-            $('#adminButtons').append(
-                '<tr> ' +
-                '<td> <button class="button">Promote</button></td>' +
-                '<td><button class="button">Delete group</button></td>' +
-                '</tr>');
+function checkAdmin(members) {
+    console.log("Checking if admin");
+    getLoggedOnUser(function (user) {
+        console.log("useremail: "+user.email);
+        for(i=0; i<members.length; i++){
+            console.log("memberemail: "+members[i].email);
+            if(members[i].email === user.email){
+                if(members[i].status===2){
+                    console.log("Admin");
+                    $('.adminButton').attr("disabled",false);
+                    break;
+                }else{
+                    console.log("Not admin, status: "+ member.status);
+                }
+            }
         }
-    }
-    if(status === "error"){
-        console.log("Error in loading adminbuttons");
-    }
+    });
 }
 
 function getChecked(){
