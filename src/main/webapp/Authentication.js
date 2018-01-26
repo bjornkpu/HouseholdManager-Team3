@@ -122,7 +122,7 @@ function renderGroupDropdown(groups) {
             var id = '';
             id += i;
             id += 'group';
-            var $x = $('<li><a class="dropdown-item" href="#" id="' + id + '">' +
+            var $x = $('<li><a class="dropdown-item" href="#feed" id="' + id + '">' +
                 groupname + '</a></li>'
             );
             (function (i) {
