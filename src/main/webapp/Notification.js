@@ -16,10 +16,10 @@ function listNotificationsForUserLoggedIn() {
                 success: function (data) {
                     var dl = data.length - 1;
                     var check;
-                    if(dl > 10) {
+                    if(data.length > 10) {
                         dl=10;
                     }
-                    for(var i = dl; i > data.length - dl; i--){
+                    for(var i = dl; i > dl - 10 && i > -1; i--){
                         console.log(data[i].text);
                         console.log("Seen: " +data[i].seen);
                         if(data[i].seen === 0){
