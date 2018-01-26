@@ -35,45 +35,27 @@
 
 <!-- create shoppinglist site-->
 <div id="creatingShoppinglist" style="display: none;">
-    <h1>New shoppinglist</h1>
-    <table>
-        <tr>
-            <td></td>
-            <td>
-                <div class="col-sm">
-                    <button class="backToShoppinglist button"  id ="confirmShoppinglist"> Create shoppinglist</button>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Name of Shoppinglist</td>
-            <td > <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist"></td>
-        </tr>
-        <tr>
-            <td>Add users</td>
-            <td>
-                <div class="dropdown">
-                    <button class="search_bttn">Add user</button>
-                    <div id="results" class="search_results">
-                        <!--Here's a list over members of a group-->
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div>
-                    <!--<span id = "addedUser">Add users motherfucker</span>-->
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td>Added users</td>
-            <td>
-                <ul id="addedUsers">
-                    <!--Here's a list over added users in shoppinglist-->
-                </ul>
-            </td>
-        </tr>
-    </table>
+    <div class=" shoppingListGrid">
+    <div class="listGrid">
+        <h3>New shoppinglist</h3>
+        <a>Name of Shoppinglist</a>
+        <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist">
+
+        <div class="dropdown">
+            <button class="button">Add user</button>
+            <div id="results" class="search_results">
+                <!--Here's a list over members of a group-->
+            </div>
+        </div>
+    </div>
+    <div class="rightsideGrid">
+        <h3>Added participants: </h3>
+        <ul id="addedUsers">
+           <!--Here's a list over added users in shoppinglist-->
+        </ul>
+
+    </div>
+    </div>
 </div>
 <!-- end of shoppinglist site-->
 
@@ -120,18 +102,19 @@
     </div>
     <!--grid rightside for a few buttons and etc -->
     <div class="rightsideGrid">
+        <div class="infoShoppinglist">To create a receipt mark the items you have bought and press create receipts. You can then choose the other people who will join the receipt</div>
         <button class = "button" id="createDisbursementButton" > Create receipt</button>
+        <div class="infoShoppinglist">A list with items that aren't yet assigned can't be deleted.</div>
         <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
-        <div>finbwfiubawøfbwøjkbfajkwbfkjawbfkjwbf
-        wjfbwjkbfawjkbfjwfkaf</div>
+
     </div>
     <!-- Buttons for shoppinglist-->
     <div class="leftBottom">
         <table>
             <tr>
             <td><button class = "button" id="addItem"> Add item</button></td>
-            <td><button class = "button" id="toBeBought"> Mark as bought</button></td>
-            <td><button class = "button" id="unmarked"> Unmark</button></td>
+            <td><button class = "button" id="assignItem" data-placement="bottom" data-toggle="tooltip" title="test"> Assign item</button></td>
+            <td><button class = "button" id="unmarked"> Unassign item</button></td>
             <td><button class = "button" id="deleteItems"> Delete <items></items></button></td>
             </tr>
         </table>

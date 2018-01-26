@@ -241,14 +241,14 @@ INSERT INTO shoppinglist(name, party_id) VALUES ('DateNight', 1);
 
 INSERT INTO disbursement(price,name,payer_id,party_id,date) VALUES (200.1,'Drikke til tacokveld', 'en@h.no', 1, '08-01-18');
 
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 1, 1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Tacokrydder', 1,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Kjøttdeig', 0, 1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Tacokrydder', 0,1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Lefser', 0,1,1);
 INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Mais', 0,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Saus', 1,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Rømme', 1,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Fredrikstadpilsner', 2,1,1);
-INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Cola', 2,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Saus', 0,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Rømme', 0,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Fredrikstadpilsner', 0,1,1);
+INSERT INTO item(name, status, shoppinglist_id, disbursement_id) VALUES ('Cola', 0,1,1);
 
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('en@h.no','1');
 INSERT INTO user_disbursement(user_email, disp_id) VALUES ('to@h.no','1');
