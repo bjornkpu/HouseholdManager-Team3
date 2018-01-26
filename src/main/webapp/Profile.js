@@ -27,7 +27,9 @@ $(document).ready(function() {
         passwordIsCorrect().then(function () {
             changePassword();
         }).catch(function (){
-            alert("Wrong pw");
+            $("#alertPasswordFail").fadeTo(2000, 500).slideUp(500, function () {
+                $("#alertPasswordFail").slideUp(500);
+            });
         });
     });
 });
@@ -115,9 +117,12 @@ function passwordIsCorrect(){
         var passPromise = sha256($("#passwordField").val());
         passPromise.then(function(pass){
             sha256(pass + loggedOnUser.salt).then(function (saltedHashed) {
-                console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
-                    pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
-                if(saltedHashed===(loggedOnUser.password)){
+                // console.log("Pass: "+pass+"\tSalt: "+loggedOnUser.salt+"\npasssalt: "+
+                //     pass+loggedOnUser.salt+"\nSaltedHashed: "+saltedHashed+"\nrealPW: "+loggedOnUser.password)
+                if(saltedHashed===(loggedOnUser.password)
+                    && $("#newPasswordField").val()===$("#confirmPasswordField").val()
+                    && $("#confirmPasswordField").val()!=""){
+
                     console.log("Old password is correct");
                     resolve();
                 }else{
@@ -155,7 +160,9 @@ function changePassword(){
 
             },
             error: function () {
-                alert("Password did not update")
+                $("#alertPasswordFail").fadeTo(2000, 500).slideUp(500, function () {
+                    $("#alertPasswordFail").slideUp(500);
+                });
             }
         });
     });
