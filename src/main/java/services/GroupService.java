@@ -7,6 +7,7 @@ import db.GroupDao;
 import db.MemberDao;
 import db.UserDao;
 import util.Logger;
+import util.NotificationSender;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -29,6 +30,7 @@ import java.util.List;
 @Path("/groups/")
 public class GroupService {
     private static final Logger log = Logger.getLogger();
+    private NotificationSender notificationSender = new NotificationSender();
 
     public GroupService() {
     }
@@ -255,8 +257,7 @@ public class GroupService {
     public boolean addPayment(Payment payment) {
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
-
-            return groupDao.setPayment(payment);
+            return(groupDao.setPayment(payment)&&notificationSender.paymentNotification(payment));
 
         } catch (SQLException e) {
             log.info("Add payment failed");

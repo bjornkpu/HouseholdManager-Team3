@@ -49,23 +49,7 @@ $(document).ready(function () {
     });
 
 
-    function respondToDisbursement(data,response) {
-        // AJAX Request
-        console.log(data.value+"  "+response);
-        console.log("knut");
-        $.ajax({
-            type: "PUT",
-            url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
-            data: JSON.stringify(
-                {id: data.value}),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
 
-            success: function () {
-                getDisbursementList();
-            }
-        });
-    }
     $('#sendPaymentRequest').click(function () {
         if(newPaymentUser===0){
             alert("Must select user from dropdown");
@@ -408,3 +392,20 @@ function isMobile(){
     return ($(window).width() < 550);
 }
 
+function respondToDisbursement(data,response) {
+    // AJAX Request
+    console.log(data.value+"  "+response);
+    console.log("knut");
+    $.ajax({
+        type: "PUT",
+        url: 'rest/groups/' + currentGroup + '/disbursement/' + getCookie("userLoggedOn") +"/"+ response,
+        data: JSON.stringify(
+            {id: data.value}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+
+        success: function () {
+            getDisbursementList();
+        }
+    });
+}
