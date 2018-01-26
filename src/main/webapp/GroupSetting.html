@@ -26,6 +26,17 @@
     <strong>Alert!</strong> User is already admin
 </div>
 
+<!--Alert for successful promote -->
+<div class="alert alert-success" id="alertDeleteSuccess" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Success!</strong> Group deleted, please refresh page.
+</div>
+<!--Alert for fail promote -->
+<div class="alert alert-danger" id="alertDeleteFail" style="display: none;">
+    <button type="button" class="close" data-dismiss="alert">x</button>
+    <strong>Alert!</strong> Cannot delete group
+</div>
+
 <!--Alert for fail invite -->
 <div class="alert alert-danger" id="alertInvFail" style="display: none;">
     <button type="button" class="close" data-dismiss="alert">x</button>
@@ -97,14 +108,9 @@
 
     </table>
     <br><br>
-    <table id="adminButtons" class="center">
-
-    </table>
-
-
-
-
+    <button id="deleteGroup" class="button btn">Delete Group</button>
 </div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
