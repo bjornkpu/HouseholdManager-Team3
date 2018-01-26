@@ -345,6 +345,7 @@ $(document).ready(function() {
         });
     }
 
+
     $("#delete_shoppinglist").click(function(){
         if(!itemStatusCheck()){
             alert("Shoppinglist must be empty before deleting");
