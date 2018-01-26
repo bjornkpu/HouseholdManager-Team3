@@ -1,9 +1,10 @@
 var currentGroup;
 var currentGroupName;
-var paymentRequests=[];
+// var paymentRequests=[];
 var currentUser;
-var disbursementList=[];
-var balanceList=0;
+// var disbursementList=[];
+// var balanceList=0;
+var checkedItems = [];
 $(document).ready(function() {
 
     var lists;
@@ -484,22 +485,6 @@ $(document).ready(function() {
         });
     }
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for(var i = 0; i <ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
     //When clicking
     $("#shoppinglistdropdown").on("click", "a.link", function(){
         currentShoppingList = this.id;
@@ -545,10 +530,10 @@ $(document).ready(function() {
             var statusName;
 
             if (items[i].status === 0){
-                statusName ="Not assigned";
+                statusName ="-";
             }
             else if (items[i].status === 1){
-                statusName ="Assigned";
+                statusName ="To be bought";
             }
             else if (items[i].status === 2){
                 //er status 3 er allerede varen betalt og satt på en kvittering
@@ -556,13 +541,15 @@ $(document).ready(function() {
             }
 
             $("#tableShoppinglist").append(
-                "<tr id='row"+i+"'>" +
+                "<tr class='item' id='row"+i+"'>" +
                 "<th scope=\"row\">"+(i+1)+"</th>" +
                 "<td>" + items[i].name + "</td>" +
                 "<td>" + statusName + "</td>" +
                 "<td><input value='"+ id +"' id='checkbox"+i+"' type='checkbox'></td>" +
                 "</tr>"
             );
+
+            //TODO flytt opp til andre if
             if(items[i].status===1){
                 $("#row"+i).addClass('boughtMarked');
 
@@ -577,13 +564,20 @@ $(document).ready(function() {
     function getCheckedItems(){
         var table_length = $('#shoppingTable tr').length;
         var checked = [];
-        for (var i =0; i<table_length;i++){
-            console.log("I: " + i);
-            if($("#checkbox"+i).is(':checked')){
-                var item = {id: $("#checkbox"+i)[0].value};
-                checked.push(item);
+        // for (var i =0; i<table_length;i++){
+        //     console.log("I: " + i);
+        //     if($("#checkbox"+i).is(':checked')){
+        //         var item = {id: $("#checkbox"+i)[0].value};
+        //         checked.push(item);
+        //     }
+        // }return checked;
+        for(var i = 0; i < checkedItems; i++){
+            if(checkedItems[i] === "checked"){
+                checked[i] = items[i];
+                console.log(checked[i]);
             }
-        }return checked;
+        }
+        return checked;
     }
     function getCheckedMembers() {
         var members = [];
@@ -595,7 +589,21 @@ $(document).ready(function() {
         return members;
     }
 
-    $('[data-toggle="tooltip"]').tooltip();
+    $('#shoppingTable').on('click', 'tr.item', function(){
+        var id = this.id.split('w').pop();
+        if(checkedItems[id] === "checked"){
+            checkedItems[id] = "";
+            $('#shoppingTable #'+this.id).css('background', 'grey');
+        } else {
+            console.log(id);
+            checkedItems[id] = "checked";
+            $('#shoppingTable #'+this.id).css('background', 'red');
+            console.log(checkedItems);
+            console.log(getCheckedItems()[id].name);
+        }
+    });
+
+    // $('[data-toggle="tooltip"]').tooltip();
 
 });
 
@@ -605,6 +613,22 @@ function compare(a,b) {
     if (a.name.toLowerCase() > b.name.toLowerCase())
         return 1;
     return 0;
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
 
 

@@ -123,3 +123,7 @@ input[type='checkbox']:checked {
 .dropdown:hover .search_bttn {
     background-color: darkgray;
 }
+
+.checked{
+    background-color: red;
+}
