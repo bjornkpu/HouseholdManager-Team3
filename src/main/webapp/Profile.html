@@ -30,33 +30,47 @@
 <br>
 
 
-<nav class="navbar navbar-light fixed-top">
+<<nav class="navbar navbar-light fixed-top">
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
-        <!-- Left items-->
+
+        <!-- Logo items (Left) -->
         <div class="navbar-nav flex-row">
-            <div class="navbar-brand logo" href="#" id="houseHoldManagerLogo">
+            <div class="navbar-brand logo" href="#">
                 <img class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
             </div>
-            <div class="navbar-brand text" id="houseHoldManagerLogo2">
+            <div class="navbar-brand text">
                 <strong>Household Manager</strong>
             </div>
         </div>
 
 
-        <!-- Middle items-->
+        <!-- Group items (Middle) -->
         <div class="navbar-nav d-flex flex-row">
             <div class="nav-item dropdown d-flex grouplink">
                 <a class="nav-link dropdown d-flex flex-row" href="http://example.com" id="navbarDropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <strong class="navGroupName">Groups </strong>
-                    <i class="material-icons md-24 groupicon">supervisor_account</i>
+                    <i class="material-icons md-24 groupicon">people</i>
+                    <i class="material-icons md-24 groupicon groupArrow">arrow_drop_down</i>
                 </a>
                 <ul class="dropdown-menu scrollable-menu groupdropdown" role="menu" aria-labelledby="navbarDropdownMenuLink1" id="groupdropdown">
-                    <li><a id="newgroup" class="dropdown-item" href="#NewGroup">+ New Group</a></li>
                 </ul>
             </div>
         </div>
 
-        <!-- Right items -->
+        <!-- Notification items (Middle) -->
+        <div class="navbar-nav d-flex flex-row">
+            <div class="nav-item dropdown d-flex notification">
+                <a class="nav-link dropdown dropdown-toggle-hidden d-flex flex-row" href="#" id="navbarDropdownMenuLink3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="notifications d-flex flex-row">
+                        <i class="material-icons md-24 notificationIcon">notifications</i>
+                    </div>
+                </a>
+                <ul class="dropdown-menu scrollable-menu notificationDropdown" aria-labelledby="navbarDropdownMenuLink3" id="notificationdropdown">
+                </ul>
+            </div>
+        </div>
+
+        <!-- Profile items (Right) -->
         <div class="navbar-nav d-flex flex-row">
             <a class="nav-link dropdown-toggle-hidden" href="http://example.com" id="navbarDropdownMenuLink2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="account d-flex flex-row">

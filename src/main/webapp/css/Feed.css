@@ -6,10 +6,10 @@ body{
 @media screen and (orientation: landscape) {
     .feedGrid {
         display: grid;
-        grid-template-columns: [col1-start] 65% [col1-end col2-start] auto [col2-end];
+        grid-template-columns: [col1-start] 15% [col1-end col2-start] 70% [col2-end col3-start] 15% [col3-ennd];
         grid-template-rows: [row1-start] 25% [row2-end row2-start] 100%;
-        grid-template-areas: "inputArea rightheader"
-                                "wallposts events";
+        grid-template-areas: "leftblankspace inputArea rightblankspace"
+                                "leftblankspace wallposts rightblankspace";
         justify-items: stretch;
         background-color: #d8d8d8;
         min-height: 100%;
@@ -17,14 +17,19 @@ body{
 
     .writePost {
         display: grid;
+        grid-template-rows: 75% 25%;
+        grid-template-columns: 20% 40% 20% 20%;
+        grid-template-areas: "leftspace postInput postInput rightspace"
+                            "leftspace postText postButton rightspace";
         grid-area: inputArea;
+        justify-items: stretch;
         background-color: #d8d8d8;
-        justify-items: center;
     }
 
     .post-input {
-        width: 60%;
-        height: 70%;
+        grid-area: postInput;
+        width: 100%;
+        height: 75%;
         margin-bottom: 15px;
         margin-top: 20px;
         background-color: whitesmoke;
@@ -41,10 +46,18 @@ body{
         -moz-box-shadow: none;
         box-shadow: none;
     }
+    .writeCoolShit{
+        grid-area: postText;
+        font-size: 16px;
+        align-self: center;
+        justify-self: center;
+    }
 
     .post-button {
-        width: 20%;
+        grid-area: postButton;
+        width: 90%;
         height: 70%;
+        justify-self: center;
     }
 
     .wall {
@@ -132,6 +145,8 @@ body{
         justify-self: center;
     }
 
+    /* Old code for right side event-log concept
+
     .rightHeader {
         grid-area: rightheader;
         background-color: #d8d8d8;
@@ -141,7 +156,7 @@ body{
         display: grid;
         grid-area: events;
         background-color: #d8d8d8;
-    }
+    }*/
 }
 
 
@@ -149,12 +164,11 @@ body{
 @media screen and (orientation: portrait) {
     .feedGrid {
         display: grid;
-        grid-template-columns: [col1-start] 1fr [col1-end col2-start] 80% [col2-end col3-start] 1fr;
+        grid-template-columns: [col1-start] 15% [col1-end col2-start] auto [col2-end col3-start] 15%;
         grid-template-rows: [row1-start] 25% [row2-end row2-start] 100%;
         grid-template-areas: "leftspace inputArea rightspace"
                              "leftspace wallposts rightspace";
         justify-items: stretch;
-
     }
 
     .writePost {
@@ -275,6 +289,7 @@ body{
         justify-self: center;
     }
 
+    /*
     .rightHeader {
         display: none;
         grid-area: rightheader;
@@ -285,5 +300,5 @@ body{
         display: none;
         grid-area: events;
         background-color: #d8d8d8;
-    }
+    }*/
 }
