@@ -20,8 +20,10 @@ public class StatisticsDao {
     private static ResultSet rs;
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+    public StatisticsDao(Connection connection) {
+        this.connection=connection;
+    }
     public ArrayList<StatisticsHelp> getChoresPerUser(int groupId) throws SQLException{
-        connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT COUNT(c1.chore_id), u.name FROM user u JOIN (chore c2 INNER JOIN chore_log c1 ON c2.id = c1.chore_id) ON u.email=c1.user_email WHERE c2.party_id=? GROUP BY c1.user_email");
             ps.setInt(1,groupId);
@@ -36,12 +38,10 @@ public class StatisticsDao {
         finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
         }
     }
 
     public ArrayList<StatisticsHelp> getDisbursementCostPerUser(int groupId) throws SQLException{
-        connection = Db.instance().getConnection();
         try{
             ps = connection.prepareStatement("SELECT SUM(d.price), u.name FROM user u JOIN disbursement d ON u.email=d.payer_id WHERE d.party_id=? GROUP BY u.name;");
             ps.setInt(1,groupId);
@@ -56,14 +56,49 @@ public class StatisticsDao {
         finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
+        }
+    }
+
+    public ArrayList<StatisticsHelp> getChorStatusCount(int groupId) throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT COUNT(*) AS status, 'available' AS description FROM chore WHERE party_id=? AND user_email IS NULL UNION SELECT COUNT(*) AS status, 'assigned' AS description FROM chore WHERE party_id=? AND user_email IS NOT NULL");
+            ps.setInt(1,groupId);
+            ps.setInt(2,groupId);
+            rs = ps.executeQuery();
+            ArrayList<StatisticsHelp> resultat = new ArrayList<>();
+            while(rs.next()){
+                StatisticsHelp h = new StatisticsHelp(rs.getString("description"),rs.getInt("status"));
+                resultat.add(h);
+            }
+            return resultat;
+        }
+        finally {
+            Db.close(rs);
+            Db.close(ps);
+        }
+    }
+
+    public ArrayList<StatisticsHelp> getUserDebt(int groupId) throws SQLException{
+        try{
+            ps = connection.prepareStatement("SELECT name, balance*-1 FROM user_party up JOIN user u ON up.user_email=u.email WHERE balance < 0 AND party_id=? AND (status LIKE 2 OR status LIKE 1)");
+            ps.setInt(1,groupId);
+            rs = ps.executeQuery();
+            ArrayList<StatisticsHelp> resultat = new ArrayList<>();
+            while(rs.next()){
+                StatisticsHelp h = new StatisticsHelp(rs.getString("name"),rs.getInt("balance*-1"));
+                resultat.add(h);
+            }
+            return resultat;
+        }
+        finally {
+            Db.close(rs);
+            Db.close(ps);
         }
     }
 
 
     //Let you find number of chores for user during the "dayNr" recent days.
     public ArrayList<StatisticsHelp> getChoresPerUser(int groupId, int dayNr) throws SQLException{
-        connection = Db.instance().getConnection();
         Timestamp ts = timestamp;
         Calendar cal = Calendar.getInstance();
         cal.setTime(ts);
@@ -85,7 +120,6 @@ public class StatisticsDao {
         finally {
             Db.close(rs);
             Db.close(ps);
-            Db.close(connection);
         }
     }
 

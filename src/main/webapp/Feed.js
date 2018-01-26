@@ -8,7 +8,7 @@ function initTable() {
         contentType: "application/json",
         success: function (data) {
             if (data.length === 0){
-                $(".textPosts").append("<div class='page-header'><h1>Ingen Wallposts yet. Sorry Ass</h1></div>");
+                $(".textPosts").append("<div class='page-header'><h1>The are no posts in the feed.</h1></div>");
             } else {
             var id = 0, postedTo = 0;
             var message = "", postedBy = "";
@@ -28,7 +28,7 @@ function initTable() {
         },
         error: function () {
             //TODO: fix, do something else then return error.html.
-            window.location.href = "error.html";
+            $(".textPosts").append("<div class='page-header'><h1>Something went wrong. Try again.s</h1></div>");
         }
     })
 }
@@ -39,6 +39,10 @@ $(document).ready(function() {
     // Submit-button creates a div with the text from the text area
     $(".post-button").click(function(){
         var text = $("textarea.post-input").val();
+        if (text == ""){
+               // $('.post-button').fadeOut(150).fadeIn(150);
+
+        }else {
         var group = getCookie("currentGroup");
         $.ajax({
             type:"GET",
@@ -58,17 +62,18 @@ $(document).ready(function() {
                         postedTo: group
                     }),
                     success: function () {
-                        console.log("Dette gikk bra. Nå få det inn i en tabell KRISTIAN!");
                         $("#page-content").load("Feed.html");
                         //$("#wallposts").reload();
                         //window.location.reload(false);
                     },
                     error: function () {
-                        console.log("Hmm, prøv igjen du kristian.");
+
                     }
                 })
             }
         });
+        }
     });
+
 });
 
