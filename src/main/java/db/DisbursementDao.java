@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * -Description of the class-
+ * Data access object for Disbursements
  *
  * @author johanmsk
  * @author Martin Wangen

@@ -8,7 +8,7 @@ import util.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 /**
- * -Description of the class-
+ * Data access object for Chores
  *
  * @author
  * matseda

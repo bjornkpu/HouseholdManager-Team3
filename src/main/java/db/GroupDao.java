@@ -9,11 +9,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * This class handles the database connections for the Group class.
+ *Data access object for Group
  *
  * @author nybakk1
  * @author matseda
- * @version 0.2
  */
 public class GroupDao {
 
@@ -358,7 +357,7 @@ public class GroupDao {
     /**
      * Returns the arraylist of balances
      * @param groupId
-     * @return
+     * @return returns the arraylist.
      * @throws SQLException
      */
     public ArrayList<StatisticsHelp> getUserBalance(int groupId) throws SQLException{
@@ -381,6 +380,13 @@ public class GroupDao {
         }
     }
 
+    /**
+     * Method to read the payments out of the DB
+     * @param email of the user who's payments are to be returned
+     * @param groupId the group where where the payments are
+     * @return the paymnts
+     * @throws SQLException
+     */
     public ArrayList<Payment> getPayments(String email, int groupId) throws SQLException{
         try{
             ps = connection.prepareStatement("SELECT p.id,p.payer_id,p.amount,u.name FROM payment p JOIN user u ON p.payer_id = u.email WHERE receiver_id=? AND party_id=? AND active=0");
@@ -400,6 +406,12 @@ public class GroupDao {
         }
     }
 
+    /**
+     * Updates a payment
+     * @param paymentId id of the payment
+     * @return boolean to tell if the update was successful.
+     * @throws SQLException
+     */
     public boolean updatePayment(int paymentId) throws SQLException{
         try{
             ps = connection.prepareStatement("UPDATE payment SET active=1 WHERE id=?");
@@ -446,6 +458,12 @@ public class GroupDao {
         }
     }
 
+    /**
+     * Payment added to the DB
+     * @param payment the payment info
+     * @return boolean to tell if the add was successful.
+     * @throws SQLException
+     */
     public boolean setPayment(Payment payment) throws SQLException{
         try{
             String payer = payment.getPayer();
@@ -466,6 +484,15 @@ public class GroupDao {
         }
     }
 
+    /**
+     * Updates the balances of payer and recipient
+     * @param email1 payer
+     * @param email2 recipient
+     * @param amount amount
+     * @param groupId group of the members
+     * @retur nboolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     public boolean updateBalances (String email1, String email2, double amount, int groupId) throws SQLException{
         try{
             ArrayList<Member> members=getMemberBalance(email1,email2,groupId);

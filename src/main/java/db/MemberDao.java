@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * -Description of the class-
+ * Data access object for Member
  *
  * @author
  * Martin Wangen
