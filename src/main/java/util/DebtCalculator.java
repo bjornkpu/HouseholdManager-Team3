@@ -5,7 +5,7 @@ import data.Member;
 import java.util.ArrayList;
 
 /**
- * -Description of the class-
+ * -Used to calculate members debt-
  *
  * @author
  * Martin Wangen

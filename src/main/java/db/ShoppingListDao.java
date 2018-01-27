@@ -5,7 +5,7 @@ import util.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 /**
- * -Description of the class-
+ * -Data access object for Wallpost-
  *
  * @author BK
  * @author jmska
@@ -98,6 +98,12 @@ public class ShoppingListDao {
         }
     }
 
+    /** Method that gets an ArrayList of shopping lists given the group id and user id
+     * @param groupId The id of the group you are in.
+     * @param email The username you want to be included in the shoppinglist.
+     * @return an ArrayList of shopping lists.
+     * @throws SQLException when failing to get shopping lists.
+     */
     public ArrayList<ShoppingList> getShoppingListByUserInGroup(int groupId, String email) throws SQLException{
 //        connection = Db.instance().getConnection();
         itemDao = new ItemDao(connection);

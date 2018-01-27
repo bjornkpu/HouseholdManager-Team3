@@ -6,6 +6,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
+/**
+ * -Used for all functionality involving email service-
+ *
+ * @author
+ * matsed
+ */
 public class EmailSender {
     /**
      * This method connects with GMail's servers and sends out mail.

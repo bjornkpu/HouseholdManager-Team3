@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import static util.EmailSender.sendConfirmationMail;
 
 /**
- * -Description of the class-
+ * -Data access object for User-
  *
  * @author BK
  * @author johanmsk
