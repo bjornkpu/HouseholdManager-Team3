@@ -104,7 +104,7 @@ function createNewGroup() {
                 },
                 200: function () {
                     console.log("Group Added");
-                    window.location.href = "GroupDashboard.html";
+                    window.location.href = "GroupDashboard.html#feed";
                 }
             }
         })
