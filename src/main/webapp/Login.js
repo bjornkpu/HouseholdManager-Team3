@@ -56,6 +56,7 @@ $(document).ready(function(){
                             $("#alertWrongUsernameOrPassword").fadeTo(4000, 500).slideUp(500, function () {
                                 $("#alertWrongUsernameOrPassword").slideUp(500);
                             });
+                            $("#forgottenPassword").show();
                             break;
                         default:
                             // window.location.href="error.html";

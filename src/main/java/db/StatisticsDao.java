@@ -23,6 +23,7 @@ public class StatisticsDao {
     public StatisticsDao(Connection connection) {
         this.connection=connection;
     }
+
     public ArrayList<StatisticsHelp> getChoresPerUser(int groupId) throws SQLException{
         try{
             ps = connection.prepareStatement("SELECT COUNT(c1.chore_id), u.name FROM user u JOIN (chore c2 INNER JOIN chore_log c1 ON c2.id = c1.chore_id) ON u.email=c1.user_email WHERE c2.party_id=? GROUP BY c1.user_email");
