@@ -82,6 +82,10 @@
     justify-items: center;
 }
 
+#disbCreate td.right_aligned{
+    text-align: right;
+}
+
 
 #dropdownShoppinglist{
     padding-top: 3%;

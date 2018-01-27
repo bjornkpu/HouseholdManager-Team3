@@ -409,8 +409,11 @@ $(document).ready(function() {
                 $('#shoppinglistMembers').replaceWith(" <tr id=\"shoppinglistMembers\"></tr>");
                 numberOfMembers = data.length;
                 for (var i = 0; i < data.length; i++) {
-                    $('#shoppinglistMembers').append("<tr><td>" + data[i].name + "</td><td><input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </td></tr>")
+                    $('#shoppinglistMembers').append(
+                        "<td class='right_aligned'>" + data[i].name + "</td>" +
+                        "<td><input id='memberCheckbox"+i
+                        +"' value='" + data[i].email + "' type='checkbox' checked </td>" +
+                        "<td>sug balle</td>")
                 }
             }
         });
