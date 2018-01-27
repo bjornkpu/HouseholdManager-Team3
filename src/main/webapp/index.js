@@ -1,3 +1,168 @@
+$(document).ready(function(){
+
+//Redirect to dashboard if session is active.
+    $.ajax({
+        url: 'rest/session',
+        type: 'GET',
+        dataType: 'json',
+        success: function(session){
+            // window.location.href="GroupDashboard.html";
+        }
+    });
+
+    //setTimeout(loadLogin,5000);
+    loadLogin();
+
+    function loadLogin() {
+        $('#myModal').modal('show');
+    }
+
+   //click on the logo on the loginpage to login
+    $('#logo').click(function () {
+        $('#myModal').modal('show');
+    });
+    //click on the logo on the loginpage to login
+    $('#logo2').click(function () {
+        $('#myModal').modal('show');
+    });
+    //click on the logo on the loginpage to login
+    $('#logo3').click(function () {
+        $('#myModal').modal('show');
+    });
+
+
+    // Log in
+    $("#loginButton").click(function() {
+        var email=$("#emailField").val();
+        var passPromise = sha256($("#passwordField").val());
+        passPromise.then(function(pass){
+            // console.log(pass);
+            $.ajax({
+                url: 'rest/session',
+                type: 'POST',
+                data: JSON.stringify({
+                    email: email,
+                    password: pass
+                }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                complete: function (jqXHR, textStatus) {
+                    switch (jqXHR.status) {
+                        case 200:
+                            window.location.href = "GroupDashboard.html#feed";
+                            document.cookie ="userLoggedOn =" + email;
+                            break;
+                        case 401:
+                            $("#alertWrongUsernameOrPassword").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertWrongUsernameOrPassword").slideUp(500);
+                            });
+                            $("#forgottenPassword").show();
+                            break;
+                        default:
+                            // window.location.href="error.html";
+                            break;
+                    }
+                }
+            });
+        });
+    });
+
+   // $('#forgottenPassword').hide();
+    $('#forgottenPassword').click(function () {
+        toEmail = $("#emailField").val();
+        mess1 = "Send new password to: "+ toEmail;
+        x = confirm(mess1);
+        if (x == true) {
+            $.ajax({
+                url: 'rest/user/forgotPw/'+toEmail,
+                type: 'PUT',
+                complete: function () {
+                    $("#alertEmailSent").fadeTo(4000, 500).slideUp(500, function () {
+                        $("#alertEmailSent").slideUp(500);
+                    });
+                }
+            });
+        }
+    })
+    
+    $('#registerButton').click(function () {
+        $("#loginContent").hide();
+        $("#div_reg").show();
+        $(".modal-footer").hide();
+        $("#myModalLabel2").show();
+        $("#myModalLabel").hide();
+    });
+
+    $('#cancelBtn').click(function () {
+        $("#div_reg").hide();
+        $("#loginContent").show();
+        $(".modal-footer").show();
+        $("#myModalLabel2").hide();
+        $("#myModalLabel").show();
+
+    })
+
+    $('#confirmReg').click(function click() {
+
+        if(!$("#name_of_user_field").val() || !$("#emailRegField").val() ||
+            !$("#passwordRegField").val() || !$("#passwordConfirmField").val()){
+            $("#alertMissingInfo").fadeTo(4000, 500).slideUp(500, function () {
+                $("#alertMissingInfo").slideUp(500);
+            });
+            return;
+        }
+        /*//--Checks if the email is valid - Doesn't work, should tho...
+        var bool;
+        $.get("rest/user/emailCheck/"+$("#emailRegField").val(), function(data, status){ bool = data;});
+        if(!bool) {
+            alert("Not a valid email1");
+            return;
+        }*/
+
+
+        if($("#passwordRegField").val()==$("#passwordConfirmField").val()){
+            sha256($("#passwordRegField").val()).then(function (value) {
+                $.ajax({
+                    url: 'rest/user',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        email: $("#emailRegField").val(),
+                        password: value,
+                        name: $("#name_of_user_field").val()
+                    }),
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    statusCode: {
+                        200: function() {
+                            $("#div_reg").hide();
+                            $("#loginContent").show();
+                            $(".modal-footer").show();
+                            $("#myModalLabel2").hide();
+                            $("#myModalLabel").show();
+                            $("#alertUserActive").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertUserActive").slideUp(500);
+                            });
+                        },
+                        400: function() {
+                            $("#alertInvalidEmail").fadeTo(4000, 500).slideUp(500, function () {
+                                $("#alertInvalidEmail").slideUp(500);
+                            });
+                        }
+                    }
+                });
+            });
+        }else{
+            $("#alertMismatchingPassword").fadeTo(4000, 500).slideUp(500, function () {
+                $("#alertMismatchingPassword").slideUp(500);
+            });
+        }
+    })
+});
+
+
+//FB Login
+//vvvvvvvvvvvvvvvvvvvvvvv
+
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -71,3 +236,4 @@ function testAPI() {
             'Thanks for logging in, ' + response.name + '!';
     });
 }
+

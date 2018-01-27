@@ -1,7 +1,7 @@
 var curGroup = "currentGroup";
 $(document).ready(function () {
     //gets info of groups from server and renders the dropdown for them.
-    if(window.location.pathname!=="/scrum/Login.html"){
+    if(window.location.pathname!=="/scrum/index.html"){
         getLoggedOnUser(setGroupDropdown);
     }
 
@@ -37,12 +37,12 @@ function getLoggedOnUser(success) {
                     success(user);
                 },
                 error: function() {
-                    window.location.href = "Login.html";
+                    window.location.href = "index.html";
                 }
             });
         },
         error: function() {
-            window.location.href = "Login.html";
+            window.location.href = "index.html";
         }
     });
 }
@@ -53,7 +53,7 @@ function logOut(){
         type: 'DELETE',
         dataType: 'json',
         success: function(session){
-            window.location.href="Login.html";
+            window.location.href="index.html";
             document.cookie ="userLoggedOn =";
 
         }
