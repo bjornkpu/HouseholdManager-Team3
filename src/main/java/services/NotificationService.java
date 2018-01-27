@@ -44,6 +44,12 @@ public class NotificationService {
     @GET
     @Produces("application/json")
     public ArrayList<Notification> getNotificationForUser(@PathParam("userEmail") String userEmail) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
 
@@ -60,6 +66,12 @@ public class NotificationService {
      */
     @PUT
     public void seenNotification(int notificationId) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
             notificationDao.seenNotification(notificationId);
@@ -77,6 +89,12 @@ public class NotificationService {
     @PUT
     @Path("/seenAll")
     public Response seenAllNotifications(@PathParam("userEmail") String userEmail){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection = Db.instance().getConnection()){
             NotificationDao notificationDao = new NotificationDao(connection);
             boolean ok = notificationDao.seenAllNotifications(userEmail);

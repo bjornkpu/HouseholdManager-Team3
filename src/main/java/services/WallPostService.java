@@ -1,5 +1,6 @@
 package services;
 
+import data.Session;
 import data.WallPost;
 import db.Db;
 import db.WallpostDao;
@@ -44,6 +45,12 @@ public class WallPostService {
     @Path("/{groupId}")
     @Produces("application/json")
     public ArrayList<WallPost> getWallPostForGroup(@PathParam("groupId") int groupId){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()){
             WallpostDao wallpostDao = new WallpostDao(connection);
 
@@ -63,7 +70,12 @@ public class WallPostService {
     @Path("/{groupId}/{email}")
     @Produces("application/json")
     public ArrayList<WallPost> getWallPostsForUser(@PathParam("groupId") int groupId,@PathParam("email") String email){
-        try (Connection connection= Db.instance().getConnection()){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try (Connection connection= Db.instance().getConnection()){
             WallpostDao wallpostDao = new WallpostDao(connection);
 
             return wallpostDao.getWallposts(email,groupId);
@@ -80,7 +92,12 @@ public class WallPostService {
     @POST
     @Produces("application/json")
     public Response postWallPost(WallPost wallPost){
-        try (Connection connection= Db.instance().getConnection()) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try (Connection connection= Db.instance().getConnection()) {
             WallpostDao wallpostDao = new WallpostDao(connection);
 
             return Response.status(200).entity(wallpostDao.postWallpost(wallPost)).build();
@@ -97,7 +114,12 @@ public class WallPostService {
     @DELETE
     @Produces("application/json")
     public Response deleteWallPost(WallPost wallPost){
-        try (Connection connection= Db.instance().getConnection()){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try (Connection connection= Db.instance().getConnection()){
             WallpostDao wallpostDao = new WallpostDao(connection);
             return Response.status(200).entity(wallpostDao.deleteWallpost(wallPost.getId())).build();
         } catch (SQLException e){
