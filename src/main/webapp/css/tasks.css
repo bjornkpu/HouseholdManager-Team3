@@ -2,6 +2,11 @@
     padding-left: 10%;
 }
 
+#taskTable tr.truncateRow:hover{
+    background-color: lightgray;
+    cursor: pointer;
+}
+
 @media screen and (orientation:portrait) {
     #taskTable {
         display: table;
