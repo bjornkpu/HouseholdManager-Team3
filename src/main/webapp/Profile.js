@@ -104,7 +104,7 @@ function createNewGroup() {
                 },
                 200: function () {
                     console.log("Group Added");
-                    window.location.href = "GroupDashboard.html";
+                    window.location.href = "GroupDashboard.html#Feed";
                 }
             }
         })
@@ -196,21 +196,6 @@ function getGroups(user) {
     //console.log(getCookie(curGroup));
 }
 
-//Users who are connected to a group can press the logo to go the the dashboard while
-//new users cant
-function homeButtonForOldUsers(groups) {
-    var len = groups.length;
-    if (len == 0){
-    }
-    if(len>=1){
-        $('#houseHoldManagerLogo').click(function () {
-            window.location.href = "GroupDashboard.html#feed"
-        })
-        $('#houseHoldManagerLogo2').click(function () {
-            window.location.href = "GroupDashboard.html#feed"
-        })
-    }
-}
 
 //Sets the values of the fields to reflect current user information
 function setData(userObj) {
