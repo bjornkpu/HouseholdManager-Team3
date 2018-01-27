@@ -1,9 +1,9 @@
 package data;
 import java.util.ArrayList;
 /**
- * -Description of the class-
+ * Object for the chores.
  *
- * @author
+ * @author BK
  */
 public class Chore {
     private int choreId;
