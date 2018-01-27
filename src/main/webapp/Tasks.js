@@ -37,7 +37,7 @@ $(document).ready(function() {
             var date = new Date(tasks[i].deadline).toString().substr(4, 11);
 
                 $("#taskTable").append(
-                    "<tr id='row" + i + "' class='truncateRow'>" +
+                    "<tr id='row" + i + "' class='truncateRow' onclick='clickRowk(checkbox"+i+")'>" +
                     // "<th scope=\"row\">"+(i+1)+"</th>" +
                     "<td class='truncateTableCell'>" + tasks[i].description + "</td>" +
                     "<td class='truncateTableCell'>" + assigned + "</td>" +
@@ -49,7 +49,7 @@ $(document).ready(function() {
 
             if(isMobile()) {
                 $("#taskTable").append(
-                    "<tr class='info info_" + i +"' style='width:100%'>" +
+                    "<tr class='info info_" + i +"' style='width:100%' onclick=''>" +
                     "<td scope=\"row\" class='truncateTableCell'>Description:</td>" +
                     "<td scope=\"row\" class='truncateTableCell'>"+tasks[i].description+"</td>" +
                     "</tr>" +
@@ -302,4 +302,9 @@ $("#taskTable").on('click', 'td.selectedTask', function(){
 //checks if mobile or laptop
 function isMobile(){
     return ($(window).width() < 550);
+}
+function clickRowk(data) {
+    if(document.getElementById(data).checked === true){
+        document.getElementById(data).checked = true
+    }else document.getElementById(data).checked = true;
 }
