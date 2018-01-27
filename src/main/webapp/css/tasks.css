@@ -2,6 +2,20 @@
     padding-left: 10%;
 }
 
+#creatingTask{
+    margin-left: 40%;
+    background-color: red;
+}
+
+#creatingTask table#createTable td{
+    padding: 4px;
+    text-align: right;
+}
+
+#creatingTask table#createTable input{
+    width: 100%;
+}
+
 #taskTable tr.truncateRow:hover{
     background-color: lightgray;
     cursor: pointer;
@@ -11,6 +25,7 @@
     #taskTable {
         display: table;
         width: 100%;
+        overflow: auto;
     }
 
     th.removePortrait{
