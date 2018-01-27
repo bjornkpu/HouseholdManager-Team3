@@ -21,11 +21,12 @@ import static junit.framework.TestCase.assertEquals;
 public class StatisticsTest {
 
     private static Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private static Connection connection;
     private static User user1 = new User("m@m.no", "Mats", "90807060", "password1", "123");
     private static User user2 = new User("k@k.no", "Knut", "90805050", "password2", "123");
     private static ArrayList<WallPost> list1 = new ArrayList<>();
     private static ArrayList<WallPost> list2 = new ArrayList<>();
-    private StatisticsDao statisticsDao = new StatisticsDao();
+    private StatisticsDao statisticsDao = new StatisticsDao(connection);
 
     @BeforeClass
     public static void setUpClass() throws Exception {
