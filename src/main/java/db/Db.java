@@ -122,6 +122,9 @@ public class Db {
         }
     }
 
+    /**
+     * This method closes the connection pool. Was used when we maxed out connections to the DB
+     */
     public void destroy(){
         cpds.close();
     }
