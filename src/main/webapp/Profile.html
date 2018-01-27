@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
     <link rel="stylesheet" href="css/GroupDashboard.css">
-    <link rel="stylesheet" type="text/css" href="css/shoppinglist.css">
+    <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!--favicon stuffs-->
@@ -34,12 +34,14 @@
     <div class="navbarbarcontainer d-flex flex-row justify-content-between">
 
         <!-- Logo items (Left) -->
-        <div class="navbar-nav flex-row">
-            <div class="navbar-brand logo" href="#">
-                <img id="houseHoldManagerLogo" class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
-            </div>
-            <div id="houseHoldManagerLogo2" class="navbar-brand text">
-                <strong>Household Manager</strong>
+        <div id="hovercontain">
+            <div class="navbar-nav flex-row">
+                <div class="navbar-brand logo" href="#">
+                    <img id="houseHoldManagerLogo" class="logo" src="images/hhm_logo_transparent_icon.png" width="45" height="35" alt="" class="d-inline-block align-top" alt="">
+                </div>
+                <div id="houseHoldManagerLogo2" class="navbar-brand text">
+                    <strong>Household Manager</strong>
+                </div>
             </div>
         </div>
 
@@ -160,8 +162,9 @@
     <button type="button" class="close" data-dismiss="alert">x</button>
     <strong>Ops!</strong> Please fill out phone number
 </div>
-<h2>User profile</h2>
 <div class="container">
+<h2>User profile</h2>
+    <br>
     <div class="row">
         <div class="col" id="leftSide">
             <table class="center" id="tableUserInfoReadOnly" style="display: block; min-width: 300px;">
