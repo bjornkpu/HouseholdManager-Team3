@@ -9,7 +9,7 @@
 <div class="center">
 <h2>Group statistic</h2>
 <div>
-    <button id="choreStat" class="button btn">Chore Statistics</button>
+    <button id="choreStat" class="button btn">Task Statistics</button>
     <button id="receiptStat" class="button btn">Receipt Statistics</button>
 </div>
     <div>
@@ -17,37 +17,39 @@
        <!-- <text id="description"></text> -->
     </div>
 </div>
-<div class="gridSide">
-    <div class="desc1">
-        <div id="descShow1" style="display: none;" class="center">
-            <h3 class="center" id="descriptionBarChoreTitle"></h3>
-            <text id="descriptionBarChore"></text>
+<div id="page-content">
+    <div class="gridSide" style="background-color: #f2f2f2;">
+        <div class="desc1" style="background-color: #f2f2f2">
+            <div id="descShow1" style="display: none; background-color:#f2f2f2" class="center">
+                <h3 class="center" id="descriptionBarChoreTitle"></h3>
+                <text id="descriptionBarChore"></text>
+            </div>
         </div>
-    </div>
 
-    <div class="desc2">
-        <div id="descShow2" style="display: none;">
-            <h3 class="center" id="descriptionChartChoreTitle"></h3>
-            <text id="descriptionChartChore"></text>
+        <div class="desc2" style="background-color: #f2f2f2">
+            <div id="descShow2" style="display: none;">
+                <h3 class="center" id="descriptionChartChoreTitle"></h3>
+                <text id="descriptionChartChore"></text>
+            </div>
         </div>
-    </div>
 
-    <div class="barStat">
-        <div id="descShow3" style="display: none;" class="center">
-            <h3 class="center" id="descriptionBarReceiptTitle"></h3>
-            <text id="descriptionBarReceipt"></text>
-        </div>
-<div>
-    <ul class="bar-graph">
-    </ul>
-</div>
+        <div class="barStat" style="background-color: #f2f2f2">
+            <div id="descShow3" style="display: none;" class="center">
+                <h3 class="center" id="descriptionBarReceiptTitle"></h3>
+                <text id="descriptionBarReceipt"></text>
+            </div>
+    <div style="background-color: #f2f2f2">
+        <ul class="bar-graph">
+        </ul>
     </div>
-    <div class="chartStat">
-        <div id="descShow4" style="display: none;">
-            <h3 class="center" id="descriptionChartReceiptTitle"></h3>
-            <text id="descriptionChartReceipt"></text>
         </div>
-        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+        <div class="chartStat" style="background-color: #f2f2f2">
+            <div id="descShow4" style="display: none;">
+                <h3 class="center" id="descriptionChartReceiptTitle"></h3>
+                <text id="descriptionChartReceipt"></text>
+            </div>
+            <div id="chartContainer" style="height: 300px; width: 100%; background-color:#f2f2f2"></div>
+        </div>
     </div>
 </div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
