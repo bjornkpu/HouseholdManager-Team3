@@ -1,5 +1,6 @@
 package services;
 
+import data.Session;
 import data.StatisticsHelp;
 import db.Db;
 import db.StatisticsDao;
@@ -16,30 +17,38 @@ import java.util.HashMap;
 
 @Path("/groups/{groupId}/statistics/")
 public class StatisticsService {
-        private final Logger log = Logger.getLogger();
+    private final Logger log = Logger.getLogger();
 
-        @Context
-        private HttpServletRequest request;
+    @Context
+    private HttpServletRequest request;
 
-        @GET
-        @Produces("application/json")
-        public ArrayList<StatisticsHelp> getChoresPerUser(@PathParam("groupId") int groupId) throws SQLException {
-//		Session session = (Session)request.getSession();
-            try(Connection connection= Db.instance().getConnection()) {
-                StatisticsDao sDao = new StatisticsDao(connection);
-                return sDao.getChoresPerUser(groupId);
-            } catch (SQLException e) {
-                log.error("Failed to get Statistics", e);
-                throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
-            }
+    @GET
+    @Produces("application/json")
+    public ArrayList<StatisticsHelp> getChoresPerUser(@PathParam("groupId") int groupId) throws SQLException {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }    try(Connection connection= Db.instance().getConnection()) {
+            StatisticsDao sDao = new StatisticsDao(connection);
+            return sDao.getChoresPerUser(groupId);
+        } catch (SQLException e) {
+            log.error("Failed to get Statistics", e);
+            throw new ServerErrorException("Failed to get Statistics", Response.Status.INTERNAL_SERVER_ERROR, e);
         }
+    }
 
     @GET
     @Path("/costs")
     @Produces("application/json")
     public ArrayList<StatisticsHelp> getDisbursementCostPerUser(@PathParam("groupId") int groupId) throws SQLException {
-//		Session session = (Session)request.getSession();
-        try(Connection connection= Db.instance().getConnection()) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try(Connection connection= Db.instance().getConnection()) {
             StatisticsDao sDao = new StatisticsDao(connection);
             return sDao.getDisbursementCostPerUser(groupId);
         } catch (SQLException e) {
@@ -52,8 +61,12 @@ public class StatisticsService {
     @Path("/choreStatus")
     @Produces("application/json")
     public ArrayList<StatisticsHelp> getChoreStatus(@PathParam("groupId") int groupId) throws SQLException {
-//		Session session = (Session)request.getSession();
-        try(Connection connection= Db.instance().getConnection()) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try(Connection connection= Db.instance().getConnection()) {
             StatisticsDao sDao = new StatisticsDao(connection);
             return sDao.getChorStatusCount(groupId);
         } catch (SQLException e) {
@@ -66,8 +79,12 @@ public class StatisticsService {
     @Path("/userDebt")
     @Produces("application/json")
     public ArrayList<StatisticsHelp> getUserDebt(@PathParam("groupId") int groupId) throws SQLException {
-//		Session session = (Session)request.getSession();
-        try(Connection connection= Db.instance().getConnection()) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try(Connection connection= Db.instance().getConnection()) {
             StatisticsDao sDao = new StatisticsDao(connection);
             return sDao.getUserDebt(groupId);
         } catch (SQLException e) {

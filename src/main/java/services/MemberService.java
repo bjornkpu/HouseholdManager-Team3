@@ -2,6 +2,7 @@ package services;
 
 import data.Group;
 import data.Member;
+import data.Session;
 import data.User;
 import db.Db;
 import db.GroupDao;
@@ -47,6 +48,12 @@ public class MemberService {
     @GET
     @Produces("application/json")
     public ArrayList<Member> getMemberByGroupId(@PathParam("groupId") int groupId) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()){
             MemberDao memberDao = new MemberDao(connection);
             return memberDao.getMembers(groupId);
@@ -72,6 +79,12 @@ public class MemberService {
     @Path("/{email}")
     @Produces("application/json")
     public Response inviteAMember(@PathParam("email") String email,@PathParam("groupId") int groupId) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection = Db.instance().getConnection()) {
             MemberDao memberDao = new MemberDao(connection);
             GroupDao groupDao = new GroupDao(connection);
@@ -104,6 +117,12 @@ public class MemberService {
     @Produces("application/json")
     @Path("/{email}/{status}")
     public Response updateToMember(@PathParam("email") String email, @PathParam("groupId") int groupId,@PathParam("status") int status){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()){
             MemberDao memberDao = new MemberDao(connection);
 
@@ -126,6 +145,12 @@ public class MemberService {
     @Produces("application/json")
     @Path("/{email}")
     public Response deleteMember(@PathParam("email") String email,@PathParam("groupId") int groupId){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()){
             MemberDao memberDao = new MemberDao(connection);
             log.info("Deleting member " + email + " from group "  + groupId);

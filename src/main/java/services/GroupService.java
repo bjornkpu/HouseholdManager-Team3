@@ -1,6 +1,7 @@
 package services;
 import data.Group;
 import data.Payment;
+import data.Session;
 import data.StatisticsHelp;
 import db.Db;
 import db.GroupDao;
@@ -48,6 +49,12 @@ public class GroupService {
     @Path("/{groupid}")
     @Produces(MediaType.APPLICATION_JSON)
     public Group getGroup(@PathParam("groupid") int groupid) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         Group group = null;
         try (Connection connection= Db.instance().getConnection()){
             GroupDao groupDao = new GroupDao(connection);
@@ -67,6 +74,12 @@ public class GroupService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Group> getGroups() {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         List<Group> groups = null;
         try (Connection connection= Db.instance().getConnection()){
             GroupDao groupDao = new GroupDao(connection);
@@ -88,6 +101,12 @@ public class GroupService {
     @Path("/{email}/invites")
     @Produces("application/json")
     public ArrayList<Group> getGroupInvites(@PathParam("email") String email){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()){
             MemberDao memberDao = new MemberDao(connection);
             log.info("Retrieving group invites for member " + email);
@@ -107,6 +126,12 @@ public class GroupService {
     @Path("/list/{email}")
     @Produces("application/json")
     public ArrayList<Group> getGroupsConnectedToMember(@PathParam("email") String email){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             MemberDao memberDao = new MemberDao(connection);
 
@@ -131,6 +156,12 @@ public class GroupService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addGroup(Group group) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
 
@@ -160,6 +191,12 @@ public class GroupService {
     @Path("/{groupid}")
     @Produces(MediaType.APPLICATION_JSON)
     public void deleteGroup(@PathParam("groupid") int groupId){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             groupDao.deleteGroup(groupId);
@@ -183,6 +220,12 @@ public class GroupService {
     @Path("/{groupid}")
     @Produces(MediaType.APPLICATION_JSON)
     public void updateGroup(Group group){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Updating group. ID: " + group.getId());
@@ -199,6 +242,12 @@ public class GroupService {
     @Path("/balance/{groupId}")
     @Produces("application/json")
     public ArrayList<StatisticsHelp> getBalance(@PathParam("groupId") int groupId){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving balance by member.");
@@ -213,6 +262,12 @@ public class GroupService {
     @Path("/payment/{groupId}/{email}")
     @Produces("application/json")
     public ArrayList<Payment> getPaymentRequests(@PathParam("groupId") int groupId, @PathParam("email") String email){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Retrieving payments to member.");
@@ -227,6 +282,12 @@ public class GroupService {
     @Path("/updatePayment/{payId}")
     @Consumes("application/json")
     public boolean updatePayment(@PathParam("payId") int payId){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Updating payment.");
@@ -241,6 +302,12 @@ public class GroupService {
     @Path("/updateBalances/{groupId}/{email1}/{email2}/{amount}")
     @Consumes("application/json")
     public boolean updateUserBalance(@PathParam("groupId") int groupId, @PathParam("amount") double amount, @PathParam("email1") String email1, @PathParam("email2") String email2){
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try (Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             log.info("Upating balance.");
@@ -255,6 +322,12 @@ public class GroupService {
     @Path("/newPayment/")
     @Consumes(MediaType.APPLICATION_JSON)
     public boolean addPayment(Payment payment) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             return(groupDao.setPayment(payment)&&notificationSender.paymentNotification(payment));

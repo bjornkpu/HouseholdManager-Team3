@@ -42,7 +42,12 @@ public class UserService {
     @Path("/{email}")
     @Produces("application/json")
     public User get(@PathParam("email") String currentUserEmail) {
-        try(Connection connection= Db.instance().getConnection()) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }try(Connection connection= Db.instance().getConnection()) {
             UserDao userDao = new UserDao(connection);
             return userDao.getUser(currentUserEmail);
         } catch(SQLException e) {
@@ -87,7 +92,11 @@ public class UserService {
     @Consumes("application/json")
     public void update(User user) {
         Session session = (Session)request.getSession().getAttribute("session");
-        String currentUserEmail = session.getEmail();
+        //Check if there is a session
+        if(session == null) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }String currentUserEmail = session.getEmail();
         System.out.println(currentUserEmail);
         try(Connection connection= Db.instance().getConnection()) {
             UserDao userDao = new UserDao(connection);
@@ -141,6 +150,12 @@ public class UserService {
     @Path("/{email}")
     @Consumes("application/json")
     public void delete(String email) {
+        Session session = (Session)request.getSession().getAttribute("session");
+        //Check if there is a session
+        if(session == null || !session.getEmail().equals(email)) {
+            log.info("Session not found");
+            throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+        }
         try(Connection connection= Db.instance().getConnection()) {
             UserDao userDao = new UserDao(connection);
 

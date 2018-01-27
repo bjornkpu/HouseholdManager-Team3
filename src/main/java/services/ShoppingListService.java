@@ -46,7 +46,12 @@ public class ShoppingListService {
 	@GET
 	@Produces("application/json")
 	public ArrayList<ShoppingList> getShoppingListByGroupId(@PathParam("groupId") int groupId) {
-//		Session session = (Session)request.getSession();
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
 		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 
@@ -61,7 +66,12 @@ public class ShoppingListService {
 	@Path("/user")
 	@Produces("application/json")
 	public ArrayList<ShoppingList> getShoppingListByUserInGroup(@PathParam("groupId") int groupId){
-		Session session = (Session) request.getSession().getAttribute("session");
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
 		log.info("Session: = " + session.getEmail());
 		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
@@ -80,7 +90,13 @@ public class ShoppingListService {
     @Path("/addShoppinglist")
     @Consumes("application/json")
     public void addShoppingList(ShoppingList shoppingList) {
-        try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
+		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
             if(shoppingListDao.addShoppingList(shoppingList) >= 1){
             	notificationSender.newShoppingListNotification(shoppingList);
@@ -98,7 +114,12 @@ public class ShoppingListService {
     @PUT
     @Consumes("application/json")
     public void updateShoppingList(ShoppingList shoppingList) {
-        try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
             shoppingListDao.updateShoppingList(shoppingList);
             log.info("Updated shopping list!");
@@ -117,7 +138,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}")
 	@Produces("application/json")
 	public ShoppingList getShoppingList(@PathParam("shoppingListId") int shoppingListId) {
-		Session session = (Session) request.getSession().getAttribute("session");
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
 		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 			return shoppingListDao.getShoppingList(shoppingListId,session.getEmail());
@@ -135,9 +161,14 @@ public class ShoppingListService {
     @Path("/{shoppingListId}")
     @Consumes("application/json")
     public void deleteShoppingList(@PathParam("shoppingListId") int shoppingListId) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
 		try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
-			Session session = (Session) request.getSession().getAttribute("session");
 			String email = session.getEmail();
             shoppingListDao.delShoppingList(shoppingListId);
 			notificationSender.closeShoppingListNotification(shoppingListDao.getShoppingList(shoppingListId,email));
@@ -157,7 +188,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/items")
 	@Produces("application/json")
 	public ArrayList<Item> getItemsInShoppingList(@PathParam("shoppingListId") int shoppingListId){
-		try(Connection connection= Db.instance().getConnection()){
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
 			return itemDao.getItemsInShoppingList(shoppingListId);
 		} catch(SQLException e){
@@ -174,7 +210,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/items")
 	@Consumes("application/json")
 	public void addItemToShoppingList(@PathParam("shoppingListId")int shoppingListId, Item item){
-		try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()) {
 			ItemDao itemDao = new ItemDao(connection);
 			itemDao.addItem(item);
 			log.info("Item added to shopping list!");
@@ -194,7 +235,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/items/{itemId}")
 	@Produces("application/json")
 	public Item getItemById(@PathParam("shoppingListId") int shoppingListId,@PathParam("itemId") int itemId){
-		try(Connection connection= Db.instance().getConnection()){
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
 			return itemDao.getItem(itemId);
 		} catch(SQLException e){
@@ -211,7 +257,12 @@ public class ShoppingListService {
 	@Path("/items/{status}")
 	@Consumes("application/json")
 	public void updateItems(@PathParam("status") int status, ArrayList<Item> items){
-		try(Connection connection= Db.instance().getConnection()){
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
 			if(status==2||status==1||status==0) {
 				for (Item item : items) {
@@ -234,7 +285,12 @@ public class ShoppingListService {
 	@Path("/items/")
 	@Consumes("application/json")
 	public void delItemById(ArrayList<Item> items){
-		try(Connection connection= Db.instance().getConnection()){
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()){
 			ItemDao itemDao = new ItemDao(connection);
 			for(Item item : items){
 				itemDao.delItem(item.getId());
@@ -254,7 +310,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/users")
 	@Produces("application/json")
 	public ArrayList<User> getUsersInShoppingList(@PathParam("shoppingListId") int shoppingListId){
-		try(Connection connection= Db.instance().getConnection()){
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()){
 			UserDao userDao = new UserDao(connection);
 			return userDao.getUsersInShoppingList(shoppingListId);
 		} catch(SQLException e){
@@ -271,7 +332,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/users")
 	@Consumes("application/json")
 	public void addUserToShoppingList(@PathParam("shoppingListId")int shoppingListId, User user){
-		try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 //			TODO check if works
 			shoppingListDao.addUserToShoppingList(user.getEmail(), shoppingListId);
@@ -292,7 +358,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/users/{userId}")
 	public void addUserToShoppingList(@PathParam("shoppingListId") int shoppingListId,
 	                                  @PathParam("userId") String userId){
-		try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 			shoppingListDao.addUserToShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {
@@ -311,7 +382,12 @@ public class ShoppingListService {
 	@Path("/{shoppingListId}/users/{userId}")
 	public void removeUserFromShoppingList(@PathParam("shoppingListId") int shoppingListId,
 	                                  @PathParam("userId") String userId){
-		try(Connection connection= Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection= Db.instance().getConnection()) {
 			ShoppingListDao shoppingListDao = new ShoppingListDao(connection);
 			shoppingListDao.removeUserFromShoppingList(userId, shoppingListId);
 		}catch (SQLException e) {
