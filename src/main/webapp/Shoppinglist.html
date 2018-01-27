@@ -10,7 +10,7 @@
 
 <!--Create receipt site -->
 <div id="creatingDisbursement" style="display: none;">
-    <br><h3 class="center">Creating Disburdqwnt</h3><br>
+    <br><h3 class="center">Creating Receipt</h3><br>
     <table class="center" id="disbCreate">
         <tr>
             <td class="right_aligned">Name of receipt</td>
@@ -39,8 +39,8 @@
 <!-- create shoppinglist site-->
 <div id="creatingShoppinglist" style="display: none;">
     <div class="createListGrid">
-        <h3>New shoppinglist</h3>
-        <a>Name of Shoppinglist</a>
+        <h3>New shopping list</h3>
+        <a>Name of shopping list</a>
         <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist">
 
         <div class="dropdown">
@@ -49,13 +49,13 @@
                 <!--Here's a list over members of a group-->
             </div>
         </div>
-        <button class="backToShoppinglist button btn"  id ="confirmShoppinglist"> Create shoppinglist</button>
+        <button class="backToShoppinglist button btn"  id ="confirmShoppinglist"> Create shopping list</button>
     </div>
     <div class="participantsGrid">
         <h3>Added participants: </h3>
-        <ul id="addedUsers">
+        <table id="addedUsers">
            <!--Here's a list over added users in shoppinglist-->
-        </ul>
+        </table>
     </div>
     </div>
 </div>
@@ -69,7 +69,7 @@
         <div class="container" id="dropdownShoppinglist" style ="display:block;">
             <div class="dropdown">
                 <button class="button btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
-                    <span id="nameSpan">Select a shoppinglists</span>
+                    <span id="nameSpan">Select a shopping list</span>
                     <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
                 </ul>
@@ -117,7 +117,7 @@
                     You can then choose the other people who will join the receipt</span>
                 </div>
 
-            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+            <button class="button" id="delete_shoppinglist">Delete current shopping list</button>
             <div class="deleteListIcon">
                 <i class="material-icons md-24">info</i>
                 <span class="deleteTooltip">A list with items that aren't yet assigned can't be deleted.</span>
@@ -134,8 +134,8 @@
 <!--Menu shoppinglist-->
 <table class="center" id="menuShopinglist" style="display: block">
     <tr>
-        <td><button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
-        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of Shoppinglists</button></td>
+        <td><button class = "button" id="createShoppinglistButton" > Create shopping list</button></td>
+        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of shopping lists</button></td>
     </tr>
 </table>
 <!-- end of menu-->

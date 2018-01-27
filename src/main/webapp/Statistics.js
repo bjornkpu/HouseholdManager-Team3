@@ -27,7 +27,8 @@ var list=0;
             yValueFormatString: "##0.00\"%\"",
             indexLabel: "{label} {y}",
             dataPoints: pieList
-        }]
+        }],
+        backgroundColor: '#f2f2f2'
     });
     chart.render();
     console.log("rendered");
@@ -53,9 +54,9 @@ $(document).ready(function() {
         descShow4.style.display="none";
 
 
-        textbox1.innerHTML="Number of chores completed";
+        textbox1.innerHTML="Number of tasks completed";
         textTitle1.innerHTML="Description: ";
-        textbox2.innerHTML="Assigned and unassigned chores(midlertidlig desc)";
+        textbox2.innerHTML="Assigned and unassigned tasks";
         textTitle2.innerHTML="Description: ";
 
         getChoreStatistics();
@@ -79,7 +80,7 @@ $(document).ready(function() {
 
         textbox3.innerHTML="Debt per user";
         textTitle3.innerHTML="Description: ";
-        textbox4.innerHTML="Amount of money each member have spend(midlertidig desc)";
+        textbox4.innerHTML="Amount of money each member have spent";
         textTitle4.innerHTML="Description: ";
 
         getDisbursementStatistics();

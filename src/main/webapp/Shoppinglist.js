@@ -302,8 +302,8 @@ $(document).ready(function() {
 
                 // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
 
-                $("#addedUsers").append("<table><tr><td>" + user.name + "</td>" +
-                    "<td><button class='b button' id='" + index + "'>remove</td></tr></button></table>");
+                $("#addedUsers").append("<tr><td>" + user.name + "</td>" +
+                    "<td><button class='b button' id='" + index + "'>remove</button></td></tr>");
                 index++;
             });
         }
@@ -318,8 +318,8 @@ $(document).ready(function() {
             $("#addedUsers").empty();
             for(var i = 0; i < selectedUsers.length; i++){
                 if(selectedUsers[i] === "empty") continue;
-                $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
-                    "<button class='b button' id='" + i + "'>Remove</button></li>");
+                $("#addedUsers").append("<tr><td>" + selectedUsers[i].name + "</td>" +
+                    "<td><button class='b button' id='" + i + "'>Remove</button></td></tr>");
             }
         }
     });
@@ -412,8 +412,7 @@ $(document).ready(function() {
                     $('#shoppinglistMembers').append(
                         "<td class='right_aligned'>" + data[i].name + "</td>" +
                         "<td><input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </td>" +
-                        "<td>sug balle</td>")
+                        +"' value='" + data[i].email + "' type='checkbox' checked </td>")
                 }
             }
         });
@@ -438,13 +437,15 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(){
-                var creatingDisbursement =document.getElementById('creatingDisbursement');
-                var shoppinglist = document.getElementById('shoppinglist');
-                var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-
-                creatingDisbursement.style.display="none";
-                shoppinglist.style.display="block";
-                dropdownShoppinglist.style.display="block";
+                // var creatingDisbursement =document.getElementById('creatingDisbursement');
+                // var shoppinglist = document.getElementById('shoppinglist');
+                // var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+                //
+                // creatingDisbursement.style.display="none";
+                // shoppinglist.style.display="block";
+                // dropdownShoppinglist.style.display="block";
+                window.location.href = "GroupDashboard.html#Receipts";
+                console.log("rewrfew");
             },
             error: function(){
                 var disb = {

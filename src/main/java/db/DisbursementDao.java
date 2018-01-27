@@ -14,6 +14,7 @@ import java.util.ArrayList;
  * -Description of the class-
  *
  * @author johanmsk
+ * @author Martin Wangen
  */
 public class DisbursementDao {
     private static final Logger log = Logger.getLogger();
@@ -28,6 +29,12 @@ public class DisbursementDao {
         this.connection = connection;
     }
 
+    /**
+     * Helpmethod to find an index.
+     * @param users Arraylist of users
+     * @param email of the one we're looking for
+     * @return index
+     */
     private int getBuyerIndex(ArrayList<User> users, String email){
         for(int i=0; i<users.size();i++){
             if(users.get(i).getEmail().equals(email)){
@@ -233,6 +240,11 @@ public class DisbursementDao {
         return false;
     }
 
+    /**
+     * Returns the last ID autoincremented in the DB during this connection.
+     * @return the ID
+     * @throws SQLException
+     */
     private int lastId()throws SQLException{
         try{
             ps = connection.prepareStatement("SELECT LAST_INSERT_ID()");
@@ -246,6 +258,13 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Method to update the balances in the DB
+     * @param disbursement Contains the information about who participated and the sum
+     * @param groupid which group to update in
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     public boolean updateBalances(Disbursement disbursement, int groupid) throws SQLException {
         boolean returnResult = true;
         ArrayList<Member> members = new ArrayList<>();
@@ -343,6 +362,12 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Adds participants to a disbursement in the DB
+     * @param disbursement contains the participants
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     private boolean addParticipantsToDisbursement(Disbursement disbursement) throws SQLException {
         boolean returnResult = true;
         try{
@@ -373,6 +398,12 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Adds participants to a disbursement in the DB
+     * @param disbursement contains the items
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     private boolean addItemsToDisbursement(Disbursement disbursement) throws SQLException {
         try{
             statement = connection.createStatement();
@@ -401,6 +432,13 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Help method to addDisbursement
+     * @param disbursement the disbursement
+     * @param groupid to add the disbursement to
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     private boolean makeDisbursement(Disbursement disbursement, int groupid) throws SQLException {
         try{
             ps = connection.prepareStatement("INSERT INTO disbursement " +
@@ -425,6 +463,15 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Method that registres the response of the participants
+     * @param disbursement contains info of the disbursement
+     * @param groupId wich group it belongs to
+     * @param email the responder
+     * @param response the response. 1 is accepted and 2 is declined
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     public boolean respondToDisbursement(Disbursement disbursement,int groupId ,String email, int response) throws SQLException{
         try{
             disbursement = getDisbursementDetails(disbursement.getId(),email);
@@ -448,6 +495,13 @@ public class DisbursementDao {
         }
     }
 
+    /**
+     * Heling method to check if all have accepted the disbursement.
+     * @param disbursement wich disbursement
+     * @param groupId what group
+     * @return boolean to tell if the transaction was successful.
+     * @throws SQLException
+     */
     public boolean checkResponses(Disbursement disbursement, int groupId) throws SQLException {
         try {
             ps = connection.prepareStatement("SELECT accepted FROM user_disbursement WHERE disp_id=?");

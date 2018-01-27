@@ -355,6 +355,12 @@ public class GroupDao {
         }
     }
 
+    /**
+     * Returns the arraylist of balances
+     * @param groupId
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<StatisticsHelp> getUserBalance(int groupId) throws SQLException{
         try{
             ps = connection.prepareStatement("SELECT name, balance FROM user_party up JOIN user u ON up.user_email=u.email WHERE party_id=? AND (status LIKE 1 OR status LIKE 2);");

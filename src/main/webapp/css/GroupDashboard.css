@@ -23,6 +23,10 @@ body{
     color: #ffffff
 }
 
+#hovercontain:hover{
+    cursor: pointer;
+}
+
     .navbar-light{
         background-color: #040e1c;
     }
@@ -260,8 +264,9 @@ buttons
         margin-left: 70px;
         top: 0px;
         position: relative;
-        background-color: white;
-        height: 100vh;
+        background-color: #f2f2f2;
+        height: auto;
+        min-height: 91vh;
     }
 
 
@@ -399,6 +404,8 @@ buttons
     padding-bottom: 10px;
     border-bottom: 1px solid #eee;
 }
+
+
 
 /*
  * COLORS:
