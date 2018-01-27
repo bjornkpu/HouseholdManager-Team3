@@ -357,7 +357,7 @@ public class GroupDao {
 
     public ArrayList<StatisticsHelp> getUserBalance(int groupId) throws SQLException{
         try{
-            ps = connection.prepareStatement("SELECT name, balance FROM user_party up JOIN user u ON up.user_email=u.email WHERE party_id=? AND status LIKE 1 OR status LIKE 2;");
+            ps = connection.prepareStatement("SELECT name, balance FROM user_party up JOIN user u ON up.user_email=u.email WHERE party_id=? AND (status LIKE 1 OR status LIKE 2);");
             ps.setInt(1,groupId);
             rs = ps.executeQuery();
             ArrayList<StatisticsHelp> result = new ArrayList<>();
