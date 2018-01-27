@@ -3,17 +3,27 @@
 }
 
 #creatingTask{
-    margin-left: 40%;
-    background-color: red;
+    width: 500px;
+    margin-left: 32%;
 }
 
-#creatingTask table#createTable td{
-    padding: 4px;
+#creatingTask h1{
+    /*margin-left: 18%;*/
+}
+
+#creatingTask table td.right_aligned{
     text-align: right;
+}
+
+#creatingTask table td button{
+    margin-top: 10px;
+    min-width: 86px;
 }
 
 #creatingTask table#createTable input{
     width: 100%;
+    max-width: 200px;
+    margin-top: 10px;
 }
 
 #taskTable tr.truncateRow:hover{
