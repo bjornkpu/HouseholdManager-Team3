@@ -2,12 +2,12 @@
     padding-left: 10%;
 }
 
-
 @media screen and (orientation:portrait) {
     #taskTable {
         display: table;
         width: 100%;
     }
+
     th.removePortrait{
         display:none;
         width:0;
@@ -66,3 +66,15 @@
         background-color:green;
     }
 }
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #3add24;
+}
+
