@@ -8,9 +8,23 @@
     min-width: 100%;
 }
 
-.listGrid {
+#creatingShoppinglist{
     display: grid;
-    grid-area: tableRow;
+    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+    grid-template-rows: [row1-start] 15% [row2-end row2-start] auto [row2-end];
+    grid-template-areas: ". ."
+                        "leftside rightside";
+    justify-items: stretch;
+    min-width: 100%;
+}
+.createListGrid{
+    display: grid;
+    grid-area: leftside;
+    justify-items: center;
+}
+.participantsGrid {
+    display: grid;
+    grid-area: rightside;
     justify-items: center;
 }
 
@@ -34,7 +48,6 @@
     justify-items: center;
     align-items: center;
 }
-
 
 .deleteTooltip{
     visibility: hidden;
@@ -67,8 +80,8 @@
 }
 .createReceiptIcon:hover .receiptTooltip{
     visibility: visible;
-
 }
+
 .deleteListIcon:hover .deleteTooltip{
     visibility: visible;
 }
@@ -171,7 +184,7 @@ input[type='checkbox']:checked {
 
 .shoppingListGrid{
     display: grid;
-    justify-self: stretch;
+    justify-items: center;
     grid-area: tableRow;
     min-width: 100%;
     max-width: 100%;
@@ -179,6 +192,7 @@ input[type='checkbox']:checked {
 
 
 #shoppingTable{
+    grid-area: tablerow;
     justify-self: center;
     max-width: 50%;
 }
