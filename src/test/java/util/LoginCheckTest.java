@@ -1,4 +1,4 @@
-package data;
+package util;
 import data.LoginData;
 import data.User;
 import org.junit.BeforeClass;

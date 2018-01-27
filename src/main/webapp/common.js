@@ -1,7 +1,7 @@
 var curGroup = "currentGroup";
 $(document).ready(function () {
     //gets info of groups from server and renders the dropdown for them.
-    if(window.location.pathname!=="/scrum/Login.html"){
+    if(window.location.pathname!=="/scrum/index.html"){
         getLoggedOnUser(setGroupDropdown);
     }
 
@@ -37,12 +37,12 @@ function getLoggedOnUser(success) {
                     success(user);
                 },
                 error: function() {
-                    window.location.href = "Login.html";
+                    window.location.href = "index.html";
                 }
             });
         },
         error: function() {
-            window.location.href = "Login.html";
+            window.location.href = "index.html";
         }
     });
 }
@@ -53,7 +53,7 @@ function logOut(){
         type: 'DELETE',
         dataType: 'json',
         success: function(session){
-            window.location.href="Login.html";
+            window.location.href="index.html";
             document.cookie ="userLoggedOn =";
 
         }
@@ -245,6 +245,7 @@ function postNotificationToAUser(user,text) {
 
 //function which lists out the different groups into the dropdown menu
 function renderGroupDropdown(groups) {
+    homeButtonForOldUsers(groups);
     console.log("render grouplist");
     var len = groups.length;
     if (len === 0) {
@@ -288,6 +289,21 @@ function renderGroupDropdown(groups) {
             console.log("Added group: " + groupname);
             //$(".navGroupName").html(""+groupname);
         }
+    }
+}
+//Users who are connected to a group can press the logo to go the the dashboard while
+//new users cant
+function homeButtonForOldUsers(groups) {
+    var len = groups.length;
+    if (len == 0){
+    }
+    if(len>=1){
+        $('#houseHoldManagerLogo').click(function () {
+            window.location.href = "GroupDashboard.html#feed"
+        })
+        $('#houseHoldManagerLogo2').click(function () {
+            window.location.href = "GroupDashboard.html#feed"
+        })
     }
 }
 

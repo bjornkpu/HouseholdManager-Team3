@@ -10,24 +10,27 @@
 
 <!--Create receipt site -->
 <div id="creatingDisbursement" style="display: none;">
-    <h1>Creating Disbursement</h1>
-    <table>
+    <br><h3 class="center">Creating Disburdqwnt</h3><br>
+    <table class="center" id="disbCreate">
         <tr>
-            <td>Name of receipt</td>
-            <td > <input id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
+            <td class="right_aligned">Name of receipt</td>
+            <td > <input class="form-control" id="nameOfDisbursement" type="text" name="nameOfDisbursement"></td>
         </tr>
         <tr>
-            <td>Participants:</td>
+            <td class="right_aligned">Participants </td>
         </tr>
         <tr id="shoppinglistMembers">
+            <td>name</td>
+            <td>Checkbox</td>
         </tr>
         <tr>
-            <td>Total amount</td>
-            <td > <input id="totalAmount" type="text" name="totalAmount"></td>
+            <td class="right_aligned">Total amount </td>
+            <td > <input class="form-control" id="totalAmount" type="text" name="totalAmount"></td>
         </tr>
         <tr>
-            <td>Confirm</td>
-            <td > <button class="backToShoppinglist" id ="confirmDisbursement"> Confirm</button> </td><td > <button class="backToShoppinglist" id ="cancelDisbursement"> Cancel</button> </td>
+            <td></td>
+            <td > <button class="backToShoppinglist button btn" id ="confirmDisbursement"> Confirm</button>
+                <button class="backToShoppinglist button btn" id ="cancelDisbursement"> Cancel</button> </td>
         </tr>
     </table>
 </div>
@@ -35,22 +38,20 @@
 
 <!-- create shoppinglist site-->
 <div id="creatingShoppinglist" style="display: none;">
-    <div class=" shoppingListGrid">
-    <div class="listGrid">
+    <div class="createListGrid">
         <h3>New shoppinglist</h3>
         <a>Name of Shoppinglist</a>
         <input id="nameOfShoppinglist" type="text" name="nameOfShoppinglist">
 
         <div class="dropdown">
-            <button class="button">Add user</button>
+            <button class="button btn">Add user</button>
             <div id="results" class="search_results">
                 <!--Here's a list over members of a group-->
             </div>
         </div>
-        <button class="backToShoppinglist button"  id ="confirmShoppinglist"> Create shoppinglist</button>
-
+        <button class="backToShoppinglist button btn"  id ="confirmShoppinglist"> Create shoppinglist</button>
     </div>
-    <div class="rightsideGrid">
+    <div class="participantsGrid">
         <h3>Added participants: </h3>
         <ul id="addedUsers">
            <!--Here's a list over added users in shoppinglist-->
@@ -67,7 +68,7 @@
         <!--dropdown shoppinglist -->
         <div class="container" id="dropdownShoppinglist" style ="display:block;">
             <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
+                <button class="button btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
                     <span id="nameSpan">Select a shoppinglists</span>
                     <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="menu1" id="shoppinglistdropdown">
@@ -81,18 +82,16 @@
 <br>
 <!-- Shoppinglist-->
 <div class="container shoppingListGrid" id="shoppinglist" >
-
-    <div class="listGrid">
     <div class = "row">
         <h2 id="shoppinglistName" class="center"></h2>
     </div>
-    <div class="row">
+    <div class="row tableDiv">
         <table class="table table-hover" id="shoppingTable">
             <thead>
             <tr>
-                <th>#</th>
-                <th>Item</th>
-                <th>status</th>
+                <th class="number">#</th>
+                <th class="item">Item</th>
+                <th class="status">status</th>
                 <th></th>
             </tr>
             </thead>
@@ -100,25 +99,31 @@
             </tbody>
         </table>
     </div>
-    </div>
-    <!--grid rightside for a few buttons and etc -->
-    <div class="rightsideGrid">
-        <div class="infoShoppinglist">To create a receipt mark the items you have bought and press create receipts. You can then choose the other people who will join the receipt</div>
-        <button class = "button" id="createDisbursementButton" > Create receipt</button>
-        <div class="infoShoppinglist">A list with items that aren't yet assigned can't be deleted.</div>
-        <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
 
-    </div>
-    <!-- Buttons for shoppinglist-->
-    <div class="leftBottom">
-        <table>
-            <tr>
-            <td><button class = "button" id="addItem"> Add item</button></td>
-            <td><button class = "button" id="assignItem" data-placement="bottom" data-toggle="tooltip" title="test"> Assign item</button></td>
-            <td><button class = "button" id="unmarked" data-placement="bottom" data-toggle="tooltip" title="test"> Unassign item</button></td>
-            <td><button class = "button" id="deleteItems"> Delete items</button></td>
-            </tr>
-        </table>
+    <!--grid rightside for a few buttons and etc -->
+    <div class="buttonsGrid">
+        <div class="basicButtons d-flex flex-row">
+            <button class = "button" id="addItem"> Add item</button></td>
+            <button class = "button" id="assignItem" data-placement="bottom" data-toggle="tooltip" title="test"> Assign item</button>
+            <button class = "button" id="unmarked" data-placement="bottom" data-toggle="tooltip" title="test"> Unassign item</button>
+            <button class = "button" id="deleteItems"> Delete items</button>
+        </div>
+        <div class="infoButtons d-flex flex-row">
+            <button class = "button" id="createDisbursementButton" > Create receipt</button>
+            <div class="createReceiptIcon">
+                <i class="material-icons md-24">info</i>
+                <span class="receiptTooltip">To create a receipt mark the items you have
+                     bought and press create receipts.
+                    You can then choose the other people who will join the receipt</span>
+                </div>
+
+            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+            <div class="deleteListIcon">
+                <i class="material-icons md-24">info</i>
+                <span class="deleteTooltip">A list with items that aren't yet assigned can't be deleted.</span>
+            </div>
+            </div>
+        </div>
     </div>
     <!--end of buttons for shoppinglist -->
 </div>
@@ -129,7 +134,7 @@
 <!--Menu shoppinglist-->
 <table class="center" id="menuShopinglist" style="display: block">
     <tr>
-        <td> <button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
+        <td><button class = "button" id="createShoppinglistButton" > Create Shoppinglist</button></td>
         <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of Shoppinglists</button></td>
     </tr>
 </table>

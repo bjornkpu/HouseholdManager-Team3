@@ -1,44 +1,103 @@
 .shoppingListGrid {
     display: grid;
-    grid-template-columns: [col1-start] 65% [col1-end col2-start] 35% [col2-end];
-    grid-template-rows: [row1-start] 50% [row2-end row2-start] 25% [row2-end];
-    grid-template-areas: "leftTop rightSideGrid"
-                         "leftBottom  rightBottom";
+    grid-template-columns: [col1-start] 100% [col1-end];
+    grid-template-rows: [row1-start] auto [row2-end row2-start] auto [row2-end];
+    grid-template-areas: "topRow"
+                         "tableRow";
     justify-items: stretch;
     min-width: 100%;
 }
 
-.listGrid {
+#creatingShoppinglist{
     display: grid;
-    grid-area: leftTop;
+    grid-template-columns: [col1-start] 50% [col1-end col2-start] 50% [col2-end];
+    grid-template-rows: [row1-start] 15% [row2-end row2-start] auto [row2-end];
+    grid-template-areas: ". ."
+                        "leftside rightside";
+    justify-items: stretch;
+    min-width: 100%;
+}
+.createListGrid{
+    display: grid;
+    grid-area: leftside;
+    justify-items: center;
+}
+.participantsGrid {
+    display: grid;
+    grid-area: rightside;
     justify-items: center;
 }
 
-.rightsideGrid {
+.buttonsGrid {
     display: grid;
-    grid-area: rightSideGrid;
-    justify-self: center;
-    align-self: start;
-    width: 100%;
-    padding-top: 4%;
+    grid-template-columns: 25% 50% 25%;
+    grid-template-rows:  60px 40px;
+    grid-template-areas: ". infobuttons info"
+                         ". basicbuttons info";
+    grid-area: topRow;
+    min-width: 100%;
     justify-items: center;
+    align-items: center;
+}
+.basicButtons{
+    grid-area: basicbuttons;
+    justify-items: center;
+}
+.infoButtons{
+    grid-area: infobuttons;
+    justify-items: center;
+    align-items: center;
+}
+
+.deleteTooltip{
+    visibility: hidden;
+    width: 140px;
+    transform: translate(-70px, 0px);
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+.receiptTooltip{
+    visibility: hidden;
+    width: 200px;
+    transform: translate(-100px, 0px);
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+.createReceiptIcon:hover .receiptTooltip{
+    visibility: visible;
+}
+
+.deleteListIcon:hover .deleteTooltip{
+    visibility: visible;
 }
 
 .leftBottom{
     display: grid;
-    grid-area: leftBottom;
+    grid-area: tableRow;
     justify-self: center;
     align-self: center;
     width: 100%;
     justify-items: center;
 }
 
-
-
-
-
-
-
+#disbCreate td.right_aligned{
+    text-align: right;
+}
 
 
 #dropdownShoppinglist{
@@ -52,9 +111,12 @@ input[type='checkbox'] {
     -webkit-appearance:none;
     width:30px;
     height:30px;
-    background:white;
+    background: #ffffff;
     border-radius:5px;
     border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #00ff04;
 }
 .checkboxClass{
     -webkit-appearance:none;
@@ -120,12 +182,23 @@ input[type='checkbox'] {
     background-color: darkgray;
 }
 
+.shoppingListGrid{
+    display: grid;
+    justify-items: center;
+    grid-area: tableRow;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+
 #shoppingTable{
-    min-width: 400px;
+    grid-area: tablerow;
+    justify-self: center;
+    max-width: 50%;
 }
-#shoppingTable td{
-    min-width: 150px;
-}
+
+
+
 #shoppingTable tr.item:hover{
     cursor: pointer;
     background-color: lightgray;

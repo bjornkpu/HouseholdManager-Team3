@@ -3,6 +3,18 @@
 /*
  * Top navbar general
  */
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #3add24;
+}
+
 body{
     min-height: 100%;
     background-color: #ffffff;
@@ -64,7 +76,7 @@ body{
     }
 
     .notificationDropdown{
-        transform: translate(-35%, 5%);
+        transform: translate(-35%, 10px);
     }
 
     #forgottenPassword{
@@ -123,8 +135,10 @@ buttons
     display: inline-block;
     font-size: 14px;
     margin: 2px 1px;
-    -webkit-transition-duration: 0.6s; /* Safari */
-    transition-duration: 0.6s;
+    -webkit-transition-duration: 0.5ms; /* Safari */
+    -webkit-transition-timing-function: ease;
+    transition-duration: 0.5s;
+    transition-timing-function: ease;
     cursor: pointer;
 
 }
@@ -287,7 +301,7 @@ buttons
         color: #0596c6;
     }
     .notificationDropdown{
-        transform: translate(-70%, 5%);
+        transform: translate(-70%, 10px);
         width: 100vw;
     }
 

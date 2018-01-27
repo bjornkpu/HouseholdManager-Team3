@@ -1,6 +1,7 @@
 package services;
 
 import data.Chore;
+import data.Session;
 import data.User;
 import db.ChoreDao;
 import db.Db;
@@ -36,6 +37,12 @@ public class TaskService {
 	@GET
 	@Produces("application/json")
 	public ArrayList<Chore> getChores(@PathParam("groupId") int groupId) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}
 		try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 
@@ -55,7 +62,12 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Produces("application/json")
 	public Chore getChore(@PathParam("choreId") int choreId) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			return choreDao.getChore(choreId);
 		} catch (SQLException e) {
@@ -73,7 +85,12 @@ public class TaskService {
 	@Path("/CompletedBy/{choreId}")
 	@Produces("application/json")
 	public ArrayList<String> getCompletedBy(@PathParam("choreId") int choreId) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			return choreDao.getCompletedBy(choreId);
 		} catch (SQLException e) {
@@ -88,7 +105,12 @@ public class TaskService {
 	@POST
 	@Consumes("application/json")
 	public Response addChore(Chore task) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			boolean s = choreDao.addChore(task);
 			log.info("Added task!");
@@ -111,7 +133,12 @@ public class TaskService {
 	@Path("/CompletedBy/{choreId}")
 	@Consumes("application/json")
 	public Response setCompletedBy(@PathParam("choreId") int choreId, ArrayList<String> users) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			boolean s= choreDao.setCompletedBy(choreId, users);
 			log.info("Updated task!");
@@ -134,7 +161,12 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Consumes("application/json")
 	public Response assignChore(@PathParam("choreId") int choreId, User user) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			boolean s = choreDao.assignChore(user, choreId);
 			log.info("Assigned task!");
@@ -156,7 +188,12 @@ public class TaskService {
 	@Path("/{choreId}")
 	@Consumes("application/json")
 	public Response deleteChore(@PathParam("choreId") int choreId) {
-		try(Connection connection = Db.instance().getConnection()) {
+		Session session = (Session)request.getSession().getAttribute("session");
+		//Check if there is a session
+		if(session == null) {
+			log.info("Session not found");
+			throw new NotAuthorizedException("No session found",Response.Status.UNAUTHORIZED);
+		}try(Connection connection = Db.instance().getConnection()) {
 			ChoreDao choreDao = new ChoreDao(connection);
 			choreDao.setCompletedBy(choreId,null);
 			choreDao.assignChore(new User(null),choreId);

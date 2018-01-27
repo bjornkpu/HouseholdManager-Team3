@@ -1,15 +1,10 @@
 var currentGroup;
-var currentGroupName;
 var paymentRequests=[];
 var currentUser;
 var disbursementList=[];
 var balanceList=0;
 
 $(document).ready(function () {
-    var lists;
-    var items;
-    var currentShoppingList = 0;
-    var numberOfMembers = 0;
     currentGroup = getCookie("currentGroup");
     currentUser = getCookie("userLoggedOn");
     var newPaymentUser = 0;
@@ -147,7 +142,7 @@ $(document).ready(function () {
 
     for(var i = 0; i < len; i++){
         if(disbursementList[i].accepted === 0){
-            acceptedString = "<button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
+            acceptedString = "<button class='button' value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button class='button' value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
         } else {acceptedString =  "Accepted"}
         var participantsList = disbursementList[i].participants;
         var participantsString = "";
@@ -241,7 +236,7 @@ function getUserBalance(){
 }
 
 function getPaymentRequests(){
-    var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
+    var url='http://localhost:8080/scrum/rest/groups/payment/'+ currentGroup +'/'+ currentUser;
 
     $.get(url, function(data, status){
         console.log("skrrt");
@@ -307,7 +302,7 @@ function fixPaymentRequestsTable(){
             "<tr>"+
             "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
             "<th>"+paymentRequests[i].amount+"</th>"+
-            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Register as paid</button></th>"+
+            "<th><button class='acceptPayment button' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Register as paid</button></th>"+
             "</tr>"
         );
     }

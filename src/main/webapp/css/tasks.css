@@ -2,12 +2,42 @@
     padding-left: 10%;
 }
 
+#creatingTask{
+    width: 500px;
+    margin-left: 32%;
+}
+
+#creatingTask h1{
+    /*margin-left: 18%;*/
+}
+
+#creatingTask table td.right_aligned{
+    text-align: right;
+}
+
+#creatingTask table td button{
+    margin-top: 10px;
+    min-width: 86px;
+}
+
+#creatingTask table#createTable input{
+    width: 100%;
+    max-width: 200px;
+    margin-top: 10px;
+}
+
+#taskTable tr.truncateRow:hover{
+    background-color: lightgray;
+    cursor: pointer;
+}
 
 @media screen and (orientation:portrait) {
     #taskTable {
         display: table;
         width: 100%;
+        overflow: auto;
     }
+
     th.removePortrait{
         display:none;
         width:0;
@@ -66,3 +96,15 @@
         background-color:green;
     }
 }
+input[type='checkbox'] {
+    -webkit-appearance:none;
+    width:30px;
+    height:30px;
+    background:white;
+    border-radius:5px;
+    border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #3add24;
+}
+

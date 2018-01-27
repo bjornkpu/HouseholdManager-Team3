@@ -409,8 +409,11 @@ $(document).ready(function() {
                 $('#shoppinglistMembers').replaceWith(" <tr id=\"shoppinglistMembers\"></tr>");
                 numberOfMembers = data.length;
                 for (var i = 0; i < data.length; i++) {
-                    $('#shoppinglistMembers').append("<tr><td>" + data[i].name + "</td><td><input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </td></tr>")
+                    $('#shoppinglistMembers').append(
+                        "<td class='right_aligned'>" + data[i].name + "</td>" +
+                        "<td><input id='memberCheckbox"+i
+                        +"' value='" + data[i].email + "' type='checkbox' checked </td>" +
+                        "<td>sug balle</td>")
                 }
             }
         });
@@ -544,10 +547,10 @@ $(document).ready(function() {
                 $("#row"+i).removeClass('boughtMarked');
             }
             else if (items[i].status === 1){
-                statusName ="To be bought";
+                statusName ="Assigned";
                 $("#row"+i).addClass('boughtMarked');
             }
-            else if (items[i].status === 2 || items[i] == "DELETE"){
+            else if (items[i].status === 2 || items[i] === "DELETE"){
                 //er status 3 er allerede varen betalt og satt på en kvittering
                 skip++;
                 continue;

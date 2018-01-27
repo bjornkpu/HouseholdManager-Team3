@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Your Tasks</h1>
+<h1 id="hide">Your Tasks</h1>
 <br>
 <br>
 
@@ -65,19 +65,27 @@
 
 <!-- div for adding a Task-->
 <div id="creatingTask" style="display: none;">
-    <h1>New Task</h1>
-    <table>
+    <!--<h1>New Task</h1>-->
+    <table id="createTable">
         <tr>
-            <td style="padding-right: 10px">Description of Task</td>
-            <td > <input id="descriptionOfTask" type="text" name="descriptionOfTask"></td>
+            <td></td>
+            <td>
+                <h1>New Task</h1>
+            </td>
         </tr>
         <tr>
-            <td style="padding-right: 10px">Deadline</td>
+            <td style="padding-right: 10px" class="right_aligned">Description of Task</td>
+            <td > <input id="descriptionOfTask" type="text" name="descriptionOfTask"></td>
+        </tr>
+        <tr class="right_aligned">
+            <td style="padding-right: 10px" class="right_aligned">Deadline</td>
             <td> <input id="deadlineTask" type="date" name="deadlineTask"> </td>
         </tr>
         <tr>
-            <td > <button class="backToTasks" id ="backTask"> Back</button> </td>
-            <td > <button class="backToTasks" id ="confirmTask"> Create Task</button> </td>
+            <td></td>
+            <td> <button class="backToTasks button" id ="backTask"> Back</button>
+                 <button class="backToTasks button" id ="confirmTask"> Create Task</button>
+            </td>
         </tr>
     </table>
 </div>
