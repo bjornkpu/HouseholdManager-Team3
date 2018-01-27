@@ -302,8 +302,8 @@ $(document).ready(function() {
 
                 // $("#addedUser").text("Added user " + user.name + ", with email " + user.email);
 
-                $("#addedUsers").append("<table><tr><td>" + user.name + "</td>" +
-                    "<td><button class='b button' id='" + index + "'>remove</td></tr></button></table>");
+                $("#addedUsers").append("<tr><td>" + user.name + "</td>" +
+                    "<td><button class='b button' id='" + index + "'>remove</button></td></tr>");
                 index++;
             });
         }
@@ -318,8 +318,8 @@ $(document).ready(function() {
             $("#addedUsers").empty();
             for(var i = 0; i < selectedUsers.length; i++){
                 if(selectedUsers[i] === "empty") continue;
-                $("#addedUsers").append("<li>" + selectedUsers[i].name + "" +
-                    "<button class='b button' id='" + i + "'>Remove</button></li>");
+                $("#addedUsers").append("<tr><td>" + selectedUsers[i].name + "</td>" +
+                    "<td><button class='b button' id='" + i + "'>Remove</button></td></tr>");
             }
         }
     });
