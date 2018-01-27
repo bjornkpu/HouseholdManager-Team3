@@ -295,21 +295,3 @@ function updateUserInformation () {
         console.log("confirmknapp trykket")
     }
 }
-
-//Brukes ikke???
-/*
-function getInfo(email){
-    $.ajax({
-        type: 'GET',
-        url: 'rest/user/' + email,
-        dataType: 'json',
-        success: function (data) {
-            console.log( "data: " + data);
-            console.log(email)
-            $('#nameReadOnly').attr('value', data.name);
-            $('#emailReadOnly').attr('value', email);
-            $('#phoneReadOnly').attr('value', data.phone);
-        }
-    })
-}
-*/
