@@ -1,15 +1,10 @@
 var currentGroup;
-var currentGroupName;
 var paymentRequests=[];
 var currentUser;
 var disbursementList=[];
 var balanceList=0;
 
 $(document).ready(function () {
-    var lists;
-    var items;
-    var currentShoppingList = 0;
-    var numberOfMembers = 0;
     currentGroup = getCookie("currentGroup");
     currentUser = getCookie("userLoggedOn");
     var newPaymentUser = 0;
@@ -241,7 +236,7 @@ function getUserBalance(){
 }
 
 function getPaymentRequests(){
-    var url='http://localhost:8080/scrum/rest/groups/payment/'+ 1 +'/'+'en@h.no';
+    var url='http://localhost:8080/scrum/rest/groups/payment/'+ currentGroup +'/'+ currentUser;
 
     $.get(url, function(data, status){
         console.log("skrrt");
