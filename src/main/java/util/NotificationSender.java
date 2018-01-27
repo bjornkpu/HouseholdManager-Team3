@@ -19,7 +19,7 @@ public class NotificationSender {
         try (Connection connection = Db.instance().getConnection()) {
             NotificationDao notificationDao = new NotificationDao(connection);
             for(User user: disbursement.getParticipants()) {
-                String disbursmentString = user.getName() + " have added you to a receipt! To see details and accept, go to receipts in group "
+                String disbursmentString = disbursement.getPayer().getName() + " have added you to a receipt! To see details and accept, go to receipts in group "
                         + group.getName();
                 Notification notification = new Notification(user.getEmail(), disbursmentString);
                 notificationDao.addNotification(notification);
@@ -63,7 +63,7 @@ public class NotificationSender {
         try (Connection connection = Db.instance().getConnection()) {
             GroupDao groupDao = new GroupDao(connection);
             String shoppingListString = "You have been added to shoppinglist '"+shoppingList.getName()+"' in group "
-                    +groupDao.getGroup(shoppingList.getGroupId());
+                    +groupDao.getGroup(shoppingList.getGroupId()).getName();
             NotificationDao notificationDao = new NotificationDao(connection);
             for (User user : shoppingList.getUserList()) {
                 Notification notification = new Notification(user.getEmail(), shoppingListString);

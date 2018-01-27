@@ -52,9 +52,12 @@ input[type='checkbox'] {
     -webkit-appearance:none;
     width:30px;
     height:30px;
-    background:white;
+    background: #ffffff;
     border-radius:5px;
     border:2px solid #555;
+}
+input[type='checkbox']:checked {
+    background: #00ff04;
 }
 .checkboxClass{
     -webkit-appearance:none;
