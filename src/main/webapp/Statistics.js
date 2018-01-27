@@ -55,7 +55,7 @@ $(document).ready(function() {
 
         textbox1.innerHTML="Number of chores completed";
         textTitle1.innerHTML="Description: ";
-        textbox2.innerHTML="Assigned and unassigned chores(midlertidlig desc)";
+        textbox2.innerHTML="Assigned and unassigned tasks";
         textTitle2.innerHTML="Description: ";
 
         getChoreStatistics();

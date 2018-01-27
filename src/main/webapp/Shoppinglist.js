@@ -412,8 +412,7 @@ $(document).ready(function() {
                     $('#shoppinglistMembers').append(
                         "<td class='right_aligned'>" + data[i].name + "</td>" +
                         "<td><input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </td>" +
-                        "<td>sug balle</td>")
+                        +"' value='" + data[i].email + "' type='checkbox' checked </td>")
                 }
             }
         });
@@ -438,13 +437,15 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(){
-                var creatingDisbursement =document.getElementById('creatingDisbursement');
-                var shoppinglist = document.getElementById('shoppinglist');
-                var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-
-                creatingDisbursement.style.display="none";
-                shoppinglist.style.display="block";
-                dropdownShoppinglist.style.display="block";
+                // var creatingDisbursement =document.getElementById('creatingDisbursement');
+                // var shoppinglist = document.getElementById('shoppinglist');
+                // var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
+                //
+                // creatingDisbursement.style.display="none";
+                // shoppinglist.style.display="block";
+                // dropdownShoppinglist.style.display="block";
+                window.location.href = "GroupDashboard.html#Receipts";
+                console.log("rewrfew");
             },
             error: function(){
                 var disb = {
