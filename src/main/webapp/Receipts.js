@@ -142,7 +142,7 @@ $(document).ready(function () {
 
     for(var i = 0; i < len; i++){
         if(disbursementList[i].accepted === 0){
-            acceptedString = "<button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
+            acceptedString = "<button class='button' value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,1)'>Accept</button><button class='button' value='"+disbursementList[i].id+"' onclick='respondToDisbursement(this,2)'>Decline</button>";
         } else {acceptedString =  "Accepted"}
         var participantsList = disbursementList[i].participants;
         var participantsString = "";
@@ -302,7 +302,7 @@ function fixPaymentRequestsTable(){
             "<tr>"+
             "<th scope=\"row\">"+paymentRequests[i].payerName+"</th>"+
             "<th>"+paymentRequests[i].amount+"</th>"+
-            "<th><button class='acceptPayment' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Register as paid</button></th>"+
+            "<th><button class='acceptPayment button' value='"+table1+"' onclick='acceptPaymentsClick(this)'>Register as paid</button></th>"+
             "</tr>"
         );
     }
