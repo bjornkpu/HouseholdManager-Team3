@@ -1,6 +1,6 @@
 body{
     min-height: 100%;
-    background-color: #ffffff;
+    background-color: #f2f2f2;
 }
 
 .feedGrid p{
@@ -15,7 +15,6 @@ body{
         grid-template-areas: "leftblankspace inputArea rightblankspace"
                                 "leftblankspace wallposts rightblankspace";
         justify-items: stretch;
-        background-color: #ffffff;
         min-height: 100%;
     }
 
@@ -27,7 +26,6 @@ body{
                             "leftspace postText postButton rightspace";
         grid-area: inputArea;
         justify-items: stretch;
-        background-color: #ffffff;
     }
 
     .post-input {
@@ -57,6 +55,7 @@ body{
         align-self: center;
         justify-self: center;
         color: black;
+
     }
 
     .post-button {
@@ -70,7 +69,6 @@ body{
         display: grid;
         grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
         grid-area: wallposts;
-        background-color: #ffffff;
         justify-items: center;
     }
 
@@ -79,7 +77,6 @@ body{
         height: 100%;
         width: 80%;
         margin-top: 20px;
-        background-color: #ffffff;
         align-content: start;
         overflow: hidden;
         border: none;
@@ -116,7 +113,7 @@ body{
         overflow: auto;
         height: 100%;
         width: 100%;
-
+        background-color: #ffffff;
     }
 
     .message p {
@@ -135,7 +132,7 @@ body{
     .postedBy p {
         display: grid;
         font-size: 14px;
-        color: white;
+        /*color: white;*/
         justify-self: center;
         color: #0596c6;
     }
@@ -180,6 +177,7 @@ body{
                              "leftspace wallposts rightspace";
         justify-items: stretch;
         min-height: 100%;
+        background-color: black;
     }
 
     .writePost {
@@ -190,7 +188,7 @@ body{
                              "leftspace postText postButton rightspace";
         grid-area: inputArea;
         justify-items: stretch;
-        background-color: #ffffff;
+        background-color: #f2f2f2;
     }
 
     .post-input {
@@ -241,7 +239,7 @@ body{
         height: 100%;
         width: 100%;
         margin-top: 20px;
-        background-color: #ffffff;
+        background-color: #f2f2f2;
         align-content: start;
         overflow-y: hidden;
         overflow-x: hidden;
@@ -298,7 +296,7 @@ body{
     .postedBy p {
         display: grid;
         font-size: 13px;
-        color: white;
+        /*color: white;*/
         justify-self: center;
         color: #0596c6;
     }

@@ -1,6 +1,16 @@
-#leftSide{
-    background-color: #1daaba;
+/*#leftSide{*/
+    /*background-color: #1daaba;*/
+/*}*/
+/*#rightSide{*/
+    /*background-color: bisque;*/
+/*}*/
+
+/*.container{*/
+    /*background-color: black;*/
+/*}*/
+body {
+    background-color: #f2f2f2;
 }
-#rightSide{
-    background-color: bisque;
+#hovercontain:hover{
+    cursor: pointer;
 }
