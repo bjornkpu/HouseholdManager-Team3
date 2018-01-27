@@ -37,7 +37,7 @@ $(document).ready(function() {
             var date = new Date(tasks[i].deadline).toString().substr(4, 11);
 
                 $("#taskTable").append(
-                    "<tr id='row" + i + "' class='truncateRow'>" +
+                    "<tr id='row" + i + "' class='truncateRow' onclick='clickRowk(checkbox"+i+")'>" +
                     // "<th scope=\"row\">"+(i+1)+"</th>" +
                     "<td class='truncateTableCell'>" + tasks[i].description + "</td>" +
                     "<td class='truncateTableCell'>" + assigned + "</td>" +
@@ -49,7 +49,7 @@ $(document).ready(function() {
 
             if(isMobile()) {
                 $("#taskTable").append(
-                    "<tr class='info info_" + i +"' style='width:100%'>" +
+                    "<tr class='info info_" + i +"' style='width:100%' onclick=''>" +
                     "<td scope=\"row\" class='truncateTableCell'>Description:</td>" +
                     "<td scope=\"row\" class='truncateTableCell'>"+tasks[i].description+"</td>" +
                     "</tr>" +
@@ -275,19 +275,29 @@ $(document).ready(function() {
         }
         $("#page-content").load("Tasks.html");
     });
+
+});
+$("#tasktable").on('click', 'tr.truncateRow', function() {
 });
 
 var selected = -1;
 //mobile site view
 $("#taskTable").on('click', 'tr.truncateRow', function(){
+    var id = this.id.split("w").pop();
     if(isMobile()) {
-        var id = this.id.split("w").pop();
         $(".info").css("display", "none");
         if(id !== selected){
             $(".info_"+id).css("display", "table-header-group");
             selected = id;
         } else {
             selected = -1;
+        }
+    } else {
+        if(!$("#checkbox"+id).is(':checked')){
+            $("#checkbox"+id).prop('checked', true);
+        } else {
+
+            $("#checkbox"+id).prop('checked', false);
         }
     }
 });
@@ -302,4 +312,9 @@ $("#taskTable").on('click', 'td.selectedTask', function(){
 //checks if mobile or laptop
 function isMobile(){
     return ($(window).width() < 550);
+}
+function clickRowk(data) {
+    if(document.getElementById(data).checked === true){
+        document.getElementById(data).checked = true
+    }else document.getElementById(data).checked = true;
 }

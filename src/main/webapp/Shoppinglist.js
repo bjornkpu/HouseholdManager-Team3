@@ -544,7 +544,7 @@ $(document).ready(function() {
                 $("#row"+i).removeClass('boughtMarked');
             }
             else if (items[i].status === 1){
-                statusName ="To be bought";
+                statusName ="Assigned";
                 $("#row"+i).addClass('boughtMarked');
             }
             else if (items[i].status === 2 || items[i] == "DELETE"){
