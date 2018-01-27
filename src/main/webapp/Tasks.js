@@ -275,19 +275,29 @@ $(document).ready(function() {
         }
         $("#page-content").load("Tasks.html");
     });
+
+});
+$("#tasktable").on('click', 'tr.truncateRow', function() {
 });
 
 var selected = -1;
 //mobile site view
 $("#taskTable").on('click', 'tr.truncateRow', function(){
+    var id = this.id.split("w").pop();
     if(isMobile()) {
-        var id = this.id.split("w").pop();
         $(".info").css("display", "none");
         if(id !== selected){
             $(".info_"+id).css("display", "table-header-group");
             selected = id;
         } else {
             selected = -1;
+        }
+    } else {
+        if(!$("#checkbox"+id).is(':checked')){
+            $("#checkbox"+id).prop('checked', true);
+        } else {
+
+            $("#checkbox"+id).prop('checked', false);
         }
     }
 });
