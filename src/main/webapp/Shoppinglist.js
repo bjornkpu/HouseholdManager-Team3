@@ -547,7 +547,7 @@ $(document).ready(function() {
                 statusName ="Assigned";
                 $("#row"+i).addClass('boughtMarked');
             }
-            else if (items[i].status === 2 || items[i] == "DELETE"){
+            else if (items[i].status === 2 || items[i] === "DELETE"){
                 //er status 3 er allerede varen betalt og satt på en kvittering
                 skip++;
                 continue;
