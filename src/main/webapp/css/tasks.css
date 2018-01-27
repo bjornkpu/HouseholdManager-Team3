@@ -11,6 +11,7 @@
     #taskTable {
         display: table;
         width: 100%;
+        overflow: auto;
     }
 
     th.removePortrait{

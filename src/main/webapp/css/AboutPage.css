@@ -7,15 +7,15 @@
     .headerSlide{
         min-width: 100%;
         min-height: 400px;
-        background-color: whitesmoke;
+        background-color: white;
         display: grid;
         justify-items: center;
         align-items: center;
     }
     .headerLogo{
         margin-top: 30px;
-        min-width: 40%;
-        height: 300px;
+        min-width: 35%;
+        height: 370px;
         margin-bottom: 30px;
     }
     .headerBrand{
@@ -24,9 +24,9 @@
         color: #3d3b3b;
     }
     .brandSloganDivider{
-        height: 1px;
+        height: 2px;
         background-color: #3d3b3b;
-        width: 40%;
+        width: 50%;
         transform: translate(0, -10px);
     }
     .headerSlogan{

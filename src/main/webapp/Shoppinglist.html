@@ -81,18 +81,16 @@
 <br>
 <!-- Shoppinglist-->
 <div class="container shoppingListGrid" id="shoppinglist" >
-
-    <div class="listGrid">
     <div class = "row">
         <h2 id="shoppinglistName" class="center"></h2>
     </div>
-    <div class="row">
+    <div class="row tableDiv">
         <table class="table table-hover" id="shoppingTable">
             <thead>
             <tr>
-                <th>#</th>
-                <th>Item</th>
-                <th>status</th>
+                <th class="number">#</th>
+                <th class="item">Item</th>
+                <th class="status">status</th>
                 <th></th>
             </tr>
             </thead>
@@ -100,25 +98,31 @@
             </tbody>
         </table>
     </div>
-    </div>
-    <!--grid rightside for a few buttons and etc -->
-    <div class="rightsideGrid">
-        <div class="infoShoppinglist">To create a receipt mark the items you have bought and press create receipts. You can then choose the other people who will join the receipt</div>
-        <button class = "button" id="createDisbursementButton" > Create receipt</button>
-        <div class="infoShoppinglist">A list with items that aren't yet assigned can't be deleted.</div>
-        <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
 
-    </div>
-    <!-- Buttons for shoppinglist-->
-    <div class="leftBottom">
-        <table>
-            <tr>
-            <td><button class = "button" id="addItem"> Add item</button></td>
-            <td><button class = "button" id="assignItem" data-placement="bottom" data-toggle="tooltip" title="test"> Assign item</button></td>
-            <td><button class = "button" id="unmarked" data-placement="bottom" data-toggle="tooltip" title="test"> Unassign item</button></td>
-            <td><button class = "button" id="deleteItems"> Delete items</button></td>
-            </tr>
-        </table>
+    <!--grid rightside for a few buttons and etc -->
+    <div class="buttonsGrid">
+        <div class="basicButtons d-flex flex-row">
+            <button class = "button" id="addItem"> Add item</button></td>
+            <button class = "button" id="assignItem" data-placement="bottom" data-toggle="tooltip" title="test"> Assign item</button>
+            <button class = "button" id="unmarked" data-placement="bottom" data-toggle="tooltip" title="test"> Unassign item</button>
+            <button class = "button" id="deleteItems"> Delete items</button>
+        </div>
+        <div class="infoButtons d-flex flex-row">
+            <button class = "button" id="createDisbursementButton" > Create receipt</button>
+            <div class="createReceiptIcon">
+                <i class="material-icons md-24">info</i>
+                <span class="receiptTooltip">To create a receipt mark the items you have
+                     bought and press create receipts.
+                    You can then choose the other people who will join the receipt</span>
+                </div>
+
+            <button class="button" id="delete_shoppinglist">Delete current shoppinglist</button>
+            <div class="deleteListIcon">
+                <i class="material-icons md-24">info</i>
+                <span class="deleteTooltip">A list with items that aren't yet assigned can't be deleted.</span>
+            </div>
+            </div>
+        </div>
     </div>
     <!--end of buttons for shoppinglist -->
 </div>
