@@ -34,7 +34,7 @@ body{
         height: 75%;
         margin-bottom: 15px;
         margin-top: 20px;
-        background-color: whitesmoke;
+        background-color: #ffffff;
         resize: none;
         color: black;
 
@@ -91,7 +91,7 @@ body{
 
         min-width: 75%;
         max-width: 75%;
-        background-color: whitesmoke;
+        background-color: #ffffff;
         margin: 5px;
         font-size: 15px;
         height: auto;
@@ -188,7 +188,7 @@ body{
                              "leftspace postText postButton rightspace";
         grid-area: inputArea;
         justify-items: stretch;
-        background-color: #f2f2f2;
+        background-color: #ffffff;
     }
 
     .post-input {
@@ -197,7 +197,7 @@ body{
         height: 75%;
         margin-bottom: 15px;
         margin-top: 20px;
-        background-color: whitesmoke;
+        background-color: #ffffff;
         resize: none;
 
         -webkit-border-radius: 5px;
@@ -223,7 +223,7 @@ body{
         width: 90%;
         height: 70%;
         justify-self: center;
-        padding: 0px;
+        padding: 100px;
     }
 
     .wall {
@@ -255,7 +255,7 @@ body{
                               "name date";
 
         width: 90%;
-        background-color: whitesmoke;
+        background-color: #ffffff;
         margin: 5px;
         font-size: 15px;
         height: auto;

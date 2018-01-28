@@ -1,6 +1,6 @@
 var user;
+var group = getCookie("currentGroup");
 function initTable() {
-    var group = getCookie("currentGroup");
     $.ajax({
         url: "rest/wallposts/" + group,
         type: "GET",
@@ -28,7 +28,7 @@ function initTable() {
         },
         error: function () {
             //TODO: fix, do something else then return error.html.
-            $(".textPosts").append("<div class='page-header'><h1>Something went wrong. Try again.s</h1></div>");
+            $(".textPosts").append("<div class='page-header'><h1>Couldn't load wallposts</h1></div>");
         }
     })
 }
@@ -36,6 +36,7 @@ function initTable() {
 $(document).ready(function() {
     //var t = $("#wallposts")
     initTable();
+
     // Submit-button creates a div with the text from the text area
     $(".post-button").click(function(){
         var text = $("textarea.post-input").val();

@@ -5,6 +5,11 @@ var currentUser;
 // var disbursementList=[];
 // var balanceList=0;
 var checkedItems = [];
+
+var menuShoppinglist = document.getElementById('menuShopinglist');
+var createReceipts = document.getElementById('creatingDisbursement');
+var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+var overviewShoppinglist = document.getElementById('overviewShoppinglist');
 $(document).ready(function() {
 
     var lists;
@@ -22,37 +27,40 @@ $(document).ready(function() {
     loadShoppingListsFromGroup(currentGroup);
 
     $('#createDisbursementButton').click(function () {
-       var menuShoppinglist = document.getElementById('menuShopinglist');
-       var createReceipts = document.getElementById('creatingDisbursement');
-       var creatingShoppinglist = document.getElementById('creatingShoppinglist');
-        var overviewShoppinglist = document.getElementById('overviewShoppinglist');
-        overviewShoppinglist.style.display="none";
-       creatingShoppinglist.style.display="none";
-       menuShoppinglist.style.display="none";
-       createReceipts.style.display="block";
+       // var menuShoppinglist = document.getElementById('menuShopinglist');
+       // var createReceipts = document.getElementById('creatingDisbursement');
+       // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+       //  var overviewShoppinglist = document.getElementById('overviewShoppinglist');
+       // overviewShoppinglist.style.display="none";
+       // creatingShoppinglist.style.display="none";
+       // menuShoppinglist.style.display="none";
+       // createReceipts.style.display="block";
+       viewItems("none", "none", "none", "block");
         renderCreateDisbursement();
     });
 
     $('#createShoppinglistButton').click(function () {
-        var menuShoppinglist = document.getElementById('menuShopinglist');
-        var createReceipts = document.getElementById('creatingDisbursement');
-        var creatingShoppinglist = document.getElementById('creatingShoppinglist');
-        var overviewShoppinglist = document.getElementById('overviewShoppinglist');
-        overviewShoppinglist.style.display="none";
-        creatingShoppinglist.style.display="block";
-        menuShoppinglist.style.display="none";
-        createReceipts.style.display="none";
+        // var menuShoppinglist = document.getElementById('menuShopinglist');
+        // var createReceipts = document.getElementById('creatingDisbursement');
+        // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+        // var overviewShoppinglist = document.getElementById('overviewShoppinglist');
+        // overviewShoppinglist.style.display="none";
+        // creatingShoppinglist.style.display="block";
+        // menuShoppinglist.style.display="none";
+        // createReceipts.style.display="none";
+        viewItems("none", "block", "none", "none");
     });
 
     $('#overviewOfShoppinglistsButton').click(function () {
-        var menuShoppinglist = document.getElementById('menuShopinglist');
-        var createReceipts = document.getElementById('creatingDisbursement');
-        var creatingShoppinglist = document.getElementById('creatingShoppinglist');
-        var overviewShoppinglist = document.getElementById('overviewShoppinglist');
-        overviewShoppinglist.style.display="block";
-        creatingShoppinglist.style.display="none";
-        menuShoppinglist.style.display="none";
-        createReceipts.style.display="none";
+        // var menuShoppinglist = document.getElementById('menuShopinglist');
+        // var createReceipts = document.getElementById('creatingDisbursement');
+        // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+        // var overviewShoppinglist = document.getElementById('overviewShoppinglist');
+        // overviewShoppinglist.style.display="block";
+        // creatingShoppinglist.style.display="none";
+        // menuShoppinglist.style.display="none";
+        // createReceipts.style.display="none";
+        viewItems("block", "none", "none", "none");
     });
 
 
@@ -149,8 +157,6 @@ $(document).ready(function() {
         });
     });
 
-    //TODO om man adder nye items kan disse ikke bli assigned
-
     $('#assignItem').click(function() {
         var checked=getCheckedItems();
         console.log("alle som er marked: ");
@@ -181,7 +187,6 @@ $(document).ready(function() {
         });
     });
 
-//TODO denne fungerer ikke
     $('#unmarked').click(function(){
         var checked=getCheckedItems();
 
@@ -214,7 +219,7 @@ $(document).ready(function() {
     });
 
     $('#createShoppinglistButton').click(function () {
-        var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+        // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
         var shoppinglist = document.getElementById('shoppinglist');
         var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
 
@@ -406,17 +411,20 @@ $(document).ready(function() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data) {
-                $('#shoppinglistMembers').replaceWith(" <tr id=\"shoppinglistMembers\"></tr>");
                 numberOfMembers = data.length;
                 for (var i = 0; i < data.length; i++) {
                     $('#shoppinglistMembers').append(
-                        "<td class='right_aligned'>" + data[i].name + "</td>" +
-                        "<td><input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </td>")
+                        "<li>" + data[i].name +
+                        "<input id='memberCheckbox"+i
+                        +"' value='" + data[i].email + "' type='checkbox' checked </li>")
                 }
             }
         });
     }
+
+    $("#cancelDisbursement").click(function(){
+        viewItems("block", "none", "none","none");
+    });
 
     //function for creating disbursement
     $('#confirmDisbursement').click( function () {
@@ -437,15 +445,7 @@ $(document).ready(function() {
             dataType: "json",
 
             success: function(){
-                // var creatingDisbursement =document.getElementById('creatingDisbursement');
-                // var shoppinglist = document.getElementById('shoppinglist');
-                // var dropdownShoppinglist = document.getElementById('dropdownShoppinglist');
-                //
-                // creatingDisbursement.style.display="none";
-                // shoppinglist.style.display="block";
-                // dropdownShoppinglist.style.display="block";
                 window.location.href = "GroupDashboard.html#Receipts";
-                console.log("rewrfew");
             },
             error: function(){
                 var disb = {
@@ -568,14 +568,6 @@ $(document).ready(function() {
     }
 
     function getCheckedItems(){
-        var table_length = $('#shoppingTable tr').length;
-        // for (var i =0; i<table_length;i++){
-        //     console.log("I: " + i);
-        //     if($("#checkbox"+i).is(':checked')){
-        //         var item = {id: $("#checkbox"+i)[0].value};
-        //         checked.push(item);
-        //     }
-        // }return checked;
         var checked = [];
         var skip = 0;
         for(var i = 0; i < checkedItems.length; i++){
@@ -662,7 +654,9 @@ function getCookie(cname) {
     return "";
 }
 
-
-
-
-
+function viewItems(overview, createSL, menu, createR){
+    overviewShoppinglist.style.display=overview;
+    creatingShoppinglist.style.display=createSL;
+    menuShoppinglist.style.display=menu;
+    createReceipts.style.display=createR;
+}
