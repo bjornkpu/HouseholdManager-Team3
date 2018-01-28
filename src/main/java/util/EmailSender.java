@@ -10,7 +10,7 @@ import java.util.Properties;
  * -Used for all functionality involving email service-
  *
  * @author
- * matsed
+ * Martin Wangen
  */
 public class EmailSender {
     /**
@@ -87,12 +87,22 @@ public class EmailSender {
         return newPassword;                     //return the new password
     }
 
+    /**
+     * Method to send a welcome email to a new user
+     * @param toMail the mail of the new user
+     */
     public static void sendConfirmationMail(String toMail){
         String confirmationText = "Welcome as a new user of Household Manager." +
                 "\n You can log in with "+toMail+ " and the password you chose." +
                 "If you've forgotten your password you can get a new one sent from our Login page.";
         sendMail(toMail,confirmationText);
     }
+
+    /**
+     * Sends a mail to a user, informing them they are invited to a new group
+     * @param toMail the invited users mail
+     * @param group the group he is invited to
+     */
     public static void sendInvitationMail(String toMail, Group group){
         String invitationText = "Hello!\n\n You have been invited to join a group on Household Manager. " +
                 "Login to accept the invitation \n" +
