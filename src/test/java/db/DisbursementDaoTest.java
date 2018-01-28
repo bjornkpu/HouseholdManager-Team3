@@ -298,9 +298,10 @@ public class DisbursementDaoTest {
             Db.close(ps);
 
             //Check that items are in disbursement
-            ps=connection.prepareStatement("SELECT disbursement_id FROM item WHERE id=? AND status=3");
+            ps=connection.prepareStatement("SELECT disbursement_id FROM item WHERE id=? AND status=?");
             Item i=disbursement3.getItems().get(0);
             ps.setInt(1,i.getId());
+            ps.setInt(2,Item.PURCHASED);
             rs=ps.executeQuery();
             if(rs.next()){
                 itemDisbId=rs.getInt(1);

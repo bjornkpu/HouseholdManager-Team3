@@ -409,11 +409,13 @@ public class DisbursementDao {
             statement = connection.createStatement();
             String sql= "UPDATE item SET status="+Item.PURCHASED+" ,disbursement_id="+disbursement.getId()+" WHERE ";
             int i=0;
+            System.out.println("items.len: "+disbursement.getItems().size());
             for (Item item : disbursement.getItems()) {
                 if(i==0){
                     sql+="id="+ item.getId();
+                }else{
+                    sql+=" OR id="+item.getId();
                 }
-                sql+=" OR id="+item.getId();
                 i++;
             }
             sql+=";";
