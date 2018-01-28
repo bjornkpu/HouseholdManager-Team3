@@ -405,6 +405,30 @@ buttons
     border-bottom: 1px solid #eee;
 }
 
+.dropdown-menu{
+    padding: 0;
+    width: auto;
+}
+
+.dropdown-menu li{
+    background-color: #ffffff;
+    padding: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.dropdown-menu li:hover{
+    background-color: lightgray;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.dropdown-menu li a{
+    color: #3d3b3b;
+    text-decoration: none;
+}
+
+
 
 
 /*

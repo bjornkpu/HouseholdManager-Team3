@@ -103,10 +103,10 @@ $(document).ready(function() {
         }
         for (var i = 0; i < len;i++ ) {
             $('#taskAssignDropdown').append('<li tabindex="-1" class="list" role="presentation">' +
-                '<a class="link" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
+                '<a class="dropdown-item" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
             );
             $('#taskCompDropdown').append('<li tabindex="-1" class="list" role="presentation">' +
-                '<a class="link" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
+                '<a class="dropdown-item" role="menuitem" id="'+i+'" href="#">' + data[i].name + '</aclass></li>'
             );
         }
     }
