@@ -408,6 +408,7 @@ buttons
 .dropdown-menu{
     padding: 0;
     width: auto;
+    margin-top:-3px;
 }
 
 .dropdown-menu li{
@@ -427,7 +428,6 @@ buttons
     color: #3d3b3b;
     text-decoration: none;
 }
-
 
 
 

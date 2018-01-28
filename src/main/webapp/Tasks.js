@@ -304,8 +304,7 @@ $("#taskTable").on('click', 'tr.truncateRow', function(){
 $("#taskTable").on('click', 'td.selectedTask', function(){
     if(isMobile()) {
         console.log("selected");
-        $(".info").css("display", "none");
-        selected = -1;
+        selected = this.id.split("w").pop();
     }
 });
 

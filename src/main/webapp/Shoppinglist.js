@@ -22,6 +22,8 @@ $(document).ready(function() {
     currentUser = getCookie("userLoggedOn");
     renderUserListDropdownMenu(getUsers());
 
+    viewItems("block", "none", "none", "none");
+
 
 
     loadShoppingListsFromGroup(currentGroup);
@@ -51,17 +53,17 @@ $(document).ready(function() {
         viewItems("none", "block", "none", "none");
     });
 
-    $('#overviewOfShoppinglistsButton').click(function () {
-        // var menuShoppinglist = document.getElementById('menuShopinglist');
-        // var createReceipts = document.getElementById('creatingDisbursement');
-        // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
-        // var overviewShoppinglist = document.getElementById('overviewShoppinglist');
-        // overviewShoppinglist.style.display="block";
-        // creatingShoppinglist.style.display="none";
-        // menuShoppinglist.style.display="none";
-        // createReceipts.style.display="none";
-        viewItems("block", "none", "none", "none");
-    });
+    // $('#overviewOfShoppinglistsButton').click(function () {
+    //     // var menuShoppinglist = document.getElementById('menuShopinglist');
+    //     // var createReceipts = document.getElementById('creatingDisbursement');
+    //     // var creatingShoppinglist = document.getElementById('creatingShoppinglist');
+    //     // var overviewShoppinglist = document.getElementById('overviewShoppinglist');
+    //     // overviewShoppinglist.style.display="block";
+    //     // creatingShoppinglist.style.display="none";
+    //     // menuShoppinglist.style.display="none";
+    //     // createReceipts.style.display="none";
+    //     viewItems("block", "none", "none", "none");
+    // });
 
 
 
@@ -428,6 +430,7 @@ $(document).ready(function() {
     }
 
     $("#cancelDisbursement").click(function(){
+        $('#shoppinglistMembers').empty();
         viewItems("block", "none", "none","none");
     });
 
@@ -662,6 +665,6 @@ function getCookie(cname) {
 function viewItems(overview, createSL, menu, createR){
     overviewShoppinglist.style.display=overview;
     creatingShoppinglist.style.display=createSL;
-    menuShoppinglist.style.display=menu;
+    // menuShoppinglist.style.display=menu;
     createReceipts.style.display=createR;
 }

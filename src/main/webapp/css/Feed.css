@@ -7,6 +7,11 @@ body{
     color: black;
 }
 
+#noPosts{
+    color: black;
+}
+
+
 @media screen and (orientation: landscape) {
     .feedGrid {
         display: grid;
@@ -26,6 +31,7 @@ body{
                             "leftspace postText postButton rightspace";
         grid-area: inputArea;
         justify-items: stretch;
+        background-color: #f2f2f2;
     }
 
     .post-input {
@@ -177,7 +183,7 @@ body{
                              "leftspace wallposts rightspace";
         justify-items: stretch;
         min-height: 100%;
-        background-color: black;
+        background-color: #f2f2f2;
     }
 
     .writePost {
@@ -188,7 +194,7 @@ body{
                              "leftspace postText postButton rightspace";
         grid-area: inputArea;
         justify-items: stretch;
-        background-color: #ffffff;
+        background-color: #f2f2f2;
     }
 
     .post-input {
@@ -223,14 +229,13 @@ body{
         width: 90%;
         height: 70%;
         justify-self: center;
-        padding: 100px;
     }
 
     .wall {
         display: grid;
         grid-template-rows: [wallRow1-start] 10% [wallRow1-end wallRow2-start] 100% [wallRow2-end];
         grid-area: wallposts;
-        background-color: #ffffff;
+        background-color: #f2f2f2;
         justify-items: center;
     }
 

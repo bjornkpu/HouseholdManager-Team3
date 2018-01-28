@@ -8,7 +8,7 @@ function initTable() {
         contentType: "application/json",
         success: function (data) {
             if (data.length === 0){
-                $(".textPosts").append("<div class='page-header'><h1>The are no posts in the feed.</h1></div>");
+                $(".textPosts").append("<div class='page-header'><h1 id='noPosts'>The are no posts in the feed.</h1></div>");
             } else {
             var id = 0, postedTo = 0;
             var message = "", postedBy = "";

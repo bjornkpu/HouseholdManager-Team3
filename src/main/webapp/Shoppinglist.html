@@ -38,6 +38,8 @@
 
 <!-- create shoppinglist site-->
 <div id="creatingShoppinglist" style="display: none;">
+    <br>
+    <br>
     <div class="createListGrid">
         <h3>New shopping list</h3>
         <a>Name of shopping list</a>
@@ -66,7 +68,7 @@
 <div class="container">
     <div class="row">
         <!--dropdown shoppinglist -->
-        <div class="container" id="dropdownShoppinglist" style ="display:block;">
+        <div class="container center" id="dropdownShoppinglist">
             <div class="dropdown">
                 <button class="button btn btn-default dropdown-toggle" type="button" id="menu1" data-toggle="dropdown">
                     <span id="nameSpan">Select a shopping list</span>
@@ -75,16 +77,19 @@
                 </ul>
             </div>
         </div>
+        <div class="center">
+            <button class="button" id="createShoppinglistButton"> Create shopping list</button>
+        </div>
     </div>
 </div>
 <!--end of dropdown shoppinglist -->
 
-<br>
 <!-- Shoppinglist-->
 <div class="container shoppingListGrid" id="shoppinglist" >
     <div class = "row">
         <h2 id="shoppinglistName" class="center"></h2>
     </div>
+    <br>
     <div class="row tableDiv">
         <table class="table table-hover" id="shoppingTable">
             <thead>
@@ -122,9 +127,9 @@
                 <i class="material-icons md-24">info</i>
                 <span class="deleteTooltip">A list with items that aren't yet assigned can't be deleted.</span>
             </div>
-            </div>
         </div>
     </div>
+</div>
     <!--end of buttons for shoppinglist -->
 </div>
 <!-- End of shoppinglist-->
@@ -132,12 +137,7 @@
 <!--overview of shoppinglists -->
 
 <!--Menu shoppinglist-->
-<table class="center" id="menuShopinglist" style="display: block">
-    <tr>
-        <td><button class = "button" id="createShoppinglistButton" > Create shopping list</button></td>
-        <td><button class = "button" id="overviewOfShoppinglistsButton" > Overview of shopping lists</button></td>
-    </tr>
-</table>
+
 <!-- end of menu-->
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

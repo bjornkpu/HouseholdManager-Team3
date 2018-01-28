@@ -119,7 +119,6 @@
 
 #dropdownShoppinglist{
     padding-top: 3%;
-    padding-left: 45%;
 }
 .boughtMarked{
     background-color: lightgray;
@@ -225,4 +224,22 @@ input[type='checkbox']:checked {
 }
 #shoppingTable tr.selected:hover{
     background-color: darkgray;
+}
+
+@media screen and (orientation: portrait) {
+    .row{
+        margin-bottom: 10px;
+    }
+    #delete_shoppinglist{
+        width:100%;
+    }
+    .basicButtons{
+        margin-top: 100px;
+    }
+    .infoButtons{
+        margin-top: 50px;
+    }
+    #shoppinglistName{
+        margin-top: 100px;
+    }
 }
