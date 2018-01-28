@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 /**
- * -Description of the class-
+ * Ths class contains methods to help secure the login details of a user
  *
  * @author johanmsk
  */
@@ -61,6 +61,10 @@ public class LoginCheck {
         return hashValue;
     }
 
+    /**
+     *Method to generate salt used to secure a password
+     * @return salt
+     */
     public static String getSalt(){
         SecureRandom random = new SecureRandom();
         String salt = new BigInteger(20, random).toString(32);

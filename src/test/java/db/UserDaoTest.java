@@ -55,7 +55,7 @@ public class UserDaoTest {
             e.printStackTrace();
         }
 
-        assertEquals(2, ulist.size());
+        assertEquals(0, ulist.size());
     }
 
     @Test
