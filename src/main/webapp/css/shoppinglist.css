@@ -82,6 +82,23 @@
     visibility: visible;
 }
 
+#shoppinglistMembers{
+    list-style-type: none;
+    list-style-position: outside;
+}
+
+#shoppinglistMembers li{
+    padding-bottom: 5px;
+}
+
+#shoppinglistMembers input{
+    vertical-align: bottom;
+}
+
+/*#shoppinglistMembers li input.checkboxClass{*/
+    /*padding: 100px;*/
+/*}*/
+
 .deleteListIcon:hover .deleteTooltip{
     visibility: visible;
 }

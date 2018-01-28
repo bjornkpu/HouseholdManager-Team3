@@ -414,10 +414,15 @@ $(document).ready(function() {
                 numberOfMembers = data.length;
                 for (var i = 0; i < data.length; i++) {
                     $('#shoppinglistMembers').append(
-                        "<li>" + data[i].name +
-                        "<input id='memberCheckbox"+i
-                        +"' value='" + data[i].email + "' type='checkbox' checked </li>")
+                        "<tr><td class='right_aligned'>" + data[i].name + "</td><td>" +
+                        "<input id='memberCheckbox"+i +" "+
+                        "value='" + data[i].email + "' type='checkbox' " + (data[i].email === currentUser ? "checked":"") + "></td></tr>");
+
                 }
+                // for (var i = 0; i < data.length; i++) {
+                //     $('#shoppinglistMembers').append(
+                //         "<li>" +data[i].name + "</li>")
+                // }
             }
         });
     }
